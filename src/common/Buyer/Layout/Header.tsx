@@ -3,9 +3,14 @@
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const pathname = usePathname();
   const [isScroll, setIsScroll] = useState(false);
+
+  const coloredRoutes = ["/products"];
+  const isColoredRoute = (route: string) => coloredRoutes.includes(route);
 
   const changeScroll = () => {
     if (window.scrollY > 0) {
@@ -24,10 +29,12 @@ const Header = () => {
 
   return (
     <nav
-      className={`flex py-4 items-center  ${
+      className={`flex py-4 items-center ${
         isScroll
           ? "bg-neutral-50 text-black duration-300 transition-colors ease-in"
-          : "text-white bg-none duration-300 transition-colors ease-out"
+          : `${
+              isColoredRoute(pathname) ? "text-black" : "text-white"
+            } bg-none duration-300 transition-colors ease-out`
       } justify-between px-3 md:px-5 lg:px-8 xl:px-10`}
     >
       <div>
