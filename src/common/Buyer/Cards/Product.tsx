@@ -12,7 +12,7 @@ interface ProductCard {
 }
 const Product = ({ image, shop, name, price, type }: ProductCard) => {
   return (
-    <div className="w-96 h-fit relative">
+    <div className="w-[350px] h-fit relative">
       <div className="w-full h-96 bg-accent drop-shadow-sm">
         <Image
           src={image}
