@@ -5,7 +5,7 @@ import product1 from "@/assets/images/product1.webp";
 import Product from "@/common/Buyer/Cards/Product";
 import user from "@/assets/images/user.jpeg";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRightIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
 
 export default function Home() {
   return (
@@ -33,10 +33,10 @@ export default function Home() {
           <h3 className="uppercase font-medium text-sm">Featured Products</h3>
           <div className="inline-flex gap-x-2">
             <button className="border border-neutral-900 duration-300 transition-colors hover:bg-neutral-100 rounded-full p-0.5">
-              <ChevronLeft size={16} />
+              <ChevronLeftIcon />
             </button>
             <button className="border border-neutral-900 duration-300 transition-colors hover:bg-neutral-100 rounded-full p-0.5">
-              <ChevronRight size={16} />
+              <ChevronRightIcon />
             </button>
           </div>
         </div>

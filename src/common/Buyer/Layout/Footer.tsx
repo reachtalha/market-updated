@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 
 const DISCOUNT: number = 10;
 const Footer = () => {
@@ -15,7 +15,7 @@ const Footer = () => {
             className="bg-none focus:outline-none flex-1"
           />
           <button type="submit">
-            <ChevronRight />
+            <ChevronRightIcon width={22} height={22} />
           </button>
         </form>
         <ul className="flex gap-x-5 text-sm">
