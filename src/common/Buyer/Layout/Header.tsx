@@ -59,10 +59,13 @@ const Header = () => {
 export default Header;
 
 const NavLink = ({ title, to }: { title: string; to: string }) => {
+  const pathname = usePathname();
   return (
     <Link
       href={to}
-      className="uppercase duration-300 transition-opacity hover:underline cursor-pointer tracking-wide text-xs underline-offset-2"
+      className={`relative uppercase duration-300 hover:underline transition-opacity cursor-pointer tracking-wide text-xs underline-offset-2 ${
+        pathname === to ? "underline" : ""
+      }`}
     >
       {title}
     </Link>
