@@ -4,43 +4,43 @@ import localFont from "next/font/local";
 const alpina = localFont({
   src: [
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Bold-Italic-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Bold-Italic.otf",
       weight: "700",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Bold-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Bold.otf",
       weight: "700",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Light-Italic-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Light-Italic.otf",
       weight: "400",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Light-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Light.otf",
       weight: "400",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Medium-Italic-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Medium-Italic.otf",
       weight: "600",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Medium-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Medium.otf",
       weight: "600",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Regular-Italic-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Regular-Italic.otf",
       weight: "500",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Regular-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Regular.otf",
       weight: "500",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Thin-Italic-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Thin-Italic.otf",
       weight: "400",
     },
     {
-      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Thin-Trial.otf",
+      path: "../../public/GT-Alpina/GT-Alpina-Condensed-Thin.otf",
       weight: "400",
     },
   ],
@@ -50,43 +50,43 @@ const alpina = localFont({
 const america = localFont({
   src: [
     {
-      path: "../../public/GT-America/GT-America-Standard-Bold-Italic-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Bold-Italic.woff2",
       weight: "800",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Bold-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Bold.woff2",
       weight: "800",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Light-Italic-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Light-Italic.woff2",
       weight: "400",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Light-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Light.woff2",
       weight: "400",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Medium-Italic-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Medium-Italic.woff2",
       weight: "600",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Medium-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Medium.woff2",
       weight: "600",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Regular-Italic-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Regular-Italic.woff2",
       weight: "500",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Regular-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Regular.woff2",
       weight: "500",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Thin-Italic-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Thin-Italic.woff2",
       weight: "400",
     },
     {
-      path: "../../public/GT-America/GT-America-Standard-Thin-Trial.woff2",
+      path: "../../public/GT-America/GT-America-Standard-Thin.woff2",
       weight: "400",
     },
   ],
