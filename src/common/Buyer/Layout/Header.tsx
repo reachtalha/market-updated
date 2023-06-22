@@ -9,7 +9,7 @@ const Header = () => {
   const pathname = usePathname();
   const [isScroll, setIsScroll] = useState(false);
 
-  const coloredRoutes = ["/products"];
+  const coloredRoutes = ["/products", "/experts"];
   const isColoredRoute = (route: string) => coloredRoutes.includes(route);
 
   const changeScroll = () => {
