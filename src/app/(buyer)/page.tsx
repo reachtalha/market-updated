@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import Carousel from "@/common/Carousel";
+
 import hero from "@/assets/images/hero.jpeg";
 import product1 from "@/assets/images/product1.webp";
 import Product from "@/common/Buyer/Cards/Product";
@@ -29,30 +31,19 @@ export default function Home() {
         </p>
       </section>
       <section className="py-16">
-        <div className="border-t-2 mx-10 border-black pt-8 pb-5 flex items-center justify-between">
-          <h3 className="uppercase font-medium text-sm">Featured Products</h3>
-          <div className="inline-flex gap-x-2">
-            <button className="border border-neutral-900 duration-300 transition-colors hover:bg-neutral-100 rounded-full p-0.5">
-              <ChevronLeftIcon />
-            </button>
-            <button className="border border-neutral-900 duration-300 transition-colors hover:bg-neutral-100 rounded-full p-0.5">
-              <ChevronRightIcon />
-            </button>
-          </div>
-        </div>
-        <ul className="no-scrollbar overflow-auto ml-10 flex gap-x-5 items-start snap-x snap-start ">
+        <Carousel title="Featured Products">
           {Array.from("abcfg").map((_, i: number) => (
-            <li key={i + Math.random()} className="flex-shrink-0">
-              <Product
-                image={product1}
-                name="  LIGHTWEIGHT SHEER DAILY SUNSCREEN SPF 40"
-                price={23}
-                shop="Salt & Stone"
-                type="Best Sellers"
-              />
-            </li>
+            <Product
+              key={i + Math.random()}
+              image={product1}
+              name="  LIGHTWEIGHT SHEER DAILY SUNSCREEN SPF 40"
+              price={23}
+              shop="Salt & Stone"
+              type="Best Sellers"
+              shrink={false}
+            />
           ))}
-        </ul>
+        </Carousel>
       </section>
       <section className="space-y-16 py-10">
         <div className="bg-primary text-white text-center py-28 px-10">
