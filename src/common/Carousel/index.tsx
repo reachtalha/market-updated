@@ -78,26 +78,26 @@ export default function Carousel({ title, children }: ICarousel) {
         <div className="inline-flex gap-x-2">
           <button
             onClick={prev}
-            disabled={isDisabled("prev")}
+            // disabled={isDisabled("prev")}
             className="disbaled:opacity-70 disabled:cursor-not-allowed border opacity-100 border-neutral-900 duration-300 transition-colors hover:bg-neutral-100 rounded-full p-0.5"
           >
             <ChevronLeftIcon />
           </button>
           <button
             onClick={next}
-            disabled={isDisabled("next")}
+            // disabled={isDisabled("next")}
             className="disbaled:opacity-70 disabled:cursor-not-allowed border opacity-100 border-neutral-900 duration-300 transition-colors hover:bg-neutral-100 rounded-full p-0.5"
           >
             <ChevronRightIcon />
           </button>
         </div>
       </div>
-      <ul
+      <div
         ref={carousel}
         className="no-scrollbar overflow-auto ml-10 flex gap-x-5 items-start snap-x snap-start "
       >
         {children}
-      </ul>
+      </div>
     </>
   );
 }
