@@ -95,6 +95,10 @@ export default function Carousel({ title, children }: ICarousel) {
       <div
         ref={carousel}
         className="no-scrollbar overflow-auto ml-10 flex gap-x-5 items-start snap-x snap-start "
+        style={{
+          scrollBehavior: "smooth",
+          scrollSnapType: "x mandatory",
+        }}
       >
         {children}
       </div>
