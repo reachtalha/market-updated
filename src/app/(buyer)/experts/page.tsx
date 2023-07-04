@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
@@ -101,12 +102,9 @@ const Experts = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
             {Array.from("abcfghyui").map((_, i: number) => (
-              <Profile
-                key={Math.random() + i + Date.now()}
-                image={user}
-                name="Olivir"
-                title="Skincare Expert"
-              />
+              <Link href={`experts/${i}`} key={Math.random() + i + Date.now()}>
+                <Profile image={user} name="Olivir" title="Skincare Expert" />
+              </Link>
             ))}
           </div>
         </div>
