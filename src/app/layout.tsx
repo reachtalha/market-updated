@@ -1,6 +1,6 @@
 import "./globals.css";
 import localFont from "next/font/local";
-
+import { AuthProvider } from "@/hooks/useAuth";
 import { Toaster } from "react-hot-toast";
 
 const alpina = localFont({
@@ -108,7 +108,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${america.variable} ${alpina.variable} `}>
       <body className="font-america">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
         <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>

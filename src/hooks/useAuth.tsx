@@ -16,7 +16,6 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
-  sendPasswordResetEmail,
   FacebookAuthProvider,
   browserSessionPersistence,
   setPersistence,
@@ -34,7 +33,6 @@ interface IAuthContext {
   sessionBasedSignin: (email: string, password: string) => Promise<void>;
   signInWithGoogleAccount: () => Promise<void>;
   signInWithFacebookAccount: () => Promise<void>;
-  resetPassword: (email: string) => Promise<void>;
   error: any;
   loading: boolean;
 }
@@ -46,7 +44,6 @@ const AuthContext = createContext<IAuthContext>({
   sessionBasedSignin: async (email: string, password: string) => {},
   signInWithGoogleAccount: async () => {},
   signInWithFacebookAccount: async () => {},
-  resetPassword: async (email: string) => {},
   error: null,
   loading: false,
 });
@@ -58,21 +55,18 @@ export const AuthProvider = ({ children }: any) => {
   const [initialLoading, setInitialLoading] = useState<boolean>(true);
   const router = useRouter();
 
-  useEffect(() => {
-    setLoading(false);
-    setError("");
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user || null);
-      setInitialLoading(false);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [auth]);
+  useEffect(
+    () =>
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setUser(user);
+        } else {
+          setUser(null);
+        }
+        setInitialLoading(false);
+      }),
+    [auth]
+  );
 
   const signInWithGoogleAccount = async () => {
     try {
@@ -92,6 +86,7 @@ export const AuthProvider = ({ children }: any) => {
       setError("");
       setLoading(true);
       await signInWithPopup(auth, fbprovider);
+      setUser(user);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (error: any) {
       setError(error.message);
@@ -104,7 +99,12 @@ export const AuthProvider = ({ children }: any) => {
     try {
       setError("");
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setUser(userCredentials.user);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (error: any) {
       setError(error.message);
@@ -137,18 +137,6 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
-  const resetPassword = async (email: string) => {
-    try {
-      setLoading(true);
-      setError("");
-      await sendPasswordResetEmail(auth, email);
-    } catch (error: any) {
-      setError(error.code);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const memoedValue = useMemo<IAuthContext>(
     () => ({
       user,
@@ -157,7 +145,6 @@ export const AuthProvider = ({ children }: any) => {
       signInWithGoogleAccount,
       signInWithFacebookAccount,
       logout,
-      resetPassword,
       loading,
       error,
     }),
@@ -168,7 +155,6 @@ export const AuthProvider = ({ children }: any) => {
       signInWithGoogleAccount,
       signInWithFacebookAccount,
       logout,
-      resetPassword,
       loading,
       error,
     ]
