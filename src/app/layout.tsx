@@ -1,6 +1,8 @@
 import "./globals.css";
 import localFont from "next/font/local";
 
+import { Toaster } from "react-hot-toast";
+
 const alpina = localFont({
   src: [
     {
@@ -105,7 +107,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${america.variable} ${alpina.variable} `}>
-      <body className="font-america">{children}</body>
+      <body className="font-america">
+        {children}
+        <Toaster position="top-right" reverseOrder={false} />
+      </body>
     </html>
   );
 }

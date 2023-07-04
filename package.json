@@ -15,7 +15,10 @@
     "@types/react": "18.2.12",
     "@types/react-dom": "18.2.5",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "classnames": "^2.3.2",
+    "country-state-city": "^3.1.4",
+    "encoding": "^0.1.13",
     "eslint": "8.42.0",
     "eslint-config-next": "^13.4.7",
     "firebase": "^9.22.2",
@@ -25,6 +28,8 @@
     "postcss": "8.4.24",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.1",
+    "react-hot-toast": "^2.4.1",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.3"
   }
