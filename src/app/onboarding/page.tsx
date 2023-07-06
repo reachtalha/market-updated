@@ -38,8 +38,8 @@ const OnBoarding = () => {
 
   return (
     <>
-      <section className="w-full min-h-screen md:py-5 py-2 px-2 md:px-0 flex justify-center items-center">
-        <div className="relative space-y-3 max-w-[500px] rounded-xl border-0 md:border-2 md:p-5 px-3 py-4">
+      <section className="w-full min-h-screen py-10 md:py-5 px-3 md:px-0 flex justify-center items-center">
+        <div className="relative space-y-3 md:shadow-lg lg:w-[500px] max-w-[500px] rounded-xl border-0 md:border-2 md:p-5 px-3 py-4">
           <OnBoardingForm />
         </div>
       </section>
