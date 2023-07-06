@@ -22,4 +22,15 @@
     background: #5a3a1e;
     border-radius: 10px;
   }
+  ::-webkit-calendar-picker-indicator {
+    opacity: 0;
+  }
+
+  ::-moz-calendar-picker-indicator {
+    opacity: 0;
+  }
+
+  ::-ms-clear {
+    opacity: 0;
+  }
 }
