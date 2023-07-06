@@ -5,6 +5,7 @@ import { useCategories, ICategory } from "@/hooks/useCategories";
 import { useFormContext } from "react-hook-form";
 
 import Loader from "@/common/Loader";
+import Error from "@/common/Error";
 import toast from "react-hot-toast";
 
 const MAX = 5;
@@ -15,7 +16,11 @@ const Categories = () => {
   const { setValue } = useFormContext();
 
   if (isLoading) {
-    <Loader className="py-[10%] grid place-content-center h-full w-full" />;
+    return <Loader className="py-16 grid place-content-center h-full w-full" />;
+  }
+
+  if (isError) {
+    return <Error className="py-16 grid place-content-center h-full w-full" />;
   }
 
   const select = (category: string) => {

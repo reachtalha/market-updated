@@ -20,7 +20,6 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
     formState: { errors },
     trigger,
     setValue,
-    getValues,
     watch,
   } = useFormContext();
   const selectedCountry = watch("country");
@@ -93,7 +92,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
             })}
             aria-label="select country"
           >
-            <option disabled aria-disabled selected>
+            <option disabled aria-disabled selected value="">
               Select Country
             </option>
             {Country.getAllCountries().map((c) => (
@@ -117,7 +116,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
               required: true,
             })}
           >
-            <option disabled aria-disabled selected>
+            <option disabled aria-disabled selected value="">
               Select City
             </option>
             {City.getCitiesOfCountry(selectedCountry)?.map((c) => (
@@ -125,22 +124,33 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
             ))}
           </select>
           {errors.city && (
-            <span className="text-sm text-red-500">Is city spelled right?</span>
+            <span className="text-sm text-red-500">Please select city</span>
           )}
         </div>
       </div>
       <div className="flex mt-3 flex-col md:flex-row w-full gap-3">
         <div className="w-full md:w-1/2 space-y-1">
           <label className="text-sm text-neutral-600">Contact</label>
-          <input
-            type="text"
-            inputMode="tel"
-            className="w-full rounded-xl border-[2px] border-neutral-200 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800 focus:-translate-y-[2px] focus:outline-neutral-800"
-            placeholder="Your Contact"
-            {...register("phone", {
-              required: true,
-            })}
-          />
+          <div className="w-full flex overflow-hidden rounded-xl border-[2px] border-neutral-200  transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800 focus-within:outline-neutral-800">
+            <select
+              className="py-2 text-center text-sm pl-2 text-gray-700 focus:outline-none w-16"
+              aria-labelledby="country-code-button"
+            >
+              {Country.getAllCountries().map((c) => (
+                <option key={c.phonecode} value={c.phonecode}>
+                  {c.phonecode}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              className="block w-full focus:outline-none py-2.5 px-1 placeholder:text-sm"
+              placeholder="Your Contact"
+              {...register("phone", {
+                required: true,
+              })}
+            />
+          </div>
           {errors.phone && (
             <span className="text-sm text-red-500">Make sure its right</span>
           )}
@@ -150,14 +160,17 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
           <input
             type="text"
             inputMode="numeric"
-            className="w-full rounded-xl border-[2px] border-neutral-200 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800 focus:-translate-y-[2px] focus:outline-neutral-800"
+            className="w-full rounded-xl border-[2px] border-neutral-200 p-2.5  transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800 focus:-translate-y-[2px] focus:outline-neutral-800"
             placeholder="Your Zipcode"
             {...register("zipcode", {
               required: true,
+              pattern: /^[0-9]+$/,
             })}
           />
           {errors.zipcode && (
-            <span className="text-sm text-red-500">Make sure its right</span>
+            <span className="text-sm text-red-500">
+              Incorrect zipcode, try again!
+            </span>
           )}
         </div>
       </div>
@@ -166,7 +179,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
         <input
           type="text"
           inputMode="text"
-          className="w-full rounded-xl border-[2px] border-neutral-200 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800 focus:-translate-y-[2px] focus:outline-neutral-800"
+          className="w-full rounded-xl border-[2px]   border-neutral-200 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800 focus:-translate-y-[2px] focus:outline-neutral-800"
           placeholder="Your Address"
           {...register("address", {
             required: true,
