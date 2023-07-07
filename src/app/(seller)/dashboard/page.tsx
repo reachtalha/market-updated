@@ -1,7 +1,11 @@
+import { auth } from "@/lib/firebase/client";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="text-5xl ">Seller</div>
+    <main className="p-8">
+      <h1 className="text-xl font-semibold">
+        Greeting, {auth.currentUser?.displayName}
+      </h1>
     </main>
   );
 }

@@ -28,7 +28,8 @@ const OnBoarding = () => {
       try {
         const docRef = await getDoc(doc(db, "users", `${uid}`));
         if (docRef.exists()) {
-          redirect("/");
+          if (docRef.data().role === "buyer") redirect("/");
+          else redirect("/dashboard");
         }
       } catch (e: any) {
         redirect("/500");
@@ -38,10 +39,8 @@ const OnBoarding = () => {
 
   return (
     <>
-      <section className="w-full min-h-screen py-10 md:py-5 px-3 md:px-0 flex justify-center items-center">
-        <div className="relative space-y-3 md:shadow-lg lg:w-[500px] max-w-[500px] rounded-xl border-0 md:border-2 md:p-5 px-3 py-4">
-          <OnBoardingForm />
-        </div>
+      <section className="relative space-y-3 md:shadow-lg lg:w-[500px] max-w-[550px] rounded-xl border-0 md:border-2 md:p-5 px-3 py-4">
+        <OnBoardingForm />
       </section>
     </>
   );

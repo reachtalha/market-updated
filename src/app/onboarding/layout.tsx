@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }
   return (
     <>
-      <main className="grid place-content-center h-screen w-full">
+      <main className="grid place-content-center min-h-screen w-full">
         {children}
       </main>
     </>
