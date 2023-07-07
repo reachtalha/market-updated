@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 
 import { db, auth } from "@/lib/firebase/client";
@@ -12,21 +14,23 @@ import { useRole } from "@/hooks/useUserRole";
 import BasicDetails from "@/modules/OnBoarding/BasicDetails";
 import Categories from "@/modules/OnBoarding/Categories";
 import Influencer from "@/modules/OnBoarding/Influencer";
+import UploadImage from "@/utils/handlers/image/UploadImage";
 
 type FormValues = {
-  contact: string;
+  countryCode: string;
+  phone: string;
   zipcode: number;
   country: string;
   city: string;
   address: string;
-  categories?: string[];
-  fb?: string;
-  twitter?: string;
-  linkedin?: string;
+  favourites?: string[];
+  topics?: string[];
+  socialMediaLinks?: string[];
   image?: any;
 };
 
 const OnBoardingForm = () => {
+  const router = useRouter();
   const role = useRole();
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,25 +49,22 @@ const OnBoardingForm = () => {
         email: auth.currentUser?.email,
         role: role,
         createdAt: Timestamp.fromDate(new Date()),
-        ...(role === "buyer" ? { favourites: data.categories } : {}),
       };
-
-      // Optional: Upload image and update user profile photoURL
-      // if (data.image) {
-      //   const url = await UploadImage({
-      //     collection: "users",
-      //     image: data.image,
-      //     name: auth.currentUser?.uid,
-      //   });
-      //   updateProfile(auth.currentUser, {
-      //     photoURL: url,
-      //   });
-      //   Object.assign(obj, { photoURL: url });
-      // }
-
-      console.log(obj);
-      // await setDoc(doc(db, "users", `${auth.currentUser?.uid}`), obj);
-      // router.push("/");
+      if (data.image) {
+        const url = await UploadImage({
+          collection: "users",
+          image: data.image,
+          name: auth.currentUser?.uid,
+        });
+        updateProfile(auth.currentUser!, {
+          photoURL: url,
+        });
+        Object.assign(obj, { photoURL: url });
+      }
+      delete obj.image;
+      await setDoc(doc(db, "users", `${auth.currentUser?.uid}`), obj);
+      if (role === "buyer") router.push("/");
+      else router.push("/dashboard");
     } catch (error: any) {
       toast.error(`Error! ${error.message}`);
     } finally {

@@ -20,12 +20,12 @@ const Influencer = () => {
   const [topics, setTopics] = useState<string[]>([]);
 
   useEffect(() => {
-    setValue("socialLink", socialMediaList);
+    setValue("socialMediaLinks", socialMediaList);
   }, [socialMediaList]);
 
   const handleTopicsChange = (updatedTopics: string[]) => {
     setTopics(updatedTopics);
-    setValue("topics", topics);
+    setValue("topics", updatedTopics);
   };
 
   const handleAddButton = (selectedSocialMedia: string, link: string) => {
@@ -150,7 +150,7 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({
         <button
           type="button"
           disabled={!selectedSocialMedia || !link ? true : false}
-          className="bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-neutral-900 rounded-lg px-2 py-1.5"
+          className="bg-neutral-800 disabled:cursor-not-allowed hover:bg-neutral-900 rounded-lg px-2 py-1.5"
           onClick={handleAddClick}
         >
           <PlusIcon className="w-5 h-5 text-white" />

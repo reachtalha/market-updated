@@ -13,12 +13,7 @@ const TopicList: React.FC<TopicListProps> = ({
   topicsList,
   onTopicsChange,
 }) => {
-  const [currentTopic, setCurrentTopic] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentTopic(event.target.value);
-  };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -28,6 +23,7 @@ const TopicList: React.FC<TopicListProps> = ({
   };
 
   const addTopic = () => {
+    const currentTopic = inputRef.current!.value;
     if (currentTopic.trim() === "") {
       toast.error("Please enter a topic!");
       return;
@@ -45,7 +41,6 @@ const TopicList: React.FC<TopicListProps> = ({
 
     const updatedTopics = [...topicsList, currentTopic];
     onTopicsChange(updatedTopics);
-    setCurrentTopic("");
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -83,7 +78,6 @@ const TopicList: React.FC<TopicListProps> = ({
             list="topicsList"
             ref={inputRef}
             placeholder="Add Topics"
-            onChange={handleInputChange}
             onKeyDown={handleInputKeyDown}
             className="focus:outline-none w-full bg-none px-2 py-1"
           />
@@ -91,6 +85,8 @@ const TopicList: React.FC<TopicListProps> = ({
             <option value="Health" />
             <option value="Skincare" />
             <option value="Supplements" />
+            <option value="Food" />
+            <option value="Fashion" />
           </datalist>
         </div>
       </div>

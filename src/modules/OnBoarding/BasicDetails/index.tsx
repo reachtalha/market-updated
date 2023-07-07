@@ -39,6 +39,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
       setStep(2);
     }
   };
+
   return (
     <>
       <div className="mb-3">
@@ -135,7 +136,13 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
             <select
               className="py-2 text-center text-sm pl-2 text-gray-700 focus:outline-none w-16"
               aria-labelledby="country-code-button"
+              {...register("countryCode", {
+                required: true,
+              })}
             >
+              <option value="" selected disabled>
+                CC
+              </option>
               {Country.getAllCountries().map((c) => (
                 <option key={c.phonecode} value={c.phonecode}>
                   {c.phonecode}
@@ -151,6 +158,11 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
               })}
             />
           </div>
+          {errors.countryCode && (
+            <span className="text-sm text-red-500">
+              Please select country code
+            </span>
+          )}
           {errors.phone && (
             <span className="text-sm text-red-500">Make sure its right</span>
           )}

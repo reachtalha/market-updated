@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCategories, ICategory } from "@/hooks/useCategories";
 import { useFormContext } from "react-hook-form";
 
@@ -15,13 +15,9 @@ const Categories = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const { setValue } = useFormContext();
 
-  if (isLoading) {
-    return <Loader className="py-16 grid place-content-center h-full w-full" />;
-  }
-
-  if (isError) {
-    return <Error className="py-16 grid place-content-center h-full w-full" />;
-  }
+  useEffect(() => {
+    setValue("favourites", selected);
+  }, [selected]);
 
   const select = (category: string) => {
     if (selected.includes(category)) {
@@ -33,8 +29,15 @@ const Categories = () => {
       }
       setSelected((c) => [...c, category]);
     }
-    setValue("selected", selected);
   };
+
+  if (isLoading) {
+    return <Loader className="py-16 grid place-content-center h-full w-full" />;
+  }
+
+  if (isError) {
+    return <Error className="py-16 grid place-content-center h-full w-full" />;
+  }
 
   return (
     <>
