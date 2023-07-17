@@ -9,11 +9,11 @@ import { doc, getDoc } from "@firebase/firestore";
 
 import OnBoardingForm from "@/modules/OnBoarding";
 
-export const metadata: Metadata = {
-  title: "OnBoarding",
-  description:
-    "This page provides information and guidance for new users to get started with our platform.",
-};
+// export const metadata: Metadata = {
+//   title: "OnBoarding",
+//   description:
+//     "This page provides information and guidance for new users to get started with our platform.",
+// };
 
 const OnBoarding = () => {
   const search = useSearchParams();

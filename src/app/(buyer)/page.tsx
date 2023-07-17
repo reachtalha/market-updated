@@ -2,23 +2,16 @@ import Image from "next/image";
 
 import Carousel from "@/common/Carousel";
 
-import hero from "@/assets/images/hero.jpeg";
 import product1 from "@/assets/images/product1.webp";
 import Product from "@/common/Buyer/Cards/Product";
 import user from "@/assets/images/user.jpeg";
-
-import { ChevronRightIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
+import heroImg from "@/assets/images/hero-main.png";
+import Hero from "@/common/Hero";
 
 export default function Home() {
   return (
     <>
-      <section className="w-full overflow-hidden grid place-content-center gap-3 text-white h-screen relative bg-gradient-to-b from-neutral-800/50 via-neutral-700-40 to-transparent">
-        <Image
-          src={hero}
-          fill
-          className="object-cover object-center -z-10"
-          alt="hero"
-        />
+      <Hero className="w-full overflow-hidden grid place-content-center gap-3 text-white relative bg-gradient-to-b from-neutral-800/50 via-neutral-700-40 to-transparent" img={heroImg}>
         <div className="block h-fit overflow-y-hidden py-1">
           <h1 className="animate-text text-5xl font-alpina italic font-medium text-center">
             Organic living, simplied
@@ -29,7 +22,7 @@ export default function Home() {
           and inspire the journey towards a more mindful and sustainable
           lifestyle.
         </p>
-      </section>
+      </Hero>
       <section className="py-16">
         <Carousel title="Featured Products">
           {Array.from("abcfg").map((_, i: number) => (
