@@ -10,33 +10,36 @@ export default function OrganicSimplifiedSection(){
       </div>
       <ul className="flex justify-between gap-x-4">
         <li>
-          <Image
-            src={user}
-            height={400}
-            width={400}
-            alt=""
-            className="w-[432px] h-96 rounded-lg object-cover"
+          <div
+            // src={user}
+            // height={400}
+            // width={400}
+            style={{ width: 400, height: 400 }}
+            // alt=""
+            className="w-[432px] h-96 rounded-lg object-cover bg-gray-100"
           />
         </li>
         <li>
-          <Image
-            src={user}
-            height={400}
-            width={400}
-            alt=""
-            className="w-[432px] h-96 rounded-lg object-cover"
+          <div
+            // src={user}
+            // height={400}
+            // width={400}
+            style={{ width: 400, height: 400 }}
+            // alt=""
+            className="w-[432px] h-96 rounded-lg object-cover bg-gray-100"
           />
         </li>
         <li>
-          <Image
-            src={user}
-            height={400}
-            width={400}
-            alt=""
-            className="w-[420px] h-96 rounded-lg object-cover"
+          <div
+            // src={user}
+            // height={400}
+            // width={400}
+            style={{ width: 400, height: 400 }}
+            // alt=""
+            className="w-[432px] h-96 rounded-lg object-cover bg-gray-100"
           />
         </li>
       </ul>
     </div>
-  )
+  );
 }

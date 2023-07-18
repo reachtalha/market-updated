@@ -60,12 +60,13 @@ export default function Home() {
                 key={Date.now() + Math.random() + i}
                 className="flex-shrink-0"
               >
-                <Image
-                  src={user}
-                  width={300}
-                  height={400}
-                  className="w-64 h-96 rounded-xl object-cover"
-                  alt="expert"
+                <div
+                  // src={user}
+                  style={{ width: 300, height: 400 }}
+                  // width={300}
+                  // height={400}
+                  className="w-64 h-96 rounded-xl object-cover bg-gray-100"
+                  // alt="expert"
                 />
               </li>
             ))}
