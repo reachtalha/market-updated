@@ -11,9 +11,9 @@ import toast from "react-hot-toast";
 
 import { useRole } from "@/hooks/useUserRole";
 
-import BasicDetails from "@/modules/OnBoarding/BasicDetails";
-import Categories from "@/modules/OnBoarding/Categories";
-import Influencer from "@/modules/OnBoarding/Influencer";
+import BasicDetails from "@/components/modules/OnBoarding/BasicDetails";
+import Categories from "@/components/modules/OnBoarding/Categories";
+import Influencer from "@/components/modules/OnBoarding/Influencer";
 import UploadImage from "@/utils/handlers/image/UploadImage";
 
 type FormValues = {

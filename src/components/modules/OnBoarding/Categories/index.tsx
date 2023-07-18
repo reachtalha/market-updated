@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useCategories, ICategory } from "@/hooks/useCategories";
 import { useFormContext } from "react-hook-form";
 
-import Loader from "@/common/Loader";
-import Error from "@/common/Error";
+import Loader from "@/components/common/Loader";
+import Error from "@/components/common/Error";
 import toast from "react-hot-toast";
 
 const MAX = 5;

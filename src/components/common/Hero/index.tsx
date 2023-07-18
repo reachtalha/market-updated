@@ -1,4 +1,4 @@
-import Image, {StaticImageData} from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { ReactNode } from "react";
 
 type HeroProps = {

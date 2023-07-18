@@ -7,7 +7,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import user from "@/assets/images/user.jpeg";
-import Profile from "@/common/Experts/Cards/Profile";
+import Profile from "@/components/common/Experts/Cards/Profile";
 
 const FILTER_LIST = [
   {

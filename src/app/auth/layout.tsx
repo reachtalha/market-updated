@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { auth } from "@/lib/firebase/client";
-import Loader from "@/common/Loader";
+import Loader from "@/components/common/Loader";
 import { Cross1Icon } from "@radix-ui/react-icons";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

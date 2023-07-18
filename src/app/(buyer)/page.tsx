@@ -1,17 +1,22 @@
 import Image from "next/image";
 
-import Carousel from "@/common/Carousel";
+import Carousel from "@/components/common/Carousel";
 
 import product1 from "@/assets/images/product1.webp";
-import Product from "@/common/Buyer/Cards/Product";
+import Product from "@/components/common/Buyer/Cards/Product";
 import user from "@/assets/images/user.jpeg";
 import heroImg from "@/assets/images/hero-main.png";
-import Hero from "@/common/Hero";
+import Hero from "@/components/common/Hero";
+import TakeQuizSection from "@/components/common/Buyer/TakeQuizSection";
+import OrganicSimplifiedSection from "@/components/common/Buyer/OrganicSimplifiedSection";
 
 export default function Home() {
   return (
     <>
-      <Hero className="w-full overflow-hidden grid place-content-center gap-3 text-white relative bg-gradient-to-b from-neutral-800/50 via-neutral-700-40 to-transparent" img={heroImg}>
+      <Hero
+        className="w-full overflow-hidden grid place-content-center gap-3 text-white relative bg-gradient-to-b from-neutral-800/50 via-neutral-700-40 to-transparent"
+        img={heroImg}
+      >
         <div className="block h-fit overflow-y-hidden py-1">
           <h1 className="animate-text text-5xl font-alpina italic font-medium text-center">
             Organic living, simplied
@@ -39,20 +44,7 @@ export default function Home() {
         </Carousel>
       </section>
       <section className="space-y-16 py-10">
-        <div className="bg-primary text-white text-center py-28 px-10">
-          <h2 className="text-7xl font-medium tracking-wide">
-            Organic Products
-            <span className="ml-2 font-alpina font-normal italic tracking-tight">
-              curated for you
-            </span>
-          </h2>
-          <p className="text-xl mt-2">
-            Get personalized product picks from a Real Expert — for free.
-          </p>
-          <button className="rounded-full mt-5 uppercase text-sm px-5 duration-300 delay-75 transition-colors py-2.5 border-[2px] border-neutral-100 hover:text-neutral-900 hover:bg-neutral-100 bg-none">
-            Take our Quiz
-          </button>
-        </div>
+        <TakeQuizSection />
         <div className="space-y-10">
           <div className="text-center space-y-2">
             <h3 className="text-3xl font-alpina tracking-wider font-medium">
@@ -91,41 +83,7 @@ export default function Home() {
           chosen range of products, we aim to simplify and inspire the journey
           towards a more mindful and sustainable lifestyle.
         </p>
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <p className="text-xl font-medium">#OrganicSimplified</p>
-            <p className="text-xl font-medium">@allorganicsmarket</p>
-          </div>
-          <ul className="flex justify-center gap-x-5">
-            <li>
-              <Image
-                src={user}
-                height={400}
-                width={400}
-                alt=""
-                className="w-[420px] h-96 rounded-lg object-cover"
-              />
-            </li>
-            <li>
-              <Image
-                src={user}
-                height={400}
-                width={400}
-                alt=""
-                className="w-[420px] h-96 rounded-lg object-cover"
-              />
-            </li>
-            <li>
-              <Image
-                src={user}
-                height={400}
-                width={400}
-                alt=""
-                className="w-[420px] h-96 rounded-lg object-cover"
-              />
-            </li>
-          </ul>
-        </div>
+        <OrganicSimplifiedSection />
       </section>
     </>
   );

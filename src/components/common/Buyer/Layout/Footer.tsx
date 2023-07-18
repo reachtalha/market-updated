@@ -1,11 +1,13 @@
 import React from "react";
 
 import { ChevronRightIcon } from "@radix-ui/react-icons";
+import BoxedContent from "@/components/common/BoxedContent";
 
 const DISCOUNT: number = 10;
 const Footer = () => {
   return (
-    <footer className="flex w-full container mx-auto px-3 md:px-0 py-10">
+    <footer className="">
+      <BoxedContent className="flex w-full mx-auto my-12">
       <div className="w-fill md:w-1/2 space-y-6">
         <p className="uppercase text-sm">Sign Up and save {DISCOUNT}%</p>
         <form className="flex items-center p-2 w-full md:w-2/3 gap-x-1 border placeholder:text-sm border-neutral-500 placeholder:text-neutral-500 focus-within:border-neutral-900 rounded-md">
@@ -62,6 +64,7 @@ const Footer = () => {
           </ul>
         </div>
       </div>
+      </BoxedContent>
     </footer>
   );
 };

@@ -1,6 +1,6 @@
 import { StaticImageData } from "next/image";
 
-import Image from "@/common/FallbackImage";
+import Image from "@/components/common/FallbackImage";
 
 interface IProfileCard {
   image: string | StaticImageData;

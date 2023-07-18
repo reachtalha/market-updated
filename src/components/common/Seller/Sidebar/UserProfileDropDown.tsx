@@ -4,7 +4,7 @@ import useAuth from "@/hooks/useAuth";
 
 import { auth } from "@/lib/firebase/client";
 
-import Avatar from "@/common/Avatar";
+import Avatar from "@/components/common/Avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { GearIcon, PinLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";

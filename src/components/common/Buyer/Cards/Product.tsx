@@ -1,7 +1,7 @@
 import React from "react";
 import { StaticImageData } from "next/image";
 
-import Image from "@/common/FallbackImage";
+import Image from "@/components/common/FallbackImage";
 import { formatCurrency } from "@/utils/formatters";
 
 interface ProductCard {

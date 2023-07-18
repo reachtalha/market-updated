@@ -7,7 +7,7 @@ import { useSearchParams, redirect } from "next/navigation";
 import { db, auth } from "@/lib/firebase/client";
 import { doc, getDoc } from "@firebase/firestore";
 
-import OnBoardingForm from "@/modules/OnBoarding";
+import OnBoardingForm from "@/components/modules/OnBoarding";
 
 // export const metadata: Metadata = {
 //   title: "OnBoarding",

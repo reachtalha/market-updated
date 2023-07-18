@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { Country, City } from "country-state-city";
 
 import { ImageIcon } from "@radix-ui/react-icons";
-import Image from "@/common/FallbackImage";
+import Image from "@/components/common/FallbackImage";
 import ImageReader from "@/utils/handlers/image/ImageReader";
 
 interface IBasicDetails {

@@ -1,10 +1,10 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import {ChevronDownIcon} from "@radix-ui/react-icons";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 
 type ProductHeaderProps = {
-  title: string | null
-}
-export default function ProductHeader({ title = '' }: ProductHeaderProps){
+  title: string | null;
+};
+export default function ProductHeader({ title = "" }: ProductHeaderProps) {
   return (
     <div className="flex items-center justify-between">
       <p className="uppercase font-medium tracking-wide text-sm">{title}</p>
@@ -37,5 +37,5 @@ export default function ProductHeader({ title = '' }: ProductHeaderProps){
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
     </div>
-  )
+  );
 }
