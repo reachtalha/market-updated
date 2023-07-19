@@ -1,10 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  darkMode: ["class"],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+	],
   theme: {
     fontFamily: {
       alpina: ["var(--font-alpina)"],
       america: ["var(--font-america)"],
+    },
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
     },
     extend: {
       colors: {
@@ -13,6 +26,8 @@ module.exports = {
         accent: "#F3F4F1",
       },
       animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
         text: "slideUp 1s",
         textRight: "slideRight 1s ease infinite",
         opacity: "opacity 2s",
@@ -50,23 +65,32 @@ module.exports = {
           },
         },
         slideDownAndFade: {
-          from: { opacity: 0, transform: "translateY(-2px)" },
-          to: { opacity: 1, transform: "translateY(0)" },
+          from: {opacity: 0, transform: "translateY(-2px)"},
+          to: {opacity: 1, transform: "translateY(0)"},
         },
         slideLeftAndFade: {
-          from: { opacity: 0, transform: "translateX(2px)" },
-          to: { opacity: 1, transform: "translateX(0)" },
+          from: {opacity: 0, transform: "translateX(2px)"},
+          to: {opacity: 1, transform: "translateX(0)"},
         },
         slideUpAndFade: {
-          from: { opacity: 0, transform: "translateY(2px)" },
-          to: { opacity: 1, transform: "translateY(0)" },
+          from: {opacity: 0, transform: "translateY(2px)"},
+          to: {opacity: 1, transform: "translateY(0)"},
         },
         slideRightAndFade: {
-          from: { opacity: 0, transform: "translateX(-2px)" },
-          to: { opacity: 1, transform: "translateX(0)" },
+          from: {opacity: 0, transform: "translateX(-2px)"},
+          to: {opacity: 1, transform: "translateX(0)"},
+
+          "accordion-down": {
+            from: {height: 0},
+            to: {height: "var(--radix-accordion-content-height)"},
+          },
+          "accordion-up": {
+            from: {height: "var(--radix-accordion-content-height)"},
+            to: {height: 0},
+          },
         },
-      },
+      }
     },
   },
-  plugins: [],
-};
+  plugins: [require("tailwindcss-animate")],
+}

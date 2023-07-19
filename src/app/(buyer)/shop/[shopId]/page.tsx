@@ -2,11 +2,12 @@ import Link from "next/link";
 
 import Hero from "@/components/common/Hero";
 import BoxedContent from "@/components/common/BoxedContent";
-import heroImg from "@/assets/images/shop-hero.png";
 import CircledArrowRight from "@/assets/icons/system/CircledArrowRight";
 import Products from "@/components/common/Buyer/Products";
 import TakeQuizSection from "@/components/common/Buyer/TakeQuizSection";
 import OrganicSimplifiedSection from "@/components/common/Buyer/OrganicSimplifiedSection";
+import heroImg from "@/assets/images/shop-hero.png";
+import Testimonials from "@/components/common/Buyer/Testimonials";
 
 const categories = [
   {
@@ -68,6 +69,7 @@ export default function Shop({ params }: ShopProps) {
         </BoxedContent>
       </Hero>
       <Products categories={categories} />
+      <Testimonials />
       <TakeQuizSection />
       <BoxedContent className="my-16">
         <OrganicSimplifiedSection />
