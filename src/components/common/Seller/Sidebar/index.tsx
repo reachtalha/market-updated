@@ -21,27 +21,27 @@ const Sidebar = () => {
   const list = [
     {
       href: "/dashboard",
-      icon: <Dashboard className="w-6 h-6 text-current" />,
+      icon: <Dashboard className='w-6 h-6 text-current' />,
       title: "Dashboard",
     },
     {
       href: "/shop",
-      icon: <Shop className="w-6 h-6 text-current" />,
+      icon: <Shop className='w-6 h-6 text-current' />,
       title: "Shop",
     },
     {
-      href: "/products",
-      icon: <Products className="w-6 h-6 text-current" />,
+      href: "/dashboard/products",
+      icon: <Products className='w-6 h-6 text-current' />,
       title: "Products",
     },
     {
       href: "/orders",
-      icon: <Cart className="w-6 h-6 text-current" />,
+      icon: <Cart className='w-6 h-6 text-current' />,
       title: "Orders",
     },
     {
       href: "/chat",
-      icon: <Chat className="w-6 h-6 text-current" />,
+      icon: <Chat className='w-6 h-6 text-current' />,
       title: "Chat",
     },
   ];
@@ -49,12 +49,12 @@ const Sidebar = () => {
     <div
       className={`w-[14rem] text-neutral-50 flex flex-col justify-start gap-y-12 h-full px-3 relative py-5`}
     >
-      <div className="text-center">
-        <Link href="/" className="font-semibold text-current text-2xl">
+      <div className='text-center'>
+        <Link href='/' className='font-semibold text-current text-2xl'>
           Dashboard
         </Link>
       </div>
-      <div className="space-y-5 flex-auto px-1">
+      <div className='space-y-5 flex-auto px-1'>
         {list.map((l) => (
           <NavLink
             key={l.href}
@@ -85,7 +85,7 @@ const NavLink = ({ icon, href, pathname, title }: NavLinkProps) => {
       } cursor-pointer`}
     >
       {icon}
-      <span className="text-xl text-current group-hover:font-medium">
+      <span className='text-xl text-current group-hover:font-medium'>
         {title}
       </span>
     </Link>
