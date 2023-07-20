@@ -2,7 +2,7 @@
 import {SwiperSlide} from "swiper/react";
 
 import Carousel from "@/components/common/Carousel";
-import Product from "@/components/common/Buyer/Cards/Product";
+import ProductCard from "@/components/common/Buyer/Cards/ProductCard";
 import product1 from "@/assets/images/product1.webp";
 
 const featuredProductsBreakpoints = {
@@ -25,10 +25,10 @@ const featuredProductsBreakpoints = {
 };
 
 export default function FeaturedProducts(){
-  return <Carousel title="Featured Products" breakpoints={featuredProductsBreakpoints}>
+  return <Carousel slidesOffsetBefore={40} title="Featured Products" breakpoints={featuredProductsBreakpoints}>
     {Array.from("abcfghijk").map((_, i: number) => (
       <SwiperSlide key={i + Math.random()}>
-        <Product
+        <ProductCard
           image={product1}
           name="  LIGHTWEIGHT SHEER DAILY SUNSCREEN SPF 40"
           price={23}

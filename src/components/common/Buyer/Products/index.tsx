@@ -1,5 +1,5 @@
 "use client";
-import Product from "@/components/common/Buyer/Cards/Product";
+import ProductCard from "@/components/common/Buyer/Cards/ProductCard";
 import BoxedContent from "@/components/common/BoxedContent";
 import ProductCategories, {Category} from "@/components/common/Buyer/Products/ProductCategories";
 import ProductHeader from "@/components/common/Buyer/Products/ProductHeader";
@@ -19,7 +19,7 @@ export default function Products({ categories }: ProductsProps) {
         <ProductHeader title={category} />
         <div className="grid grid-cols-3 gap-5">
           {Array.from("abcfghyui").map((_, i: number) => (
-            <Product
+            <ProductCard
               key={i + Math.random()}
               image={product1}
               name="LIGHTWEIGHT SHEER DAILY SUNSCREEN SPF 40"

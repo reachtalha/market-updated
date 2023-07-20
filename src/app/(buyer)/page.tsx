@@ -4,6 +4,7 @@ import TakeQuizSection from "@/components/common/Buyer/TakeQuizSection";
 import OrganicSimplifiedSection from "@/components/common/Buyer/OrganicSimplifiedSection";
 import FeaturedProducts from "@/components/common/Buyer/FeaturedProducts";
 import BoxedContent from "@/components/common/BoxedContent";
+import OurMission from "@/components/common/Buyer/OurMission";
 
 export default function Home() {
   return (
@@ -56,19 +57,12 @@ export default function Home() {
           </ul>
         </BoxedContent>
       </section>
-      <section className="container mx-auto py-10">
-        <h6 className="underline underline-offset-4 uppercase text-sm">
-          &#8594; Our Mission
-        </h6>
-        <p className="text-xl font-semibold mt-10 mb-20">
-          All Organics &reg; is on a mission to empower conscious shoppers by
-          offering a curated selection of organic products that promote
-          sustainability, authenticity, and well-being. Through our thoughtfully
-          chosen range of products, we aim to simplify and inspire the journey
-          towards a more mindful and sustainable lifestyle.
-        </p>
+      <BoxedContent className="py-10">
+        <OurMission />
+      </BoxedContent>
+      <BoxedContent className="py-10">
         <OrganicSimplifiedSection />
-      </section>
+      </BoxedContent>
     </>
   );
 }

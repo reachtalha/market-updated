@@ -2,8 +2,8 @@ import BoxedContent from "@/components/common/BoxedContent";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import Products from "@/components/common/Buyer/Products";
-import {Category} from "@/components/common/Buyer/Products/ProductCategories";
 import FeaturedProducts from "@/components/common/Buyer/FeaturedProducts";
+import LatestBlogsSection from "@/components/common/Buyer/LatestBlogsSection";
 
 const socials = [
   {
@@ -52,7 +52,13 @@ const categories = [
   },
 ];
 
-const Expert = ({ params }: { params: { expertId: string } }) => {
+type ExpertProps = {
+  params: {
+    expertId: string
+  }
+}
+
+const Expert = ({ params }: ExpertProps) => {
   return <>
   <BoxedContent className="py-20">
     <div className="grid grid-cols-2 gap-14">
@@ -79,10 +85,10 @@ const Expert = ({ params }: { params: { expertId: string } }) => {
         <div className="mt-16">
           <p className="uppercase">topics</p>
           <div className="flex gap-6 mt-3">
-            <Button className="uppercase bg-transparent text-black border border-black px-8 py-4">
+            <Button variant="outline" size="lg" className="uppercase border-black">
               skin care
             </Button>
-            <Button className="uppercase bg-transparent text-black border border-black px-8 py-4">
+            <Button variant="outline" size="lg" className="uppercase border-black">
               supplements
             </Button>
           </div>
@@ -96,6 +102,7 @@ const Expert = ({ params }: { params: { expertId: string } }) => {
     <section className="border-t-2 border-black">
       <Products categories={categories} />
     </section>
+    <LatestBlogsSection title="Latest blogs" />
   </>
 };
 

@@ -24,7 +24,7 @@ const categories = [
   {
     name: "sunscreen",
     slug: "sunscreen",
-    href: "/products/category"
+    href: "/products?category"
   },
 ];
 

@@ -12,7 +12,7 @@ const Header = () => {
 
   const coloredRoutes = ["/products", "/experts"];
   const isColoredRoute = (route: string) => {
-    return coloredRoutes.includes(route) || route.startsWith("/experts");
+    return coloredRoutes.includes(route) || route.startsWith("/experts") || route.startsWith("/products/search");
   }
 
   const changeScroll = () => {

@@ -11,8 +11,9 @@ import 'swiper/css';
 import {  Keyboard } from 'swiper/modules';
 
 interface ICarousel extends SwiperProps {
-  title: string;
+  title?: string;
   children: ReactNode;
+  showNavigation?: boolean
 }
 
 const SwiperCustomNavigation = () => {
@@ -36,21 +37,20 @@ const SwiperCustomNavigation = () => {
   )
 }
 
-export default function Carousel({ title, children, ...props }: ICarousel) {
+export default function Carousel({ title, showNavigation = true,  children, ...props }: ICarousel) {
   return (
     <>
       <Swiper
         {...props}
         keyboard
-        slidesOffsetBefore={40}
         modules={[Keyboard]}
         className="mySwiper"
       >
         {children}
-        <div className="border-t-2 mx-10 border-black pt-8 pb-5 flex items-center justify-between">
+        {showNavigation && <div className="border-t-2 mx-10 border-black pt-8 pb-5 flex items-center justify-between">
           <h3 className="uppercase font-medium text-sm">{title}</h3>
           <SwiperCustomNavigation />
-        </div>
+        </div>}
       </Swiper>
     </>
   );
