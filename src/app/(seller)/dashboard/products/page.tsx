@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import BasicDetails from "./BasicDetails";
+import CreateSKU from "./CreateSKU";
 
 type Props = {};
 
@@ -19,7 +21,7 @@ const Step = ({
       <div
         onClick={() => setCurrentStep(step)}
         className={`bg-[#414D354D] cursor-pointer transition-all duration-500  w-[3rem] h-[3rem] rounded-full flex items-center justify-center font-bold ${
-          step <= currentStep && "bg-[#414D35] text-white"
+          step <= currentStep && "bg-primary text-white"
         }`}
       >
         {step}
@@ -30,19 +32,10 @@ const Step = ({
   );
 };
 
-const ConnectionLine = () => {
-  return (
-    <div className='absolute top-[25%] left-[25%] translate-x-[-3%] translate-y-[-25%] w-[60%]   flex flex-row items-center justify-between '>
-      <hr className='h-[2px]  w-[48%]  bg-[#414D354D] ' />
-      <hr className='h-[2px]  w-[39.5%] me-2  bg-[#414D354D]' />
-    </div>
-  );
-};
-
 const Products = (props: Props) => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<number>(1);
   return (
-    <div className='bg-white h-screen py-20'>
+    <div className='bg-white h-screen py-10'>
       <div className='flex flex-row items-center   relative  w-[60%] mx-auto'>
         <Step
           currentStep={step}
@@ -52,7 +45,7 @@ const Products = (props: Props) => {
         />
         <hr
           className={`border ms-[-20px] translate-y-[-25px] w-[52%] transition-all duration-500 border-[#414D354D] ${
-            step > 1 && "border-[#414D35]"
+            step > 1 && "border-primary"
           }  `}
         />
         <Step
@@ -72,6 +65,10 @@ const Products = (props: Props) => {
           title='Add Image'
           step={3}
         />
+      </div>
+      <div className='w-[50%] m-auto mt-5'>
+        {/* <BasicDetails setStep={setStep} /> */}
+        <CreateSKU setStep={setStep} />
       </div>
     </div>
   );
