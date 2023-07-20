@@ -1,14 +1,8 @@
-import Image from "next/image";
-
-import Carousel from "@/components/common/Carousel";
-
-import product1 from "@/assets/images/product1.webp";
-import Product from "@/components/common/Buyer/Cards/Product";
-import user from "@/assets/images/user.jpeg";
 import heroImg from "@/assets/images/hero-main.png";
 import Hero from "@/components/common/Hero";
 import TakeQuizSection from "@/components/common/Buyer/TakeQuizSection";
 import OrganicSimplifiedSection from "@/components/common/Buyer/OrganicSimplifiedSection";
+import FeaturedProducts from "@/components/common/Buyer/FeaturedProducts";
 
 export default function Home() {
   return (
@@ -29,19 +23,7 @@ export default function Home() {
         </p>
       </Hero>
       <section className="py-16">
-        <Carousel title="Featured Products">
-          {Array.from("abcfg").map((_, i: number) => (
-            <Product
-              key={i + Math.random()}
-              image={product1}
-              name="  LIGHTWEIGHT SHEER DAILY SUNSCREEN SPF 40"
-              price={23}
-              shop="Salt & Stone"
-              type="Best Sellers"
-              shrink={false}
-            />
-          ))}
-        </Carousel>
+        <FeaturedProducts />
       </section>
       <section className="space-y-16 py-10">
         <TakeQuizSection />

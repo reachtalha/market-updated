@@ -9,7 +9,7 @@ export default function BoxedContent({
   className,
 }: BoxedContentProps) {
   return (
-    <div className={`x-3 md:px-5 lg:px-8 xl:px-10 ${className}`}>
+    <div className={`container ${className}`}>
       {children}
     </div>
   );

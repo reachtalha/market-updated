@@ -8,6 +8,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import user from "@/assets/images/user.jpeg";
 import Profile from "@/components/common/Experts/Cards/Profile";
+import SortByDropdown from "@/components/common/SortByDropdown";
 
 const FILTER_LIST = [
   {
@@ -68,37 +69,7 @@ const Experts = () => {
         <div className="flex-1 px-4 space-y-4">
           <div className="flex items-center justify-between">
             <p className="uppercase tracking-wide text-sm">{filter} Experts</p>
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger asChild>
-                <button
-                  className="inline-flex items-start focus:outline-none gap-x-1 justify-center uppercase tracking-wide text-sm"
-                  aria-label="sort options"
-                >
-                  <ChevronDownIcon />
-                  <span>Sort by - {sortby}</span>
-                </button>
-              </DropdownMenu.Trigger>
-
-              <DropdownMenu.Portal>
-                <DropdownMenu.Content
-                  className="min-w-[150px] bg-white rounded-md px-2 py-3 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade"
-                  sideOffset={5}
-                >
-                  <DropdownMenu.Item
-                    onClick={() => setSortBy("name")}
-                    className="focus:outline-none rounded-md p-1 cursor-pointer hover:bg-neutral-200"
-                  >
-                    Name
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    onClick={() => setSortBy("reviews")}
-                    className="focus:outline-none rounded-md p-1 cursor-pointer hover:bg-neutral-200"
-                  >
-                    Reviews
-                  </DropdownMenu.Item>
-                </DropdownMenu.Content>
-              </DropdownMenu.Portal>
-            </DropdownMenu.Root>
+            <SortByDropdown />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
             {Array.from("abcfghyui").map((_, i: number) => (

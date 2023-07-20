@@ -4,13 +4,16 @@ import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import BoxedContent from "@/components/common/BoxedContent";
 
 const Header = () => {
   const pathname = usePathname();
   const [isScroll, setIsScroll] = useState(false);
 
   const coloredRoutes = ["/products", "/experts"];
-  const isColoredRoute = (route: string) => coloredRoutes.includes(route);
+  const isColoredRoute = (route: string) => {
+    return coloredRoutes.includes(route) || route.startsWith("/experts");
+  }
 
   const changeScroll = () => {
     if (window.scrollY > 0) {
@@ -28,6 +31,7 @@ const Header = () => {
   }, []);
 
   return (
+    <BoxedContent>
     <nav
       className={`flex py-4 items-center ${
         isScroll
@@ -35,7 +39,7 @@ const Header = () => {
           : `${
               isColoredRoute(pathname) ? "text-black" : "text-white"
             } bg-none duration-300 transition-colors ease-out`
-      } justify-between px-3 md:px-5 lg:px-8 xl:px-10`}
+      } justify-between`}
     >
       <div>
         <Link href="/" className="font-alpina text-xl italic">
@@ -53,6 +57,7 @@ const Header = () => {
         <NavLink to="/cart" title={`Cart (0)`} />
       </div>
     </nav>
+    </BoxedContent>
   );
 };
 
