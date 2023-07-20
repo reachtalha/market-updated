@@ -10,6 +10,7 @@ import Cart from "@/assets/icons/system/Cart";
 import Chat from "@/assets/icons/system/Message";
 import Shop from "@/assets/icons/system/Shop";
 import Products from "@/assets/icons/system/Products";
+import NavLink from "./NavLink";
 
 const Sidebar = () => {
   const headersList = headers();
@@ -33,6 +34,13 @@ const Sidebar = () => {
       href: "/dashboard/products",
       icon: <Products className='w-6 h-6 text-current' />,
       title: "Products",
+      subItems: [
+        {
+          href: "/dashboard/products",
+          icon: <Products className='w-6 h-6 text-current' />,
+          title: "Products",
+        },
+      ],
     },
     {
       href: "/orders",
@@ -62,33 +70,12 @@ const Sidebar = () => {
             href={l.href}
             pathname={pathname}
             title={l.title}
+            subItems={l.subItems ? l.subItems : []}
           />
         ))}
       </div>
       <UserProfileDropDown />
     </div>
-  );
-};
-
-interface NavLinkProps {
-  icon: React.ReactNode;
-  href: string;
-  pathname: string;
-  title: string;
-}
-const NavLink = ({ icon, href, pathname, title }: NavLinkProps) => {
-  return (
-    <Link
-      href={href}
-      className={`flex gap-x-2 items-center duration-300 transition-colors hover:text-neutral-50 ${
-        pathname === href ? "text-neutral-50" : "text-neutral-400"
-      } cursor-pointer`}
-    >
-      {icon}
-      <span className='text-xl text-current group-hover:font-medium'>
-        {title}
-      </span>
-    </Link>
   );
 };
 

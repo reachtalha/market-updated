@@ -2,11 +2,11 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   theme: {
     fontFamily: {
       alpina: ["var(--font-alpina)"],
@@ -65,32 +65,31 @@ module.exports = {
           },
         },
         slideDownAndFade: {
-          from: {opacity: 0, transform: "translateY(-2px)"},
-          to: {opacity: 1, transform: "translateY(0)"},
+          from: { opacity: 0, transform: "translateY(-2px)" },
+          to: { opacity: 1, transform: "translateY(0)" },
         },
         slideLeftAndFade: {
-          from: {opacity: 0, transform: "translateX(2px)"},
-          to: {opacity: 1, transform: "translateX(0)"},
+          from: { opacity: 0, transform: "translateX(2px)" },
+          to: { opacity: 1, transform: "translateX(0)" },
         },
         slideUpAndFade: {
-          from: {opacity: 0, transform: "translateY(2px)"},
-          to: {opacity: 1, transform: "translateY(0)"},
+          from: { opacity: 0, transform: "translateY(2px)" },
+          to: { opacity: 1, transform: "translateY(0)" },
+        },
+        "accordion-down": {
+          from: { height: 0 },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: 0 },
         },
         slideRightAndFade: {
-          from: {opacity: 0, transform: "translateX(-2px)"},
-          to: {opacity: 1, transform: "translateX(0)"},
-
-          "accordion-down": {
-            from: {height: 0},
-            to: {height: "var(--radix-accordion-content-height)"},
-          },
-          "accordion-up": {
-            from: {height: "var(--radix-accordion-content-height)"},
-            to: {height: 0},
-          },
+          from: { opacity: 0, transform: "translateX(-2px)" },
+          to: { opacity: 1, transform: "translateX(0)" },
         },
-      }
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
