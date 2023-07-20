@@ -53,7 +53,8 @@ const categories = [
 ];
 
 const Expert = ({ params }: { params: { expertId: string } }) => {
-  return <BoxedContent className="py-20">
+  return <>
+  <BoxedContent className="py-20">
     <div className="grid grid-cols-2 gap-14">
       <div
         className="w-full h-[606px] rounded-lg bg-gray-100"
@@ -88,13 +89,14 @@ const Expert = ({ params }: { params: { expertId: string } }) => {
         </div>
       </div>
     </div>
+  </BoxedContent>
     <section className="py-16">
       <FeaturedProducts />
     </section>
     <section className="border-t-2 border-black">
       <Products categories={categories} />
     </section>
-  </BoxedContent>
+  </>
 };
 
 export default Expert;

@@ -3,6 +3,7 @@ import Hero from "@/components/common/Hero";
 import TakeQuizSection from "@/components/common/Buyer/TakeQuizSection";
 import OrganicSimplifiedSection from "@/components/common/Buyer/OrganicSimplifiedSection";
 import FeaturedProducts from "@/components/common/Buyer/FeaturedProducts";
+import BoxedContent from "@/components/common/BoxedContent";
 
 export default function Home() {
   return (
@@ -27,7 +28,7 @@ export default function Home() {
       </section>
       <section className="space-y-16 py-10">
         <TakeQuizSection />
-        <div className="space-y-10">
+        <BoxedContent className="space-y-10">
           <div className="text-center space-y-2">
             <h3 className="text-3xl font-alpina tracking-wider font-medium">
               Meet Our Experts
@@ -53,7 +54,7 @@ export default function Home() {
               </li>
             ))}
           </ul>
-        </div>
+        </BoxedContent>
       </section>
       <section className="container mx-auto py-10">
         <h6 className="underline underline-offset-4 uppercase text-sm">

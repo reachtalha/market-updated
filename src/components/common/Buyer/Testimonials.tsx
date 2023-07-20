@@ -1,12 +1,15 @@
+"use client"
 import Carousel from "@/components/common/Carousel";
 import {Button} from "@/components/ui/button";
+import {SwiperSlide} from "swiper/react";
 
 export default function Testimonials(){
   return (
     <section className="py-16">
-      <Carousel title="What Our Experts Say About Us ">
+      <Carousel title="What Our Experts Say About Us" slidesPerView={1}>
         {Array.from([1,2,3,4]).map((_, i: number) => (
-          <div className="flex gap-10 flex-shrink-0 w-full" key={i}>
+          <SwiperSlide key={i}>
+          <div className="flex gap-10 flex-shrink-0 w-full">
             <div
               className="w-full rounded-lg bg-gray-100"
             />
@@ -23,6 +26,7 @@ export default function Testimonials(){
               </Button>
             </div>
           </div>
+          </SwiperSlide>
         ))}
       </Carousel>
     </section>

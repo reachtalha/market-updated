@@ -31,9 +31,8 @@ const Header = () => {
   }, []);
 
   return (
-    <BoxedContent>
     <nav
-      className={`flex py-4 items-center ${
+      className={`${
         isScroll
           ? "bg-neutral-50 text-black duration-300 transition-colors ease-in"
           : `${
@@ -41,6 +40,7 @@ const Header = () => {
             } bg-none duration-300 transition-colors ease-out`
       } justify-between`}
     >
+      <BoxedContent className="flex py-4 justify-between items-center">
       <div>
         <Link href="/" className="font-alpina text-xl italic">
           All Organics <span className="text-xs align-bottom">&reg;</span>
@@ -56,8 +56,9 @@ const Header = () => {
         <NavLink to="/account" title="Account" />
         <NavLink to="/cart" title={`Cart (0)`} />
       </div>
+
+      </BoxedContent>
     </nav>
-    </BoxedContent>
   );
 };
 

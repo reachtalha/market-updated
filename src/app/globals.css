@@ -26,11 +26,12 @@
     opacity: 0;
   }
 
-  ::-moz-calendar-picker-indicator {
-    opacity: 0;
-  }
-
   ::-ms-clear {
     opacity: 0;
   }
+}
+
+.mySwiper {
+  display: flex !important;
+  flex-direction: column-reverse !important;
 }
