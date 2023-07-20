@@ -1,12 +1,15 @@
 import BoxedContent from "@/components/common/BoxedContent";
-import {twMerge} from "tailwind-merge";
+import { twMerge } from "tailwind-merge";
 
 type LatestBlogsSectionProps = {
-  title: string
-  className?: string
-}
+  title: string;
+  className?: string;
+};
 
-export default function LatestBlogsSection({ title, className = '' }: LatestBlogsSectionProps){
+export default function LatestBlogsSection({
+  title,
+  className = "",
+}: LatestBlogsSectionProps) {
   return (
     <BoxedContent className={twMerge(`mb-[8rem]`, className)}>
       <header className="flex justify-between items-center">
@@ -19,5 +22,5 @@ export default function LatestBlogsSection({ title, className = '' }: LatestBlog
         <div className="w-[432px] h-[432px] rounded-lg bg-gray-100" />
       </div>
     </BoxedContent>
-  )
+  );
 }

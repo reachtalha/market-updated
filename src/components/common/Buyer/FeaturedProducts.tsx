@@ -1,5 +1,5 @@
-"use client"
-import {SwiperSlide} from "swiper/react";
+"use client";
+import { SwiperSlide } from "swiper/react";
 
 import Carousel from "@/components/common/Carousel";
 import ProductCard from "@/components/common/Buyer/Cards/ProductCard";
@@ -24,19 +24,25 @@ const featuredProductsBreakpoints = {
   },
 };
 
-export default function FeaturedProducts(){
-  return <Carousel slidesOffsetBefore={40} title="Featured Products" breakpoints={featuredProductsBreakpoints}>
-    {Array.from("abcfghijk").map((_, i: number) => (
-      <SwiperSlide key={i + Math.random()}>
-        <ProductCard
-          image={product1}
-          name="  LIGHTWEIGHT SHEER DAILY SUNSCREEN SPF 40"
-          price={23}
-          shop="Salt & Stone"
-          type="Best Sellers"
-          shrink={false}
-        />
-      </SwiperSlide>
-    ))}
-  </Carousel>
+export default function FeaturedProducts() {
+  return (
+    <Carousel
+      slidesOffsetBefore={40}
+      title="Featured Products"
+      breakpoints={featuredProductsBreakpoints}
+    >
+      {Array.from("abcfghijk").map((_, i: number) => (
+        <SwiperSlide key={i + Math.random()}>
+          <ProductCard
+            image={product1}
+            name="  LIGHTWEIGHT SHEER DAILY SUNSCREEN SPF 40"
+            price={23}
+            shop="Salt & Stone"
+            type="Best Sellers"
+            shrink={false}
+          />
+        </SwiperSlide>
+      ))}
+    </Carousel>
+  );
 }

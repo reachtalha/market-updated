@@ -13,27 +13,27 @@ const categories = [
   {
     name: "Shop All",
     slug: "all",
-    href: "/shop/1/?category"
+    href: "/shop/1/?category",
   },
   {
     name: "deodorants",
     slug: "deodorants",
-    href: "/shop/1?category"
+    href: "/shop/1?category",
   },
   {
     name: "face",
     slug: "face",
-    href: "/shop/1?category"
+    href: "/shop/1?category",
   },
   {
     name: "body",
     slug: "body",
-    href: "/shop/1?category"
+    href: "/shop/1?category",
   },
   {
     name: "sunscreen",
     slug: "sunscreen",
-    href: "/shop/1?category"
+    href: "/shop/1?category",
   },
 ];
 

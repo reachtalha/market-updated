@@ -1,19 +1,19 @@
 "use client";
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
-import {Swiper, SwiperProps, useSwiper} from 'swiper/react';
+import { Swiper, SwiperProps, useSwiper } from "swiper/react";
 
 // Import Swiper styles
-import 'swiper/css';
+import "swiper/css";
 
 // import required modules
-import {  Keyboard } from 'swiper/modules';
+import { Keyboard } from "swiper/modules";
 
 interface ICarousel extends SwiperProps {
   title?: string;
   children: ReactNode;
-  showNavigation?: boolean
+  showNavigation?: boolean;
 }
 
 const SwiperCustomNavigation = () => {
@@ -34,23 +34,25 @@ const SwiperCustomNavigation = () => {
         <ChevronRightIcon />
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default function Carousel({ title, showNavigation = true,  children, ...props }: ICarousel) {
+export default function Carousel({
+  title,
+  showNavigation = true,
+  children,
+  ...props
+}: ICarousel) {
   return (
     <>
-      <Swiper
-        {...props}
-        keyboard
-        modules={[Keyboard]}
-        className="mySwiper"
-      >
+      <Swiper {...props} keyboard modules={[Keyboard]} className="mySwiper">
         {children}
-        {showNavigation && <div className="border-t-2 mx-10 border-black pt-8 pb-5 flex items-center justify-between">
-          <h3 className="uppercase font-medium text-sm">{title}</h3>
-          <SwiperCustomNavigation />
-        </div>}
+        {showNavigation && (
+          <div className="border-t-2 mx-10 border-black pt-8 pb-5 flex items-center justify-between">
+            <h3 className="uppercase font-medium text-sm">{title}</h3>
+            <SwiperCustomNavigation />
+          </div>
+        )}
       </Swiper>
     </>
   );

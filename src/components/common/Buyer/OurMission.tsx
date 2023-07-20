@@ -1,4 +1,4 @@
-export default function OurMission(){
+export default function OurMission() {
   return (
     <>
       <h6 className="underline underline-offset-4 uppercase text-sm">
@@ -12,5 +12,5 @@ export default function OurMission(){
         towards a more mindful and sustainable lifestyle.
       </p>
     </>
-  )
+  );
 }

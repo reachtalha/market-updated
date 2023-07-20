@@ -1,14 +1,14 @@
 import Link from "next/link";
 
 export type Category = {
-  name: string
-  slug: string
-  href: string
-}
+  name: string;
+  slug: string;
+  href: string;
+};
 
 type ProductCategoriesProps = {
   selectedCategory: string | null;
-  categories: Category[]
+  categories: Category[];
 };
 
 export default function ProductCategories({
