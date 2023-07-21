@@ -1,32 +1,33 @@
-import { Button } from "@/components/ui/button";
+import { StaticImageData } from "next/image";
 
-export type Expert = {
+import Image from "@/components/common/FallbackImage";
+
+interface IProfileCard {
+  image: string | StaticImageData;
   name: string;
-  description: string;
-};
+  title: string;
+}
 
-type ExpertCardProps = {
-  expert: Expert;
-};
-
-export default function ExpertCard({ expert }: ExpertCardProps) {
+export default function ExpertCard({ image, name, title }: IProfileCard){
   return (
-    <div className="flex h-[562px] relative bg-[#505050] rounded-xl">
-      <span className="absolute text-xs uppercase bg-white left-4 top-4 py-1.5 px-6 rounded-lg">
-        featured expert
-      </span>
-
-      <div className="pl-6 pb-10 text-white self-end">
-        <h6 className="text-5xl">{expert.name}</h6>
-        <p className="mb-8 mt-3">{expert.description}</p>
-        <Button
-          variant="outline"
-          size="lg"
-          className="uppercase w-fit bg-transparent text-white rounded-3xl"
-        >
-          Explore Shop
-        </Button>
+    <div
+      key={Math.random() + Date.now()}
+      className="relative min-w-48 max-h-80 rounded-xl overflow-hidden"
+    >
+      <Image
+        src={image}
+        height={500}
+        width={450}
+        className="w-full h-full object-cover object-center"
+        alt={name}
+      />
+      <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/30 to-transparent transition-opacity ease-in duration-300" />
+      <div className="z-[2] absolute bottom-4 left-4 text-white">
+        <h3 className="text-2xl tracking-wide truncate font-alpina font-semibold">
+          {name}
+        </h3>
+        <p>{title}</p>
       </div>
     </div>
   );
-}
+};
