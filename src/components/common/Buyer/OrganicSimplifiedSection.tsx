@@ -1,7 +1,7 @@
 import Image from "next/image";
 import user from "@/assets/images/user.jpeg";
 
-export default function OrganicSimplifiedSection(){
+export default function OrganicSimplifiedSection() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

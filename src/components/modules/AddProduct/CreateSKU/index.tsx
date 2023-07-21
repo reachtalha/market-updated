@@ -9,8 +9,12 @@ import {
 import { toast } from "react-toastify";
 import { Plus } from "lucide-react";
 import AddModal from "@/components/common/Seller/AddProduct/AddModal";
-import { formatCurrency } from "@/components/common/functions/index";
-import Title from "../../Shared/Title";
+import {
+  formatCurrency,
+  updateAction,
+} from "@/components/common/functions/index";
+import Title from "@/components/common/Seller/Shared/Title";
+import { useStateMachine } from "little-state-machine";
 
 const SIZE = ["small", "medium", "large", "x-large"];
 const SMALL = ["50", "100", "250", "500"];
@@ -39,6 +43,7 @@ const CreateSKU = ({
   const [measurement, setMeasurement] = useState<string>("");
   const [color, setColor] = useState<string>("");
   const [isColors, setIsColors] = useState<boolean>(false);
+  const { actions, state } = useStateMachine({ updateAction });
 
   const priceRef = useRef<HTMLInputElement | null>(null);
   const quantityRef = useRef<HTMLInputElement | null>(null);
@@ -99,9 +104,7 @@ const CreateSKU = ({
                 key={index}
                 onClick={() => setColor(c)}
                 className={`cursor-pointer rounded-full bg-gray-100 px-2 border py-1 ${
-                  color === c
-                    ? "bg-killarney-700 text-white border-killarney-700"
-                    : ""
+                  color === c ? "bg-primary text-white border-primary" : ""
                 }`}
               >
                 {c}
@@ -115,7 +118,7 @@ const CreateSKU = ({
         <label className='font-medium text-gray-600 mb-2  '>
           Select Measurements
         </label>
-        <ul className='flex flex-wrap  items-center justify-between gap-2'>
+        <ul className='flex flex-wrap  items-center  gap-2'>
           {sizeList?.map((s) => (
             <li
               key={Date.now() + Math.random()}
@@ -159,7 +162,7 @@ const CreateSKU = ({
           <button
             type='button'
             onClick={createSKU}
-            className='h-12 w-12 rounded-3xl flex items-center justify-center text-sm bg-gray-200 border-[2px] border-gray-200 hover:bg-gray-200/80 duration-300 transition-colors text-primary'
+            className='h-12 w-12 rounded-xl flex items-center justify-center text-sm bg-gray-200 border-[2px] border-gray-200 hover:bg-gray-200/80 duration-300 transition-colors text-primary'
           >
             <Plus className='w-6 h-6 text-primary' />
           </button>
@@ -190,7 +193,7 @@ const CreateSKU = ({
         <button
           type='button'
           onClick={() => setStep((prev) => prev - 1)}
-          className='w-full py-2.5 bg-killarney-100 hover:bg-killarney-200 duration-300 transition-colors rounded-md text-black'
+          className='w-full py-2.5 bg-gray-200 hover:bg-killarney-200 duration-300 transition-colors rounded-md text-black'
         >
           Back
         </button>

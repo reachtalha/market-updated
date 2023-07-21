@@ -1,7 +1,12 @@
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import {ChevronDownIcon} from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 
-export default function SortByDropdown(){
+export default function SortByDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex gap-2 items-center font-america text-sm">
@@ -14,5 +19,5 @@ export default function SortByDropdown(){
         <DropdownMenuItem>Reviews</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

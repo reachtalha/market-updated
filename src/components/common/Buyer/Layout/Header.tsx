@@ -12,8 +12,12 @@ const Header = () => {
 
   const coloredRoutes = ["/products", "/experts"];
   const isColoredRoute = (route: string) => {
-    return coloredRoutes.includes(route) || route.startsWith("/experts");
-  }
+    return (
+      coloredRoutes.includes(route) ||
+      route.startsWith("/experts") ||
+      route.startsWith("/products/search")
+    );
+  };
 
   const changeScroll = () => {
     if (window.scrollY > 0) {
@@ -31,9 +35,8 @@ const Header = () => {
   }, []);
 
   return (
-    <BoxedContent>
     <nav
-      className={`flex py-4 items-center ${
+      className={`${
         isScroll
           ? "bg-neutral-50 text-black duration-300 transition-colors ease-in"
           : `${
@@ -41,23 +44,24 @@ const Header = () => {
             } bg-none duration-300 transition-colors ease-out`
       } justify-between`}
     >
-      <div>
-        <Link href="/" className="font-alpina text-xl italic">
-          All Organics <span className="text-xs align-bottom">&reg;</span>
-        </Link>
-      </div>
-      <div className="inline-flex gap-x-8 text-inherit">
-        <NavLink to="/for-you" title="For You" />
-        <NavLink to="/products" title="All Products" />
-        <NavLink to="/market" title="Market" />
-        <NavLink to="/experts" title="Experts" />
-      </div>
-      <div className="inline-flex gap-x-8">
-        <NavLink to="/account" title="Account" />
-        <NavLink to="/cart" title={`Cart (0)`} />
-      </div>
+      <BoxedContent className="flex py-4 justify-between items-center">
+        <div>
+          <Link href="/" className="font-alpina text-xl italic">
+            All Organics <span className="text-xs align-bottom">&reg;</span>
+          </Link>
+        </div>
+        <div className="inline-flex gap-x-8 text-inherit">
+          <NavLink to="/for-you" title="For You" />
+          <NavLink to="/products" title="All Products" />
+          <NavLink to="/market" title="Market" />
+          <NavLink to="/experts" title="Experts" />
+        </div>
+        <div className="inline-flex gap-x-8">
+          <NavLink to="/account" title="Account" />
+          <NavLink to="/cart" title={`Cart (0)`} />
+        </div>
+      </BoxedContent>
     </nav>
-    </BoxedContent>
   );
 };
 

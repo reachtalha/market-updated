@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 import { db, auth, storage } from "@/lib/firebase/client";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-
+import { StateMachineProvider, createStore } from "little-state-machine";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -30,6 +30,22 @@ import {
 import CreateSKU from "./CreateSKU";
 import BasicDetails from "./BasicDetails";
 import AddImages from "./AddImage";
+import Stepper from "@/components/common/Seller/Shared/Stepper";
+
+const STEPPER_DATA = [
+  {
+    title: "Basic Information",
+    step: 1,
+  },
+  {
+    title: "Create SKU",
+    step: 2,
+  },
+  {
+    title: "Add Image",
+    step: 3,
+  },
+];
 
 type FormValues = {
   coverImage: FileList;
@@ -43,6 +59,21 @@ type FormValues = {
   quantity: string;
   unit: string;
 };
+
+createStore({
+  data: {
+    coverImage: null,
+    moreImages: null,
+    name: "",
+    type: [],
+    gender: "",
+    shop: "",
+    description: "",
+    price: "",
+    quantity: "",
+    unit: "",
+  },
+});
 
 const getShopData: any = async (): Promise<any> => {
   const docRef = await getDocs(
@@ -59,33 +90,6 @@ const getTypeData = async (category: string) => {
   const typeRef = await getDoc(doc(db, "categorytypes", category));
 
   return typeRef.data()?.list;
-};
-
-const Step = ({
-  title,
-  step,
-  setCurrentStep,
-  currentStep,
-}: {
-  title: string;
-  step: number;
-  currentStep: number;
-  setCurrentStep: Function;
-}) => {
-  return (
-    <div className='flex flex-1 items-center flex-col'>
-      <div
-        onClick={() => setCurrentStep(step)}
-        className={`bg-[#414D354D] cursor-pointer transition-all duration-500  w-[3rem] h-[3rem] rounded-full flex items-center justify-center font-bold ${
-          step <= currentStep && "bg-primary text-white"
-        }`}
-      >
-        {step}
-      </div>
-
-      <span className='w-[100%] font-medium text-center mt-1'>{title}</span>
-    </div>
-  );
 };
 
 const AddProduct = () => {
@@ -202,50 +206,24 @@ const AddProduct = () => {
   };
 
   return (
-    <section className=' h-full py-10 '>
-      <FormProvider {...methods}>
-        <form
-          id='add-product-form'
-          onSubmit={handleSubmit(onSubmit)}
-          className=''
-        >
-          <div className='flex flex-row items-center   relative  w-[60%] mx-auto'>
-            <Step
-              currentStep={step}
-              setCurrentStep={setStep}
-              title='Personal Information'
-              step={1}
-            />
-            <hr
-              className={`border ms-[-20px] translate-y-[-25px] w-[52%] transition-all duration-500 border-[#414D354D] ${
-                step > 1 && "border-primary"
-              }  `}
-            />
-            <Step
-              currentStep={step}
-              setCurrentStep={setStep}
-              title='Create SKU'
-              step={2}
-            />
-            <hr
-              className={`border translate-y-[-25px] w-[48%] transition-all duration-500 bg-[#414D354D] ${
-                step > 2 && "border-[#414D35]"
-              } `}
-            />
-            <Step
-              currentStep={step}
-              setCurrentStep={setStep}
-              title='Add Image'
-              step={3}
-            />
-          </div>
-          <div className='w-[45%] m-auto mt-5'>
-            {step === 1 && <BasicDetails setStep={setStep} types={types} />}
-            {step === 2 && <CreateSKU setStep={setStep} />}
-            {step === 3 && <AddImages setStep={setStep} />}
-          </div>
-        </form>
-      </FormProvider>
+    <section className=' h-full py-10  '>
+      <StateMachineProvider>
+        <FormProvider {...methods}>
+          <form
+            id='add-product-form'
+            onSubmit={handleSubmit(onSubmit)}
+            className=''
+          >
+            <Stepper step={step} setStep={setStep} data={STEPPER_DATA} />
+
+            <div className=' w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] m-auto mt-5 '>
+              {step === 1 && <BasicDetails setStep={setStep} types={types} />}
+              {step === 2 && <CreateSKU setStep={setStep} />}
+              {step === 3 && <AddImages setStep={setStep} />}
+            </div>
+          </form>
+        </FormProvider>
+      </StateMachineProvider>
       <ToastContainer autoClose={1500} position='bottom-right' />
     </section>
   );

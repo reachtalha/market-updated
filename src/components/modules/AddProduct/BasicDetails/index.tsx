@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useFormContext } from "react-hook-form";
-import Title from "../../Shared/Title";
+import Title from "@/components/common/Seller/Shared/Title";
 
 const UNITS = [
   { id: "ml", label: "Milli-litre" },

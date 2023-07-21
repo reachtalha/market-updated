@@ -6,31 +6,45 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
     border-radius: 30px !important;
   }
+
   ::-webkit-scrollbar-track {
     background: #f5f5f5;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #5a3a1e;
     border-radius: 10px;
   }
-  ::-webkit-calendar-picker-indicator {
-    opacity: 0;
-  }
 
-  ::-moz-calendar-picker-indicator {
+  ::-webkit-calendar-picker-indicator {
     opacity: 0;
   }
 
   ::-ms-clear {
     opacity: 0;
   }
+
+  /* Custom CSS for tilt effect */
+  .tilted-div {
+    transform: rotate(-7deg) translate(80%, 0) scale(.8);
+
+    transform-origin: bottom left;
+    /* Other custom styles for the tilted div */
+  }
+}
+
+.mySwiper {
+  display: flex !important;
+  flex-direction: column-reverse !important;
 }

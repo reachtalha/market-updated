@@ -12,7 +12,7 @@ interface ProductCard {
   type: string;
   shrink?: boolean;
 }
-const Product = ({
+const ProductCard = ({
   image,
   shop,
   name,
@@ -49,4 +49,4 @@ const Product = ({
   );
 };
 
-export default Product;
+export default ProductCard;

@@ -1,10 +1,9 @@
-import AddProduct from "@/components/modules/AddProduct";
 import React from "react";
 
 type Props = {};
 
 const Page = (props: Props) => {
-  return <AddProduct />;
+  return <div>Products</div>;
 };
 
 export default Page;
