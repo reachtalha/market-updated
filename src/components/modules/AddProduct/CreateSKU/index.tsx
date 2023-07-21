@@ -20,6 +20,14 @@ const SIZE = ["small", "medium", "large", "x-large"];
 const SMALL = ["50", "100", "250", "500"];
 const LARGE = ["1", "2", "5", "10"];
 
+type ListItem = {
+  id: string;
+  price: number;
+  quantity: number;
+  measurement: string;
+  color?: string;
+};
+
 const CreateSKU = ({
   setStep,
 }: {
@@ -30,7 +38,7 @@ const CreateSKU = ({
   const unit = getValues("unit");
   const name = getValues("name");
 
-  const [skuList, setList] = useState([]);
+  const [skuList, setList] = useState<ListItem[]>([]);
   const [sizeList, setSizeList] = useState<string[]>(
     unit === "size" ? SIZE : unit === "l" || unit === "kg" ? LARGE : SMALL
   );

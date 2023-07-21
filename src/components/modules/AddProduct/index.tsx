@@ -141,20 +141,20 @@ const AddProduct = () => {
         toast.error("Please add Cover Image!");
         return;
       }
-      const obj = {
-        uid: auth.currentUser?.uid,
-        shopId: shop.id,
-        shop: shop.name,
-        ...data,
-        name: data.name?.toLocaleLowerCase(),
-        type: data.type?.toLocaleLowerCase(),
-        submittedAt: Timestamp.fromDate(new Date()),
-        //coverImage: coverImageURL,
-        //moreImages: otherImagesURL,
-        status: "listed",
-      };
+      // const obj = {
+      //   uid: auth.currentUser?.uid,
+      //   shopId: shop.id,
+      //   shop: shop.name,
+      //   ...data,
+      //   name: data.name?.toLocaleLowerCase(),
+      //   type: data.type?.toLocaleLowerCase(),
+      //   submittedAt: Timestamp.fromDate(new Date()),
+      //   //coverImage: coverImageURL,
+      //   //moreImages: otherImagesURL,
+      //   status: "listed",
+      // };
 
-      console.log(obj);
+      console.log(data);
 
       // const coverImageURL = await uploadImages(data.coverImage, "product");
       // const imagePromises = Array.from(data.moreImages, (pic: any) =>
