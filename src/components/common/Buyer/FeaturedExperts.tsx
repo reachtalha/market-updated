@@ -2,7 +2,7 @@
 import { SwiperSlide } from "swiper/react";
 
 import Carousel from "@/components/common/Carousel";
-import ExpertCard, { Expert } from "@/components/common/Buyer/Cards/ExpertCard";
+import FeaturedExpertCard, { Expert } from "@/components/common/Buyer/Cards/FeaturedExpertCard";
 
 const experts = [
   {
@@ -53,7 +53,7 @@ export default function FeaturedExperts() {
     <Carousel showNavigation={false} breakpoints={featuredExpertsBreakpoints}>
       {experts.map((expert: Expert, i: number) => (
         <SwiperSlide key={i + Math.random()}>
-          <ExpertCard expert={expert} />
+          <FeaturedExpertCard expert={expert} />
         </SwiperSlide>
       ))}
     </Carousel>
