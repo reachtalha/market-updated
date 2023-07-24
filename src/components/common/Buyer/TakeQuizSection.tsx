@@ -12,11 +12,11 @@ export default function TakeQuizSection({
   return (
     <div
       className={twMerge(
-        `bg-primary text-white text-center py-28 px-10`,
+        `bg-primary text-white text-center py-14 sm:py-20 md:py-28 px-10`,
         className
       )}
     >
-      <h2 className="text-7xl font-medium tracking-wide">
+      <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-medium tracking-wide">
         Organic Products
         <span className="ml-2 font-alpina font-normal italic tracking-tight">
           curated for you

@@ -24,7 +24,7 @@ export default function Home() {
           lifestyle.
         </p>
       </Hero>
-      <section className="py-16">
+      <section className="py-16 container">
         <FeaturedProducts />
       </section>
       <section className="space-y-16 py-10">
@@ -57,10 +57,10 @@ export default function Home() {
           </ul>
         </BoxedContent>
       </section>
-      <BoxedContent className="py-10">
+      <BoxedContent className="pt-5 md:pt-10">
         <OurMission />
       </BoxedContent>
-      <BoxedContent className="py-10">
+      <BoxedContent className="py-5 md:py-10">
         <OrganicSimplifiedSection />
       </BoxedContent>
     </>
