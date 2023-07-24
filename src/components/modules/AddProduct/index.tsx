@@ -16,7 +16,6 @@ import {
 } from "firebase/firestore";
 import { db, auth, storage } from "@/lib/firebase/client";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import { StateMachineProvider, createStore } from "little-state-machine";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import useGlobalStore from "@/state";
