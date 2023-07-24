@@ -152,12 +152,3 @@ export const handleImages = (
     };
   }
 };
-
-export const updateAction = (state: any, payload: any) => {
-  console.log("state:", state);
-  console.log("payload:", payload);
-  return {
-    ...state,
-    ...payload,
-  };
-};

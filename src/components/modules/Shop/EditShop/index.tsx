@@ -104,12 +104,9 @@ const AddShop = () => {
     data: types,
     error: typesError,
     isLoading: typesIsLoading,
-  } = useSWR(
-    shop ? ["types", shop.category] : null,
-    () => getTypeData(shop.category),
-    { shouldRetryOnError: true }
-  );
+  } = useSWR("types", getTypeData);
 
+  console.log(shop);
   async function uploadImages(image: any, directory: string) {
     const fileType = image.split(";")[0].split("/")[1];
     const img_data = new (Buffer.from as any)(

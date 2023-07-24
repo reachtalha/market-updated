@@ -24,7 +24,6 @@ const Sidebar = () => {
   //   fullUrl.match(new RegExp(`https?:\/\/${domain}(.*)`)) || [];
   const pathname = window.location.href;
 
-  console.log("Sidebar", showSidebar, "isMobile", isMobile);
   const list = [
     {
       href: "/dashboard",

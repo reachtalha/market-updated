@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import useSWR from "swr";
 import {
@@ -19,7 +19,7 @@ import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { StateMachineProvider, createStore } from "little-state-machine";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-
+import useGlobalStore from "@/state";
 import {
   FormProvider,
   useForm,
@@ -60,21 +60,6 @@ type FormValues = {
   unit: string;
 };
 
-createStore({
-  data: {
-    coverImage: null,
-    moreImages: null,
-    name: "",
-    type: [],
-    gender: "",
-    shop: "",
-    description: "",
-    price: "",
-    quantity: "",
-    unit: "",
-  },
-});
-
 const getShopData: any = async (): Promise<any> => {
   const docRef = await getDocs(
     query(
@@ -87,15 +72,17 @@ const getShopData: any = async (): Promise<any> => {
 };
 
 const getTypeData = async (category: string) => {
-  const typeRef = await getDoc(doc(db, "categorytypes", category));
+  const typeRef = await getDocs(
+    query(collection(db, "categories"), where("title", "==", `${category}`))
+  );
 
-  return typeRef.data()?.list;
+  return typeRef?.docs[0]?.data().list;
 };
 
 const AddProduct = () => {
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const emptySKUList = useGlobalStore((state: any) => state.emptySKUList);
   const methods = useForm<FormValues>();
   const { handleSubmit, reset } = methods;
 
@@ -105,6 +92,9 @@ const AddProduct = () => {
     isLoading: shopIsLoading,
   } = useSWR("shop", getShopData);
 
+  useEffect(() => {
+    emptySKUList();
+  }, []);
   const {
     data: types,
     error: typesError,
@@ -141,39 +131,27 @@ const AddProduct = () => {
         toast.error("Please add Cover Image!");
         return;
       }
-      // const obj = {
-      //   uid: auth.currentUser?.uid,
-      //   shopId: shop.id,
-      //   shop: shop.name,
-      //   ...data,
-      //   name: data.name?.toLocaleLowerCase(),
-      //   type: data.type?.toLocaleLowerCase(),
-      //   submittedAt: Timestamp.fromDate(new Date()),
-      //   //coverImage: coverImageURL,
-      //   //moreImages: otherImagesURL,
-      //   status: "listed",
-      // };
 
-      console.log(data);
+      const coverImageURL = await uploadImages(data.coverImage, "product");
+      const imagePromises = Array.from(data.moreImages, (pic: any) =>
+        uploadImages(pic, "product")
+      );
+      const otherImagesURL = await Promise.all(imagePromises);
 
-      // const coverImageURL = await uploadImages(data.coverImage, "product");
-      // const imagePromises = Array.from(data.moreImages, (pic: any) =>
-      //   uploadImages(pic, "product")
-      // );
-      // const otherImagesURL = await Promise.all(imagePromises);
+      const obj = {
+        uid: auth.currentUser?.uid,
+        shopId: shop.id,
 
-      // const obj = {
-      //   uid: auth.currentUser?.uid,
-      //   shopId: shop.id,
-      //   shop: shop.name,
-      //   ...data,
-      //   name: data.name?.toLocaleLowerCase(),
-      //   type: data.type?.toLocaleLowerCase(),
-      //   submittedAt: Timestamp.fromDate(new Date()),
-      //   coverImage: coverImageURL,
-      //   moreImages: otherImagesURL,
-      //   status: "listed",
-      // };
+        ...data,
+        name: data.name?.toLocaleLowerCase(),
+        type: data.type?.toLocaleLowerCase(),
+        submittedAt: Timestamp.fromDate(new Date()),
+        coverImage: coverImageURL,
+        moreImages: otherImagesURL,
+        status: "listed",
+      };
+
+      console.log(obj);
 
       // const userList: any = [];
       // const userRef = await getDocs(
@@ -185,10 +163,10 @@ const AddProduct = () => {
       // userRef.forEach((u) => {
       //   userList.push(u.id);
       // });
-      // const docRef = await addDoc(collection(db, "products"), obj);
-      // updateDoc(doc(db, "shops", `${shop.id}`), {
-      //   noOfProducts: increment(1),
-      // });
+      const docRef = await addDoc(collection(db, "products"), obj);
+      updateDoc(doc(db, "shops", `${shop.id}`), {
+        noOfProducts: increment(1),
+      });
       // addDoc(collection(db, "notifications"), {
       //   productId: docRef.id,
       //   users: userList,
@@ -198,8 +176,10 @@ const AddProduct = () => {
       // });
       toast.success("Product added!");
       reset();
+      setStep(1);
     } catch (e) {
       toast.error("Something went wrong!");
+      console.log(e);
     } finally {
       setLoading(false);
     }
@@ -207,23 +187,22 @@ const AddProduct = () => {
 
   return (
     <section className=' h-full py-10  '>
-      <StateMachineProvider>
-        <FormProvider {...methods}>
-          <form
-            id='add-product-form'
-            onSubmit={handleSubmit(onSubmit)}
-            className=''
-          >
-            <Stepper step={step} setStep={setStep} data={STEPPER_DATA} />
+      <FormProvider {...methods}>
+        <form
+          id='add-product-form'
+          onSubmit={handleSubmit(onSubmit)}
+          className=''
+        >
+          <Stepper step={step} setStep={setStep} data={STEPPER_DATA} />
 
-            <div className=' w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] m-auto mt-5 '>
-              {step === 1 && <BasicDetails setStep={setStep} types={types} />}
-              {step === 2 && <CreateSKU setStep={setStep} />}
-              {step === 3 && <AddImages setStep={setStep} />}
-            </div>
-          </form>
-        </FormProvider>
-      </StateMachineProvider>
+          <div className=' w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] m-auto mt-5 '>
+            {step === 1 && <BasicDetails setStep={setStep} types={types} />}
+            {step === 2 && <CreateSKU setStep={setStep} />}
+            {step === 3 && <AddImages setStep={setStep} />}
+          </div>
+        </form>
+      </FormProvider>
+
       <ToastContainer autoClose={1500} position='bottom-right' />
     </section>
   );

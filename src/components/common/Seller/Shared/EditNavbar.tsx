@@ -12,7 +12,7 @@ type Props = {
 
 function EditNavbar({ step, setStep, data }: Props) {
   return (
-    <div className='absolute w-full right-0 top-0  flex flex-row items-center border-b  border-b-gray-400 h-12 space-x-5 px-3'>
+    <div className=' w-full right-0 top-0  flex flex-row items-center border-b  border-b-gray-400 h-12 space-x-5 px-3'>
       {data.map((item: any, index: any) => (
         <div
           key={index}

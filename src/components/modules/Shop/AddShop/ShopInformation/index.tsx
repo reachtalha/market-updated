@@ -14,7 +14,6 @@ const Index = ({ setStep, types }: Props) => {
     trigger,
     formState: { errors },
   } = useFormContext();
-  console.log(types);
 
   const nextStep = async () => {
     const isValid = await trigger([
@@ -61,7 +60,7 @@ const Index = ({ setStep, types }: Props) => {
       <div className='space-y-1 mt-3 w-full'>
         <label className='font-medium  text-gray-600'>Shop Category</label>
         <select
-          className='w-full rounded-xl border-[2px] border-gray-300  p-2.5  placeholder:text-sm hover:border-killarney-700 focus:outline-killarney-700'
+          className='w-full rounded-xl capitalize border-[2px] border-gray-300  p-2.5  placeholder:text-sm hover:border-killarney-700 focus:outline-killarney-700'
           {...register("category", { required: true })}
           defaultValue={"Select"}
         >
@@ -69,7 +68,7 @@ const Index = ({ setStep, types }: Props) => {
             Select Shop Category
           </option>
           {types?.map((c: any, index: number) => (
-            <option key={index} value={c}>
+            <option className='capitalize' key={index} value={c}>
               {c}
             </option>
           ))}

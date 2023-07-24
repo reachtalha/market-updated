@@ -37,17 +37,24 @@ const ImageUpload = ({
 
 function AddImages({
   setStep,
+  isShop,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  isShop?: boolean;
 }) {
   const [pictures, setPictures] = useState<any>([]);
   const [coverImage, setCoverImage] = useState<any>();
+  const [logoImage, setLogoImage] = useState<any>();
 
   const { setValue } = useFormContext();
 
   const handleImageUpload = (e: any) => {
     try {
-      handleImages(e, 4, pictures, setPictures);
+      if (isShop) {
+        handleImage(e.target.files[0], setLogoImage);
+      } else {
+        handleImages(e, 4, pictures, setPictures);
+      }
     } catch (e: any) {
       toast.error(`Error! ${e.message}`);
     }
@@ -73,7 +80,10 @@ function AddImages({
           </p>
 
           <ImageUpload label='Cover Image' onUpload={handleCoverImage} />
-          <ImageUpload label='Other Images' onUpload={handleImageUpload} />
+          <ImageUpload
+            label={isShop ? "Logo Image" : "Other Images"}
+            onUpload={handleImageUpload}
+          />
         </div>
         {(coverImage || pictures?.length > 0) && (
           <div className='mt-2 h-fit w-full border rounded-lg py-2 px-5'>
@@ -97,33 +107,56 @@ function AddImages({
                   className='w-full h-full object-cover'
                 />
               </div>
-              {pictures?.map((pic: any, index: number) => (
-                <div key={index} className='relative h-24 w-24'>
+              {isShop ? (
+                <div className={logoImage ? "h-24 w-24 relative" : "hidden"}>
                   <button
-                    className='absolute top-1 right-1 bg-red-200  rounded-full p-1'
-                    onClick={() =>
-                      setPictures(
-                        pictures?.filter((e: any, i: number) => i !== index)
-                      )
-                    }
+                    className='absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1'
+                    onClick={() => setLogoImage(null)}
                   >
                     <Trash2 className='h-3 w-3 text-red-500' />
                   </button>
                   <Image
-                    src={pic}
+                    title='Logo Image'
+                    src={logoImage}
                     height={80}
                     width={70}
                     alt=''
                     className='w-full h-full object-cover'
                   />
                 </div>
-              ))}
+              ) : (
+                pictures?.map((pic: any, index: number) => (
+                  <div key={index} className='relative h-24 w-24'>
+                    <button
+                      className='absolute top-1 right-1 bg-red-200  rounded-full p-1'
+                      onClick={() =>
+                        setPictures(
+                          pictures?.filter((e: any, i: number) => i !== index)
+                        )
+                      }
+                    >
+                      <Trash2 className='h-3 w-3 text-red-500' />
+                    </button>
+                    <Image
+                      src={pic}
+                      height={80}
+                      width={70}
+                      alt=''
+                      className='w-full h-full object-cover'
+                    />
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
       </div>
       {setValue("coverImage", coverImage)}
-      {setValue("moreImages", pictures)}
+
+      {isShop
+        ? setValue("logoImage", logoImage)
+        : setValue("moreImages", pictures)}
+
       <div className='mt-5 flex  space-x-3'>
         <button
           type='button'
@@ -134,10 +167,10 @@ function AddImages({
         </button>
         <button
           type='submit'
-          form='add-product-form'
+          form={isShop ? "add-shop-form" : "add-product-form"}
           className='w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white'
         >
-          Add Product
+          {isShop ? "Add Shop" : "Add Product"}
         </button>
       </div>
     </>

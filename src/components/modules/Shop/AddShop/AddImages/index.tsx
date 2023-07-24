@@ -6,7 +6,7 @@ type Props = {
 };
 
 const Index = ({ setStep }: Props) => {
-  return <AddImages setStep={setStep} />;
+  return <AddImages setStep={setStep} isShop />;
 };
 
 export default Index;

@@ -9,12 +9,9 @@ import {
 import { toast } from "react-toastify";
 import { Plus } from "lucide-react";
 import AddModal from "@/components/common/Seller/AddProduct/AddModal";
-import {
-  formatCurrency,
-  updateAction,
-} from "@/components/common/functions/index";
+import { formatCurrency } from "@/components/common/functions/index";
 import Title from "@/components/common/Seller/Shared/Title";
-import { useStateMachine } from "little-state-machine";
+import useGlobalStore from "@/state";
 
 const SIZE = ["small", "medium", "large", "x-large"];
 const SMALL = ["50", "100", "250", "500"];
@@ -38,7 +35,7 @@ const CreateSKU = ({
   const unit = getValues("unit");
   const name = getValues("name");
 
-  const [skuList, setList] = useState<ListItem[]>([]);
+  const { SKUList, setSKUList } = useGlobalStore((state: any) => state);
   const [sizeList, setSizeList] = useState<string[]>(
     unit === "size" ? SIZE : unit === "l" || unit === "kg" ? LARGE : SMALL
   );
@@ -51,7 +48,6 @@ const CreateSKU = ({
   const [measurement, setMeasurement] = useState<string>("");
   const [color, setColor] = useState<string>("");
   const [isColors, setIsColors] = useState<boolean>(false);
-  const { actions, state } = useStateMachine({ updateAction });
 
   const priceRef = useRef<HTMLInputElement | null>(null);
   const quantityRef = useRef<HTMLInputElement | null>(null);
@@ -74,16 +70,13 @@ const CreateSKU = ({
     }
 
     const sku = generateSKU(name, [color, measurement]);
-    setList((prev: any) => [
-      ...prev,
-      {
-        id: sku,
-        price: Number(price),
-        quantity: Number(quantity),
-        measurement: measurement,
-        ...(color ? { color: color } : {}),
-      },
-    ]);
+    setSKUList({
+      id: sku,
+      price: Number(price),
+      quantity: Number(quantity),
+      measurement: measurement,
+      ...(color ? { color: color } : {}),
+    });
 
     if (priceRef.current) priceRef.current.value = "";
     if (quantityRef.current) quantityRef.current.value = "";
@@ -92,11 +85,11 @@ const CreateSKU = ({
   }
 
   const nextStep = async () => {
-    if (skuList.length === 0) {
+    if (SKUList.length === 0) {
       toast.error("Please create atleast 1 SKU!");
       return;
     }
-    setValue("SKU", skuList);
+    setValue("SKU", SKUList);
     setStep((e: number) => e + 1);
   };
 
@@ -178,7 +171,7 @@ const CreateSKU = ({
       </div>
       <div className='mt-2'>
         <Accordion type='single' collapsible>
-          {skuList.map((l: any, index) => (
+          {SKUList.map((l: any, index: number) => (
             <AccordionItem key={index} value={`item-${index + 1}`}>
               <AccordionTrigger>{l.id}</AccordionTrigger>
               <AccordionContent>
@@ -207,7 +200,6 @@ const CreateSKU = ({
         </button>
         <button
           onClick={nextStep}
-          disabled={skuList.length == 0 ? true : false}
           className='disabled:cursor-not-allowed w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white'
         >
           Next
