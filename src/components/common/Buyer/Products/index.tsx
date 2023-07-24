@@ -19,7 +19,7 @@ export default function Products({ categories }: ProductsProps) {
       <ProductCategories selectedCategory={category} categories={categories} />
       <div className="flex-1 space-y-4">
         <ProductHeader title={category} />
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
           {Array.from("abcfghyui").map((_, i: number) => (
             <ProductCard
               key={i + Math.random()}

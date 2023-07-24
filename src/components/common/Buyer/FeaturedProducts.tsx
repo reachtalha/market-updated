@@ -11,23 +11,22 @@ const featuredProductsBreakpoints = {
     spaceBetween: 20,
   },
   768: {
+    slidesPerView: 2,
+    spaceBetween: 20,
+  },
+  868: {
     slidesPerView: 3,
-    spaceBetween: 40,
+    spaceBetween: 30,
   },
   1024: {
     slidesPerView: 4,
-    spaceBetween: 50,
-  },
-  1700: {
-    slidesPerView: 5,
-    spaceBetween: 50,
+    spaceBetween: 30,
   },
 };
 
 export default function FeaturedProducts() {
   return (
     <Carousel
-      slidesOffsetBefore={40}
       title="Featured Products"
       breakpoints={featuredProductsBreakpoints}
     >

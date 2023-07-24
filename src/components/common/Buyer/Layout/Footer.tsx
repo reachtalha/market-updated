@@ -1,14 +1,13 @@
-import React from "react";
-
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import BoxedContent from "@/components/common/BoxedContent";
 
-const DISCOUNT: number = 10;
+const DISCOUNT = 10;
+
 const Footer = () => {
   return (
     <footer className="">
-      <BoxedContent className="flex w-full mx-auto my-12">
-        <div className="w-fill md:w-1/2 space-y-6">
+      <BoxedContent className="flex flex-col lg:flex-row  w-full mx-auto my-12">
+        <div className="w-full md:w-1/2 space-y-6">
           <p className="uppercase text-sm">Sign Up and save {DISCOUNT}%</p>
           <form className="flex items-center p-2 w-full md:w-2/3 gap-x-1 border placeholder:text-sm border-neutral-500 placeholder:text-neutral-500 focus-within:border-neutral-900 rounded-md">
             <input
@@ -20,7 +19,7 @@ const Footer = () => {
               <ChevronRightIcon width={22} height={22} />
             </button>
           </form>
-          <ul className="flex gap-x-5 text-sm">
+          <ul className="hidden lg:flex flex-col md:flex-row gap-x-5 text-sm">
             <li className="cursor-pointer hover:underline underline-offset-2">
               Privacy Policy
             </li>
@@ -32,7 +31,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className="w-full md:w-1/2 flex items-start justify-around">
+        <div className="w-full flex gap-y-6 mt-8 lg:mt-0 md:gap-x-12 flex-col md:flex-row items-start">
           <div className="flex-shrink-0 space-y-3">
             <h6 className="font-medium uppercase">About All Organics</h6>
             <ul className="space-y-1 text-sm">
@@ -66,6 +65,17 @@ const Footer = () => {
             </ul>
           </div>
         </div>
+        <ul className="flex flex-col gap-y-1.5 mt-8 sm:flex-row sm:gap-x-5 lg:hidden  text-sm">
+          <li className="cursor-pointer hover:underline underline-offset-2">
+            Privacy Policy
+          </li>
+          <li className="cursor-pointer hover:underline underline-offset-2">
+            Terms of Use
+          </li>
+          <li className="cursor-pointer hover:underline underline-offset-2">
+            Accessibility
+          </li>
+        </ul>
       </BoxedContent>
     </footer>
   );

@@ -1,39 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import Link, {LinkProps} from "next/link";
 import { usePathname } from "next/navigation";
 
 import BoxedContent from "@/components/common/BoxedContent";
 import HeaderSheet from "@/components/common/Buyer/Layout/HeaderSheet";
+import useDetectChangeScroll from "@/hooks/useDetectChangeScroll";
+
 import {twMerge} from "tailwind-merge";
+import {isColoredRoute} from "@/lib/utils";
 
 const Header = () => {
   const pathname = usePathname();
-  const [isScroll, setIsScroll] = useState(false);
-
-  const coloredRoutes = ["/products", "/experts"];
-  const isColoredRoute = (route: string) => {
-    return (
-      coloredRoutes.includes(route) ||
-      route.startsWith("/experts") ||
-      route.startsWith("/products/search")
-    );
-  };
-
-  const changeScroll = () => setIsScroll(window.scrollY > 0)
-
-  useEffect(() => {
-    window.addEventListener("scroll", changeScroll);
-    return () => {
-      window.removeEventListener("scroll", changeScroll);
-    };
-  }, []);
+  const isScrollChanged = useDetectChangeScroll();
 
   return (
     <nav
       className={`${
-        isScroll
+        isScrollChanged
           ? "bg-neutral-50 text-black duration-300 transition-colors ease-in"
           : `${
               isColoredRoute(pathname) ? "text-black" : "text-white"
@@ -53,14 +37,14 @@ const Header = () => {
           All Organics <span className="text-xs align-bottom">&reg;</span>
         </Link>
         <div className="hidden md:inline-flex gap-x-8 text-inherit">
-          <NavLink to="/for-you" title="For You" />
-          <NavLink to="/products" title="All Products" />
-          <NavLink to="/market" title="Market" />
-          <NavLink to="/experts" title="Experts" />
+          <NavLink href="/for-you" title="For You" />
+          <NavLink href="/products" title="All Products" />
+          <NavLink href="/market" title="Market" />
+          <NavLink href="/experts" title="Experts" />
         </div>
         <div className="inline-flex gap-x-8">
-          <NavLink className="hidden md:block" to="/account" title="Account" />
-          <NavLink to="/cart" title={`Cart (0)`} />
+          <NavLink className="hidden md:block" href="/account" title="Account" />
+          <NavLink href="/cart" title={`Cart (0)`} />
         </div>
       </BoxedContent>
     </nav>
@@ -69,13 +53,18 @@ const Header = () => {
 
 export default Header;
 
-export const NavLink = ({ title, to, className = '' }: { title: string; to: string, className?: string }) => {
+interface NavLinkProps extends LinkProps {
+  title: string
+  className?: string
+}
+export const NavLink = ({ title, href, className = '', ...props }: NavLinkProps) => {
   const pathname = usePathname();
-  const classNames = twMerge('relative uppercase duration-300 md:hover:underline transition-opacity cursor-pointer tracking-wide text-xs underline-offset-2', pathname === to ? 'md:underline' : '', className);
+  const classNames = twMerge('relative uppercase duration-300 md:hover:underline transition-opacity cursor-pointer tracking-wide text-xs underline-offset-2', pathname === href ? 'md:underline' : '', className);
   return (
     <Link
-      href={to}
+      href={href}
       className={classNames}
+      {...props}
     >
       {title}
     </Link>

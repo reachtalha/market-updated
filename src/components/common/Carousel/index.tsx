@@ -45,10 +45,10 @@ export default function Carousel({
 }: ICarousel) {
   return (
     <>
-      <Swiper {...props} keyboard modules={[Keyboard]} className="mySwiper">
+      <Swiper {...props} keyboard modules={[Keyboard]} className="container mySwiper">
         {children}
         {showNavigation && (
-          <div className="border-t-2 mx-10 border-black pt-8 pb-5 flex items-center justify-between">
+          <div className="border-t-2 border-black pt-8 pb-5 flex items-center justify-between">
             <h3 className="uppercase font-medium text-sm">{title}</h3>
             <SwiperCustomNavigation />
           </div>

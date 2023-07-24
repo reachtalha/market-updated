@@ -22,14 +22,12 @@ const ProductCard = ({
 }: ProductCard) => {
   return (
     <div
-      className={`w-[350px] h-fit relative ${shrink ? "" : "flex-shrink-0"}`}
+      className={`h-fit relative ${shrink ? "" : "flex-shrink-0"}`}
     >
-      <div className="w-full h-96 bg-accent drop-shadow-sm">
+      <div className="h-[250px] sm:[h-430px] grid place-content-center bg-accent drop-shadow-sm">
         <Image
           src={image}
-          width={500}
-          height={500}
-          className="w-full h-full object-cover object-center"
+          className="w-[250px] sm:w-[250px] h-[250px] object-cover object-center"
           alt={name}
         />
       </div>
