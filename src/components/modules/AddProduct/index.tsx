@@ -179,7 +179,6 @@ const AddProduct = () => {
       setStep(1);
     } catch (e) {
       toast.error("Something went wrong!");
-      console.log(e);
     } finally {
       setLoading(false);
     }

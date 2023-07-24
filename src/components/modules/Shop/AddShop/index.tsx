@@ -191,7 +191,6 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
       }
     } catch (e) {
       toast.error("Error while creating shop");
-      console.log(e);
     } finally {
       setLoading(false);
     }

@@ -106,7 +106,6 @@ const AddShop = () => {
     isLoading: typesIsLoading,
   } = useSWR("types", getTypeData);
 
-  console.log(shop);
   async function uploadImages(image: any, directory: string) {
     const fileType = image.split(";")[0].split("/")[1];
     const img_data = new (Buffer.from as any)(
