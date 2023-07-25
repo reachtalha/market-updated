@@ -1,41 +1,52 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Metadata } from "next";
-import { useSearchParams, redirect } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import { db, auth } from "@/lib/firebase/client";
 import { doc, getDoc } from "@firebase/firestore";
 
 import OnBoardingForm from "@/components/modules/OnBoarding";
+import Loader from "@/components/common/Loader";
 
-// export const metadata: Metadata = {
-//   title: "OnBoarding",
-//   description:
-//     "This page provides information and guidance for new users to get started with our platform.",
-// };
+export const metadata: Metadata = {
+  title: "OnBoarding",
+  description:
+    "This page provides information and guidance for new users to get started with our platform.",
+};
 
 const OnBoarding = () => {
   const search = useSearchParams();
-
-  const uid = search.get("id");
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const uid = search?.get("id");
 
   useEffect(() => {
     (async () => {
-      if (!uid || uid !== auth.currentUser?.uid) {
-        redirect("/");
-      }
       try {
+        setLoading(true);
+        if (!uid || uid !== auth.currentUser?.uid) {
+          router.push("/");
+        }
         const docRef = await getDoc(doc(db, "users", `${uid}`));
         if (docRef.exists()) {
-          if (docRef.data().role === "buyer") redirect("/");
-          else redirect("/dashboard");
+          if (docRef.data().role === "buyer") router.push("/");
+          else router.push("/dashboard");
         }
       } catch (e: any) {
-        redirect("/500");
+        router.push("/500");
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
+
+  if (loading) {
+    return (
+      <Loader className="grid place-content-center bg-white overflow-hidden h-screen w-full" />
+    );
+  }
 
   return (
     <>

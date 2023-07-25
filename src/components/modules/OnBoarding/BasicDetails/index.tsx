@@ -98,9 +98,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
             </option>
             {Country.getAllCountries().map((c) => (
               <option key={c.isoCode} value={c.isoCode}>
-                <span>
                   {c.flag}-<span>{c.name}</span>
-                </span>
               </option>
             ))}
           </select>
@@ -144,7 +142,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
                 CC
               </option>
               {Country.getAllCountries().map((c) => (
-                <option key={c.phonecode} value={c.phonecode}>
+                <option key={c.phonecode+Math.random()} value={c.phonecode}>
                   {c.phonecode}
                 </option>
               ))}
