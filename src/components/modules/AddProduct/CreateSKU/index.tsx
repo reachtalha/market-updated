@@ -6,7 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { toast } from "react-toastify";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+
+import toast from "react-hot-toast";
 import { Plus } from "lucide-react";
 import AddModal from "@/components/common/Seller/AddProduct/AddModal";
 import { formatCurrency } from "@/components/common/functions/index";
@@ -97,7 +101,7 @@ const CreateSKU = ({
     <>
       <Title title='Create SKU' />
       <div className='w-full  mt-2'>
-        <label className='font-medium text-gray-600'>Color</label>
+        <Label className='font-medium text-base text-gray-600'>Color</Label>
         <div className='flex flex-wrap items-center justify-between gap-3 w-full'>
           <ul className='flex flex-wrap gap-2 capitalize'>
             {colorList.map((c, index) => (
@@ -116,9 +120,9 @@ const CreateSKU = ({
         </div>
       </div>
       <div className='space-y-2 w-full mt-2'>
-        <label className='font-medium text-gray-600 mb-2  '>
+        <Label className='font-medium text-base text-gray-600 mb-2  '>
           Select Measurements
-        </label>
+        </Label>
         <ul className='flex flex-wrap  items-center  gap-2'>
           {sizeList?.map((s) => (
             <li
@@ -129,7 +133,6 @@ const CreateSKU = ({
               }`}
             >
               {s}
-              {/* {unit !== "size" && unit} */}
             </li>
           ))}
 
@@ -139,10 +142,12 @@ const CreateSKU = ({
 
       <div className='flex gap-x-2 mt-3 flex-col items-start'>
         <div className='space-y-1 w-full '>
-          <label className=' font-medium text-gray-600'>Product Price</label>
-          <input
+          <Label className=' font-medium text-base text-gray-600'>
+            Product Price
+          </Label>
+          <Input
             ref={priceRef}
-            className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-primary focus:-translate-y-[2px] focus:outline-primary'
+            className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm focus:-translate-y-[2px] focus:border-0 py-[1.4rem]'
             type='text'
             inputMode='numeric'
             placeholder='Product Price'
@@ -150,10 +155,12 @@ const CreateSKU = ({
         </div>
         <div className='space-y-1 flex flex-row items-end gap-x-5 justify-between mt-2 w-full'>
           <div className='flex-1'>
-            <label className='font-medium text-gray-600'>Quantity</label>
-            <input
+            <Label className='font-medium text-base text-gray-600'>
+              Quantity
+            </Label>
+            <Input
               ref={quantityRef}
-              className='w-full rounded-xl mt-1  border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-primary focus:-translate-y-[2px] focus:outline-primary'
+              className='w-full rounded-xl mt-1  border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm focus:-translate-y-[2px] focus:border-0 py-[1.4rem]'
               type='number'
               inputMode='numeric'
               placeholder='Quantity'
@@ -191,19 +198,19 @@ const CreateSKU = ({
         </Accordion>
       </div>
       <div className='flex gap-x-2 mt-2'>
-        <button
+        <Button
           type='button'
           onClick={() => setStep((prev) => prev - 1)}
           className='w-full py-2.5 bg-gray-200 hover:bg-killarney-200 duration-300 transition-colors rounded-md text-black'
         >
           Back
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={nextStep}
           className='disabled:cursor-not-allowed w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white'
         >
           Next
-        </button>
+        </Button>
       </div>
     </>
   );

@@ -88,7 +88,7 @@ const Register = () => {
             <input
               type='text'
               className='w-full rounded-xl border-[2px] border-gray-300 p-2 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px] focus:outline-killarney-700'
-              placeholder='Your email'
+              placeholder='Your name'
               {...register("name", {
                 required: true,
               })}

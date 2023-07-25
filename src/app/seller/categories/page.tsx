@@ -11,7 +11,6 @@ import { db } from "@/lib/firebase/client";
 
 type Props = {};
 
-//get data
 const getCategories = async () => {
   const querySnapshot = await getDocs(collection(db, "categories"));
 

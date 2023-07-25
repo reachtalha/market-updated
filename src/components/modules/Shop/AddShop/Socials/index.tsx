@@ -2,6 +2,9 @@ import React from "react";
 
 import { useFormContext } from "react-hook-form";
 import Title from "@/components/common/Seller/Shared/Title";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -27,9 +30,11 @@ const Index = ({ setStep }: Props) => {
     <>
       <Title title='Shop Socials' subTitle={"(Optional)"} />
       <div className='space-y-1 w-full mt-3'>
-        <label className=' font-medium  text-gray-600'>Facebook URL</label>
-        <input
-          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px] focus:outline-killarney-700'
+        <Label className=' font-medium text-base  text-gray-600'>
+          Facebook URL
+        </Label>
+        <Input
+          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]'
           type='text'
           placeholder='Enter Facebook URL'
           {...register("fbUrl")}
@@ -39,9 +44,11 @@ const Index = ({ setStep }: Props) => {
         )}
       </div>
       <div className='space-y-1 w-full mt-3'>
-        <label className=' font-medium  text-gray-600'>Instagram URL</label>
-        <input
-          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px] focus:outline-killarney-700'
+        <Label className='text-base font-medium  text-gray-600'>
+          Instagram URL
+        </Label>
+        <Input
+          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]'
           type='text'
           placeholder='Enter Instagram URL'
           {...register("instaUrl")}
@@ -51,9 +58,11 @@ const Index = ({ setStep }: Props) => {
         )}
       </div>
       <div className='space-y-1 w-full mt-3'>
-        <label className=' font-medium  text-gray-600'>Twitter URL</label>
-        <input
-          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px] focus:outline-killarney-700'
+        <Label className='text-base font-medium  text-gray-600'>
+          Twitter URL
+        </Label>
+        <Input
+          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]'
           type='text'
           placeholder='Enter Twitter URL'
           {...register("twitterUrl")}
@@ -63,9 +72,11 @@ const Index = ({ setStep }: Props) => {
         )}
       </div>
       <div className='space-y-1 w-full mt-3'>
-        <label className=' font-medium  text-gray-600'>Website URL</label>
-        <input
-          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px] focus:outline-killarney-700'
+        <Label className='text-base font-medium  text-gray-600'>
+          Website URL
+        </Label>
+        <Input
+          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]'
           type='text'
           placeholder='Enter Website URL'
           {...register("websiteUrl")}
@@ -75,19 +86,19 @@ const Index = ({ setStep }: Props) => {
         )}
       </div>
       <div className='flex gap-x-2 mt-4'>
-        <button
+        <Button
           type='button'
           onClick={() => setStep((prev) => prev - 1)}
           className='w-full py-2.5 bg-gray-200 hover:bg-killarney-200 duration-300 transition-colors rounded-md text-black'
         >
           Back
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={nextStep}
           className='disabled:cursor-not-allowed w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white'
         >
           Next
-        </button>
+        </Button>
       </div>
     </>
   );

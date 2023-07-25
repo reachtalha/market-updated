@@ -1,3 +1,5 @@
+import { storage } from "@/lib/firebase/client";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 export const formatCurrency = (
   value: number,
   locale: string = "en-GB"
@@ -150,5 +152,24 @@ export const handleImages = (
     reader.onerror = () => {
       throw new Error("Unable to read Image!");
     };
+  }
+};
+
+export const uploadImagesToFirebase = async (image: any, directory: string) => {
+  const fileType = image.split(";")[0].split("/")[1];
+  const img_data = new (Buffer.from as any)(
+    image.replace(/^data:image\/\w+;base64,/, ""),
+    "base64"
+  );
+  try {
+    const storageRef = ref(
+      storage,
+      `${directory}/image-${Date.now()}.${fileType}`
+    );
+    const snapshot = await uploadBytes(storageRef, img_data);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    return downloadURL;
+  } catch (e) {
+    console.log(e);
   }
 };

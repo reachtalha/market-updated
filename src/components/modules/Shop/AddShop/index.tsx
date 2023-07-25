@@ -18,8 +18,7 @@ import {
 import { db, auth, storage } from "@/lib/firebase/client";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 
-import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
+import toast from "react-hot-toast";
 
 import {
   FormProvider,
@@ -38,6 +37,7 @@ import Loader from "@/components/common/Loader";
 
 import { List, Link, Image } from "lucide-react";
 import EditNavbar from "@/components/common/Seller/Shared/EditNavbar";
+import { uploadImagesToFirebase } from "@/components/common/functions";
 
 const STEPPER_DATA = [
   {
@@ -106,44 +106,24 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
     isLoading: typesIsLoading,
   } = useSWR("types", getTypeData);
 
-  async function uploadImages(image: any, directory: string) {
-    try {
-      const fileType = image.split(";")[0].split("/")[1];
-      const img_data = new (Buffer.from as any)(
-        image.replace(/^data:image\/\w+;base64,/, ""),
-        "base64"
-      );
-      const storageRef = ref(
-        storage,
-        `${directory}/image-${Date.now()}.${fileType}`
-      );
-      const snapshot = await uploadBytes(storageRef, img_data);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      return downloadURL;
-    } catch (e) {
-      toast.error("Error while uploading image");
-    }
-  }
-
   function normalize(text: string) {
     return text.replace(/[\u2018\u2019\u201C\u201D]/g, "'");
   }
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    // if (!data.coverImage) {
-    //   toast.error("Please add cover image!");
-    //   return;
-    // }
-    // if (!data.logoImage) {
-    //   toast.error("Please add logo!");
-    //   return;
-    // }
-    setLoading(true);
+    if (defaultValues.id !== "") {
+      if (!data.coverImage) {
+        toast.error("Please add cover image!");
+        return;
+      }
+      if (!data.logoImage) {
+        toast.error("Please add logo!");
+        return;
+      }
+      setLoading(true);
+    }
+
     try {
-      // const [coverImageURL, logoURL] = await Promise.all([
-      //   uploadImages(data.coverImage, "cover-images"),
-      //   uploadImages(data.logoImage, "logo"),
-      // ]);
       if (defaultValues.id !== "") {
         await setDoc(doc(db, "shops", defaultValues.id), {
           uid: auth.currentUser?.uid,
@@ -163,6 +143,10 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           updatedAt: Timestamp.fromDate(new Date()),
         });
       } else {
+        const [coverImageURL, logoURL] = await Promise.all([
+          uploadImagesToFirebase(data.coverImage, "cover-images"),
+          uploadImagesToFirebase(data.logoImage, "logo"),
+        ]);
         await addDoc(collection(db, "shops"), {
           uid: auth.currentUser?.uid,
           tagline: data.tagline,
@@ -176,8 +160,8 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           twitterURL: data.twitterUrl,
           websiteURL: data.websiteUrl,
           noOfProducts: 0,
-          //coverImage: coverImageURL,
-          // logo: logoURL,
+          coverImage: coverImageURL,
+          logo: logoURL,
           submittedAt: Timestamp.fromDate(new Date()),
         });
       }
@@ -214,7 +198,6 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           </div>
         </form>
       </FormProvider>
-      <ToastContainer autoClose={1500} position='bottom-right' />
     </section>
   );
 };

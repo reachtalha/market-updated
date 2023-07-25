@@ -1,34 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import Image from "next/image";
 
 import { useFormContext } from "react-hook-form";
 
 import { handleImage, handleImages } from "@/components/common/functions";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { Trash2 } from "lucide-react";
 import Title from "@/components/common/Seller/Shared/Title";
 
 const ImageUpload = ({
   label,
   onUpload,
+  ref,
 }: {
   label: string;
   onUpload: Function;
+  ref: React.MutableRefObject<HTMLInputElement | null>;
 }) => {
   return (
     <>
-      <label
+      <Label
         htmlFor={label.replace(" ", "-")}
-        className='text font-medium  text-gray-600'
+        className='text-base font-medium  text-gray-600'
       >
         {label}
-      </label>
-      <input
+      </Label>
+      <Input
         id={label.replace(" ", "-")}
         type='file'
-        className='block mb-4 mt-1 w-fit text-sm font-medium text-gray-500 file:mr-4 file:rounded-full file:border file:border-killarney-600 file:bg-killarney-50 file:py-2 file:px-5 file:text-sm file:font-medium file:text-killarney-600  hover:file:bg-killarney-100'
+        ref={ref}
+        //className='block mb-4 mt-1 w-fit text-sm font-medium text-gray-500 file:mr-4 file:rounded-full file:border file:border-killarney-600 file:bg-killarney-50 file:py-2 file:px-5 file:text-sm file:font-medium file:text-killarney-600  hover:file:bg-killarney-100'
         onChange={onUpload as any}
       />
     </>
@@ -45,6 +50,9 @@ function AddImages({
   const [pictures, setPictures] = useState<any>([]);
   const [coverImage, setCoverImage] = useState<any>();
   const [logoImage, setLogoImage] = useState<any>();
+  const picturesRef = useRef<HTMLInputElement | null>(null);
+  const logoRef = useRef<HTMLInputElement | null>(null);
+  const coverRef = useRef<HTMLInputElement | null>(null);
 
   const { setValue } = useFormContext();
 
@@ -79,13 +87,18 @@ function AddImages({
             <span className='font-medium'> Maximum Size</span>: 10MB
           </p>
 
-          <ImageUpload label='Cover Image' onUpload={handleCoverImage} />
+          <ImageUpload
+            label='Cover Image'
+            ref={coverRef}
+            onUpload={handleCoverImage}
+          />
           <ImageUpload
             label={isShop ? "Logo Image" : "Other Images"}
             onUpload={handleImageUpload}
+            ref={isShop ? logoRef : picturesRef}
           />
         </div>
-        {(coverImage || pictures?.length > 0) && (
+        {(coverImage || logoImage || pictures?.length > 0) && (
           <div className='mt-2 h-fit w-full border rounded-lg py-2 px-5'>
             <h6 className='mb-2 text-lg font-medium text-gray-600 2xl:text-xl'>
               Image Preview
@@ -94,7 +107,13 @@ function AddImages({
               <div className={coverImage ? "h-24 w-24 relative" : "hidden"}>
                 <button
                   className='absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1'
-                  onClick={() => setCoverImage(null)}
+                  onClick={() => {
+                    setCoverImage(null);
+                    console.log(coverRef.current);
+                    if (coverRef.current) {
+                      coverRef.current.value = "";
+                    }
+                  }}
                 >
                   <Trash2 className='h-3 w-3 text-red-500' />
                 </button>
@@ -111,7 +130,10 @@ function AddImages({
                 <div className={logoImage ? "h-24 w-24 relative" : "hidden"}>
                   <button
                     className='absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1'
-                    onClick={() => setLogoImage(null)}
+                    onClick={() => {
+                      setLogoImage(null);
+                      if (logoRef.current) logoRef.current.value = "";
+                    }}
                   >
                     <Trash2 className='h-3 w-3 text-red-500' />
                   </button>

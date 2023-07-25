@@ -17,60 +17,45 @@ const Sidebar = () => {
   const { showSidebar, isMobile, setShowSidebar } = useGlobalStore(
     (state: any) => state
   );
-  // const headersList = headers();
-  // const domain = headersList.get("host") || "";
-  // const fullUrl = headersList.get("referer") || "";
-  // const [, pathname] =
-  //   fullUrl.match(new RegExp(`https?:\/\/${domain}(.*)`)) || [];
+
   const pathname = window.location.href;
 
   const list = [
     {
-      href: "/dashboard",
+      href: "/seller/dashboard",
       icon: <Dashboard className='w-6 h-6 text-current' />,
       title: "Dashboard",
     },
     {
-      href: "/dashboard/shop",
+      href: "/seller/shop",
       icon: <Shop className='w-6 h-6 text-current' />,
       title: "Shop",
-      subItems: [
-        {
-          href: "/dashboard/shop/",
-          title: "All Shops",
-        },
-
-        {
-          href: "/dashboard/shop/addshop",
-          title: "Add Shops",
-        },
-      ],
     },
     {
-      href: "/dashboard/products",
+      href: "",
       icon: <Products className='w-6 h-6 text-current' />,
       title: "Products",
       subItems: [
         {
-          href: "/dashboard/products/",
+          href: "/seller/products/",
           icon: <Products className='w-6 h-6 text-current' />,
           title: "All Products",
         },
 
         {
-          href: "/dashboard/products/addproduct",
+          href: "/seller/products/add",
           icon: <Products className='w-6 h-6 text-current' />,
           title: "Add Products",
         },
       ],
     },
     {
-      href: "/orders",
+      href: "/seller/orders",
       icon: <Cart className='w-6 h-6 text-current' />,
       title: "Orders",
     },
     {
-      href: "/chat",
+      href: "/seller/chat",
       icon: <Chat className='w-6 h-6 text-current' />,
       title: "Chat",
     },

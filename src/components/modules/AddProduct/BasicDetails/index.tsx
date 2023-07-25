@@ -1,6 +1,9 @@
 import React from "react";
 
 import { useFormContext } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import Title from "@/components/common/Seller/Shared/Title";
 
 const UNITS = [
@@ -39,9 +42,11 @@ const BasicDetails = ({ types, setStep }: Props) => {
     <>
       <Title title='Basic Details' />
       <div className='space-y-1 w-full mt-3'>
-        <label className=' font-medium  text-gray-600'>Product Name</label>
-        <input
-          className='w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px] focus:outline-killarney-700'
+        <Label className='text-base font-medium  text-gray-600'>
+          Product Name
+        </Label>
+        <Input
+          className='w-full  rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem] '
           type='text'
           placeholder='Your Product Name'
           {...register("name", { required: true })}
@@ -53,9 +58,11 @@ const BasicDetails = ({ types, setStep }: Props) => {
         )}
       </div>
       <div className='space-y-1 mt-3 w-full'>
-        <label className='font-medium  text-gray-600'>Product Types</label>
+        <Label className='font-medium text-base text-gray-600'>
+          Product Types
+        </Label>
         <select
-          className='w-full rounded-xl capitalize border-[2px] border-gray-300  p-2.5  placeholder:text-sm hover:border-killarney-700 focus:outline-killarney-700'
+          className='w-full rounded-xl capitalize border-[2px] border-gray-300  p-2.5 transition-all duration-300 placeholder:text-sm  focus:-translate-y-2 '
           {...register("type", { required: true })}
           defaultValue={"Select"}
         >
@@ -76,11 +83,11 @@ const BasicDetails = ({ types, setStep }: Props) => {
       </div>
 
       <div className='w-full mt-3'>
-        <label className='font-medium text-gray-600'>Gender</label>
+        <Label className='font-medium text-base text-gray-600'>Gender</Label>
         <div className='flex flex-wrap gap-3 w-full'>
           {["Male", "Female", "Unisex"].map((s, index) => (
             <div className='flex items-center gap-x-2 mt-1' key={index}>
-              <input
+              <Input
                 id={index.toString()}
                 type='radio'
                 value={s}
@@ -88,23 +95,25 @@ const BasicDetails = ({ types, setStep }: Props) => {
                 defaultChecked={index === 0 ? true : false}
                 className='peer/gender accent-primary  w-4 h-4 bg-gray-100 border-gray-300 focus:ring-primary'
               />
-              <label
+              <Label
                 htmlFor={index.toString()}
-                className='peer-checked/gender:text-primary text-sm font-medium'
+                className='peer-checked/gender:text-primary  text-sm font-medium'
               >
                 {s}
-              </label>
+              </Label>
             </div>
           ))}
         </div>
       </div>
 
       <div className='w-full mt-3'>
-        <label className='font-medium text-gray-600'>Select Unit</label>
+        <Label className='font-medium text-base text-gray-600'>
+          Select Unit
+        </Label>
         <div className='flex flex-wrap gap-3 w-full'>
           {UNITS.map((s, index) => (
             <div className='flex items-center gap-x-2 mt-1' key={index}>
-              <input
+              <Input
                 id={s.id}
                 type='radio'
                 value={s.id}
@@ -112,21 +121,23 @@ const BasicDetails = ({ types, setStep }: Props) => {
                 defaultChecked={index === 0 ? true : false}
                 className='peer/unit accent-primary w-4 h-4 bg-gray-100 border-gray-300 focus:ring-primary'
               />
-              <label
+              <Label
                 htmlFor={s.id}
                 className='peer-checked/unit:text-primary text-sm font-medium '
               >
                 {s.label}
-              </label>
+              </Label>
             </div>
           ))}
         </div>
       </div>
       <div className='space-y-1 mt-3 w-full'>
-        <label className='font-medium text-gray-600'>Description</label>
+        <Label className='font-medium text-base text-gray-600'>
+          Description
+        </Label>
         <textarea
           rows={4}
-          className='resize-none w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm overflow-y-auto hover:border-killarney-700 focus:-translate-y-[2px] focus:outline-killarney-700'
+          className='resize-none w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm overflow-y-auto  focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]'
           placeholder='Enter your product description'
           {...register("description", { required: true })}
         ></textarea>
@@ -136,13 +147,13 @@ const BasicDetails = ({ types, setStep }: Props) => {
           </span>
         )}
       </div>
-      <button
+      <Button
         type='button'
         onClick={nextStep}
         className='w-full py-2.5  border border-white hover:border-primary hover:text-primary hover:bg-white duration-500 transition-colors rounded-lg text-white bg-primary mt-2'
       >
         Next
-      </button>
+      </Button>
     </>
   );
 };

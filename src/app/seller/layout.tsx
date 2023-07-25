@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "@/components/common/Seller/Sidebar";
 import MobileNavbar from "@/components/common/Seller/Navbar/MobileNavbar";
 import useGlobalStore from "@/state";
@@ -11,13 +11,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const role = useRole();
   const router = useRouter();
 
-  //initially the user role is null
-  if (role === "") return null;
-
-  if (role !== "seller") {
-    router.push("/auth/register");
-    return;
-  }
+  useEffect(() => {
+    if (role && role !== "seller") {
+      router.push("/auth/register");
+    }
+  }, [role]);
 
   return (
     <div

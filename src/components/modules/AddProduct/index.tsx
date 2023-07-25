@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
 import useSWR from "swr";
 import {
   getDocs,
@@ -16,8 +15,7 @@ import {
 } from "firebase/firestore";
 import { db, auth, storage } from "@/lib/firebase/client";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
+import toast from "react-hot-toast";
 import useGlobalStore from "@/state";
 import {
   FormProvider,
@@ -26,10 +24,12 @@ import {
   SubmitHandler,
 } from "react-hook-form";
 
+import { handleImageUpload } from "@/components/common/functions";
 import CreateSKU from "./CreateSKU";
 import BasicDetails from "./BasicDetails";
 import AddImages from "./AddImage";
 import Stepper from "@/components/common/Seller/Shared/Stepper";
+import { uploadImagesToFirebase } from "@/components/common/functions";
 
 const STEPPER_DATA = [
   {
@@ -94,6 +94,7 @@ const AddProduct = () => {
   useEffect(() => {
     emptySKUList();
   }, []);
+
   const {
     data: types,
     error: typesError,
@@ -104,25 +105,6 @@ const AddProduct = () => {
     { shouldRetryOnError: true }
   );
 
-  async function uploadImages(image: any, directory: string) {
-    const fileType = image.split(";")[0].split("/")[1];
-    const img_data = new (Buffer.from as any)(
-      image.replace(/^data:image\/\w+;base64,/, ""),
-      "base64"
-    );
-    try {
-      const storageRef = ref(
-        storage,
-        `${directory}/image-${Date.now()}.${fileType}`
-      );
-      const snapshot = await uploadBytes(storageRef, img_data);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      return downloadURL;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       setLoading(true);
@@ -131,9 +113,12 @@ const AddProduct = () => {
         return;
       }
 
-      const coverImageURL = await uploadImages(data.coverImage, "product");
+      const coverImageURL = await uploadImagesToFirebase(
+        data.coverImage,
+        "product"
+      );
       const imagePromises = Array.from(data.moreImages, (pic: any) =>
-        uploadImages(pic, "product")
+        uploadImagesToFirebase(pic, "product")
       );
       const otherImagesURL = await Promise.all(imagePromises);
 
@@ -150,29 +135,11 @@ const AddProduct = () => {
         status: "listed",
       };
 
-      console.log(obj);
-
-      // const userList: any = [];
-      // const userRef = await getDocs(
-      //   query(
-      //     collection(db, "users"),
-      //     where("favourites", "array-contains", `${shop.category}`)
-      //   )
-      // );
-      // userRef.forEach((u) => {
-      //   userList.push(u.id);
-      // });
       const docRef = await addDoc(collection(db, "products"), obj);
       updateDoc(doc(db, "shops", `${shop.id}`), {
         noOfProducts: increment(1),
       });
-      // addDoc(collection(db, "notifications"), {
-      //   productId: docRef.id,
-      //   users: userList,
-      //   productName: data.name.toLocaleLowerCase(),
-      //   coverImage: coverImageURL,
-      //   createdAt: Timestamp.fromDate(new Date()),
-      // });
+
       toast.success("Product added!");
       reset();
       setStep(1);
@@ -200,8 +167,6 @@ const AddProduct = () => {
           </div>
         </form>
       </FormProvider>
-
-      <ToastContainer autoClose={1500} position='bottom-right' />
     </section>
   );
 };
