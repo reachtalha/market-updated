@@ -6,18 +6,18 @@ export type Category = {
   href: string;
 };
 
-type ExpertCategoriesProps = {
+type MarketCategoriesProps = {
   selectedCategory: string | null;
   categories: Category[];
 };
 
-export default function ExpertCategories({
+export default function MarketCategories({
   categories,
   selectedCategory,
-}: ExpertCategoriesProps) {
+}: MarketCategoriesProps) {
   return (
-    <div className='w-48 space-y-4'>
-      <p className='uppercase tracking-wide text-sm'>Skin care</p>
+    <div className='hidden md:block w-48 space-y-4'>
+      <p className='uppercase tracking-wide text-sm'>View All Experts</p>
       <ul className='space-y-1 uppercase text-sm hover:text-neutral-400'>
         {categories.map((category, idx) => (
           <li

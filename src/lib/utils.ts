@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isColoredRoute(route: string){
-  const coloredRoutes = ["/products", "/experts"];
+export function isColoredRoute(route: string) {
+  const coloredRoutes = ["/products", "/experts", "/market"];
   return (
     coloredRoutes.includes(route) ||
     route.startsWith("/experts") ||
