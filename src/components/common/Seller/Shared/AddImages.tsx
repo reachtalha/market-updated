@@ -29,11 +29,11 @@ const ImageUpload = ({
       >
         {label}
       </Label>
-      <Input
+      <input
         id={label.replace(" ", "-")}
         type='file'
         ref={ref}
-        //className='block mb-4 mt-1 w-fit text-sm font-medium text-gray-500 file:mr-4 file:rounded-full file:border file:border-killarney-600 file:bg-killarney-50 file:py-2 file:px-5 file:text-sm file:font-medium file:text-killarney-600  hover:file:bg-killarney-100'
+        className='block mb-4 mt-1 w-fit text-sm font-medium text-gray-500 file:mr-4 file:rounded-full file:border file:border-killarney-600 file:bg-killarney-50 file:py-2 file:px-5 file:text-sm file:font-medium file:text-killarney-600  hover:file:bg-killarney-100'
         onChange={onUpload as any}
       />
     </>

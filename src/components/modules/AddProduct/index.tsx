@@ -29,7 +29,7 @@ import CreateSKU from "./CreateSKU";
 import BasicDetails from "./BasicDetails";
 import AddImages from "./AddImage";
 import Stepper from "@/components/common/Seller/Shared/Stepper";
-import { uploadImagesToFirebase } from "@/components/common/functions";
+import UploadImage from "@/utils/handlers/image/UploadImage";
 
 const STEPPER_DATA = [
   {
@@ -47,8 +47,8 @@ const STEPPER_DATA = [
 ];
 
 type FormValues = {
-  coverImage: FileList;
-  moreImages: FileList;
+  coverImage: string;
+  moreImages: string[];
   name: string;
   type: string;
   gender: string;
@@ -113,12 +113,17 @@ const AddProduct = () => {
         return;
       }
 
-      const coverImageURL = await uploadImagesToFirebase(
-        data.coverImage,
-        "product"
-      );
+      const coverImageURL = await UploadImage({
+        collection: "products",
+        image: data.coverImage,
+        name: "cover",
+      });
       const imagePromises = Array.from(data.moreImages, (pic: any) =>
-        uploadImagesToFirebase(pic, "product")
+        UploadImage({
+          collection: "products",
+          image: pic,
+          name: "product",
+        })
       );
       const otherImagesURL = await Promise.all(imagePromises);
 

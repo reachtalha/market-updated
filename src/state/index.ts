@@ -3,7 +3,6 @@ import { create } from "zustand";
 const useGlobalStore = create((set) => ({
   showSidebar: false,
   SKUList: [],
-  isMobile: window.innerWidth < 468,
   setShowSidebar: (value: boolean) => set({ showSidebar: value }),
   setSKUList: (value: any) =>
     set((state: any) => ({

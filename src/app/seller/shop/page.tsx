@@ -26,7 +26,12 @@ const Page = (props: Props) => {
     isLoading: shopIsLoading,
   } = useSWR("shop", getShopData);
 
-  if (shopIsLoading) return <Loader />;
+  if (shopIsLoading)
+    return (
+      <div className='w-full h-full flex items-center justify-center'>
+        <Loader />
+      </div>
+    );
 
   const defaultValues = {
     id: shop?.id || "",

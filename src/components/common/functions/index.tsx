@@ -155,21 +155,4 @@ export const handleImages = (
   }
 };
 
-export const uploadImagesToFirebase = async (image: any, directory: string) => {
-  const fileType = image.split(";")[0].split("/")[1];
-  const img_data = new (Buffer.from as any)(
-    image.replace(/^data:image\/\w+;base64,/, ""),
-    "base64"
-  );
-  try {
-    const storageRef = ref(
-      storage,
-      `${directory}/image-${Date.now()}.${fileType}`
-    );
-    const snapshot = await uploadBytes(storageRef, img_data);
-    const downloadURL = await getDownloadURL(snapshot.ref);
-    return downloadURL;
-  } catch (e) {
-    console.log(e);
-  }
-};
+

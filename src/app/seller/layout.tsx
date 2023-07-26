@@ -7,7 +7,7 @@ import { useRole } from "@/hooks/useUserRole";
 import { useRouter } from "next/navigation";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { showSidebar, isMobile } = useGlobalStore() as any;
+  const { showSidebar } = useGlobalStore() as any;
   const role = useRole();
   const router = useRouter();
 
@@ -19,19 +19,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div
-      className={`bg-neutral-900 flex  h-screen overflow-hidden  ${
-        !isMobile && " p-1.5 gap-1.5"
-      } `}
+      className={`bg-neutral-900 flex  h-screen overflow-hidden  sm:p-1.5 sm:gap-1.5 `}
     >
       <aside>
         <Sidebar />
       </aside>
       <section
-        className={`bg-neutral-50  transition-all  duration-1000 overflow-scroll no-scrollbar   text-neutral-900  flex-1 ${
-          !isMobile && "rounded-xl"
-        } ${isMobile && showSidebar && "tilted-div"}`}
+        className={`bg-neutral-50  transition-all  duration-1000 overflow-scroll no-scrollbar   text-neutral-900  flex-1 sm:rounded-xl  ${
+          showSidebar && "tilted-div "
+        }`}
       >
-        {isMobile && <MobileNavbar />}
+        <MobileNavbar />
 
         {children}
       </section>

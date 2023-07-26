@@ -4,6 +4,13 @@ import { useFormContext } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 import Title from "@/components/common/Seller/Shared/Title";
 
 const UNITS = [
@@ -61,20 +68,22 @@ const BasicDetails = ({ types, setStep }: Props) => {
         <Label className='font-medium text-base text-gray-600'>
           Product Types
         </Label>
-        <select
-          className='w-full rounded-xl capitalize border-[2px] border-gray-300  p-2.5 transition-all duration-300 placeholder:text-sm  focus:-translate-y-2 '
-          {...register("type", { required: true })}
-          defaultValue={"Select"}
-        >
-          <option value='Select' disabled>
-            Select Type
-          </option>
-          {types?.map((c: any, index: number) => (
-            <option key={index} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+        <Select>
+          <SelectTrigger className='w-full  bg-white rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]'>
+            <SelectValue
+              {...register("type", { required: true })}
+              placeholder='Select Product Type'
+            />
+          </SelectTrigger>
+          <SelectContent>
+            {types?.map((c: any, index: number) => (
+              <SelectItem key={index} value={c}>
+                {c}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
         {errors.type && (
           <span className='text-sm text-red-500'>
             Please select product type

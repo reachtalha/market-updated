@@ -4,6 +4,14 @@ import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import Title from "@/components/common/Seller/Shared/Title";
 
 type Props = {
@@ -66,20 +74,22 @@ const Index = ({ setStep, types }: Props) => {
         <Label className='font-medium text-base  text-gray-600'>
           Shop Category
         </Label>
-        <select
-          className='w-full rounded-xl capitalize border-[2px] border-gray-300  p-2.5  placeholder:text-sm hover:border-killarney-700 '
-          {...register("category", { required: true })}
-          defaultValue={"Select"}
-        >
-          <option value='Select' disabled>
-            Select Shop Category
-          </option>
-          {types?.map((c: any, index: number) => (
-            <option className='capitalize' key={index} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+        <Select>
+          <SelectTrigger className='w-full  bg-white rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]'>
+            <SelectValue
+              {...register("category", { required: true })}
+              placeholder='Select shop category'
+            />
+          </SelectTrigger>
+          <SelectContent>
+            {types?.map((c: any, index: number) => (
+              <SelectItem className='capitalize' key={index} value={c}>
+                {c}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
         {errors.type && (
           <span className='text-sm text-red-500'>
             Please select Shop Category

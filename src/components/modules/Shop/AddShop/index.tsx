@@ -37,7 +37,7 @@ import Loader from "@/components/common/Loader";
 
 import { List, Link, Image } from "lucide-react";
 import EditNavbar from "@/components/common/Seller/Shared/EditNavbar";
-import { uploadImagesToFirebase } from "@/components/common/functions";
+import UploadImage from "@/utils/handlers/image/UploadImage";
 
 const STEPPER_DATA = [
   {
@@ -59,8 +59,8 @@ const STEPPER_DATA = [
 
 type FormValues = {
   id: string;
-  coverImage: FileList;
-  logoImage: FileList;
+  coverImage: string;
+  logoImage: string;
   name: string;
   tagline: string;
   category: string;
@@ -144,8 +144,16 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
         });
       } else {
         const [coverImageURL, logoURL] = await Promise.all([
-          uploadImagesToFirebase(data.coverImage, "cover-images"),
-          uploadImagesToFirebase(data.logoImage, "logo"),
+          UploadImage({
+            collection: "shops",
+            image: data.coverImage,
+            name: "cover",
+          }),
+          UploadImage({
+            collection: "shops",
+            image: data.logoImage,
+            name: "logo",
+          }),
         ]);
         await addDoc(collection(db, "shops"), {
           uid: auth.currentUser?.uid,

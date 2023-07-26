@@ -14,9 +14,7 @@ import useGlobalStore from "@/state";
 import { XSquare } from "lucide-react";
 
 const Sidebar = () => {
-  const { showSidebar, isMobile, setShowSidebar } = useGlobalStore(
-    (state: any) => state
-  );
+  const { showSidebar, setShowSidebar } = useGlobalStore((state: any) => state);
 
   const pathname = window.location.href;
 
@@ -62,21 +60,16 @@ const Sidebar = () => {
   ];
   return (
     <div
-      className={`w-[14rem]  text-neutral-50 flex flex-col justify-start gap-y-12 h-full px-3
-  ${
-    isMobile
-      ? ` absolute  transition-all duration-1000  ${
-          showSidebar ? "-translate-x-0" : "-translate-x-64"
-        } py-5`
-      : "relative"
-  }`}
+      className={`w-[14rem]  text-neutral-50 flex flex-col justify-start gap-y-12 h-full px-3 absolute transition-all duration-1000 py-5 sm:py-0 sm:relative
+  ${showSidebar ? " -translate-x-0" : " -translate-x-64"} sm:-translate-x-0 `}
     >
       <div className='text-center  '>
-        {isMobile && (
-          <span onClick={() => setShowSidebar(false)} className='float-left'>
-            <XSquare />
-          </span>
-        )}
+        <span
+          onClick={() => setShowSidebar(false)}
+          className='  sm:hidden float-left'
+        >
+          <XSquare />
+        </span>
 
         <Link href='/' className='font-semibold text-current text-2xl'>
           Dashboard

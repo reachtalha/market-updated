@@ -12,7 +12,7 @@ type Props = {
 
 function EditNavbar({ step, setStep, data }: Props) {
   return (
-    <div className=' w-full right-0 top-0  flex flex-row items-center border-b  border-b-gray-400 h-12 space-x-5 px-3'>
+    <div className=' w-full right-0 top-0  flex flex-row items-center border-b  border-b-gray-400 h-16 sm:h-12 space-x-5 px-3'>
       {data.map((item: any, index: any) => (
         <div
           key={index}
@@ -29,7 +29,7 @@ function EditNavbar({ step, setStep, data }: Props) {
           <span
             className={`text-sm text-gray-400 after:h-[2px] transition-all duration-500 ${
               step === item.step &&
-              " after:bg-primary after:absolute after:top-[167%] after:left-0 after:w-[100%] text-primary"
+              " after:bg-primary after:absolute after:top-[125%]  sm:after:top-[167%]   after:left-0 after:w-[90%] sm:after:w-[100%] text-primary"
             } `}
           >
             {" "}
