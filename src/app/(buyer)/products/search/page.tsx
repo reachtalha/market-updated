@@ -12,6 +12,7 @@ const categories = [
     href: "/products/search?category",
   },
   {
+
     name: "deodorants",
     slug: "deodorants",
     href: "/products/search?category",
@@ -39,11 +40,11 @@ export default function SearchProducts() {
       <Products categories={categories} />
       <section className="bg-black  py-16">
         <BoxedContent>
-          <header className="text-white flex justify-between items-center mb-10">
+          <header className="text-sm flex-wrap gap-y-4 md:text-lg text-white flex justify-between items-center mb-10">
             <h5 className="uppercase">Our Featured And Latest Experts</h5>
             <Button
               variant="outline"
-              size="lg"
+              size="resp"
               className="border-2 uppercase w-fit bg-transparent text-white rounded-3xl"
             >
               Explore Expert Categories

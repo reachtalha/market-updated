@@ -12,14 +12,20 @@ export default function LatestBlogsSection({
 }: LatestBlogsSectionProps) {
   return (
     <BoxedContent className={twMerge(`mb-[8rem]`, className)}>
-      <header className="flex justify-between items-center">
-        <h3 className="text-3xl">{title}</h3>
-        <h3 className="text-3xl">@allorganicsmarket</h3>
+      <header className="flex flex-wrap justify-between items-center mb-3">
+        <h3 className="text-lg md:text-3xl">{title}</h3>
+        <h3 className="text-lg md:text-3xl">@allorganicsmarket</h3>
       </header>
-      <div className="flex gap-10 mt-5">
-        <div className="w-[432px] h-[432px] rounded-lg bg-gray-100" />
-        <div className="w-[432px] h-[432px] rounded-lg bg-gray-100" />
-        <div className="w-[432px] h-[432px] rounded-lg bg-gray-100" />
+<div className="flex flex-col md:flex-row justify-between gap-y-4 md:gap-x-4">
+          <div
+            className="w-full h-[200px] md:h-[350px] rounded-lg object-cover bg-gray-100"
+          />
+          <div
+            className="w-full h-[200px] md:h-[350px] rounded-lg object-cover bg-gray-100"
+          />
+          <div
+            className="w-full h-[200px] md:h-[350px] rounded-lg object-cover bg-gray-100"
+          />
       </div>
     </BoxedContent>
   );

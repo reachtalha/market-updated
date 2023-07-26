@@ -30,19 +30,7 @@ const experts = [
 ];
 
 const featuredExpertsBreakpoints = {
-  640: {
-    slidesPerView: 2,
-    spaceBetween: 20,
-  },
   768: {
-    slidesPerView: 2,
-    spaceBetween: 20,
-  },
-  1024: {
-    slidesPerView: 2,
-    spaceBetween: 20,
-  },
-  1700: {
     slidesPerView: 2,
     spaceBetween: 20,
   },

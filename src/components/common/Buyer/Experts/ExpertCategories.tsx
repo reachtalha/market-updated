@@ -16,7 +16,7 @@ export default function ExpertCategories({
   selectedCategory,
 }: ExpertCategoriesProps) {
   return (
-    <div className='w-48 space-y-4'>
+    <div className='hidden md:block w-48 space-y-4'>
       <p className='uppercase tracking-wide text-sm'>Skin care</p>
       <ul className='space-y-1 uppercase text-sm hover:text-neutral-400'>
         {categories.map((category, idx) => (

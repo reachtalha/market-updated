@@ -25,6 +25,7 @@ const featuredProductsBreakpoints = {
 };
 
 export default function FeaturedProducts() {
+
   return (
     <Carousel
       title="Featured Products"
