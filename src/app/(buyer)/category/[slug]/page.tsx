@@ -21,7 +21,7 @@ export default function Category({ params }: CategoryProps) {
         img={heroImg}
       >
         <div className="block h-fit overflow-y-hidden py-1">
-          <h1 className="text-white animate-text text-8xl font-alpina italic font-medium text-center">
+          <h1 className="text-white sm:text-6xl md:text-7xl animate-text text-5xl font-alpina italic font-medium text-center">
             Embrace the Sun
           </h1>
         </div>
@@ -37,19 +37,19 @@ export default function Category({ params }: CategoryProps) {
           Explore Sun Protection
         </Button>
       </Hero>
-      <section className="py-16">
+      <section className="py-16 container">
         <FeaturedProducts />
       </section>
       <BoxedContent className="py-10">
         <OurMission />
       </BoxedContent>
-      <section className="bg-black  py-16">
+      <section className="bg-black py-10 md:py-16">
         <BoxedContent>
-          <header className="text-white flex justify-between items-center mb-10">
+          <header className="text-sm flex-wrap gap-y-4 md:text-lg text-white flex justify-between items-center mb-10">
             <h5 className="uppercase">Our Featured And Latest Experts</h5>
             <Button
               variant="outline"
-              size="lg"
+              size="resp"
               className="border-2 uppercase w-fit bg-transparent text-white rounded-3xl"
             >
               Explore Expert Categories
@@ -59,6 +59,7 @@ export default function Category({ params }: CategoryProps) {
         </BoxedContent>
       </section>
       <TakeQuizSection
+
         className="bg-[#F7F6F2] text-black"
         buttonClassName="border-black"
       />
