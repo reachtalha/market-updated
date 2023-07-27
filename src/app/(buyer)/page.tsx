@@ -32,7 +32,7 @@ export default function Home() {
           <div className="text-center space-y-2">
             <h3 className="text-3xl font-alpina tracking-wider font-medium">Meet Our Experts</h3>
             <p className="uppercase text-xs tracking-tight">
-              THEY DO THE TRIALAND ERROR, SO YOU DON’T HAVE TO.
+              THEY DO THE TRIAL AND ERROR, SO YOU DON’T HAVE TO.
             </p>
           </div>
           <ul className="flex gap-x-4 items-start pl-10 overflow-auto no-scrollbar snap-x snap-start">

@@ -3,6 +3,7 @@ import { StaticImageData } from 'next/image';
 
 import Image from '@/components/common/FallbackImage';
 import { formatCurrency } from '@/utils/formatters';
+import Link from 'next/link';
 
 interface ProductCard {
   image: string | StaticImageData;
@@ -14,7 +15,7 @@ interface ProductCard {
 }
 const ProductCard = ({ image, shop, name, price, type, shrink = true }: ProductCard) => {
   return (
-    <div className={`h-fit relative ${shrink ? '' : 'flex-shrink-0'}`}>
+    <Link href="/products/123" className={`h-fit relative ${shrink ? '' : 'flex-shrink-0'}`}>
       <div className="h-[250px] sm:[h-430px] grid place-content-center bg-accent drop-shadow-sm">
         <Image
           src={image}
@@ -32,7 +33,7 @@ const ProductCard = ({ image, shop, name, price, type, shrink = true }: ProductC
         </p>
         <p className="text-base font-alpina italic font-medium">{formatCurrency(price)}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

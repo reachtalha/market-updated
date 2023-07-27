@@ -48,3 +48,11 @@
   display: flex !important;
   flex-direction: column-reverse !important;
 }
+
+.swiper-pagination {
+  @apply flex justify-end pb-3 pr-4;
+}
+
+.swiper-pagination-bullet-active {
+  background: black !important;
+}

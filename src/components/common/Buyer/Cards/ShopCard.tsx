@@ -12,14 +12,22 @@ type Props = {
 
 const ShopCard = ({ image, shop, desc, type }: Props) => {
   return (
-    <div className="h-fit w-full relative">
+    <div className="group h-fit w-full relative">
       <div className="grid drop-shadow-sm">
         <Image src={image} className="w-full object-cover object-center" alt={shop} />
       </div>
-      <span className="absolute top-3 text-xs uppercase bg-white left-5 py-1.5 px-6 rounded-lg">
+      <div className="transition duration-150 ease-in-out invisible absolute border w-full h-full group-hover:bg-[#171717]/50 rounded-lg z-10 top-0 right-0 group-hover:visible">
+        <div className="w-full h-full grid place-content-center">
+          <span className="text-2xl mb-3 text-white md:text-4xl font-alpina font-medium">{shop}</span>
+          <Button size="resp" className="bg-transparent hover:bg-transparent  border rounded-3xl">
+            Explore Shop
+          </Button>
+        </div>
+      </div>
+      <span className="group-hover:hidden absolute top-3 text-xs uppercase bg-white left-5 py-1.5 px-6 rounded-lg">
         {type}
       </span>
-      <div className="bottom-0 text-white py-5 px-6 flex justify-between items-start absolute">
+      <div className="group-hover:hidden bottom-0 text-white py-5 px-6 flex justify-between items-start absolute">
         <div className="flex flex-col gap-y-3">
           <div className="flex flex-row justify-between items-center flex-wrap">
             <span className="text-2xl lg:text-3xl font-medium">{shop}</span>
