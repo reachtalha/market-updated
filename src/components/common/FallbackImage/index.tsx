@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image, { ImageProps } from "next/image";
 import fallback from "@/assets/images/fallback.webp";
 

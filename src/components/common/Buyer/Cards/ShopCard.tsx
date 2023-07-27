@@ -1,31 +1,27 @@
-import React from "react";
 import { StaticImageData } from "next/image";
 
 import Image from "@/components/common/FallbackImage";
-import { formatCurrency } from "@/utils/formatters";
 import { Button } from "@/components/ui/button";
+
 type Props = {
   image: string | StaticImageData;
   shop: string;
   desc: string;
   type: string;
-  shrink?: boolean;
 };
 
-const MarketCard = ({
+const ShopCard = ({
   image,
   shop,
   desc,
-
   type,
-  shrink = true,
 }: Props) => {
   return (
-    <div className={`h-fitoooo relative ${shrink ? "" : "flex-shrink-0"}`}>
-      <div className='h-[300px]sm:[h-430px] grid place-content-center  drop-shadow-sm'>
+    <div className="h-fit w-full relative">
+      <div className='grid drop-shadow-sm'>
         <Image
           src={image}
-          className=' object-cover object-center opacity-90'
+          className='w-full object-cover object-center'
           alt={shop}
         />
       </div>
@@ -34,17 +30,17 @@ const MarketCard = ({
       </span>
       <div className='bottom-0 text-white py-5 px-6 flex justify-between items-start absolute'>
         <div className='flex flex-col gap-y-3'>
-          <div className='flex flex-row justify-between items-center '>
-            <span className='text-3xl font-medium'>{shop}</span>
-            <Button className='bg-transparent hover:bg-transparent  border rounded-3xl'>
+          <div className='flex flex-row justify-between items-center flex-wrap'>
+            <span className='text-2xl lg:text-3xl font-medium'>{shop}</span>
+            <Button size="resp" className='bg-transparent hover:bg-transparent  border rounded-3xl'>
               Explore Shop
             </Button>
           </div>
-          <span className='text-sm'>{desc}</span>
+          <span className='text-sm line-clamp-3 sm:line-clamp-2 md:line-clamp-2 lg:line-clamp-none'>{desc}</span>
         </div>
       </div>
     </div>
   );
 };
 
-export default MarketCard;
+export default ShopCard;
