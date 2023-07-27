@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
-import toast from "react-hot-toast";
-import { Cross1Icon } from "@radix-ui/react-icons";
+import React, { useState, useRef } from 'react';
+import toast from 'react-hot-toast';
+import { Cross1Icon } from '@radix-ui/react-icons';
 
 interface TopicListProps {
   maxTopics: number;
@@ -8,15 +8,11 @@ interface TopicListProps {
   onTopicsChange: (topics: string[]) => void;
 }
 
-const TopicList: React.FC<TopicListProps> = ({
-  maxTopics,
-  topicsList,
-  onTopicsChange,
-}) => {
+const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsChange }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       addTopic();
     }
@@ -24,13 +20,13 @@ const TopicList: React.FC<TopicListProps> = ({
 
   const addTopic = () => {
     const currentTopic = inputRef.current!.value;
-    if (currentTopic.trim() === "") {
-      toast.error("Please enter a topic!");
+    if (currentTopic.trim() === '') {
+      toast.error('Please enter a topic!');
       return;
     }
 
     if (topicsList.includes(currentTopic)) {
-      toast.error("Topic is already added!");
+      toast.error('Topic is already added!');
       return;
     }
 
@@ -42,7 +38,7 @@ const TopicList: React.FC<TopicListProps> = ({
     const updatedTopics = [...topicsList, currentTopic];
     onTopicsChange(updatedTopics);
     if (inputRef.current) {
-      inputRef.current.value = "";
+      inputRef.current.value = '';
     }
   };
 

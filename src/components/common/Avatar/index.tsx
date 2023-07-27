@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Avvvatars from "avvvatars-react";
+import Image from 'next/image';
+import Avvvatars from 'avvvatars-react';
 
 interface Props {
   name?: string | null;

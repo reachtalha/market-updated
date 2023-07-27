@@ -1,7 +1,7 @@
-"use client";
-import React, { useState, useEffect } from "react";
+'use client';
+import React, { useState, useEffect } from 'react';
 
-import useSWR from "swr";
+import useSWR from 'swr';
 import {
   getDocs,
   collection,
@@ -13,15 +13,15 @@ import {
   increment,
   updateDoc,
   addDoc,
-  setDoc,
-} from "firebase/firestore";
-import { db, auth, storage } from "@/lib/firebase/client";
-import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+  setDoc
+} from 'firebase/firestore';
+import { db, auth, storage } from '@/lib/firebase/client';
+import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast';
 
-import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
-import EditAccount from "./EditAccount";
+import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
+import EditAccount from './EditAccount';
 
 type FormValues = {
   name: string;
@@ -39,7 +39,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
 
   const methods = useForm<FormValues>({
     defaultValues,
-    shouldUnregister: false,
+    shouldUnregister: false
   });
   const { handleSubmit, reset } = methods;
 
@@ -52,16 +52,16 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
       console.log(data);
 
       if (!isPasswordReset) {
-        await updateDoc(doc(db, "users", auth.currentUser?.uid as string), {
+        await updateDoc(doc(db, 'users', auth.currentUser?.uid as string), {
           name: data?.name,
           email: data.email,
           phone: data.phone,
-          address: data.address,
+          address: data.address
         });
-        toast.success("Account Updated Successfully");
+        toast.success('Account Updated Successfully');
       }
     } catch (e) {
-      toast.error("Error while updating account");
+      toast.error('Error while updating account');
     } finally {
       setLoading(false);
     }
@@ -69,15 +69,8 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
   return (
     <section className={` py-10`}>
       <FormProvider {...methods}>
-        <form
-          id='edit-account-form'
-          onSubmit={handleSubmit(onSubmit)}
-          className=''
-        >
-          <EditAccount
-            isPasswordReset={isPasswordReset}
-            setIsPasswordReset={setIsPasswordReset}
-          />
+        <form id="edit-account-form" onSubmit={handleSubmit(onSubmit)} className="">
+          <EditAccount isPasswordReset={isPasswordReset} setIsPasswordReset={setIsPasswordReset} />
         </form>
       </FormProvider>
     </section>

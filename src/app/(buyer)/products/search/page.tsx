@@ -1,37 +1,36 @@
-import Products from "@/components/common/Buyer/Products";
-import BoxedContent from "@/components/common/BoxedContent";
-import { Button } from "@/components/ui/button";
-import FeaturedExperts from "@/components/common/Buyer/FeaturedExperts";
-import TakeQuizSection from "@/components/common/Buyer/TakeQuizSection";
-import LatestBlogsSection from "@/components/common/Buyer/LatestBlogsSection";
+import Products from '@/components/common/Buyer/Products';
+import BoxedContent from '@/components/common/BoxedContent';
+import { Button } from '@/components/ui/button';
+import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
+import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
+import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 
 const categories = [
   {
-    name: "Shop All",
-    slug: "all",
-    href: "/products/search?category",
+    name: 'Shop All',
+    slug: 'all',
+    href: '/products/search?category'
   },
   {
-
-    name: "deodorants",
-    slug: "deodorants",
-    href: "/products/search?category",
+    name: 'deodorants',
+    slug: 'deodorants',
+    href: '/products/search?category'
   },
   {
-    name: "face",
-    slug: "face",
-    href: "/products/search?category",
+    name: 'face',
+    slug: 'face',
+    href: '/products/search?category'
   },
   {
-    name: "body",
-    slug: "body",
-    href: "/products/search?category",
+    name: 'body',
+    slug: 'body',
+    href: '/products/search?category'
   },
   {
-    name: "sunscreen",
-    slug: "sunscreen",
-    href: "/products/search?category",
-  },
+    name: 'sunscreen',
+    slug: 'sunscreen',
+    href: '/products/search?category'
+  }
 ];
 
 export default function SearchProducts() {
@@ -53,10 +52,7 @@ export default function SearchProducts() {
           <FeaturedExperts />
         </BoxedContent>
       </section>
-      <TakeQuizSection
-        className="bg-[#F7F6F2] text-black"
-        buttonClassName="border-black"
-      />
+      <TakeQuizSection className="bg-[#F7F6F2] text-black" buttonClassName="border-black" />
       <LatestBlogsSection className="mt-16" title="#OrganicSimplified" />
     </>
   );

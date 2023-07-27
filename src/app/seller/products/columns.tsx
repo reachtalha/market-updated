@@ -1,6 +1,5 @@
-"use client";
-import { ColumnDef } from "@tanstack/react-table";
-
+'use client';
+import { ColumnDef } from '@tanstack/react-table';
 
 export type Product = {
   id: string;
@@ -11,15 +10,15 @@ export type Product = {
 
 export const columns: ColumnDef<Product>[] = [
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: 'name',
+    header: 'Name'
   },
   {
-    accessorKey: "type",
-    header: "Type",
+    accessorKey: 'type',
+    header: 'Type'
   },
   {
-    accessorKey: "status",
-    header: "Status",
-  },
+    accessorKey: 'status',
+    header: 'Status'
+  }
 ];

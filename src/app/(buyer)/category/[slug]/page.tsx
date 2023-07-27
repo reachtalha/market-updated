@@ -1,12 +1,12 @@
-import Hero from "@/components/common/Hero";
-import heroImg from "@/assets/images/hero-main.png";
-import { Button } from "@/components/ui/button";
-import FeaturedProducts from "@/components/common/Buyer/FeaturedProducts";
-import BoxedContent from "@/components/common/BoxedContent";
-import OurMission from "@/components/common/Buyer/OurMission";
-import LatestBlogsSection from "@/components/common/Buyer/LatestBlogsSection";
-import FeaturedExperts from "@/components/common/Buyer/FeaturedExperts";
-import TakeQuizSection from "@/components/common/Buyer/TakeQuizSection";
+import Hero from '@/components/common/Hero';
+import heroImg from '@/assets/images/hero-main.png';
+import { Button } from '@/components/ui/button';
+import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
+import BoxedContent from '@/components/common/BoxedContent';
+import OurMission from '@/components/common/Buyer/OurMission';
+import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
+import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
+import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 
 type CategoryProps = {
   params: {
@@ -58,11 +58,7 @@ export default function Category({ params }: CategoryProps) {
           <FeaturedExperts />
         </BoxedContent>
       </section>
-      <TakeQuizSection
-
-        className="bg-[#F7F6F2] text-black"
-        buttonClassName="border-black"
-      />
+      <TakeQuizSection className="bg-[#F7F6F2] text-black" buttonClassName="border-black" />
       <LatestBlogsSection className="mt-16" title="#OrganicSimplified" />
     </>
   );

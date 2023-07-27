@@ -2,9 +2,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 export default function SortByDropdown() {
   return (

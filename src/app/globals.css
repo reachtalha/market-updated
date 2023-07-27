@@ -37,7 +37,7 @@
 
   /* Custom CSS for tilt effect */
   .tilted-div {
-    transform: rotate(-7deg) translate(80%, 0) scale(.8);
+    transform: rotate(-7deg) translate(80%, 0) scale(0.8);
 
     transform-origin: bottom left;
     /* Other custom styles for the tilted div */

@@ -1,14 +1,7 @@
-"use client";
+'use client';
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-} from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 
 import {
   signInWithEmailAndPassword,
@@ -18,10 +11,10 @@ import {
   onAuthStateChanged,
   FacebookAuthProvider,
   browserSessionPersistence,
-  setPersistence,
-} from "firebase/auth";
+  setPersistence
+} from 'firebase/auth';
 
-import { auth } from "@/lib/firebase/client";
+import { auth } from '@/lib/firebase/client';
 
 const provider = new GoogleAuthProvider();
 const fbprovider = new FacebookAuthProvider();
@@ -45,7 +38,7 @@ const AuthContext = createContext<IAuthContext>({
   signInWithGoogleAccount: async () => {},
   signInWithFacebookAccount: async () => {},
   error: null,
-  loading: false,
+  loading: false
 });
 
 export const AuthProvider = ({ children }: any) => {
@@ -70,7 +63,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const signInWithGoogleAccount = async () => {
     try {
-      setError("");
+      setError('');
       setLoading(true);
       await signInWithPopup(auth, provider);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
@@ -83,7 +76,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const signInWithFacebookAccount = async () => {
     try {
-      setError("");
+      setError('');
       setLoading(true);
       await signInWithPopup(auth, fbprovider);
       setUser(user);
@@ -97,13 +90,9 @@ export const AuthProvider = ({ children }: any) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      setError("");
+      setError('');
       setLoading(true);
-      const userCredentials = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
       setUser(userCredentials.user);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (error: any) {
@@ -115,7 +104,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const sessionBasedSignin = async (email: string, password: string) => {
     try {
-      setError("");
+      setError('');
       setLoading(true);
       await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
@@ -131,7 +120,7 @@ export const AuthProvider = ({ children }: any) => {
     try {
       await signOut(auth);
       setUser(null);
-      router.push("/auth/login");
+      router.push('/auth/login');
     } catch (error: any) {
       setError(error.message);
     }
@@ -146,7 +135,7 @@ export const AuthProvider = ({ children }: any) => {
       signInWithFacebookAccount,
       logout,
       loading,
-      error,
+      error
     }),
     [
       user,
@@ -156,14 +145,12 @@ export const AuthProvider = ({ children }: any) => {
       signInWithFacebookAccount,
       logout,
       loading,
-      error,
+      error
     ]
   );
 
   return (
-    <AuthContext.Provider value={memoedValue}>
-      {!initialLoading && children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={memoedValue}>{!initialLoading && children}</AuthContext.Provider>
   );
 };
 

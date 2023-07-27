@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Image, { ImageProps } from "next/image";
-import fallback from "@/assets/images/fallback.webp";
+import { useState, useEffect } from 'react';
+import Image, { ImageProps } from 'next/image';
+import fallback from '@/assets/images/fallback.webp';
 
 const ImageWithFallback = (props: ImageProps) => {
   const { src, alt, ...rest } = props;

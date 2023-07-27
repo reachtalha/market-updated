@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import { auth } from "@/lib/firebase/client";
+import { auth } from '@/lib/firebase/client';
 
 export const useRole = () => {
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState('');
   useEffect(() => {
     let isCanceled = false;
     async function fetchRole() {

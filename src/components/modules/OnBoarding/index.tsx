@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 
-import { db, auth } from "@/lib/firebase/client";
-import { doc, setDoc, Timestamp } from "@firebase/firestore";
-import { updateProfile } from "firebase/auth";
+import { db, auth } from '@/lib/firebase/client';
+import { doc, setDoc, Timestamp } from '@firebase/firestore';
+import { updateProfile } from 'firebase/auth';
 
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast';
 
-import { useRole } from "@/hooks/useUserRole";
+import { useRole } from '@/hooks/useUserRole';
 
-import BasicDetails from "@/components/modules/OnBoarding/BasicDetails";
-import Categories from "@/components/modules/OnBoarding/Categories";
-import Influencer from "@/components/modules/OnBoarding/Influencer";
-import UploadImage from "@/utils/handlers/image/UploadImage";
+import BasicDetails from '@/components/modules/OnBoarding/BasicDetails';
+import Categories from '@/components/modules/OnBoarding/Categories';
+import Influencer from '@/components/modules/OnBoarding/Influencer';
+import UploadImage from '@/utils/handlers/image/UploadImage';
 
 type FormValues = {
   countryCode: string;
@@ -48,23 +48,23 @@ const OnBoardingForm = () => {
         name: auth.currentUser?.displayName?.toLowerCase(),
         email: auth.currentUser?.email,
         role: role,
-        createdAt: Timestamp.fromDate(new Date()),
+        createdAt: Timestamp.fromDate(new Date())
       };
       if (data.image) {
         const url = await UploadImage({
-          collection: "users",
+          collection: 'users',
           image: data.image,
-          name: auth.currentUser?.uid,
+          name: auth.currentUser?.uid
         });
         updateProfile(auth.currentUser!, {
-          photoURL: url,
+          photoURL: url
         });
         Object.assign(obj, { photoURL: url });
       }
       delete obj.image;
-      await setDoc(doc(db, "users", `${auth.currentUser?.uid}`), obj);
-      if (role === "buyer") router.push("/");
-      else router.push("/dashboard");
+      await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
+      if (role === 'buyer') router.push('/');
+      else router.push('/dashboard');
     } catch (error: any) {
       toast.error(`Error! ${error.message}`);
     } finally {
@@ -78,7 +78,7 @@ const OnBoardingForm = () => {
       disabled={loading}
       className="bg-neutral-800 mt-3 hover:bg-neutral-900 rounded-md duration-300 transition-colors w-full text-white py-2.5"
     >
-      {loading ? "Please wait..." : label}
+      {loading ? 'Please wait...' : label}
     </button>
   );
 
@@ -88,19 +88,19 @@ const OnBoardingForm = () => {
         {step === 1 && (
           <>
             <BasicDetails setStep={setStep} role={role} />
-            {role === "seller" && renderButton("Finish")}
+            {role === 'seller' && renderButton('Finish')}
           </>
         )}
-        {step === 2 && role === "buyer" && (
+        {step === 2 && role === 'buyer' && (
           <>
             <Categories />
-            {renderButton("Finish")}
+            {renderButton('Finish')}
           </>
         )}
-        {step === 2 && role === "influencer" && (
+        {step === 2 && role === 'influencer' && (
           <>
             <Influencer />
-            {renderButton("Finish")}
+            {renderButton('Finish')}
           </>
         )}
       </form>

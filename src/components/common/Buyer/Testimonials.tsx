@@ -1,7 +1,7 @@
-"use client";
-import Carousel from "@/components/common/Carousel";
-import { Button } from "@/components/ui/button";
-import { SwiperSlide } from "swiper/react";
+'use client';
+import Carousel from '@/components/common/Carousel';
+import { Button } from '@/components/ui/button';
+import { SwiperSlide } from 'swiper/react';
 
 export default function Testimonials() {
   return (
@@ -16,10 +16,9 @@ export default function Testimonials() {
                 <p className="uppercase font-america text-sm">Skin Care</p>
 
                 <p className="font-america text-3xl mt-10">
-                  I love Salt & Stone. Each product is a careful blend of
-                  antioxidant and nutrient rich ingredients--including seaweed,
-                  spirulina, kelp-created to protect, cleanse, support and
-                  recover. It’s perfect for active living.
+                  I love Salt & Stone. Each product is a careful blend of antioxidant and nutrient
+                  rich ingredients--including seaweed, spirulina, kelp-created to protect, cleanse,
+                  support and recover. It’s perfect for active living.
                 </p>
 
                 <Button className="uppercase rounded-3xl px-8 py-4 mt-12">
