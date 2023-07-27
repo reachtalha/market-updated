@@ -1,14 +1,7 @@
-"use client";
+'use client';
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-} from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 
 import {
   signInWithEmailAndPassword,
@@ -19,9 +12,12 @@ import {
   FacebookAuthProvider,
   browserSessionPersistence,
   setPersistence,
-} from "firebase/auth";
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword as firebaseUpdatePassword
+} from 'firebase/auth';
 
-import { auth } from "@/lib/firebase/client";
+import { auth } from '@/lib/firebase/client';
 
 const provider = new GoogleAuthProvider();
 const fbprovider = new FacebookAuthProvider();
@@ -33,6 +29,7 @@ interface IAuthContext {
   sessionBasedSignin: (email: string, password: string) => Promise<void>;
   signInWithGoogleAccount: () => Promise<void>;
   signInWithFacebookAccount: () => Promise<void>;
+  updatePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   error: any;
   loading: boolean;
 }
@@ -44,8 +41,9 @@ const AuthContext = createContext<IAuthContext>({
   sessionBasedSignin: async (email: string, password: string) => {},
   signInWithGoogleAccount: async () => {},
   signInWithFacebookAccount: async () => {},
+  updatePassword: async () => {},
   error: null,
-  loading: false,
+  loading: false
 });
 
 export const AuthProvider = ({ children }: any) => {
@@ -70,7 +68,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const signInWithGoogleAccount = async () => {
     try {
-      setError("");
+      setError('');
       setLoading(true);
       await signInWithPopup(auth, provider);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
@@ -83,7 +81,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const signInWithFacebookAccount = async () => {
     try {
-      setError("");
+      setError('');
       setLoading(true);
       await signInWithPopup(auth, fbprovider);
       setUser(user);
@@ -97,13 +95,9 @@ export const AuthProvider = ({ children }: any) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      setError("");
+      setError('');
       setLoading(true);
-      const userCredentials = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
       setUser(userCredentials.user);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (error: any) {
@@ -115,7 +109,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const sessionBasedSignin = async (email: string, password: string) => {
     try {
-      setError("");
+      setError('');
       setLoading(true);
       await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
@@ -131,9 +125,28 @@ export const AuthProvider = ({ children }: any) => {
     try {
       await signOut(auth);
       setUser(null);
-      router.push("/auth/login");
+      router.push('/auth/login');
     } catch (error: any) {
       setError(error.message);
+    }
+  };
+
+  const updatePassword = async (currentPassword: string, newPassword: string) => {
+    const user = auth.currentUser;
+
+    if (user) {
+      const credentials = EmailAuthProvider.credential(user.email as string, currentPassword);
+      try {
+        setError('');
+        setLoading(true);
+        await reauthenticateWithCredential(user, credentials);
+        firebaseUpdatePassword(user, newPassword);
+      } catch (err: any) {
+        console.log(err.message);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -145,8 +158,9 @@ export const AuthProvider = ({ children }: any) => {
       signInWithGoogleAccount,
       signInWithFacebookAccount,
       logout,
+      updatePassword,
       loading,
-      error,
+      error
     }),
     [
       user,
@@ -156,14 +170,12 @@ export const AuthProvider = ({ children }: any) => {
       signInWithFacebookAccount,
       logout,
       loading,
-      error,
+      error
     ]
   );
 
   return (
-    <AuthContext.Provider value={memoedValue}>
-      {!initialLoading && children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={memoedValue}>{!initialLoading && children}</AuthContext.Provider>
   );
 };
 
