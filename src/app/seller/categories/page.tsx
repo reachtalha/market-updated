@@ -1,18 +1,11 @@
-import React from "react";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
-import { db } from "@/lib/firebase/client";
+import React from 'react';
+import { collection, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
 
 type Props = {};
 
 const getCategories = async () => {
-  const querySnapshot = await getDocs(collection(db, "categories"));
+  const querySnapshot = await getDocs(collection(db, 'categories'));
 
   return querySnapshot;
 };

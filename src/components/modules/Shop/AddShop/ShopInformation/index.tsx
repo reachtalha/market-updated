@@ -64,9 +64,12 @@ const Index = ({ setStep, types }: Props) => {
       </div>
       <div className="space-y-1 mt-3 w-full">
         <Label className="font-medium text-base  text-gray-600">Shop Category</Label>
-        <Select onOpenChange={handleChangeValue} {...register('category', { required: true })}>
+        <Select>
           <SelectTrigger className="w-full  bg-white rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]">
-            <SelectValue placeholder="Select shop category" />
+            <SelectValue
+              {...register('category', { required: true })}
+              placeholder="Select shop category"
+            />
           </SelectTrigger>
           <SelectContent>
             {types?.map((c: any, index: number) => (
@@ -81,7 +84,6 @@ const Index = ({ setStep, types }: Props) => {
       </div>
 
       <div className="flex space-x-2 flex-row">
-        {' '}
         <div className="space-y-1 w-full mt-3">
           <Label className=" font-medium text-base  text-gray-600">Email</Label>
           <Input

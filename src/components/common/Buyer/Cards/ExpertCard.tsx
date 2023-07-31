@@ -1,6 +1,6 @@
-import { StaticImageData } from "next/image";
+import { StaticImageData } from 'next/image';
 
-import Image from "@/components/common/FallbackImage";
+import Image from '@/components/common/FallbackImage';
 
 interface IProfileCard {
   image: string | StaticImageData;
@@ -8,7 +8,7 @@ interface IProfileCard {
   title: string;
 }
 
-export default function ExpertCard({ image, name, title }: IProfileCard){
+export default function ExpertCard({ image, name, title }: IProfileCard) {
   return (
     <div
       key={Math.random() + Date.now()}
@@ -23,11 +23,9 @@ export default function ExpertCard({ image, name, title }: IProfileCard){
       />
       <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/30 to-transparent transition-opacity ease-in duration-300" />
       <div className="z-[2] absolute bottom-4 left-4 text-white">
-        <h3 className="text-2xl tracking-wide truncate font-alpina font-semibold">
-          {name}
-        </h3>
+        <h3 className="text-2xl tracking-wide truncate font-alpina font-semibold">{name}</h3>
         <p>{title}</p>
       </div>
     </div>
   );
-};
+}

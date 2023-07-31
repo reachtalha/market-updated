@@ -12,7 +12,15 @@ import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
 import Title from '@/components/common/Seller/Shared/Title';
 
-const ImageUpload = ({ label, onUpload }: { label: string; onUpload: Function }) => {
+const ImageUpload = ({
+  label,
+  onUpload,
+  ref
+}: {
+  label: string;
+  onUpload: Function;
+  ref: React.MutableRefObject<HTMLInputElement | null>;
+}) => {
   return (
     <>
       <Label htmlFor={label.replace(' ', '-')} className="text-base font-medium  text-gray-600">
@@ -21,6 +29,7 @@ const ImageUpload = ({ label, onUpload }: { label: string; onUpload: Function })
       <input
         id={label.replace(' ', '-')}
         type="file"
+        ref={ref}
         className="block mb-4 mt-1 w-fit text-sm font-medium text-gray-500 file:mr-4 file:rounded-full file:border file:border-killarney-600 file:bg-killarney-50 file:py-2 file:px-5 file:text-sm file:font-medium file:text-killarney-600  hover:file:bg-killarney-100"
         onChange={onUpload as any}
       />
@@ -38,6 +47,9 @@ function AddImages({
   const [pictures, setPictures] = useState<any>([]);
   const [coverImage, setCoverImage] = useState<any>();
   const [logoImage, setLogoImage] = useState<any>();
+  const picturesRef = useRef<HTMLInputElement | null>(null);
+  const logoRef = useRef<HTMLInputElement | null>(null);
+  const coverRef = useRef<HTMLInputElement | null>(null);
 
   const { setValue } = useFormContext();
 
@@ -71,10 +83,11 @@ function AddImages({
             <span className="font-medium"> Maximum Size</span>: 10MB
           </p>
 
-          <ImageUpload label="Cover Image" onUpload={handleCoverImage} />
+          <ImageUpload label="Cover Image" ref={coverRef} onUpload={handleCoverImage} />
           <ImageUpload
             label={isShop ? 'Logo Image' : 'Other Images'}
             onUpload={handleImageUpload}
+            ref={isShop ? logoRef : picturesRef}
           />
         </div>
         {(coverImage || logoImage || pictures?.length > 0) && (
@@ -86,6 +99,10 @@ function AddImages({
                   className="absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1"
                   onClick={() => {
                     setCoverImage(null);
+                    console.log(coverRef.current);
+                    if (coverRef.current) {
+                      coverRef.current.value = '';
+                    }
                   }}
                 >
                   <Trash2 className="h-3 w-3 text-red-500" />
@@ -105,6 +122,7 @@ function AddImages({
                     className="absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1"
                     onClick={() => {
                       setLogoImage(null);
+                      if (logoRef.current) logoRef.current.value = '';
                     }}
                   >
                     <Trash2 className="h-3 w-3 text-red-500" />

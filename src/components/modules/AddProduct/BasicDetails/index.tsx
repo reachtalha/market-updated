@@ -34,8 +34,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
   console.log(register('type').name);
 
   const nextStep = async () => {
-    const isValid = await trigger(['name', 'gender', 'unit', 'type', 'description']);
-
+    const isValid = await trigger(['name', 'type', 'gender', 'unit', 'type', 'description']);
     if (isValid) setStep((e: number) => e + 1);
   };
 
@@ -65,9 +64,12 @@ const BasicDetails = ({ types, setStep }: Props) => {
       </div>
       <div className="space-y-1 mt-3 w-full">
         <Label className="font-medium text-base text-gray-600">Product Types</Label>
-        <Select {...register('type', { required: true })} onValueChange={handleOnChange}>
+        <Select>
           <SelectTrigger className="w-full  bg-white rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]">
-            <SelectValue placeholder="Select Product Type" />
+            <SelectValue
+              {...register('type', { required: true })}
+              placeholder="Select Product Type"
+            />
           </SelectTrigger>
           <SelectContent>
             {types?.map((c: any, index: number) => (

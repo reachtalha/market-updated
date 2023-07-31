@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { adminAuth } from "@/lib/firebase/admin";
+import { NextResponse } from 'next/server';
+import { adminAuth } from '@/lib/firebase/admin';
 
 export async function POST(req: Request) {
   try {
@@ -13,13 +13,13 @@ export async function POST(req: Request) {
 
     // Validate required fields
     if (!trimmedName || !trimmedPassword || !trimmedEmail || !trimmedRole) {
-      return NextResponse.json({ message: "Missing fields" }, { status: 400 });
+      return NextResponse.json({ message: 'Missing fields' }, { status: 400 });
     }
 
     const { uid } = await adminAuth.createUser({
       displayName: trimmedName,
       password: trimmedPassword,
-      email: trimmedEmail,
+      email: trimmedEmail
     });
     await adminAuth.setCustomUserClaims(uid, { role: trimmedRole });
 

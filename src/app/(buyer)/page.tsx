@@ -1,10 +1,10 @@
-import heroImg from "@/assets/images/hero-main.png";
-import Hero from "@/components/common/Hero";
-import TakeQuizSection from "@/components/common/Buyer/TakeQuizSection";
-import OrganicSimplifiedSection from "@/components/common/Buyer/OrganicSimplifiedSection";
-import FeaturedProducts from "@/components/common/Buyer/FeaturedProducts";
-import BoxedContent from "@/components/common/BoxedContent";
-import OurMission from "@/components/common/Buyer/OurMission";
+import heroImg from '@/assets/images/hero-main.png';
+import Hero from '@/components/common/Hero';
+import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
+import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
+import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
+import BoxedContent from '@/components/common/BoxedContent';
+import OurMission from '@/components/common/Buyer/OurMission';
 
 export default function Home() {
   return (
@@ -19,9 +19,8 @@ export default function Home() {
           </h1>
         </div>
         <p className="animate-opacity place-self-center text-base w-full md:w-[60%] text-center">
-          Through our thoughtfully chosen range of products, we aim to simplify
-          and inspire the journey towards a more mindful and sustainable
-          lifestyle.
+          Through our thoughtfully chosen range of products, we aim to simplify and inspire the
+          journey towards a more mindful and sustainable lifestyle.
         </p>
       </Hero>
       <section className="py-16 container">
@@ -31,19 +30,14 @@ export default function Home() {
         <TakeQuizSection />
         <BoxedContent className="space-y-10">
           <div className="text-center space-y-2">
-            <h3 className="text-3xl font-alpina tracking-wider font-medium">
-              Meet Our Experts
-            </h3>
+            <h3 className="text-3xl font-alpina tracking-wider font-medium">Meet Our Experts</h3>
             <p className="uppercase text-xs tracking-tight">
-              THEY DO THE TRIALAND ERROR, SO YOU DON’T HAVE TO.
+              THEY DO THE TRIAL AND ERROR, SO YOU DON’T HAVE TO.
             </p>
           </div>
           <ul className="flex gap-x-4 items-start pl-10 overflow-auto no-scrollbar snap-x snap-start">
-            {Array.from("abvderf").map((_, i: number) => (
-              <li
-                key={Date.now() + Math.random() + i}
-                className="flex-shrink-0"
-              >
+            {Array.from('abvderf').map((_, i: number) => (
+              <li key={Date.now() + Math.random() + i} className="flex-shrink-0">
                 <div
                   // src={user}
                   style={{ width: 300, height: 400 }}

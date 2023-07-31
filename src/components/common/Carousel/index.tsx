@@ -1,14 +1,14 @@
-"use client";
-import { ReactNode } from "react";
+'use client';
+import { ReactNode } from 'react';
 
-import { ChevronRightIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
-import { Swiper, SwiperProps, useSwiper } from "swiper/react";
+import { ChevronRightIcon, ChevronLeftIcon } from '@radix-ui/react-icons';
+import { Swiper, SwiperProps, useSwiper } from 'swiper/react';
 
 // Import Swiper styles
-import "swiper/css";
+import 'swiper/css';
 
 // import required modules
-import { Keyboard } from "swiper/modules";
+import { Keyboard } from 'swiper/modules';
 
 interface ICarousel extends SwiperProps {
   title?: string;
@@ -37,15 +37,10 @@ const SwiperCustomNavigation = () => {
   );
 };
 
-export default function Carousel({
-  title,
-  showNavigation = true,
-  children,
-  ...props
-}: ICarousel) {
+export default function Carousel({ title, showNavigation = true, children, ...props }: ICarousel) {
   return (
     <>
-      <Swiper keyboard modules={[Keyboard]} className="container mySwiper"  {...props}>
+      <Swiper keyboard modules={[Keyboard]} className="container mySwiper" {...props}>
         {children}
         {showNavigation && (
           <div className="border-t-2 border-black pt-8 pb-5 flex items-center justify-between">

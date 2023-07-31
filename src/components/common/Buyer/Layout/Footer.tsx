@@ -1,5 +1,5 @@
-import { ChevronRightIcon } from "@radix-ui/react-icons";
-import BoxedContent from "@/components/common/BoxedContent";
+import { ChevronRightIcon } from '@radix-ui/react-icons';
+import BoxedContent from '@/components/common/BoxedContent';
 
 const DISCOUNT = 10;
 
@@ -20,15 +20,9 @@ const Footer = () => {
             </button>
           </form>
           <ul className="hidden lg:flex flex-col md:flex-row gap-x-5 text-sm">
-            <li className="cursor-pointer hover:underline underline-offset-2">
-              Privacy Policy
-            </li>
-            <li className="cursor-pointer hover:underline underline-offset-2">
-              Terms of Use
-            </li>
-            <li className="cursor-pointer hover:underline underline-offset-2">
-              Accessibility
-            </li>
+            <li className="cursor-pointer hover:underline underline-offset-2">Privacy Policy</li>
+            <li className="cursor-pointer hover:underline underline-offset-2">Terms of Use</li>
+            <li className="cursor-pointer hover:underline underline-offset-2">Accessibility</li>
           </ul>
         </div>
         <div className="w-full flex gap-y-6 mt-8 lg:mt-0 md:gap-x-12 flex-col md:flex-row items-start">
@@ -36,9 +30,7 @@ const Footer = () => {
             <h6 className="font-medium uppercase">About All Organics</h6>
             <ul className="space-y-1 text-sm">
               <li className="hover:underline cursor-pointer">About</li>
-              <li className="hover:underline cursor-pointer">
-                Experts Program
-              </li>
+              <li className="hover:underline cursor-pointer">Experts Program</li>
               <li className="hover:underline cursor-pointer">Brands & Shops</li>
               <li className="hover:underline cursor-pointer">Contact</li>
             </ul>
@@ -47,34 +39,22 @@ const Footer = () => {
             <h6 className="font-medium uppercase">Orders and Support</h6>
             <ul className="space-y-1 text-sm">
               <li className="hover:underline cursor-pointer">Shipping</li>
-              <li className="hover:underline cursor-pointer">
-                Returns and Exchanges
-              </li>
+              <li className="hover:underline cursor-pointer">Returns and Exchanges</li>
               <li className="hover:underline cursor-pointer">Payment</li>
             </ul>
           </div>
           <div className="flex-shrink-0 space-y-3">
             <h6 className="font-medium uppercase">Location Preferences</h6>
             <ul className="space-y-1 text-sm">
-              <li className="hover:underline cursor-pointer">
-                Shipping: United States
-              </li>
-              <li className="hover:underline cursor-pointer">
-                Language: English
-              </li>
+              <li className="hover:underline cursor-pointer">Shipping: United States</li>
+              <li className="hover:underline cursor-pointer">Language: English</li>
             </ul>
           </div>
         </div>
         <ul className="flex flex-col gap-y-1.5 mt-8 sm:flex-row sm:gap-x-5 lg:hidden  text-sm">
-          <li className="cursor-pointer hover:underline underline-offset-2">
-            Privacy Policy
-          </li>
-          <li className="cursor-pointer hover:underline underline-offset-2">
-            Terms of Use
-          </li>
-          <li className="cursor-pointer hover:underline underline-offset-2">
-            Accessibility
-          </li>
+          <li className="cursor-pointer hover:underline underline-offset-2">Privacy Policy</li>
+          <li className="cursor-pointer hover:underline underline-offset-2">Terms of Use</li>
+          <li className="cursor-pointer hover:underline underline-offset-2">Accessibility</li>
         </ul>
       </BoxedContent>
     </footer>
