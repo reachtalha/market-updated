@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 export default function ProductSlider(){
-  return <Swiper loop pagination keyboard modules={[Keyboard, Pagination]} className="container mySwiper">
+  return <Swiper loop pagination keyboard modules={[Keyboard, Pagination]} className="container h-full mySwiper">
       <SwiperSlide>
         <Image className="w-full h-full" src={ProductDetailsImg} alt="product details" />
       </SwiperSlide>
