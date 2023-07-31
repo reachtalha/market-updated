@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 
 import {
   signInWithEmailAndPassword,
@@ -12,10 +14,7 @@ import {
   FacebookAuthProvider,
   browserSessionPersistence,
   setPersistence,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  updatePassword as firebaseUpdatePassword
-} from 'firebase/auth';
+} from "firebase/auth";
 
 import { auth } from '@/lib/firebase/client';
 

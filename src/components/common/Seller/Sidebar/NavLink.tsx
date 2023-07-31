@@ -1,7 +1,7 @@
-'use client';
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { ChevronDown } from 'lucide-react';
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 
 interface NavLinkProps {
   icon: React.ReactNode;
@@ -19,17 +19,23 @@ interface SubNavLink {
   title: string;
 }
 
-const SubNavLink = ({ href, index, pathname, totalItems, title }: SubNavLink) => {
+const SubNavLink = ({
+  href,
+  index,
+  pathname,
+  totalItems,
+  title,
+}: SubNavLink) => {
   return (
     <Link
       href={href}
       className={`flex gap-x-2  mt-2   items-center   duration-300 transition-colors hover:text-neutral-50 ${
-        pathname === href ? 'text-neutral-50' : 'text-neutral-400'
+        pathname === href ? "text-neutral-50" : "text-neutral-400"
       } cursor-pointer`}
     >
-      <div className="h-2 w-2 bg-neutral-400 relative ml-[-4px] rounded-3xl">
+      <div className='h-2 w-2 bg-neutral-400 relative ml-[-4px] rounded-3xl'>
         {index !== totalItems && (
-          <div className="absolute top-[200%] left-0 translate-x-[30%] w-[10px] h-[2rem]   border-l-[2px] border-neutral-400 translate-y-[-50%]"></div>
+          <div className='absolute top-[200%] left-0 translate-x-[30%] w-[10px] h-[2rem]   border-l-[2px] border-neutral-400 translate-y-[-50%]'></div>
         )}
       </div>
       <span className="font-medium ms-4 text-base sm:text-xs lg:text-base text-current group-hover:font-medium">
@@ -43,7 +49,7 @@ const NavLink = ({ icon, href, pathname, title, subItems }: NavLinkProps) => {
   const [displaySubItems, setDisplaySubItems] = useState(false);
   return (
     <>
-      {' '}
+      {" "}
       <Link
         href={href}
         className={`flex gap-x-2 items-center duration-300 transition-colors hover:text-neutral-50 ${
@@ -57,7 +63,11 @@ const NavLink = ({ icon, href, pathname, title, subItems }: NavLinkProps) => {
         </span>
         {subItems?.length > 0 && <ChevronDown size={15} />}
       </Link>
-      <div className={` ml-3 transition-all  duration-500 ${!displaySubItems && 'hidden '}`}>
+      <div
+        className={` ml-3 transition-all  duration-500 ${
+          !displaySubItems && "hidden "
+        }`}
+      >
         {subItems.map((item, index) => (
           <SubNavLink
             title={item.title}

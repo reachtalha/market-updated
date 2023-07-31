@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 const useGlobalStore = create((set) => ({
   showSidebar: false,
@@ -6,9 +6,9 @@ const useGlobalStore = create((set) => ({
   setShowSidebar: (value: boolean) => set({ showSidebar: value }),
   setSKUList: (value: any) =>
     set((state: any) => ({
-      SKUList: [...state.SKUList, value], // Fix the syntax here, return the new state
+      SKUList: [...state.SKUList, value] // Fix the syntax here, return the new state
     })),
-  emptySKUList: () => set({ SKUList: [] }),
+  emptySKUList: () => set({ SKUList: [] })
 }));
 
 export default useGlobalStore;

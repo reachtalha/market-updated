@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-
 import useSWR from 'swr';
 import {
   getDocs,
@@ -41,6 +40,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
 
   const methods = useForm<FormValues>({
     defaultValues,
+
     shouldUnregister: false
   });
   const { handleSubmit, reset } = methods;

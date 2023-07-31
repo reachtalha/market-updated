@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import React, { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -9,7 +13,11 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+  SelectValue
+} from '@/components/ui/select';
 
+import Title from '@/components/common/Seller/Shared/Title';
+import { Pencil } from 'lucide-react';
 import Title from '@/components/common/Seller/Shared/Title';
 import { Pencil } from 'lucide-react';
 
@@ -29,6 +37,7 @@ const Index = (props: Props) => {
           <div
             onClick={() => setIsEdit(true)}
             className="flex gap-x-2 flex-row items-center cursor-pointer "
+            className="flex gap-x-2 flex-row items-center cursor-pointer "
           >
             <span>Edit</span>
             <Pencil size={15} />
@@ -40,7 +49,12 @@ const Index = (props: Props) => {
         <div className="flex flex-row gap-x-3">
           <div className="space-y-1 w-full mt-3">
             <Label className=" font-medium text-base  text-gray-600">Name</Label>
+        <div className="flex flex-row gap-x-3">
+          <div className="space-y-1 w-full mt-3">
+            <Label className=" font-medium text-base  text-gray-600">Name</Label>
             <Input
+              className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+              type="text"
               className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
               type="text"
               disabled={!isEdit}
@@ -58,6 +72,10 @@ const Index = (props: Props) => {
                 <SelectItem value="visa">Visa</SelectItem>
                 <SelectItem value="union pay">Union Pay</SelectItem>
                 <SelectItem value="americanexpress">American Express</SelectItem>
+                <SelectItem value="mastercard">Master Card</SelectItem>
+                <SelectItem value="visa">Visa</SelectItem>
+                <SelectItem value="union pay">Union Pay</SelectItem>
+                <SelectItem value="americanexpress">American Express</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -65,17 +83,28 @@ const Index = (props: Props) => {
 
         <div className="space-y-1 w-full mt-3">
           <Label className="text-base font-medium  text-gray-600">Card Number</Label>
+        <div className="space-y-1 w-full mt-3">
+          <Label className="text-base font-medium  text-gray-600">Card Number</Label>
           <Input
             className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
             type="text"
+            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+            type="text"
             disabled={!isEdit}
+            placeholder="4444 4444 4444 4444"
             placeholder="4444 4444 4444 4444"
           />
         </div>
         <div className="flex flex-row gap-x-3">
           <div className="space-y-1 w-full mt-3">
             <Label className="text-base font-medium  text-gray-600">CVC</Label>
+        <div className="flex flex-row gap-x-3">
+          <div className="space-y-1 w-full mt-3">
+            <Label className="text-base font-medium  text-gray-600">CVC</Label>
             <Input
+              className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+              type="text"
+              placeholder="123"
               className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
               type="text"
               placeholder="123"
@@ -84,16 +113,22 @@ const Index = (props: Props) => {
           </div>
           <div className="space-y-1 w-full mt-3">
             <Label className="text-base font-medium  text-gray-600">Expiry Date</Label>
+          <div className="space-y-1 w-full mt-3">
+            <Label className="text-base font-medium  text-gray-600">Expiry Date</Label>
             <Input
               className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
               type="text"
+              className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+              type="text"
               disabled={!isEdit}
+              placeholder="MM/YY"
               placeholder="MM/YY"
             />
           </div>
         </div>
       </div>
 
+      <div className="flex gap-x-2 mt-4">
       <div className="flex gap-x-2 mt-4">
         {isEdit && (
           <Button
@@ -105,6 +140,8 @@ const Index = (props: Props) => {
         )}
 
         <Button
+          type="button"
+          className="disabled:cursor-not-allowed w-full py-2.5 bg-transparent hover:bg-killarney-800 duration-300 transition-colors rounded-md text-primary border-2 border-primary"
           type="button"
           className="disabled:cursor-not-allowed w-full py-2.5 bg-transparent hover:bg-killarney-800 duration-300 transition-colors rounded-md text-primary border-2 border-primary"
         >

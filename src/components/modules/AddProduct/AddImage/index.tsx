@@ -1,5 +1,5 @@
-import AddImages from "@/components/common/Seller/Shared/AddImages";
-import React from "react";
+import AddImages from '@/components/common/Seller/Shared/AddImages';
+import React from 'react';
 
 type Props = {
   setStep: React.Dispatch<React.SetStateAction<number>>;

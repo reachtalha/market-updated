@@ -1,36 +1,35 @@
-"use client";
-import Market from "@/components/common/Buyer/Market/Index";
-import React from "react";
+'use client';
+import Market from '@/components/common/Buyer/Market/Index';
+import React from 'react';
 
-type Props = {};
 const categories = [
   {
-    name: "Shop All",
-    slug: "all",
-    href: "/products?category",
+    name: 'Shop All',
+    slug: 'all',
+    href: '/market?category'
   },
   {
-    name: "deodorants",
-    slug: "deodorants",
-    href: "/products?category",
+    name: 'deodorants',
+    slug: 'deodorants',
+    href: '/market?category'
   },
   {
-    name: "face",
-    slug: "face",
-    href: "/products?category",
+    name: 'face',
+    slug: 'face',
+    href: '/market?category'
   },
   {
-    name: "body",
-    slug: "body",
-    href: "/products?category",
+    name: 'body',
+    slug: 'body',
+    href: '/market?category'
   },
   {
-    name: "sunscreen",
-    slug: "sunscreen",
-    href: "/products?category",
-  },
+    name: 'sunscreen',
+    slug: 'sunscreen',
+    href: '/market?category'
+  }
 ];
-const Page = (props: Props) => {
+const Page = () => {
   return <Market categories={categories} />;
 };
 

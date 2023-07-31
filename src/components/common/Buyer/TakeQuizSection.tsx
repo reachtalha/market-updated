@@ -1,14 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { twMerge } from "tailwind-merge";
+import { Button } from '@/components/ui/button';
+import { twMerge } from 'tailwind-merge';
 
 type TakeQuizSection = {
   className?: string;
   buttonClassName?: string;
 };
-export default function TakeQuizSection({
-  className = "",
-  buttonClassName = "",
-}: TakeQuizSection) {
+export default function TakeQuizSection({ className = '', buttonClassName = '' }: TakeQuizSection) {
   return (
     <div
       className={twMerge(
@@ -18,13 +15,9 @@ export default function TakeQuizSection({
     >
       <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-medium tracking-wide">
         Organic Products
-        <span className="ml-2 font-alpina font-normal italic tracking-tight">
-          curated for you
-        </span>
+        <span className="ml-2 font-alpina font-normal italic tracking-tight">curated for you</span>
       </h2>
-      <p className="text-xl mt-2">
-        Get personalized product picks from a Real Expert — for free.
-      </p>
+      <p className="text-xl mt-2">Get personalized product picks from a Real Expert — for free.</p>
       <Button
         variant="outline"
         size="lg"

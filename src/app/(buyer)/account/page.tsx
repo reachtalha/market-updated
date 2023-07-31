@@ -1,22 +1,22 @@
-import React from "react";
-import Index from "@/components/common/Buyer/Account/index";
+import React from 'react';
+import Index from '@/components/common/Buyer/Account/index';
 
 const options = [
   {
-    name: "Profile Settings",
-    slug: "settings",
-    href: "/account?display",
+    name: 'Profile Settings',
+    slug: 'settings',
+    href: '/account?display'
   },
   {
-    name: "Card Info",
-    slug: "card",
-    href: "/account?display",
+    name: 'Card Info',
+    slug: 'card',
+    href: '/account?display'
   },
   {
-    name: "Order History",
-    slug: "order",
-    href: "/account?display",
-  },
+    name: 'Order History',
+    slug: 'order',
+    href: '/account?display'
+  }
 ];
 
 type Props = {};

@@ -65,6 +65,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
           />
           {errors.name && <span className="text-sm text-red-500">Name doesn`t look valid</span>}
         </div>
+
         <div className="space-y-1 w-full mt-3">
           <Label className="text-base font-medium  text-gray-600">Email</Label>
           <Input
@@ -75,6 +76,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
           />
           {errors.name && <span className="text-sm text-red-500">Email doesn`t look valid</span>}
         </div>
+
         <div className="space-y-1 w-full mt-3">
           <Label className="text-base font-medium  text-gray-600">Phone</Label>
           <Input
@@ -85,6 +87,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
           />
           {errors.name && <span className="text-sm text-red-500">phone doesn`t look valid</span>}
         </div>
+
         <div className="space-y-1 w-full mt-3">
           <Label className="text-base font-medium  text-gray-600">Address</Label>
           <Input
@@ -93,6 +96,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
             {...register('address')}
             disabled={!isEdit}
           />
+
           {errors.name && <span className="text-sm text-red-500">Address doesn`t look valid</span>}
         </div>
       </div>
@@ -106,8 +110,10 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
             {...register('currentPassword')}
             placeholder="Enter Current Password"
           />
+
           {errors.name && <span className="text-sm text-red-500">Password doesn`t look valid</span>}
         </div>
+
         <div className="space-y-1 w-full mt-3">
           <Label className="text-base font-medium  text-gray-600">New Password</Label>
           <Input
@@ -116,8 +122,10 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
             {...register('newPassword')}
             placeholder="Enter New Password"
           />
+
           {errors.name && <span className="text-sm text-red-500">Password doesn`t look valid</span>}
         </div>
+
         <div className="space-y-1 w-full mt-3">
           <Label className="text-base font-medium  text-gray-600">Confirm Password</Label>
           <Input

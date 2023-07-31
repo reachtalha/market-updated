@@ -1,5 +1,5 @@
-import AddProduct from "@/components/modules/AddProduct";
-import React from "react";
+import AddProduct from '@/components/modules/AddProduct';
+import React from 'react';
 
 type Props = {};
 

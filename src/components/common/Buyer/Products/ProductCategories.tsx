@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export type Category = {
   name: string;
@@ -13,7 +13,7 @@ type ProductCategoriesProps = {
 
 export default function ProductCategories({
   categories,
-  selectedCategory,
+  selectedCategory
 }: ProductCategoriesProps) {
   return (
     <div className="hidden md:block w-48 space-y-4">
@@ -25,9 +25,7 @@ export default function ProductCategories({
             className="tracking-wide cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
           >
             <Link
-              className={
-                category.slug === selectedCategory ? "font-medium" : ""
-              }
+              className={category.slug === selectedCategory ? 'font-medium' : ''}
               href={`${category.href}=${category.slug}`}
             >
               {category.name}

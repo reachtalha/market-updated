@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
-import toast from "react-hot-toast";
+import { Dispatch, SetStateAction } from 'react';
+import toast from 'react-hot-toast';
 
 interface ImageHandlerProps {
   setImage: Dispatch<SetStateAction<string | undefined>>;
@@ -11,7 +11,7 @@ const ImageReader =
   (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !file.name.match(/\.(jpg|jpeg|png|webp)$/)) {
-      toast.error("Please select a valid image");
+      toast.error('Please select a valid image');
       return;
     }
     if (file.size > size * 1024 * 1024) {
@@ -24,7 +24,7 @@ const ImageReader =
       setImage(reader.result as string);
     };
     reader.onerror = () => {
-      toast.error("Error while reading the image");
+      toast.error('Error while reading the image');
     };
   };
 
