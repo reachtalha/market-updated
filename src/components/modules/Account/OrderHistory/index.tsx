@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import OrderCard from './OrderCard';
 import OrderDetail from './OrderDetail';
+import Title from '@/components/common/Seller/Shared/Title';
 
 type Props = {};
 
@@ -35,9 +36,9 @@ const orders = [
 const Index = (props: Props) => {
   const [selectedOrder, setSelectedOrder] = useState<string>('');
   return (
-    <>
-      <div className="px-5 gap-y-3 flex flex-col ">
-        <span className="text-primary font-medium uppercase">My Orders</span>
+    <section className="py-10 sm:py-0  w-full flex">
+      <div className="px-1 sm:px-5 gap-y-3 w-full md:w-2/5 flex flex-col ">
+        <span className="text-primary text-sm sm:text-base font-medium uppercase">My Orders</span>
         {orders.map((order, index) => (
           <OrderCard
             {...order}
@@ -48,12 +49,14 @@ const Index = (props: Props) => {
         ))}
       </div>
       {selectedOrder !== '' && (
-        <div className=" relative  flex flex-col gap-3">
-          <span className="text-primary font-medium uppercase">Order Details</span>
+        <div className="hidden  sm:relative  sm:flex flex-col gap-3 md:w-3/5">
+          <span className="text-primary text-sm sm:text-base font-medium uppercase">
+            Order Details
+          </span>
           <OrderDetail orderId={selectedOrder} />
         </div>
       )}
-    </>
+    </section>
   );
 };
 

@@ -10,10 +10,10 @@ import { Cross1Icon } from '@radix-ui/react-icons';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  if (auth.currentUser) {
-    router.back();
-    return <Loader className="grid place-content-center h-screen w-screen overflow-hidden" />;
-  }
+  // if (auth.currentUser) {
+  //   router.back();
+  //   return <Loader className="grid place-content-center h-screen w-screen overflow-hidden" />;
+  // }
 
   return (
     <>

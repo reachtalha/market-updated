@@ -19,12 +19,12 @@ export default function AccountOption({ options, selectedOption }: AccountOption
     logout();
   };
   return (
-    <div className="hidden md:block w-48 space-y-4">
-      <ul className="space-y-1 uppercase text-sm hover:text-neutral-400">
+    <div className="block w-full sm:w-48 space-y-4">
+      <ul className="sm:space-y-1  justify-between    flex flex-row  sm:flex-col items-center sm:items-start  sm:uppercase text-xs sm:text-sm hover:text-neutral-400">
         {options.map((category, idx) => (
           <li
             key={idx}
-            className="tracking-wide cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
+            className="tracking-wide   cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
           >
             <Link
               className={category.slug === selectedOption ? 'font-medium' : ''}
@@ -36,7 +36,7 @@ export default function AccountOption({ options, selectedOption }: AccountOption
         ))}
         <li
           onClick={handleLogout}
-          className={`tracking-wide cursor-pointer text-red-600 hover:text-red-900 hover:underline underline-offset-4`}
+          className={` cursor-pointer text-red-600 hover:text-red-900 hover:underline underline-offset-4`}
         >
           Log out
         </li>

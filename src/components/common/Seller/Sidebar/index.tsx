@@ -53,7 +53,7 @@ const Sidebar = () => {
       title: 'Orders'
     },
     {
-      href: '/seller/chat',
+      href: '/chat',
       icon: <Chat className="w-6 h-6 text-current" />,
       title: 'Chat'
     }
@@ -68,9 +68,7 @@ const Sidebar = () => {
           <XSquare />
         </span>
 
-
         <Link href="/" className="font-semibold text-current text-2xl sm:text-xl lg:text-2xl">
-
           Dashboard
         </Link>
       </div>

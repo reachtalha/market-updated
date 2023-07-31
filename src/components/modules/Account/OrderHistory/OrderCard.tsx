@@ -22,7 +22,7 @@ function OrderCard({ orderId, products, datePlaced, setSelectedOrder, selectedOr
   return (
     <div
       onClick={() => setSelectedOrder(orderId)}
-      className={`border p-5 flex rounded-xl gap-y-2 flex-col w-[50vh] cursor-pointer ${
+      className={`border p-5 flex rounded-xl gap-y-2 flex-col  cursor-pointer ${
         selectedOrder === orderId && ' border-2 border-primary'
       }`}
     >

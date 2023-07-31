@@ -46,11 +46,11 @@ const Login = () => {
     <>
       <div className="w-full md:w-96 p-5 h-fit border-0 md:border-2 rounded-xl focus-within:border-neutral-800">
         <header>
-          <div className="w-fit mx-auto py-2 font-alpina text-xl italic">
+          <div className="w-fit mx-auto py-2 font-medium font-alpina text-4xl text-primary italic">
             All Organics <span className="text-xs align-bottom">&reg;</span>
           </div>
         </header>
-        <h3 className="font-semibold text-xl">Log In</h3>
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 my-4">
           <div className="space-y-1">
             <label className="text-sm">Email</label>
@@ -93,31 +93,37 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="disabled:cursor-not-allowed w-full border bg-neutral-800 hover:bg-neutral-900 duration-300 transition-colors focus: outline text-white rounded py-2 m-0"
+            className="disabled:cursor-not-allowed w-full border bg-primary opacity-90 hover:opacity-100 duration-300 transition-opacity focus: outline text-white rounded py-2 m-0"
           >
             Login
           </button>
         </form>
-        <p className="my-2 text-gray-400 text-center">
+        <p className="my-2 text-primary text-center">
           <b>OR</b>
         </p>
         <div className="flex justify-center gap-x-3">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={signInWithGoogleAccount}
-            className="disabled:cursor-not-allowed bg-white hover:bg-gray-50 rounded-full border p-2"
-          >
-            <Google className="w-6 2xl:w-8 h-6 2xl:h-8" />
-          </button>
-          <button
-            type="button"
-            disabled={loading}
-            onClick={signInWithFacebookAccount}
-            className="disabled:cursor-not-allowed bg-white hover:bg-gray-50 rounded-full border p-2"
-          >
-            <Facebook className="w-6 2xl:w-8 h-6 2xl:h-8" />
-          </button>
+          <div className="w-36 flex items-center cursor-pointer justify-center  p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-300">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={signInWithGoogleAccount}
+              className="disabled:cursor-not-allowed mr-auto bg-gray-200  rounded-full border p-2"
+            >
+              <Google className="w-5 2xl:w-8 h-5 2xl:h-8" fill={'#414D35'} />
+            </button>
+            <span className="mr-auto">Google</span>
+          </div>
+          <div className="w-36 flex items-center cursor-pointer justify-center p-1 rounded-full bg-primary opacity-90 hover:opacity-100 transition-opacity duration-300 ">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={signInWithFacebookAccount}
+              className="disabled:cursor-not-allowed mr-auto bg-gray-200  rounded-full border p-2"
+            >
+              <Facebook className="w-5 2xl:w-8 h-5 2xl:h-8" fill={'#414D35'} />
+            </button>
+            <span className="mr-auto text-white">Facebook</span>
+          </div>
         </div>
         <p className="text-center mt-3">
           Not a member yet?{' '}

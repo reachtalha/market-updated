@@ -143,31 +143,37 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="disabled:cursor-not-allowed w-full border bg-neutral-800 hover:bg-neutral-900 duration-300 transition-colors focus: outline text-white rounded py-2 m-0"
+            className="disabled:cursor-not-allowed w-full border  bg-primary opacity-90 hover:opacity-100 duration-300 transition-opacity focus: outline text-white rounded py-2 m-0"
           >
             {loading ? 'Registering your account' : 'Register'}
           </button>
         </form>
-        <p className="my-2 text-gray-400 text-center">
+        <p className="my-2 text-primary text-center">
           <b>OR</b>
         </p>
         <div className="flex justify-center gap-x-3">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={signInWithGoogleAccount}
-            className="disabled:cursor-not-allowed bg-white hover:bg-gray-50 rounded-full border p-2"
-          >
-            <Google className="w-6 2xl:w-8 h-6 2xl:h-8" />
-          </button>
-          <button
-            type="button"
-            disabled={loading}
-            onClick={signInWithFacebookAccount}
-            className="disabled:cursor-not-allowed bg-white hover:bg-gray-50 rounded-full border p-2"
-          >
-            <Facebook className="w-6 2xl:w-8 h-6 2xl:h-8" />
-          </button>
+          <div className="w-36 flex items-center cursor-pointer justify-center  p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-300">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={signInWithGoogleAccount}
+              className="disabled:cursor-not-allowed mr-auto bg-gray-200  rounded-full border p-2"
+            >
+              <Google className="w-5 2xl:w-8 h-5 2xl:h-8" fill={'#414D35'} />
+            </button>
+            <span className="mr-auto">Google</span>
+          </div>
+          <div className="w-36 flex items-center cursor-pointer justify-center p-1 rounded-full bg-primary opacity-90 hover:opacity-100 transition-opacity duration-300 ">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={signInWithFacebookAccount}
+              className="disabled:cursor-not-allowed mr-auto bg-gray-200  rounded-full border p-2"
+            >
+              <Facebook className="w-5 2xl:w-8 h-5 2xl:h-8" fill={'#414D35'} />
+            </button>
+            <span className="mr-auto text-white">Facebook</span>
+          </div>
         </div>
         <p className="text-center mt-3">
           Already a Member?{' '}

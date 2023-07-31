@@ -37,7 +37,7 @@ function Index({ options }: AccountProps) {
         return (
           <>
             {user ? (
-              <div className=" w-2/5 m-auto">
+              <div className=" w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
                 <Settings
                   defaultValues={{
                     name: user.name,
@@ -59,7 +59,7 @@ function Index({ options }: AccountProps) {
         );
       case 'card':
         return (
-          <div className=" w-2/5 m-auto">
+          <div className=" w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
             <CardInfo />
           </div>
         );
@@ -69,7 +69,7 @@ function Index({ options }: AccountProps) {
         return (
           <>
             {user ? (
-              <div className=" w-2/5 m-auto">
+              <div className=" w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
                 <Settings
                   defaultValues={{
                     name: user.name,
@@ -92,7 +92,7 @@ function Index({ options }: AccountProps) {
     }
   };
   return (
-    <BoxedContent className="flex gap-x-5 py-20">
+    <BoxedContent className="flex flex-col sm:flex-row  border-3 gap-x-5 py-20">
       <AccountOption selectedOption={category} options={options} />
       {renderComponent()}
     </BoxedContent>

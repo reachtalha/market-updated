@@ -85,6 +85,7 @@ const getTypeData = async (category: string) => {
 const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(defaultValues.id !== '');
 
   const methods = useForm<FormValues>({
     defaultValues,
@@ -103,21 +104,36 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
   }
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    if (defaultValues.id !== '') {
-      if (!data.coverImage) {
-        toast.error('Please add cover image!');
-        return;
-      }
-      if (!data.logoImage) {
-        toast.error('Please add logo!');
-        return;
-      }
-      setLoading(true);
+    if (!data.coverImage) {
+      toast.error('Please add cover image!');
+      return;
+    }
+    if (!data.logoImage) {
+      toast.error('Please add logo!');
+      return;
+    }
+    setLoading(true);
+
+    let coverImageURL = data.coverImage;
+    let logoURL = data.logoImage;
+    if (!data.coverImage.includes('firebasestorage.googleapis.com')) {
+      coverImageURL = await UploadImage({
+        collection: 'shops',
+        image: data.coverImage,
+        name: 'cover'
+      });
+    }
+    if (!data.logoImage.includes('firebasestorage.googleapis.com')) {
+      logoURL = await UploadImage({
+        collection: 'shops',
+        image: data.logoImage,
+        name: 'logo'
+      });
     }
 
     try {
-      if (defaultValues.id !== '') {
-        await setDoc(doc(db, 'shops', defaultValues.id), {
+      if (isEdit) {
+        await updateDoc(doc(db, 'shops', defaultValues.id), {
           uid: auth.currentUser?.uid,
           tagline: data.tagline,
           name: normalize(data.name).toLocaleLowerCase(),
@@ -129,24 +145,11 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           instaURL: data.instaUrl,
           twitterURL: data.twitterUrl,
           websiteURL: data.websiteUrl,
-          noOfProducts: 0,
-          //coverImage: coverImageURL,
-          // logo: logoURL,
-          updatedAt: Timestamp.fromDate(new Date())
+          updatedAt: Timestamp.fromDate(new Date()),
+          coverImage: coverImageURL,
+          logo: logoURL
         });
       } else {
-        const [coverImageURL, logoURL] = await Promise.all([
-          UploadImage({
-            collection: 'shops',
-            image: data.coverImage,
-            name: 'cover'
-          }),
-          UploadImage({
-            collection: 'shops',
-            image: data.logoImage,
-            name: 'logo'
-          })
-        ]);
         await addDoc(collection(db, 'shops'), {
           uid: auth.currentUser?.uid,
           tagline: data.tagline,
@@ -169,21 +172,21 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
       reset();
 
       setStep(1);
-      toast.success('Shop created Successfully');
-      if (defaultValues.id !== '') {
-        window.location.reload();
-      }
+      toast.success(`Shop ${isEdit ? 'updated' : 'created'} Successfully`);
+
+      window.location.reload();
     } catch (e) {
       toast.error('Error while creating shop');
+      console.log(e);
     } finally {
       setLoading(false);
     }
   };
   return (
-    <section className={` h-full ${defaultValues.id === '' && 'py-10'}  `}>
+    <section className={` h-full ${!isEdit && 'py-10'}  `}>
       <FormProvider {...methods}>
         <form id="add-shop-form" onSubmit={handleSubmit(onSubmit)} className="">
-          {defaultValues.id !== '' ? (
+          {isEdit ? (
             <EditNavbar step={step} setStep={setStep} data={STEPPER_DATA} />
           ) : (
             <Stepper step={step} setStep={setStep} data={STEPPER_DATA} />
@@ -192,7 +195,16 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] m-auto mt-5">
             {step === 1 && <ShopInformation setStep={setStep} types={types as string[]} />}
             {step === 2 && <Socials setStep={setStep} />}
-            {step === 3 && <AddImages setStep={setStep} />}
+            {step === 3 && (
+              <AddImages
+                setStep={setStep}
+                images={{
+                  coverImage: defaultValues.coverImage,
+                  logoImage: defaultValues.logoImage
+                }}
+                isEdit={isEdit}
+              />
+            )}
           </div>
         </form>
       </FormProvider>

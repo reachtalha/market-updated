@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import Image from 'next/image';
 
@@ -12,7 +12,15 @@ import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
 import Title from '@/components/common/Seller/Shared/Title';
 
-const ImageUpload = ({ label, onUpload }: { label: string; onUpload: Function }) => {
+const ImageUpload = ({
+  label,
+  onUpload,
+  value
+}: {
+  label: string;
+  onUpload: Function;
+  value: string;
+}) => {
   return (
     <>
       <Label htmlFor={label.replace(' ', '-')} className="text-base font-medium  text-gray-600">
@@ -21,6 +29,7 @@ const ImageUpload = ({ label, onUpload }: { label: string; onUpload: Function })
       <input
         id={label.replace(' ', '-')}
         type="file"
+       
         className="block mb-4 mt-1 w-fit text-sm font-medium text-gray-500 file:mr-4 file:rounded-full file:border file:border-killarney-600 file:bg-killarney-50 file:py-2 file:px-5 file:text-sm file:font-medium file:text-killarney-600  hover:file:bg-killarney-100"
         onChange={onUpload as any}
       />
@@ -30,19 +39,23 @@ const ImageUpload = ({ label, onUpload }: { label: string; onUpload: Function })
 
 function AddImages({
   setStep,
-  isShop
+  isShop,
+  images,
+  isEdit
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isShop?: boolean;
+  images?: any;
+  isEdit?: boolean;
 }) {
   const [pictures, setPictures] = useState<any>([]);
-  const [coverImage, setCoverImage] = useState<any>();
-  const [logoImage, setLogoImage] = useState<any>();
+  const [coverImage, setCoverImage] = useState<any>(images?.coverImage);
+  const [logoImage, setLogoImage] = useState<any>(images?.logoImage);
   const picturesRef = useRef<HTMLInputElement | null>(null);
   const logoRef = useRef<HTMLInputElement | null>(null);
   const coverRef = useRef<HTMLInputElement | null>(null);
 
-  const { setValue } = useFormContext();
+  const { setValue, getValues } = useFormContext();
 
   const handleImageUpload = (e: any) => {
     try {
@@ -63,6 +76,13 @@ function AddImages({
       toast.error(`Error! ${e.message}`);
     }
   };
+
+  useEffect(() => {
+    if (isShop) {
+      console.log(logoImage, coverImage);
+    }
+  }, []);
+
   return (
     <>
       <Title title="Add Images" />
@@ -74,10 +94,11 @@ function AddImages({
             <span className="font-medium"> Maximum Size</span>: 10MB
           </p>
 
-          <ImageUpload label="Cover Image" onUpload={handleCoverImage} />
+          <ImageUpload label="Cover Image" value={coverImage} onUpload={handleCoverImage} />
           <ImageUpload
             label={isShop ? 'Logo Image' : 'Other Images'}
             onUpload={handleImageUpload}
+            value={isShop ? logoImage : pictures}
           />
         </div>
         {(coverImage || logoImage || pictures?.length > 0) && (
@@ -164,7 +185,7 @@ function AddImages({
           form={isShop ? 'add-shop-form' : 'add-product-form'}
           className="w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white"
         >
-          {isShop ? 'Add Shop' : 'Add Product'}
+          {isShop ? (isEdit ? 'Update ' : 'Add ') + 'Shop' : 'Add Product'}
         </button>
       </div>
     </>

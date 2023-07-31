@@ -7,7 +7,7 @@ type Props = {
 
 const Title = ({ title, subTitle }: Props) => {
   return (
-    <span className="text-primary text-3xl font-semibold">
+    <span className="text-primary text-2xl md:text-3xl font-semibold">
       {title} <span className="text-xl font-normal">{subTitle}</span>
     </span>
   );

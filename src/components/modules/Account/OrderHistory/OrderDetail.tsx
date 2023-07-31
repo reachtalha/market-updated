@@ -64,8 +64,8 @@ const OrderDetail = ({ orderId, order }: Props) => {
     return getSubtotal() + (order?.shipping.charges || 9.99);
   };
   return (
-    <div className="sticky flex flex-col gap-y-5 top-24 w-full ">
-      <div className="border border-gray-400 rounded-xl w-[50vw] flex flex-col p-5">
+    <div className="sticky flex flex-col gap-y-5 top-24 w-full  ">
+      <div className="border border-gray-400 rounded-xl flex flex-col p-5">
         <span className="font-medium uppercase">Products</span>
         {order ? (
           order.products.map((p: any, index: number) => (
@@ -86,7 +86,7 @@ const OrderDetail = ({ orderId, order }: Props) => {
           />
         )}
       </div>
-      <div className="flex flex-row gap-x-5">
+      <div className="flex flex-col lg:flex-row gap-y-5 md:gap-x-5">
         <div className="border rounded-xl p-5 w-full gap-y-2 flex flex-col border-gray-400">
           <span className="font-medium uppercase">Summary</span>
 

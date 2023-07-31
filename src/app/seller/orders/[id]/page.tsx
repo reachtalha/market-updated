@@ -88,13 +88,14 @@ const Orders = [
 const page = ({ params }: Props) => {
   const order = Orders[parseInt(params.id) - 1 || 0];
   return (
-    <div className="container font-american flex flex-row gap-x-3 px-5 py-20">
-      <div>
-        <div className="flex flex-row items-center justify-between px-2 font-semibold text-2xl mb-5">
-          <span>
+    <div className="container w-[95%] m-auto lg:w-full font-american flex flex-col h-full md:flex-row gap-y-10 md:gap-x-3 px-1 md:px-5 py-10 md:py-20">
+      <div className="w-full lg:w-3/5">
+        <div className="flex flex-col lg:flex-row lg:items-center items-start justify-between px-2 font-semibold text-2xl mb-5">
+          <span className="text-[1.1rem] md:text-base">
             Order: <span>{order.id}</span>{' '}
           </span>
-          <span>
+          <span className="text-[1.1rem] md:text-base">
+            <span className="lg:hidden">Placed At: </span>
             {order.placedAt.toLocaleDateString()}, {order.placedAt.toLocaleTimeString()}
           </span>
         </div>
@@ -102,7 +103,7 @@ const page = ({ params }: Props) => {
           <OrderDetail orderId={params.id} order={order} />
         </div>
       </div>
-      <div className="flex flex-col w-full items-end gap-y-2 px-4">
+      <div className="flex flex-col w-full items-end gap-y-2 md:w-2/5 md:px-4">
         <div
           className={`capitalize rounded-3xl   p-2 px-4 flex items-center font-medium justify-center ${
             order?.status.toLowerCase() === 'delivered'
