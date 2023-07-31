@@ -17,7 +17,6 @@ type OrderDetailProps = {
 };
 const OrderDetailCard = ({ isShipping, title, subtitle, price, image }: OrderDetailProps) => {
   return (
-<<<<<<< HEAD
     <div className="flex font-american flex-row justify-between mt-2 w-full items-center">
       <div className="flex flex-row  gap-x-2 items-center">
         <Image
@@ -26,24 +25,12 @@ const OrderDetailCard = ({ isShipping, title, subtitle, price, image }: OrderDet
           alt={'product'}
           width={isShipping ? 80 : 100}
           height={isShipping ? 80 : 100}
-=======
-    <div className="flex flex-row justify-between w-full items-center">
-      <div className="flex flex-row items-center">
-        <Image
-          src={image}
-          className={`${isShipping ? ' w-20' : ' w-32'} object-contain`}
-          alt={'product'}
->>>>>>> 9a579b4e789e131f40737d2007c3555cf12d3225
         />
         <div className="flex flex-col gap-y-2">
           <span className={`uppercase font-medium ${isShipping ? 'text-xs ' : 'text-sm'}`}>
             {title}
           </span>
-<<<<<<< HEAD
           <span className={` ${!isShipping && '  uppercase'}  text-xs text-gray-400 font-medium`}>
-=======
-          <span className={` ${!isShipping && '  uppercase'}  text-xs text-gray-600 font-medium`}>
->>>>>>> 9a579b4e789e131f40737d2007c3555cf12d3225
             {subtitle}
           </span>
         </div>
@@ -79,7 +66,6 @@ const OrderDetail = ({ orderId, order }: Props) => {
     <div className="sticky flex flex-col gap-y-5 top-24 w-full ">
       <div className="border border-gray-400 rounded-xl w-[50vw] flex flex-col p-5">
         <span className="font-medium uppercase">Products</span>
-<<<<<<< HEAD
         {order ? (
           order.products.map((p: any, index: number) => (
             <OrderDetailCard
@@ -98,43 +84,22 @@ const OrderDetail = ({ orderId, order }: Props) => {
             image={product1}
           />
         )}
-=======
-        <OrderDetailCard
-          title={'Natural deodrant trio'}
-          subtitle={'2.6 oz / 75 G'}
-          price={54.0}
-          image={product1}
-        />
->>>>>>> 9a579b4e789e131f40737d2007c3555cf12d3225
       </div>
       <div className="flex flex-row gap-x-5">
         <div className="border rounded-xl p-5 w-full gap-y-2 flex flex-col border-gray-400">
           <span className="font-medium uppercase">Summary</span>
-<<<<<<< HEAD
 
           <SummaryItem title="Subtotal" amount={getSubtotal().toFixed(2)} />
-          <SummaryItem title="Shipping" amount={order.shipping.charges || 9.99} />
+          <SummaryItem title="Shipping" amount={order?.shipping.charges || 9.99} />
           <hr />
           <SummaryItem title="Total" amount={getTotal().toFixed(2)} />
-=======
-          <SummaryItem title="Subtotal" amount={54.0} />
-          <SummaryItem title="Shipping" amount={9.99} />
-          <hr />
-          <SummaryItem title="Total" amount={63.99} />
->>>>>>> 9a579b4e789e131f40737d2007c3555cf12d3225
         </div>
         <div className="border border-gray-400 w-full rounded-xl p-5">
           <span className="uppercase font-medium">Shipping</span>
           <OrderDetailCard
-<<<<<<< HEAD
             title={order?.shipping.name || 'TNT Delivery'}
             subtitle={`Delivery within ${order?.shipping.days || 3} days`}
             price={order?.shipping.charges || 9.99}
-=======
-            title={'TNT Delivery'}
-            subtitle={'Delivery within 1 Business Day'}
-            price={9.99}
->>>>>>> 9a579b4e789e131f40737d2007c3555cf12d3225
             image={product1}
             isShipping
           />
