@@ -35,7 +35,6 @@ export default function AddModal({ list, setList }: Props) {
     <>
       <Dialog>
         <DialogTrigger>
-          {' '}
           <div className="flex items-center gap-x-1 px-3 py-1 rounded-full border bg-gray-100 text-gray-800 hover:bg-gray-200">
             <span>
               <Plus className="w-4 h-4 text-gray-600" strokeWidth={1.5} color="currentColor" />

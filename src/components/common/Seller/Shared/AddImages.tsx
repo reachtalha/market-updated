@@ -38,6 +38,9 @@ function AddImages({
   const [pictures, setPictures] = useState<any>([]);
   const [coverImage, setCoverImage] = useState<any>();
   const [logoImage, setLogoImage] = useState<any>();
+  const picturesRef = useRef<HTMLInputElement | null>(null);
+  const logoRef = useRef<HTMLInputElement | null>(null);
+  const coverRef = useRef<HTMLInputElement | null>(null);
 
   const { setValue } = useFormContext();
 
@@ -105,6 +108,7 @@ function AddImages({
                     className="absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1"
                     onClick={() => {
                       setLogoImage(null);
+                      if (logoRef.current) logoRef.current.value = '';
                     }}
                   >
                     <Trash2 className="h-3 w-3 text-red-500" />

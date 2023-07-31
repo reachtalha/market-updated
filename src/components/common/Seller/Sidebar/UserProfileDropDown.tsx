@@ -14,12 +14,9 @@ const UserProfileDropDown = () => {
   const currentUser = auth.currentUser;
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild className="focus:outline-none">
-        <button className="inline-flex gap-x-1.5 hover:bg-neutral-300/25 py-2 px-1 rounded-lg cursor-pointer">
-          <Avatar
-            photoURL={currentUser?.photoURL}
-            name={currentUser?.displayName}
-          />
+      <DropdownMenu.Trigger asChild className="focus:outline-none sm:p-1 lg:p-0">
+        <button className="inline-flex sm:flex sm:flex-col sm:gap-y-2 lg:flex-row  lg:items-start lg:-ml-1 gap-x-1.5 hover:bg-neutral-300/25 py-2  rounded-lg cursor-pointer">
+          <Avatar photoURL={currentUser?.photoURL} name={currentUser?.displayName} />
           <div>
             <h6 className="font-semibold text-left truncate">
               {currentUser?.displayName}

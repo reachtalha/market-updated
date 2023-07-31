@@ -49,7 +49,6 @@ const NavLink = ({ icon, href, pathname, title, subItems }: NavLinkProps) => {
   const [displaySubItems, setDisplaySubItems] = useState(false);
   return (
     <>
-      {" "}
       <Link
         href={href}
         className={`flex gap-x-2 items-center duration-300 transition-colors hover:text-neutral-50 ${

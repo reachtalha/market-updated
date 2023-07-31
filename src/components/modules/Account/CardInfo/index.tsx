@@ -37,15 +37,31 @@ const Index = (props: Props) => {
         )}
       </div>
 
-      <div className="flex flex-row gap-x-3">
-        <div className="space-y-1 w-full mt-3">
-          <Label className=" font-medium text-base  text-gray-600">Name</Label>
-          <Input
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
-            type="text"
-            disabled={!isEdit}
-            placeholder="Enter Card Holder's Name"
-          />
+      <div>
+        <div className="flex flex-row gap-x-3">
+          <div className="space-y-1 w-full mt-3">
+            <Label className=" font-medium text-base  text-gray-600">Name</Label>
+            <Input
+              className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+              type="text"
+              disabled={!isEdit}
+              placeholder="Enter Card Holder's Name"
+            />
+          </div>
+          <div className="space-y-1 w-full mt-3">
+            <Label className="text-base font-medium  text-gray-600">Card Type</Label>
+            <Select disabled={!isEdit} onValueChange={handleValueChange}>
+              <SelectTrigger className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]">
+                <SelectValue defaultValue={'mastercard'} placeholder="Select Card" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mastercard">Master Card</SelectItem>
+                <SelectItem value="visa">Visa</SelectItem>
+                <SelectItem value="union pay">Union Pay</SelectItem>
+                <SelectItem value="americanexpress">American Express</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div className="space-y-1 w-full mt-3">
           <Label className="text-base font-medium  text-gray-600">Card Type</Label>

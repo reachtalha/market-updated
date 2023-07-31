@@ -17,7 +17,7 @@ type OrderDetailProps = {
 };
 const OrderDetailCard = ({ isShipping, title, subtitle, price, image }: OrderDetailProps) => {
   return (
-    <div className="flex font-american flex-row justify-between mt-2 w-full items-center">
+    <div className="flex font-america flex-row justify-between mt-2 w-full items-center">
       <div className="flex flex-row  gap-x-2 items-center">
         <Image
           src={image}
@@ -30,7 +30,8 @@ const OrderDetailCard = ({ isShipping, title, subtitle, price, image }: OrderDet
           <span className={`uppercase font-medium ${isShipping ? 'text-xs ' : 'text-sm'}`}>
             {title}
           </span>
-          <span className={` ${!isShipping && '  uppercase'}  text-xs text-gray-400 font-medium`}>
+
+          <span className={` ${!isShipping && '  uppercase'}  text-xs text-gray-600 font-medium`}>
             {subtitle}
           </span>
         </div>
