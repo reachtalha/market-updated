@@ -9,7 +9,7 @@ type CustomerCardProps = {
 function CustomerCard({ name, email, address, image }: CustomerCardProps) {
   return (
     <div
-      className={`border-gray-400 border p-5 flex rounded-xl gap-y-2   flex-col w-full cursor-pointer`}
+      className={`border-gray-400 border p-5 flex rounded-xl gap-y-2 self-start  flex-col w-full cursor-pointer`}
     >
       <span className="uppercase font-semibold">Customer Details</span>
       <hr className="border-b-[1px] border-primary" />

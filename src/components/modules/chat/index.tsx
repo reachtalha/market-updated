@@ -1,65 +1,51 @@
-'use client';
 import React from 'react';
-
-import { useRouter } from 'next/navigation';
-
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, query, collection, where, getDocs } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
 
-import useSWR from 'swr';
 import Header from '@/components/modules/chat/Room/Header';
 import ChatBox from '@/components/modules/chat/Room/ChatBox';
 import Input from '@/components/modules/chat/Room/Input';
 
-import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
-
-interface ChatData {
-  chatId: string;
-  uid: string;
-  name: string;
-  photoURL: string;
-}
 
 type Props = {
   chatId: string;
 };
 
-const ChatRoom = ({ chatId }: Props) => {
-  const router = useRouter();
-
-  const { data, error, isLoading } = useSWR<ChatData | any>(`${chatId}-chatroom`, async () => {
-    const chatDoc = await getDoc(doc(db, 'chat', `${chatId}`));
-    if (!chatDoc.exists()) {
-      //router.replace('/chat');
-      return <Loader />;
-    }
-    const users = Object.keys(chatDoc.data().users);
-    const otherUser = users[0] !== auth.currentUser?.uid ? users[0] : users[1];
-
-    const userDoc = await getDoc(doc(db, 'users', `${otherUser}`));
-    if (!userDoc.exists()) {
-      router.replace('/404');
-      return <Loader />;
-    }
-    return {
-      chatId: chatDoc.id,
-      uid: userDoc.id,
-      name: userDoc.data()?.name,
-      photoURL: userDoc.data()?.photoURL
-    };
-  });
-  if (isLoading) {
-    return <Loader />;
-  }
-  if (error) {
+const getUsers = async (chatId: string) => {
+  const chatDoc = await getDoc(doc(db, 'chat', `${chatId}`));
+  if (!chatDoc.exists()) {
     return <Error />;
   }
+  const users = Object.keys(chatDoc.data().users);
+  const usersData: any = [];
+
+  const userDoc1 = await getDoc(doc(db, 'users', `${users[0]}`));
+  const userDoc2 = await getDoc(doc(db, 'users', `${users[1]}`));
+
+  usersData.push({
+    chatId: chatDoc.id,
+    uid: userDoc1.id,
+    name: userDoc1.data()?.name,
+    photoURL: userDoc1.data()?.photoURL
+  });
+  usersData.push({
+    chatId: chatDoc.id,
+    uid: userDoc2.id,
+    name: userDoc2.data()?.name,
+    photoURL: userDoc2.data()?.photoURL
+  });
+
+  return usersData;
+};
+const ChatRoom = async ({ chatId }: Props) => {
+  const users = await getUsers(chatId);
+
   return (
     <>
-      <Header chatId={data?.chatId} name={data?.name} photoURL={data?.photoURL} />
-      <ChatBox chatId={data?.chatId} name={data?.name} photoURL={data?.photoURL} />
-      <Input chatId={data?.chatId} />
+      <Header chatId={chatId} users={users} />
+      <ChatBox chatId={chatId} users={users} />
+      <Input chatId={chatId} />
     </>
   );
 };

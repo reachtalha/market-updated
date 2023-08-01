@@ -88,24 +88,17 @@ const Orders = [
 const page = ({ params }: Props) => {
   const order = Orders[parseInt(params.id) - 1 || 0];
   return (
-    <div className="container w-[95%] m-auto lg:w-full font-american flex flex-col h-full md:flex-row gap-y-10 md:gap-x-3 px-1 md:px-5 py-10 md:py-20">
-      <div className="w-full lg:w-3/5">
-        <div className="flex flex-col lg:flex-row lg:items-center items-start justify-between px-2 font-semibold text-2xl mb-5">
-          <span className="text-[1.1rem] md:text-base">
-            Order: <span>{order.id}</span>{' '}
-          </span>
-          <span className="text-[1.1rem] md:text-base">
-            <span className="lg:hidden">Placed At: </span>
-            {order.placedAt.toLocaleDateString()}, {order.placedAt.toLocaleTimeString()}
-          </span>
-        </div>
-        <div>
-          <OrderDetail orderId={params.id} order={order} />
-        </div>
-      </div>
-      <div className="flex flex-col w-full items-end gap-y-2 md:w-2/5 md:px-4">
+    <div className="container w-[95%] flex flex-col m-auto lg:w-full font-american px-1 md:px-5 py-10 md:py-20">
+      <div className=" w-full flex flex-col-reverse md:flex-row  pr-10 pb-5 md:items-end gap-y-4 md:gap-y-0 justify-between">
+        <span className="text-[1.1rem] font-semibold md:text-lg">
+          Order: <span className="font-normal">{order.id}</span>
+        </span>
+        <span className="text-[1.1rem]   md:text-lg">
+          <span className="font-semibold">Placed At: </span>
+          {order.placedAt.toLocaleDateString()}, {order.placedAt.toLocaleTimeString()}
+        </span>
         <div
-          className={`capitalize rounded-3xl   p-2 px-4 flex items-center font-medium justify-center ${
+          className={`capitalize w-28 rounded-3xl   p-2 px-4 flex items-center font-medium justify-center ${
             order?.status.toLowerCase() === 'delivered'
               ? 'bg-green-100 text-green-500'
               : order?.status.toLowerCase() === 'pending'
@@ -115,7 +108,16 @@ const page = ({ params }: Props) => {
         >
           <span>{order.status}</span>
         </div>
-        <CustomerCard {...order.customer} />
+      </div>
+      <div className=" flex flex-col h-full md:flex-row gap-y-10 md:gap-x-5 ">
+        <div className="w-full lg:w-3/5">
+          <div>
+            <OrderDetail orderId={params.id} order={order} />
+          </div>
+        </div>
+        <div className="flex flex-col w-full items-start gap-y-2 md:w-2/5 ">
+          <CustomerCard {...order.customer} />
+        </div>
       </div>
     </div>
   );

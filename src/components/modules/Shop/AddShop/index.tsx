@@ -189,7 +189,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           {isEdit ? (
             <EditNavbar step={step} setStep={setStep} data={STEPPER_DATA} />
           ) : (
-            <Stepper step={step} setStep={setStep} data={STEPPER_DATA} />
+            <Stepper step={step} data={STEPPER_DATA} />
           )}
 
           <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] m-auto mt-5">

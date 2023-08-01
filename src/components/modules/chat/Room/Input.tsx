@@ -1,3 +1,4 @@
+'use client';
 import React, { useRef } from 'react';
 
 import { db, auth, storage } from '@/lib/firebase/client';
@@ -32,8 +33,8 @@ const InputBox = ({ chatId }: { chatId: string }) => {
         sentBy: auth.currentUser?.uid,
         type: type
       });
-      mutate(`${chatId}-chatroom`);
-      mutate(`${chatId}-messages`);
+      // mutate(`${chatId}-chatroom`);
+      // mutate(`${chatId}-messages`);
     } catch (error) {
       toast.error('Oops! Something went wrong!');
     }

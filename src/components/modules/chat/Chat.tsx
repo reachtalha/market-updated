@@ -54,15 +54,7 @@ const getChats = async (): Promise<{ chatId: string; users: Record<string, boole
   docSnap.forEach((doc) => {
     chats.push({ chatId: doc.id, users: doc.data().users });
   });
-  return [
-    {
-      chatId: '1',
-      users: {
-        biUw205JxwMXZBP1nSZ8NQvYpJy2: true,
-        LCasJuiJAjesaeNmrFB1WasAGME3: true
-      }
-    }
-  ];
+  return chats;
 };
 
 export const getUser = async (userId: string): Promise<DocumentData | undefined> => {

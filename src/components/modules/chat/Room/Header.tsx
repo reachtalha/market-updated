@@ -1,8 +1,9 @@
+'use client';
 import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { db } from '@/lib/firebase/client';
+import { db, auth } from '@/lib/firebase/client';
 import { doc, getDocs, collection, writeBatch } from 'firebase/firestore';
 
 import { useSWRConfig } from 'swr';
@@ -17,14 +18,15 @@ import Avatar from '@/components/common/Avatar';
 
 type HeaderProps = {
   chatId: string;
-  photoURL: string;
-  name: string;
+  users: any;
 };
 
-const Header = ({ chatId, name, photoURL }: HeaderProps) => {
+const Header = ({ chatId, users }: HeaderProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { mutate } = useSWRConfig();
+  console.log(users, 'users', auth.currentUser?.uid);
+  const { name, photoURL } = users.filter((user: any) => user.uid !== auth.currentUser?.uid)[0];
 
   async function handleDelete() {
     try {
