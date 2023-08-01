@@ -1,8 +1,6 @@
+import { ReactNode, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
 
-import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import {
   Sheet,
   SheetClose,
@@ -12,31 +10,22 @@ import {
   SheetTitle,
   SheetTrigger
 } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
 
 import { NavLink } from '@/components/common/Buyer/Layout/Header';
 
-import { useState } from 'react';
-import useDetectChangeScroll from '@/hooks/useDetectChangeScroll';
-import { twMerge } from 'tailwind-merge';
-import { isColoredRoute } from '@/lib/utils';
 
-export default function HeaderSheet() {
+type HeaderSheetProps = {
+  triggerIcon: ReactNode
+}
+export default function HeaderSheet({ triggerIcon } : HeaderSheetProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const isScrollChanged = useDetectChangeScroll();
-  const pathname = usePathname();
   const closeSheet = () => setIsOpen(false);
   return (
     <Sheet open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <SheetTrigger asChild>
         <Button className="text-black hover:bg-transparent p-0" variant="ghost">
-          <HamburgerMenuIcon
-            height={30}
-            width={30}
-            className={twMerge(
-              `text-white`,
-              (isScrollChanged || isColoredRoute(pathname)) && 'text-black'
-            )}
-          />
+          {triggerIcon}
         </Button>
       </SheetTrigger>
       <SheetContent side="left">

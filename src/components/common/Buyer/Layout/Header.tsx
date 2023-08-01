@@ -7,33 +7,48 @@ import BoxedContent from '@/components/common/BoxedContent';
 import HeaderSheet from '@/components/common/Buyer/Layout/HeaderSheet';
 import useDetectChangeScroll from '@/hooks/useDetectChangeScroll';
 
-import { twMerge } from 'tailwind-merge';
-import { isColoredRoute } from '@/lib/utils';
+import { cn, isColoredRoute } from '@/lib/utils';
+import Searchbar from '@/components/common/Searchbar';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { SearchIcon } from 'lucide-react';
+import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 
 const Header = () => {
   const pathname = usePathname();
   const isScrollChanged = useDetectChangeScroll();
+  const [toggleSearchbar, setToggleSearchBar] = useState(false);
 
   return (
     <nav
       className={`${
-        isScrollChanged
+        (isScrollChanged || toggleSearchbar)
           ? 'bg-neutral-50 text-black duration-300 transition-colors ease-in'
           : `${
               isColoredRoute(pathname) ? 'text-black' : 'text-white'
             } bg-none duration-300 transition-colors ease-out`
       } justify-between`}
     >
+      <Searchbar isOpen={toggleSearchbar}  toggleSearchBar={() => setToggleSearchBar(false)}/>
       <BoxedContent className="flex py-4 justify-between items-center">
         <div>
           <div className="block md:hidden">
-            <HeaderSheet />
+            <HeaderSheet triggerIcon={
+              <HamburgerMenuIcon
+                height={30}
+                width={30}
+                className={cn(
+                  `text-white z-2 relative`,
+                  (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) && 'text-black'
+                )}
+              />
+            } />
           </div>
-          <Link href="/" className="hidden md:block font-alpina text-xl italic">
+          <Link href="/" className="hidden relative z-2 md:block font-alpina text-xl italic">
             All Organics <span className="text-xs align-bottom">&reg;</span>
           </Link>
         </div>
-        <Link href="/" className="md:hidden font-alpina text-xl italic">
+        <Link href="/" className="md:hidden relative z-2 font-alpina text-xl italic">
           All Organics <span className="text-xs align-bottom">&reg;</span>
         </Link>
         <div className="hidden md:inline-flex gap-x-8 text-inherit">
@@ -42,7 +57,8 @@ const Header = () => {
           <NavLink href="/market" title="Market" />
           <NavLink href="/experts" title="Experts" />
         </div>
-        <div className="inline-flex gap-x-8">
+        <div className="inline-flex gap-x-6 items-center">
+          <Button onClick={() => setToggleSearchBar(!toggleSearchbar)} size="icon" variant="link" className={cn("z-2 text-white relative", (toggleSearchbar || isColoredRoute(pathname) || isScrollChanged) && "text-black")}><SearchIcon height={18} width={18} /></Button>
           <NavLink className="hidden md:block" href="/account" title="Account" />
           <NavLink href="/cart" title={`Cart (0)`} />
         </div>
@@ -59,7 +75,7 @@ interface NavLinkProps extends LinkProps {
 }
 export const NavLink = ({ title, href, className = '', ...props }: NavLinkProps) => {
   const pathname = usePathname();
-  const classNames = twMerge(
+  const classNames = cn(
     'relative uppercase duration-300 md:hover:underline transition-opacity cursor-pointer tracking-wide text-xs underline-offset-2',
     pathname === href ? 'md:underline' : '',
     className

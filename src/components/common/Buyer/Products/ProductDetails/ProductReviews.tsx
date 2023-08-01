@@ -1,8 +1,8 @@
-import Stars from '@/assets/icons/system/Stars';
 import { Button } from '@/components/ui/button';
+
+import Stars from '@/assets/icons/system/Stars';
 import SortByRating from '@/components/common/Buyer/Products/ProductDetails/SortByRating';
 import LeaveReviewModal from '@/components/common/Buyer/Products/ProductDetails/LeaveReviewModal';
-import { useState } from 'react';
 
 const reviews = [
   {
@@ -33,22 +33,21 @@ const reviews = [
 ]
 
 export default function ProductReviews(){
-  const [isLeaveReviewModalOpen, setIsLeaveReviewModalOpen] = useState(false);
 
-  return <div className="bg-neutral-100 rounded-lg p-9">
-    <header className="flex justify-between">
-      <div>
+  return <div className="bg-neutral-100 rounded-lg p-6 md:p-9">
+    <header className="flex flex-col items-center md:flex-row md:justify-between">
+      <div className="flex flex-col items-center md:items-start md:justify-center w-full md:w-fit">
         <h6 className="flex gap-2 items-center mb-1">
           <span className="font-medium">4.9</span>
           <Stars />
         </h6>
         <p className="text-sm">AVERAGE RATING</p>
-        <Button variant="outline" className="mt-6 border-neutral-900 text-neutral-900">Filters</Button>
+        <Button variant="outline" className="w-full mt-6 border-neutral-900 text-neutral-900">Filters</Button>
       </div>
 
       <LeaveReviewModal
         trigger={(
-          <Button variant="outline" className="flex items-end border-neutral-900 px-14 text-neutral-900">Write a review</Button>
+          <Button variant="outline" className="w-full mt-3 md:mt-0 flex items-end border-neutral-900 px-14 text-neutral-900">Write a review</Button>
         )}
       />
     </header>
@@ -59,14 +58,14 @@ export default function ProductReviews(){
     </div>
     <ul className="">
       {reviews.map(review => (
-        <li className="grid grid-cols-3 py-5 border-b border-neutral-900/15" key={review.id}>
+        <li className="grid gap-y-4 md:grid-cols-3 py-5 border-b border-neutral-900/15" key={review.id}>
           <div className="col-span-1">
             <p className="font-medium">{review.reviewer}</p>
             <span>Verified Buyer</span>
           </div>
           <div className="col-span-2">
             <Stars />
-            <p className="mt-3">{review.review}</p>
+            <p className="mt-1 md:mt-3">{review.review}</p>
           </div>
         </li>
       ))}
