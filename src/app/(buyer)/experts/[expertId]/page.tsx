@@ -5,6 +5,9 @@ import Products from '@/components/common/Buyer/Products';
 import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
 import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 
+import { getDocs, collection } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
+
 const socials = [
   {
     name: 'website',
@@ -52,13 +55,31 @@ const categories = [
   }
 ];
 
+const getCategories = async () => {
+  const querySnapshot = await getDocs(collection(db, 'categories'));
+  let categories: any = [];
+
+  querySnapshot.forEach((doc) => {
+    categories.push({
+      name: doc.data().title,
+      subCategories: doc.data().list,
+      lifeSpan: doc.data().lifeSpaan,
+      image: doc.data().image,
+      slug: doc.data().title,
+      href: '/products?category'
+    });
+  });
+  return categories;
+};
+
 type ExpertProps = {
   params: {
     expertId: string;
   };
 };
 
-const Expert = ({ params }: ExpertProps) => {
+const Expert = async ({ params }: ExpertProps) => {
+  const categories = await getCategories();
   return (
     <>
       <BoxedContent className="pt-20 lg:py-20">

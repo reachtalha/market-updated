@@ -10,8 +10,12 @@ import { LucideSlidersHorizontal } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
 import useCategorySlug from '@/hooks/useCategorySlug';
-import { Category } from '@/components/common/Buyer/Products/ProductCategories';
 
+type Category = {
+  name: string;
+  slug: string;
+  href: string;
+};
 type CategoryDropdownProps = {
   categories: Category[];
 };

@@ -8,7 +8,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 export default function ProductSlider({ images }: { images: string[] }) {
-  console.log('Images', images);
   return (
     <Swiper
       loop

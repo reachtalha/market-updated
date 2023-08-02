@@ -8,7 +8,8 @@ import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
 import heroImg from '@/assets/images/shop-hero.png';
 import Testimonials from '@/components/common/Buyer/Testimonials';
-
+import { getDocs, collection } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
 const categories = [
   {
     name: 'Shop All',
@@ -37,13 +38,31 @@ const categories = [
   }
 ];
 
+const getCategories = async () => {
+  const querySnapshot = await getDocs(collection(db, 'categories'));
+  let categories: any = [];
+
+  querySnapshot.forEach((doc) => {
+    categories.push({
+      name: doc.data().title,
+      subCategories: doc.data().list,
+      lifeSpan: doc.data().lifeSpaan,
+      image: doc.data().image,
+      slug: doc.data().title,
+      href: '/products?category'
+    });
+  });
+  return categories;
+};
+
 type ShopProps = {
   params: {
     shopId: string;
   };
 };
 
-export default function Shop({ params }: ShopProps) {
+export default async function Shop({ params }: ShopProps) {
+  const categories = await getCategories();
   return (
     <>
       <Hero
