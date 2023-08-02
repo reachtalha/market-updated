@@ -10,6 +10,9 @@ import ProductVideo from '@/components/common/Buyer/Products/ProductDetails/Prod
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
 import ComplementaryProducts from '@/components/common/Buyer/Products/ProductDetails/ComplementaryProducts';
 import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard';
+import ProductDetailsImg from '@/assets/images/product-details-img.png'
+
+import useCartStore from '@/state/useCartStore';
 
 
 const product = {
@@ -35,6 +38,12 @@ const product = {
 
 
 export default function Product(){
+  const { setCartItems } = useCartStore((state: any) => state);
+
+  const handleAddToCart = () => {
+    setCartItems({ name: product.name, img: ProductDetailsImg, price: product.price })
+  }
+
   return (
       <>
         <div className="grid items-center gap-y-8 grid-cols-1 md:grid-cols-3 md:gap-x-16">
@@ -62,7 +71,7 @@ export default function Product(){
              </div>
            </div>
 
-           <Button className="w-full mt-14 uppercase">Add to bag</Button>
+           <Button onClick={handleAddToCart} className="w-full mt-14 uppercase">Add to bag</Button>
          </div>
 
         </div>

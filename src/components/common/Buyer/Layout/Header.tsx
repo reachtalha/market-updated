@@ -13,12 +13,17 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { SearchIcon } from 'lucide-react';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
+import CartPopover from '@/components/common/Buyer/ShoppingCart/CartPopover';
+import useCartStore from '@/state/useCartStore';
 
 const Header = () => {
-  const pathname = usePathname();
-  const isScrollChanged = useDetectChangeScroll();
   const [toggleSearchbar, setToggleSearchBar] = useState(false);
 
+  const isScrollChanged = useDetectChangeScroll();
+  const pathname = usePathname();
+  const { cartItems } = useCartStore((state: any) => state);
+
+  const onToggleSearchBar = (val: boolean) => setToggleSearchBar(val);
   return (
     <nav
       className={`${
@@ -29,7 +34,7 @@ const Header = () => {
             } bg-none duration-300 transition-colors ease-out`
       } justify-between`}
     >
-      <Searchbar isOpen={toggleSearchbar}  toggleSearchBar={() => setToggleSearchBar(false)}/>
+      <Searchbar isOpen={toggleSearchbar}  toggleSearchBar={onToggleSearchBar}/>
       <BoxedContent className="flex py-4 justify-between items-center">
         <div>
           <div className="block md:hidden">
@@ -60,7 +65,17 @@ const Header = () => {
         <div className="inline-flex gap-x-6 items-center">
           <Button onClick={() => setToggleSearchBar(!toggleSearchbar)} size="icon" variant="link" className={cn("z-2 text-white relative", (toggleSearchbar || isColoredRoute(pathname) || isScrollChanged) && "text-black")}><SearchIcon height={18} width={18} /></Button>
           <NavLink className="hidden md:block" href="/account" title="Account" />
-          <NavLink href="/cart" title={`Cart (0)`} />
+          <CartPopover
+            trigger={
+              <Button
+                className={cn("z-2 text-white relative w-fit",
+                  (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) && 'text-black'
+                  )}
+                size="icon"
+                variant="link"
+              >Cart ({cartItems.length})</Button>
+            }
+          />
         </div>
       </BoxedContent>
     </nav>
