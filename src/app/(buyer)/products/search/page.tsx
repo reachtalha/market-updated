@@ -4,36 +4,28 @@ import { Button } from '@/components/ui/button';
 import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
 import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
+import { getDocs, collection } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
 
-const categories = [
-  {
-    name: 'Shop All',
-    slug: 'all',
-    href: '/products/search?category'
-  },
-  {
-    name: 'deodorants',
-    slug: 'deodorants',
-    href: '/products/search?category'
-  },
-  {
-    name: 'face',
-    slug: 'face',
-    href: '/products/search?category'
-  },
-  {
-    name: 'body',
-    slug: 'body',
-    href: '/products/search?category'
-  },
-  {
-    name: 'sunscreen',
-    slug: 'sunscreen',
-    href: '/products/search?category'
-  }
-];
+const getCategories = async () => {
+  const querySnapshot = await getDocs(collection(db, 'categories'));
+  let categories: any = [];
 
-export default function SearchProducts() {
+  querySnapshot.forEach((doc) => {
+    categories.push({
+      name: doc.data().title,
+      subCategories: doc.data().list,
+      lifeSpan: doc.data().lifeSpaan,
+      image: doc.data().image,
+      slug: doc.data().title,
+      href: '/products?category'
+    });
+  });
+  return categories;
+};
+
+export default async function SearchProducts() {
+  const categories = await getCategories();
   return (
     <>
       <Products categories={categories} />
