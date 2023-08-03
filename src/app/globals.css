@@ -35,6 +35,14 @@
     opacity: 0;
   }
 
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+  }
+
   /* Custom CSS for tilt effect */
   .tilted-div {
     transform: rotate(-7deg) translate(80%, 0) scale(0.8);

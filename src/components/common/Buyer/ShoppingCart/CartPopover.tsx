@@ -13,6 +13,9 @@ import { Button } from '@/components/ui/button';
 
 import useCartStore from '@/state/useCartStore';
 import { cn } from '@/lib/utils';
+import { XIcon } from 'lucide-react';
+import { formatCurrency } from '@/utils/formatters';
+import QuantityInput from '@/components/common/Buyer/ShoppingCart/QuantityInput';
 
 type CartPopoverProps = {
   trigger: ReactNode
@@ -27,16 +30,25 @@ export default function CartPopover({ trigger }: CartPopoverProps){
    return (
      <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
-      <PopoverContent className="w-[320px] pt-3 pl-3 pb-3 pr-3" align="end">
+      <PopoverContent className="w-[500px] p-5" align="end">
         <ScrollArea className={cn('w-full', cartItems.length > 3 ? 'h-[350px]' : 'h-fit')}>
           <ul className="flex flex-col gap-y-5">
             {cartItems.map((item: any, idx: number) => (
-              <li className="flex gap-x-3 pb-4 border-b last:border-0" key={idx}>
-                <Image className="border rounded" height={70} width={70} src={item.img} alt={item.name} />
-                <div>
-                  <h6 className="uppercase font-medium">{item.name}</h6>
-                  <p>variant</p>
+              <li className="flex justify-between pb-4 border-b last:border-0" key={idx}>
+                <div className="flex items-center gap-x-3">
+                  <Image className="border rounded" height={75} width={75} src={item.img} alt={item.name} />
+                  <div>
+                    <h6 className="uppercase text-sm font-medium">{item.name}</h6>
+                    <p className="text-sm">variant</p>
+                    <p className="font-medium text-sm">{formatCurrency(item.price)}</p>
+                  </div>
                 </div>
+                <div>
+                  <QuantityInput />
+                </div>
+                <Button className="border rounded p-1 h-fit" variant="ghost">
+                  <XIcon height={17} width={17} />
+                </Button>
               </li>
             ))}
           </ul>
