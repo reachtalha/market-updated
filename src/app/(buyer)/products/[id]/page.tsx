@@ -5,10 +5,30 @@ import Error from '@/components/common/Error';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  shopId: string;
+  type: string;
+  SKU: any;
+  description: string;
+  otherImages: string[];
+  coverImage: string;
+  shopName?: string;
+};
+
 const getProduct = async (id: string) => {
   const docRef = await getDoc(doc(db, 'products', id));
   if (!docRef.exists()) return null;
-  return { id: docRef.id, ...docRef.data() };
+
+  let product: Product = { id: docRef.id, ...docRef.data() } as Product;
+  const shopRef = await getDoc(doc(db, 'shops', product.shopId));
+
+  if (shopRef.exists()) {
+    product.shopName = shopRef?.data()?.name;
+  }
+  return product;
 };
 
 type props = { params: { id: string } };

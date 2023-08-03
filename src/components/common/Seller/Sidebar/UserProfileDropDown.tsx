@@ -1,29 +1,25 @@
-"use client";
+'use client';
 
-import useAuth from "@/hooks/useAuth";
+import useAuth from '@/hooks/useAuth';
 
-import { auth } from "@/lib/firebase/client";
+import { auth } from '@/lib/firebase/client';
 
-import Avatar from "@/components/common/Avatar";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { GearIcon, PinLeftIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
+import Avatar from '@/components/common/Avatar';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { GearIcon, PinLeftIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
 
 const UserProfileDropDown = () => {
   const { logout } = useAuth();
   const currentUser = auth.currentUser;
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild className="focus:outline-none sm:p-1 lg:p-0">
+      <DropdownMenu.Trigger asChild className="focus:outline-none   p-[.4rem]">
         <button className="inline-flex sm:flex sm:flex-col sm:gap-y-2 lg:flex-row  lg:items-start lg:-ml-1 gap-x-1.5 hover:bg-neutral-300/25 py-2  rounded-lg cursor-pointer">
           <Avatar photoURL={currentUser?.photoURL} name={currentUser?.displayName} />
-          <div>
-            <h6 className="font-semibold text-left truncate">
-              {currentUser?.displayName}
-            </h6>
-            <p className="text-sm text-neutral-300 truncate">
-              {currentUser?.email}
-            </p>
+          <div className="w-[10rem] ">
+            <h6 className="font-semibold text-left truncate">{currentUser?.displayName}</h6>
+            <p className="text-sm text-neutral-300  truncate">{currentUser?.email}</p>
           </div>
         </button>
       </DropdownMenu.Trigger>

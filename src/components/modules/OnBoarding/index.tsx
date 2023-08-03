@@ -64,7 +64,7 @@ const OnBoardingForm = () => {
       delete obj.image;
       await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
       if (role === 'buyer') router.push('/');
-      else router.push('/dashboard');
+      else router.push('/seller/dashboard');
     } catch (error: any) {
       toast.error(`Error! ${error.message}`);
     } finally {

@@ -92,9 +92,9 @@ const AddProduct = () => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log('here');
     try {
       setLoading(true);
+
       if (!data.coverImage) {
         toast.error('Please add Cover Image!');
         return;
@@ -103,13 +103,13 @@ const AddProduct = () => {
       const coverImageURL = await UploadImage({
         collection: 'products',
         image: data.coverImage,
-        name: 'cover'
+        name: 'cover' + new Date().getTime()
       });
       const imagePromises = Array.from(data.moreImages, (pic: any) =>
         UploadImage({
           collection: 'products',
           image: pic,
-          name: 'product'
+          name: 'product' + new Date().getTime()
         })
       );
       const otherImagesURL = await Promise.all(imagePromises);
@@ -133,6 +133,7 @@ const AddProduct = () => {
       });
 
       toast.success('Product added!');
+      emptySKUList();
       reset();
       setStep(1);
     } catch (e) {

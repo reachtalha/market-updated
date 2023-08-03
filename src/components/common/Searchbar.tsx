@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+// @ts-ignore
+import React, { useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight, SearchIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -10,7 +11,7 @@ import useClickOutside from '@/hooks/useClickOutside';
 
 type SearchbarProps = {
   isOpen: boolean;
-  toggleSearchBar: Function;
+  toggleSearchBar: (val: boolean) => void;
 };
 
 const quickLinks = [
@@ -38,6 +39,7 @@ const quickLinks = [
 export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
   const searchBoxRef = useRef(null);
   useClickOutside(searchBoxRef, toggleSearchBar);
+
   return (
     <div
       ref={searchBoxRef}
@@ -62,8 +64,12 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
         <h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>
         <ul className="flex flex-col gap-y-4 mt-4">
           {quickLinks.map((item) => (
-            <li onClick={() => toggleSearchBar} className="" key={item.id}>
-              <Link className="flex items-center gap-4 hover:underline" href={item.link}>
+            <li className="" key={item.id}>
+              <Link
+                onClick={() => toggleSearchBar}
+                className="flex items-center gap-4 hover:underline"
+                href={item.link}
+              >
                 <ArrowRight className="text-gray-500" />
                 {item.name}
               </Link>

@@ -1,11 +1,16 @@
-import { Product, columns } from "./columns";
-import { DataTable } from "./data-table";
-import { getDocs, collection } from "firebase/firestore";
-import { db } from "@/lib/firebase/client";
-import Title from "@/components/common/Seller/Shared/Title";
-
+'use client';
+import { Product, columns } from './columns';
+import { DataTable } from './data-table';
+import { getDocs, doc, collection, query, where } from 'firebase/firestore';
+import { db, auth } from '@/lib/firebase/client';
+import Title from '@/components/common/Seller/Shared/Title';
+import useSwr from 'swr';
+import Loader from '@/components/common/Loader';
+import Error from '@/components/common/Error';
 async function getData(): Promise<Product[]> {
-  const querySnapshot = await getDocs(collection(db, 'products'));
+  const q = query(collection(db, 'products'), where('uid', '==', auth.currentUser?.uid));
+  const querySnapshot = await getDocs(q);
+
   const products: Product[] = [];
 
   querySnapshot.forEach((doc) => {
@@ -29,13 +34,19 @@ async function getData(): Promise<Product[]> {
   return products;
 }
 
-export default async function DemoPage() {
-  const data = await getData();
-
+export default function DemoPage() {
+  const { data, isLoading, error } = useSwr('sellerProducts', getData);
+  if (isLoading)
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  if (error) return <Error />;
   return (
     <div className="container mx-auto py-20">
       <Title title="Products" />
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data || []} />
     </div>
   );
 }

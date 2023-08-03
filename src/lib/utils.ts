@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function isColoredRoute(route: string) {
-  const coloredRoutes = ['/experts', '/market', '/account'];
+  const coloredRoutes = ['/experts', '/market', '/account', '/cart'];
   return (
     coloredRoutes.includes(route) ||
     route.startsWith('/experts') ||
