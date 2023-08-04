@@ -2,6 +2,8 @@ import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
 import BoxedContent from '@/components/common/BoxedContent';
 import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 import Experts from '@/components/common/Buyer/Experts/Experts';
+import { getDocs, collection, query, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
 
 const categories = [
   {
@@ -41,7 +43,18 @@ const categories = [
   }
 ];
 
-export default function ExpertsSearch() {
+const getExperts: any = async (): Promise<any> => {
+  let experts: any = [];
+
+  const docRef = await getDocs(query(collection(db, 'users'), where('role', '==', 'influencer')));
+  experts = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+  return experts;
+};
+
+export default async function ExpertsSearch() {
+  const experts = await getExperts();
+
   return (
     <>
       <BoxedContent className="pt-24">
@@ -50,7 +63,7 @@ export default function ExpertsSearch() {
         </header>
         <FeaturedExperts />
       </BoxedContent>
-      <Experts categories={categories} />
+      <Experts experts={experts} categories={categories} />
       <LatestBlogsSection title="#OrganicSimplified" />
     </>
   );

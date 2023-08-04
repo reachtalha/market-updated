@@ -36,8 +36,8 @@ export type Category = {
   name: string;
   slug: string;
   href: string;
-  subCategories: string[];
-  image: string;
+  subCategories?: string[];
+  image?: string;
 };
 type FiltersProps = {
   categories: Category[];
@@ -79,7 +79,7 @@ export default function Filters({
           </CategoryDropdown>
           {selectedSubCategory !== '' && (
             <CategoryDropdown title={selectedSubCategory}>
-              {subCategory?.subCategories.map((category: string, idx: any) => (
+              {subCategory?.subCategories?.map((category: string, idx: any) => (
                 <DropdownMenuItem
                   key={idx}
                   className="capitalize"

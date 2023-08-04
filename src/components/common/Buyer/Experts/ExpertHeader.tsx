@@ -5,6 +5,8 @@ type Category = {
   name: string;
   slug: string;
   href: string;
+  subCategories?: string[];
+  image?: string;
 };
 type ProductHeaderProps = {
   selectedCategory: string | null;

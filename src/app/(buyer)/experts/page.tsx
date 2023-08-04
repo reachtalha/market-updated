@@ -1,18 +1,13 @@
-'use client';
-import Link from 'next/link';
-
-import SortByDropdown from '@/components/common/SortByDropdown';
-import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
-import ExpertCategories from '@/components/common/Buyer/Experts/ExpertCategories';
-import user from '@/assets/images/user.jpeg';
-import useCategorySlug from '@/hooks/useCategorySlug';
 import Experts from '@/components/common/Buyer/Experts/Experts';
+import { getDocs, collection, query, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
 
 const categories = [
   {
     name: 'View All Experts',
     slug: 'all',
     href: '/experts?category'
+    
   },
   {
     name: 'Skincare Experts',
@@ -46,6 +41,17 @@ const categories = [
   }
 ];
 
-export default function Index() {
-  return <Experts categories={categories} />;
+const getExperts: any = async (): Promise<any> => {
+  let experts: any = [];
+
+  const docRef = await getDocs(query(collection(db, 'users'), where('role', '==', 'influencer')));
+  experts = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+  return experts;
+};
+
+export default async function Index() {
+  const experts = await getExperts();
+
+  return <Experts experts={experts} categories={categories} />;
 }

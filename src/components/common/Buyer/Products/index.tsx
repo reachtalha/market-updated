@@ -27,7 +27,12 @@ const getProducts: any = async (
     let docRef;
     if (foryou) {
       const list = categories.map((cat: any) => cat.subCategories).flat();
-      docRef = await getDocs(query(collection(db, 'products'), where('type', 'in', list)));
+
+      docRef = await getDocs(
+        query(collection(db, 'products'), where('type', 'in', list.slice(0, 29)))
+      );
+
+      console.log(docRef);
     } else {
       docRef = await getDocs(query(collection(db, 'products')));
     }
