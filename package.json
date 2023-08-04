@@ -44,6 +44,7 @@
     "react-hook-form": "^7.45.2",
     "react-hot-toast": "^2.4.1",
     "shadcn-ui": "^0.3.0",
+    "sharp": "^0.32.4",
     "swiper": "^10.0.4",
     "swr": "^2.2.0",
     "table": "^6.8.1",
