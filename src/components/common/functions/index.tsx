@@ -121,7 +121,7 @@ export const handleImage = (file: any, setImage: any) => {
 
 export const handleImages = (e: any, limit: number = 4, list: any, setList: any) => {
   if (list.length > limit - 1) {
-    throw new Error('You can only upload 3 pictures');
+    throw new Error('You can only upload 4 pictures');
   }
   for (const file of e.target.files) {
     if (!file.name.match(/\.(jpg|jpeg|png|webp)$/)) {
@@ -132,7 +132,7 @@ export const handleImages = (e: any, limit: number = 4, list: any, setList: any)
     }
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    2;
+
     reader.onload = () => {
       setList((imgs: any) => [...imgs, reader.result]);
     };
@@ -140,4 +140,8 @@ export const handleImages = (e: any, limit: number = 4, list: any, setList: any)
       throw new Error('Unable to read Image!');
     };
   }
+};
+
+export const deleteImage = (file: any, setList: any) => {
+  setList((imgs: any) => imgs.filter((img: any) => img !== file));
 };

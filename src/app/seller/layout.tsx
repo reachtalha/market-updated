@@ -12,10 +12,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (role && role !== 'seller') {
+    console.log('here', role);
+    if (role === 'loading') {
+      return;
+    }
+    if (role !== 'seller') {
       router.push('/auth/register');
     }
-  }, [role]);
+  }, [role, router]);
 
   return (
     <div className={`bg-neutral-900 flex  h-screen overflow-hidden  sm:p-1.5 sm:gap-1.5 `}>

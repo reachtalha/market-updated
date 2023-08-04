@@ -64,7 +64,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
       </div>
       <div className="space-y-1 mt-3 w-full">
         <Label className="font-medium text-base text-gray-600">Product Types</Label>
-        <Select>
+        <Select onValueChange={handleOnChange}>
           <SelectTrigger className="w-full  bg-white rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]">
             <SelectValue
               {...register('type', { required: true })}

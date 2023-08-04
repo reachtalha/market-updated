@@ -30,6 +30,7 @@ export default function FeaturedProducts() {
       {Array.from('abcfghijk').map((_, i: number) => (
         <SwiperSlide key={i + Math.random()}>
           <ProductCard
+            id={i.toString()}
             image={product1}
             name="  LIGHTWEIGHT SHEER DAILY SUNSCREEN SPF 40"
             price={23}

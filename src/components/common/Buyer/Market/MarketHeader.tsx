@@ -6,11 +6,12 @@ type Category = {
   slug: string;
   href: string;
 };
-type ProductHeaderProps = {
+
+type MarketHeaderProps = {
   selectedCategory: string | null;
   categories: Category[];
 };
-export default function ExpertHeader({ selectedCategory = '', categories }: ProductHeaderProps) {
+export default function MarketHeader({ selectedCategory = '', categories }: MarketHeaderProps) {
   return (
     <div className="flex items-center justify-between">
       <p className="hidden md:block uppercase font-medium tracking-wide text-sm">

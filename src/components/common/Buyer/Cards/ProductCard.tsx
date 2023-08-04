@@ -6,6 +6,7 @@ import { formatCurrency } from '@/utils/formatters';
 import Link from 'next/link';
 
 interface ProductCard {
+  id: string;
   image: string | StaticImageData;
   shop: string;
   name: string;
@@ -13,14 +14,17 @@ interface ProductCard {
   type: string;
   shrink?: boolean;
 }
-const ProductCard = ({ image, shop, name, price, type, shrink = true }: ProductCard) => {
+
+const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: ProductCard) => {
   return (
-    <Link href="/products/123" className={`h-fit relative ${shrink ? '' : 'flex-shrink-0'}`}>
+    <Link href={`/products/${id}`} className={`h-fit relative ${shrink ? '' : 'flex-shrink-0'}`}>
       <div className="h-[250px] sm:[h-430px] grid place-content-center bg-accent drop-shadow-sm">
         <Image
           src={image}
-          className="w-[250px] sm:w-[250px] h-[250px] object-cover object-center"
+          className=" h-[250px] object-contain object-center"
           alt={name}
+          width={320}
+          height={250}
         />
       </div>
       <span className="absolute top-3 text-xs uppercase bg-white left-3 py-1.5 px-6 rounded-lg">

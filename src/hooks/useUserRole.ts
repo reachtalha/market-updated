@@ -12,6 +12,8 @@ export const useRole = () => {
       const idTokenResult = await auth.currentUser?.getIdTokenResult();
       if (!isCanceled && !!idTokenResult?.claims.role) {
         setRole(idTokenResult?.claims.role as string);
+      } else {
+        setRole('user');
       }
     }
     fetchRole();
@@ -19,5 +21,9 @@ export const useRole = () => {
       isCanceled = true;
     };
   }, []);
+
+  if (role === '') {
+    return 'loading';
+  }
   return role;
 };

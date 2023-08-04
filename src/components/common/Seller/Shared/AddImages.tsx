@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import { useFormContext } from 'react-hook-form';
 
-import { handleImage, handleImages } from '@/components/common/functions';
+import { deleteImage, handleImage, handleImages } from '@/components/common/functions';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -12,15 +12,7 @@ import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
 import Title from '@/components/common/Seller/Shared/Title';
 
-const ImageUpload = ({
-  label,
-  onUpload,
-  value
-}: {
-  label: string;
-  onUpload: Function;
-  value: string;
-}) => {
+const ImageUpload = ({ label, onUpload }: { label: string; onUpload: Function }) => {
   return (
     <>
       <Label htmlFor={label.replace(' ', '-')} className="text-base font-medium  text-gray-600">
@@ -29,7 +21,6 @@ const ImageUpload = ({
       <input
         id={label.replace(' ', '-')}
         type="file"
-       
         className="block mb-4 mt-1 w-fit text-sm font-medium text-gray-500 file:mr-4 file:rounded-full file:border file:border-killarney-600 file:bg-killarney-50 file:py-2 file:px-5 file:text-sm file:font-medium file:text-killarney-600  hover:file:bg-killarney-100"
         onChange={onUpload as any}
       />
@@ -51,9 +42,6 @@ function AddImages({
   const [pictures, setPictures] = useState<any>([]);
   const [coverImage, setCoverImage] = useState<any>(images?.coverImage);
   const [logoImage, setLogoImage] = useState<any>(images?.logoImage);
-  const picturesRef = useRef<HTMLInputElement | null>(null);
-  const logoRef = useRef<HTMLInputElement | null>(null);
-  const coverRef = useRef<HTMLInputElement | null>(null);
 
   const { setValue, getValues } = useFormContext();
 
@@ -64,6 +52,7 @@ function AddImages({
       } else {
         handleImages(e, 4, pictures, setPictures);
       }
+      e.target.value = '';
     } catch (e: any) {
       toast.error(`Error! ${e.message}`);
     }
@@ -72,6 +61,7 @@ function AddImages({
   const handleCoverImage = (e: any) => {
     try {
       handleImage(e.target.files[0], setCoverImage);
+      e.target.value = '';
     } catch (e: any) {
       toast.error(`Error! ${e.message}`);
     }
@@ -94,11 +84,10 @@ function AddImages({
             <span className="font-medium"> Maximum Size</span>: 10MB
           </p>
 
-          <ImageUpload label="Cover Image" value={coverImage} onUpload={handleCoverImage} />
+          <ImageUpload label="Cover Image" onUpload={handleCoverImage} />
           <ImageUpload
             label={isShop ? 'Logo Image' : 'Other Images'}
             onUpload={handleImageUpload}
-            value={isShop ? logoImage : pictures}
           />
         </div>
         {(coverImage || logoImage || pictures?.length > 0) && (
@@ -109,14 +98,14 @@ function AddImages({
                 <button
                   className="absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1"
                   onClick={() => {
-                    setCoverImage(null);
+                    setCoverImage('');
                   }}
                 >
                   <Trash2 className="h-3 w-3 text-red-500" />
                 </button>
                 <Image
                   title="Cover Image"
-                  src={coverImage}
+                  src={coverImage || ''}
                   height={80}
                   width={70}
                   alt=""
@@ -128,15 +117,14 @@ function AddImages({
                   <button
                     className="absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1"
                     onClick={() => {
-                      setLogoImage(null);
-                      if (logoRef.current) logoRef.current.value = '';
+                      setLogoImage('');
                     }}
                   >
                     <Trash2 className="h-3 w-3 text-red-500" />
                   </button>
                   <Image
                     title="Logo Image"
-                    src={logoImage}
+                    src={logoImage || ''}
                     height={80}
                     width={70}
                     alt=""
@@ -148,14 +136,14 @@ function AddImages({
                   <div key={index} className="relative h-24 w-24">
                     <button
                       className="absolute top-1 right-1 bg-red-200  rounded-full p-1"
-                      onClick={() =>
-                        setPictures(pictures?.filter((e: any, i: number) => i !== index))
-                      }
+                      onClick={() => {
+                        deleteImage(pic, setPictures);
+                      }}
                     >
                       <Trash2 className="h-3 w-3 text-red-500" />
                     </button>
                     <Image
-                      src={pic}
+                      src={pic || ''}
                       height={80}
                       width={70}
                       alt=""

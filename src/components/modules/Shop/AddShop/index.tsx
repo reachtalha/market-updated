@@ -120,14 +120,14 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
       coverImageURL = await UploadImage({
         collection: 'shops',
         image: data.coverImage,
-        name: 'cover'
+        name: 'cover' + new Date().getTime()
       });
     }
     if (!data.logoImage.includes('firebasestorage.googleapis.com')) {
       logoURL = await UploadImage({
         collection: 'shops',
         image: data.logoImage,
-        name: 'logo'
+        name: 'logo' + new Date().getTime()
       });
     }
 
@@ -183,7 +183,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
     }
   };
   return (
-    <section className={` h-full ${!isEdit && 'py-10'}  `}>
+    <section className={` h-full ${!isEdit ? 'py-10' : 'pb-10'}  `}>
       <FormProvider {...methods}>
         <form id="add-shop-form" onSubmit={handleSubmit(onSubmit)} className="">
           {isEdit ? (

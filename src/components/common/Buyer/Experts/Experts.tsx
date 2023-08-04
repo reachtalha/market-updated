@@ -8,8 +8,14 @@ import BoxedContent from '@/components/common/BoxedContent';
 import useCategorySlug from '@/hooks/useCategorySlug';
 
 import user from '@/assets/images/user.jpeg';
-import { Category } from '@/components/common/Buyer/Products/ProductCategories';
+
 import ExpertHeader from '@/components/common/Buyer/Experts/ExpertHeader';
+
+type Category = {
+  name: string;
+  slug: string;
+  href: string;
+};
 
 type ExpertsProps = {
   categories: Category[];
