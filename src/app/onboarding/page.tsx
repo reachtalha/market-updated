@@ -32,7 +32,7 @@ const OnBoarding = () => {
         const docRef = await getDoc(doc(db, 'users', `${uid}`));
         if (docRef.exists()) {
           if (docRef.data().role === 'buyer') router.push('/');
-          else router.push('/dashboard');
+          else router.push('/seller/dashboard');
         }
       } catch (e: any) {
         router.push('/500');
