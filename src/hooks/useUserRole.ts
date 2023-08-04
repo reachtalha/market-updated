@@ -1,29 +1,46 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect, useMemo } from 'react';
 import { auth } from '@/lib/firebase/client';
 
-export const useRole = () => {
-  const [role, setRole] = useState('');
+const useAuthToken = () => {
+  const [token, setToken] = useState<any>(null);
+
   useEffect(() => {
     let isCanceled = false;
-    async function fetchRole() {
+
+    async function fetchToken() {
       const idTokenResult = await auth.currentUser?.getIdTokenResult();
-      if (!isCanceled && !!idTokenResult?.claims.role) {
-        setRole(idTokenResult?.claims.role as string);
+      if (!isCanceled && !!idTokenResult) {
+        setToken(idTokenResult);
       } else {
-        setRole('user');
+        setToken(null);
       }
     }
-    fetchRole();
+
+    fetchToken();
+
     return () => {
       isCanceled = true;
     };
-  }, []);
+  }, [auth.currentUser]);
 
-  if (role === '') {
-    return 'loading';
-  }
-  return role;
+  return token;
+};
+
+export const useRole = () => {
+  const [role, setRole] = useState<string>('');
+  const token = useAuthToken();
+
+  useEffect(() => {
+    if (!!token?.claims.role) {
+      setRole(token.claims.role as string);
+    } else {
+      setRole('buyer');
+    }
+  }, [token]);
+
+  const cachedRole = useMemo(() => role, [role]);
+
+  return cachedRole;
 };
