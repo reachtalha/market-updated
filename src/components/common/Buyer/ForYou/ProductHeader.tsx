@@ -5,27 +5,17 @@ import { Category } from '@/components/common/Buyer/Products/ProductCategories';
 type ProductHeaderProps = {
   selectedCategory: string | null;
   categories: Category[];
-  setSelectedSubCategory?: (subCategory: string) => void;
-  selectedSubCategory?: string;
 };
-export default function ProductHeader({
-  setSelectedSubCategory,
-  selectedCategory = '',
-  categories,
-  selectedSubCategory = ''
-}: ProductHeaderProps) {
+export default function ProductHeader({ selectedCategory = '', categories }: ProductHeaderProps) {
   return (
     <div className="flex items-center justify-between">
       <p className="hidden md:block uppercase font-medium tracking-wide text-sm">
         {selectedCategory}
       </p>
       <div className="md:hidden">
-        <CategoryDropdown
-          selectedSubCategory={selectedSubCategory}
-          setSelectedSubCategory={setSelectedSubCategory}
-          categories={categories}
-        />
+        <CategoryDropdown categories={categories} />
       </div>
+      <SortByDropdown />
     </div>
   );
 }
