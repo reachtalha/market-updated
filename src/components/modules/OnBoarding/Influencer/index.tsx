@@ -102,7 +102,7 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton }) =>
       <Label htmlFor="socialMedia" className="text-sm text-gray-600">
         Social Media
       </Label>
-      <div className="w-full flex rounded-xl overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800  focus-within:outline-neutral-800">
+      <div className="w-full flex gap-x-1 rounded-xl overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800  focus-within:outline-neutral-800">
         <select
           id="socialMedia"
           value={selectedSocialMedia}
@@ -128,14 +128,14 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton }) =>
           placeholder="Enter social media link"
         />
 
-        <Button
+        <button
           type="button"
           disabled={!selectedSocialMedia || !link ? true : false}
-          className="bg-neutral-800 disabled:cursor-not-allowed hover:bg-neutral-900 rounded-lg px-2 py-1.5"
+          className="bg-primary opacity-90 hover:opacity-100 disabled:cursor-not-allowed rounded-lg px-2 py-1.5"
           onClick={handleAddClick}
         >
           <PlusIcon className="w-5 h-5 text-white" />
-        </Button>
+        </button>
       </div>
     </>
   );
@@ -159,12 +159,12 @@ const SocialMediaList: React.FC<SocialMediaListProps> = ({ items, onDeleteSocial
               <p>
                 <span className="font-medium">{socialMedia.type}</span>:{socialMedia.link}
               </p>
-              <Button
+              <button
                 onClick={() => onDeleteSocialLink(index)}
-                className="hover:bg-gray-100 rounded-full p-1"
+                className="hover:bg-gray-100 rounded-full p-1.5"
               >
-                <Cross1Icon className="w-5 h-5" />
-              </Button>
+                <Cross1Icon className="w-4 h-4 2xl:w-5 2xl:h-5" />
+              </button>
             </li>
           ))}
         </ul>

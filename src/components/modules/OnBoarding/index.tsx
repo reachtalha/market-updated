@@ -76,7 +76,7 @@ const OnBoardingForm = () => {
     <button
       type="submit"
       disabled={loading}
-      className="bg-neutral-800 mt-3 hover:bg-neutral-900 rounded-md duration-300 transition-colors w-full text-white py-2.5"
+      className="bg-primary opacity-90 hover:opacity-100 mt-3 rounded-md duration-300 transition-colors w-full text-white py-2.5"
     >
       {loading ? 'Please wait...' : label}
     </button>

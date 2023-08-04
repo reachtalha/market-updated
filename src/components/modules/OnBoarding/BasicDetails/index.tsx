@@ -59,7 +59,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
                 </p>
               </>
             )}
-            <Input type="file" id="o-image" hidden onChange={handleImageChange} />
+            <input type="file" id="o-image" hidden onChange={handleImageChange} />
           </Label>
         </div>
       </div>
@@ -174,7 +174,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
         <Button
           type="button"
           onClick={nextStep}
-          className="bg-neutral-800 mt-3 hover:bg-neutral-900 rounded-md duration-300 transition-colors w-full text-white py-2.5"
+          className="bg-primary opacity-90 hover:opacity-100 mt-3  rounded-md duration-300 transition-colors w-full text-white py-2.5"
         >
           Next
         </Button>
