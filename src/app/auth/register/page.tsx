@@ -20,8 +20,6 @@ interface RegisterForm {
   name: string;
 }
 
-const BUYER = 'buyer';
-const SELLER = 'seller';
 
 const Register = () => {
   const router = useRouter();
@@ -54,7 +52,7 @@ const Register = () => {
           name,
           email,
           password,
-          role: SELLER
+          role: "influencer"
         },
         {
           cancelToken: cancelTokenSource.token
