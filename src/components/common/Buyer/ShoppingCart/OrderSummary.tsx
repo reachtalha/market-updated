@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
 import { formatCurrency } from '@/utils/formatters';
 
@@ -25,7 +27,9 @@ export default function OrderSummary(){
         </div>
       </div>
 
-      <Button className="w-full mt-4">Checkout</Button>
+      <Link href="/checkout">
+        <Button className="w-full mt-4">Checkout</Button>
+      </Link>
     </div>
   )
 }
