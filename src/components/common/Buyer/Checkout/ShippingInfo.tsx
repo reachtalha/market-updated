@@ -14,17 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-
-
 import { Separator } from '@/components/ui/separator';
 
 export default function ShippingInfo(){
@@ -38,7 +27,6 @@ export default function ShippingInfo(){
     address: z.string().min(1, { message: "required" }),
     apartments: z.string().min(1, { message: "required" }),
     city: z.string().min(1, { message: "required" }),
-    country: z.string().min(1, { message: "required" }),
     state: z.string().min(1, { message: "required" }),
     postal: z.string().min(1, { message: "required" }),
     phone: z.string().min(1, { message: "required" }),
@@ -54,7 +42,6 @@ export default function ShippingInfo(){
       address: "",
       apartments: "",
       city: "",
-      country: "",
       state: "",
       postal: "",
       phone: "",
@@ -153,49 +140,19 @@ export default function ShippingInfo(){
                 </FormItem>
               )}
             />
-
-            <div className="mt-5 flex gap-x-3">
-              <FormField
-                control={form.control}
-                name="city"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>City</FormLabel>
-                    <FormControl>
-                      <Input placeholder="City"  {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="country"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Country</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <SelectTrigger className="w-full bg-white text-black">
-                          <SelectValue className="text-black" placeholder="Country" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Countries</SelectLabel>
-                            <SelectItem value="apple">Apple</SelectItem>
-                            <SelectItem value="banana">Banana</SelectItem>
-                            <SelectItem value="blueberry">Blueberry</SelectItem>
-                            <SelectItem value="grapes">Grapes</SelectItem>
-                            <SelectItem value="pineapple">Pineapple</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Input placeholder="City"  {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="mt-5 flex gap-x-3">
               <FormField
