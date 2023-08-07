@@ -9,16 +9,14 @@ const transporter = nodemailer.createTransport({
   port: 465, // Use 465 for SSL
   secure: true, // Use SSL
   auth: {
-    user: 'dev7@ccript.com', // Your Zoho Mail email address
-    pass: '4$wAossw' // Your Zoho Mail password
+    user: 'email', // Your Zoho Mail email address
+    pass: 'password' // Your Zoho Mail password
   }
 });
 
 export async function POST(req: Request) {
   const { name, password, email } = await req.json();
   try {
-    //const emailHtml = render(<WaitingList name={name} email={email} password={password} />);
-
     const options = {
       from: 'dev7@ccript.com',
       to: email,
