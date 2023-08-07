@@ -10,12 +10,6 @@ import { doc, getDoc } from '@firebase/firestore';
 import OnBoardingForm from '@/components/modules/OnBoarding';
 import Loader from '@/components/common/Loader';
 
-export const metadata: Metadata = {
-  title: 'OnBoarding',
-  description:
-    'This page provides information and guidance for new users to get started with our platform.'
-};
-
 const OnBoarding = () => {
   const search = useSearchParams();
   const router = useRouter();

@@ -26,11 +26,12 @@ export default function CartPopover({ trigger }: CartPopoverProps){
 
   const handleExploreProducts = () =>  router.push('/products');
   const handleViewCart = () =>  router.push('/cart');
+  const handleViewCheckout = () =>  router.push('/checkout');
 
    return (
      <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
-      <PopoverContent className="w-[500px] p-5" align="end">
+      <PopoverContent className="w-[600px] p-5" align="end">
         <ScrollArea className={cn('w-full', cartItems.length > 3 ? 'h-[350px]' : 'h-fit')}>
           <ul className="flex flex-col gap-y-5">
             {cartItems.map((item: any, idx: number) => (
@@ -38,9 +39,9 @@ export default function CartPopover({ trigger }: CartPopoverProps){
                 <div className="flex items-center gap-x-3">
                   <Image className="border rounded" height={75} width={75} src={item.img} alt={item.name} />
                   <div>
-                    <h6 className="uppercase text-sm font-medium">{item.name}</h6>
-                    <p className="text-sm">variant</p>
-                    <p className="font-medium text-sm">{formatCurrency(item.price)}</p>
+                    <h6 className="uppercase text-sm font-medium w-[250px]">{item.name}</h6>
+                    <p>{item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}</p>
+                    <p className="font-medium text-sm">{formatCurrency(item?.selectedVariant?.price)}</p>
                   </div>
                 </div>
                 <div>
@@ -63,14 +64,16 @@ export default function CartPopover({ trigger }: CartPopoverProps){
         </ScrollArea>
         {!!cartItems.length ?
           <>
-          <Button className="w-full">Checkout</Button>
-          <div className="text-center">
             <PopoverClose asChild>
-              <Button variant="link" className="text-[14px] underline" onClick={handleViewCart}>
-                View cart
-              </Button>
+              <Button onClick={handleViewCheckout} className="w-full">Checkout</Button>
             </PopoverClose>
-          </div>
+            <div className="text-center">
+              <PopoverClose asChild>
+                <Button variant="link" className="text-[14px] underline" onClick={handleViewCart}>
+                  View cart
+                </Button>
+              </PopoverClose>
+            </div>
           </>
         : null}
       </PopoverContent>

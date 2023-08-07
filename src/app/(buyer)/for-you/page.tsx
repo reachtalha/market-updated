@@ -13,9 +13,14 @@ const getFavCategory = async () => {
 
   const userDoc = userDocSnapshot.data();
 
-  const querySnapshot = await getDocs(
-    query(collection(db, 'categories'), where('title', 'in', userDoc?.favourites))
-  );
+  let querySnapshot;
+  if (!userDoc?.favourites) {
+    querySnapshot = await getDocs(query(collection(db, 'categories')));
+  } else {
+    querySnapshot = await getDocs(
+      query(collection(db, 'categories'), where('title', 'in', userDoc?.favourites))
+    );
+  }
 
   let categories: any = [];
   querySnapshot.forEach((doc) => {

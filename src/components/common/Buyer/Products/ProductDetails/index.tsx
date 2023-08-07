@@ -11,7 +11,8 @@ import ProductVideo from '@/components/common/Buyer/Products/ProductDetails/Prod
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
 import ComplementaryProducts from '@/components/common/Buyer/Products/ProductDetails/ComplementaryProducts';
 import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard';
-import Products from '..';
+
+import useCartStore from '@/state/useCartStore';
 
 const product = {
   name: 'Body Wash',
@@ -47,6 +48,12 @@ export default function Product({ product }: { product: any }) {
   );
   const [selectedSize, setSelectedSize] = useState(uniqueSizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.SKU[0].id);
+
+  const { setCartItems } = useCartStore((state: any) => state);
+
+  const handleAddToBag = () => {
+    setCartItems({ name: product.name, selectedVariant });
+  }
 
   return (
     <>
@@ -122,7 +129,7 @@ export default function Product({ product }: { product: any }) {
           </div>
           <span className="">Price</span>
           <p className="font-medium text-2xl mb-3">{selectedVariant.price}$</p>
-          <Button className="w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500">
+          <Button onClick={handleAddToBag} className="w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500">
             Add to bag
           </Button>
           <Button className="w-full mt-2 bg-transparent hover:tracking-wider hover:bg-transparent hover:text-primary transition-all duration-500 text-primary border-primary border-2 uppercase">
