@@ -18,10 +18,9 @@ import useCartStore from '@/state/useCartStore';
 
 const Header = () => {
   const [toggleSearchbar, setToggleSearchBar] = useState(false);
-
   const isScrollChanged = useDetectChangeScroll();
   const pathname = usePathname();
-  const { cartItems } = useCartStore((state: any) => state);
+  const { cart } = useCartStore((state: any) => state);
 
   const onToggleSearchBar = (val: boolean) => setToggleSearchBar(val);
   return (
@@ -73,7 +72,7 @@ const Header = () => {
                   )}
                 size="icon"
                 variant="link"
-              >Cart ({cartItems.length})</Button>
+              >Cart ({cart?.items?.length || 0})</Button>
             }
           />
         </div>
