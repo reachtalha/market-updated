@@ -78,7 +78,7 @@ const Expert = async ({ params }: ExpertProps) => {
             <div className="mt-8 lg:mt-16">
               <p className="uppercase">topics</p>
               <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
-                {expert?.topics.map((item: any, idx: number) => (
+                {expert?.topics?.map((item: any, idx: number) => (
                   <Button
                     key={idx}
                     variant="outline"
