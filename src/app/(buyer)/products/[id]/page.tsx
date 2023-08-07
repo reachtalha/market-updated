@@ -40,7 +40,7 @@ export default async function Page({ params }: props) {
 
   return (
     <BoxedContent className="py-20">
-      <Product product={{ ...product }} />
+      <Product productJSON={JSON.stringify(product)} />
       <div className="py-5 md:py-10">
         <OrganicSimplifiedSection />
       </div>

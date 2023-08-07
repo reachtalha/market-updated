@@ -19,9 +19,10 @@ type Category = {
 
 type ExpertsProps = {
   categories: Category[];
-  experts: any;
+  expertsJSON: any;
 };
-export default function Experts({ experts, categories }: ExpertsProps) {
+export default function Experts({ expertsJSON, categories }: ExpertsProps) {
+  const experts = JSON.parse(expertsJSON)
   const category = useCategorySlug();
 
   return (
