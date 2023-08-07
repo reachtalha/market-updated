@@ -31,8 +31,6 @@ const getProducts: any = async (
       docRef = await getDocs(
         query(collection(db, 'products'), where('type', 'in', list.slice(0, 29)))
       );
-
-      console.log(docRef);
     } else {
       docRef = await getDocs(query(collection(db, 'products')));
     }

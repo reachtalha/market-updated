@@ -15,12 +15,11 @@ import {
   addDoc,
   setDoc
 } from 'firebase/firestore';
-import { db, auth, storage } from '@/lib/firebase/client';
-import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { db, auth } from '@/lib/firebase/client';
 
 import toast from 'react-hot-toast';
 
-import { FormProvider, useForm, useFormContext, SubmitHandler } from 'react-hook-form';
+import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 
 import Socials from '@/components/modules/Shop/AddShop/Socials';
 import ShopInformation from '@/components/modules/Shop/AddShop/ShopInformation';

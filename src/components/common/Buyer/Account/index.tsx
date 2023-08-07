@@ -6,9 +6,10 @@ import useCategorySlug from '@/hooks/useCategorySlug';
 import Settings from '@/components/modules/Account/Settings';
 import CardInfo from '@/components/modules/Account/CardInfo';
 import OrderHistory from '@/components/modules/Account/OrderHistory';
-import { getDoc, collection, doc, where, query } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
 import Loader from '../../Loader';
+import { useRouter } from 'next/navigation';
 
 type AccountProps = {
   options: Option[];
@@ -17,6 +18,11 @@ type AccountProps = {
 function Index({ options }: AccountProps) {
   const category = useCategorySlug();
   const [user, setUser] = useState<any>();
+  const router = useRouter();
+
+  if (!auth.currentUser) {
+    router.push('/auth/login');
+  }
 
   useEffect(() => {
     const getUser = async () => {

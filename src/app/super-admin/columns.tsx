@@ -1,34 +1,34 @@
-"use client"
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from '@tanstack/react-table';
 
 export type NewUser = {
-  name: string
-  email: string
-  bio: string
-  socials: string[]
-  isApproved: boolean
-}
+  name: string;
+  email: string;
+  bio: string;
+  socials: string[];
+  isApproved: boolean;
+};
 
 export const columns: ColumnDef<NewUser>[] = [
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => {
+      const name: string = String(row.getValue('name'));
+      return <span className="capitalize">{name}</span>;
+    }
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: 'email',
+    header: 'Email'
   },
   {
-    accessorKey: "bio",
-    header: "Bio",
+    accessorKey: 'bio',
+    header: 'Bio'
   },
   {
-    accessorKey: "socials",
-    header: "Socials",
-  },
-  {
-    accessorKey: "isApproved",
-    header: "Is approved?",
-  },
-]
+    accessorKey: 'socials',
+    header: 'Socials'
+  }
+];

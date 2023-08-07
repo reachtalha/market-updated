@@ -10,12 +10,49 @@ import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
 import market1 from '@/assets/images/market1.png';
 import ShopCard from '@/components/common/Buyer/Cards/ShopCard';
 import MarketHeader from '@/components/common/Buyer/Market/MarketHeader';
+import Loader from '@/components/common/Loader';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
+import useSwr from 'swr';
+import { useEffect, useState } from 'react';
+
+const getShops = async () => {
+  let shops: any = [];
+  const querySnapshot = await getDocs(collection(db, 'shops'));
+
+  querySnapshot.forEach((doc: any) => {
+    shops.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+
+  return shops;
+};
 
 type MarketProps = {
   categories: Category[];
 };
 export default function Market({ categories }: MarketProps) {
   const category = useCategorySlug();
+  const [filteredShops, setFilteredShops] = useState([]);
+  const { data: shops, isLoading, error } = useSwr('shops', () => getShops());
+
+  useEffect(() => {
+    if (shops) {
+      if (category === 'all') {
+        console.log(shops);
+        setFilteredShops(shops);
+      } else {
+        console.log(category);
+        const filteredShops = shops.filter((shop: any) => shop.category.split('&')[0] === category);
+        console.log(filteredShops);
+        setFilteredShops(filteredShops || []);
+      }
+    }
+  }, [shops, category]);
+
+  if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
 
   return (
     <>
@@ -24,15 +61,21 @@ export default function Market({ categories }: MarketProps) {
         <div className="flex-1 space-y-4">
           <MarketHeader selectedCategory={category} categories={categories} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {Array.from('abcfghyu').map((_, i: number) => (
-              <ShopCard
-                key={i + Math.random()}
-                image={market1}
-                desc="Find harmony with nature as you flow through your practice, surrounded by the pure essence of organic yoga products that honor your well-being and the planet."
-                shop="Salt & Stone"
-                type="Skin Care"
-              />
-            ))}
+            {filteredShops.length > 0 ? (
+              filteredShops.map((shop: any, i: number) => (
+                <ShopCard
+                  key={i + Math.random()}
+                  image={shop.coverImage}
+                  desc={shop.tagline}
+                  shop={shop.name}
+                  type={shop.category}
+                />
+              ))
+            ) : (
+              <div className="flex items-center justify-center w-[80vw] h-96">
+                <h3 className="text-xl text-gray-500">No Shops Found</h3>
+              </div>
+            )}
           </div>
         </div>
       </BoxedContent>

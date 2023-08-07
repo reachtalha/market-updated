@@ -6,20 +6,35 @@ import useSWR from 'swr';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 const getFavCategory = async () => {
-  if (!auth.currentUser) return;
+  let querySnapshot;
+  if (!auth.currentUser) {
+    querySnapshot = await getDocs(collection(db, 'categories'));
+
+    let categories: any = [];
+    querySnapshot.forEach((doc) => {
+      categories.push({
+        id: doc.id,
+        name: doc.data().title,
+        subCategories: doc.data().list,
+        lifeSpan: doc.data().lifeSpaan,
+        image: doc.data().image,
+        slug: doc.data().title,
+        href: '/products?category'
+      });
+    });
+    return categories;
+  }
   const userDocSnapshot = await getDoc(doc(db, 'users', auth.currentUser?.uid));
 
   if (!userDocSnapshot.exists()) return;
-
   const userDoc = userDocSnapshot.data();
 
-  let querySnapshot;
-  if (!userDoc?.favourites) {
-    querySnapshot = await getDocs(query(collection(db, 'categories')));
-  } else {
+  if (userDoc?.favourites) {
     querySnapshot = await getDocs(
-      query(collection(db, 'categories'), where('title', 'in', userDoc?.favourites))
+      query(collection(db, 'categories'), where('title', 'in', userDoc.favourites))
     );
+  } else {
+    querySnapshot = await getDocs(collection(db, 'categories'));
   }
 
   let categories: any = [];
@@ -38,16 +53,13 @@ const getFavCategory = async () => {
 };
 
 export default function Index() {
-  const { data: categories, error, isLoading } = useSWR(['forYouCategories'], getFavCategory);
+  const { data: categories, error, isLoading } = useSWR('forYouCategories', getFavCategory);
 
-  if (isLoading)
-    return (
-      <div className="w-screen h-[70vh] flex items-center justify-center">
-        <Loader />
-      </div>
-    );
+  if (isLoading) return <Loader className="w-screen h-[70vh] flex items-center justify-center" />;
 
   if (error) return <Error />;
+
+  console.log(categories);
 
   return <Products foryou categories={categories} />;
 }
