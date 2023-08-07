@@ -144,12 +144,12 @@ const AddProduct = () => {
   };
 
   return (
-    <section className=" h-full py-10  ">
+    <section className="h-full py-10">
       <FormProvider {...methods}>
         <form id="add-product-form" onSubmit={handleSubmit(onSubmit)} className="">
           <Stepper step={step} data={STEPPER_DATA} />
 
-          <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] m-auto mt-5 ">
+          <div className="w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] mx-auto mt-5 pb-5">
             {step === 1 && <BasicDetails setStep={setStep} types={types} />}
             {step === 2 && <CreateSKU setStep={setStep} />}
             {step === 3 && <AddImages setStep={setStep} />}

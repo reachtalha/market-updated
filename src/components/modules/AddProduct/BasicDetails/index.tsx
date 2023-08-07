@@ -51,9 +51,9 @@ const BasicDetails = ({ types, setStep }: Props) => {
     <>
       <Title title="Basic Details" />
       <div className="space-y-1 w-full mt-3">
-        <Label className="text-base font-medium  text-gray-600">Product Name</Label>
+        <Label>Product Name</Label>
         <Input
-          className="w-full  rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem] "
+          className="w-full placeholder:text-sm"
           type="text"
           placeholder="Your Product Name"
           {...register('name', { required: true })}
@@ -63,9 +63,9 @@ const BasicDetails = ({ types, setStep }: Props) => {
         )}
       </div>
       <div className="space-y-1 mt-3 w-full">
-        <Label className="font-medium text-base text-gray-600">Product Types</Label>
+        <Label>Product Types</Label>
         <Select onValueChange={handleOnChange}>
-          <SelectTrigger className="w-full  bg-white rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]">
+          <SelectTrigger className="w-full">
             <SelectValue
               {...register('type', { required: true })}
               placeholder="Select Product Type"
@@ -84,7 +84,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
       </div>
 
       <div className="w-full mt-3">
-        <Label className="font-medium text-base text-gray-600">Gender</Label>
+        <Label>Gender</Label>
         <div className="flex flex-wrap gap-3 w-full">
           {['Male', 'Female', 'Unisex'].map((s, index) => (
             <div className="flex items-center gap-x-2 mt-1" key={index}>
@@ -128,10 +128,10 @@ const BasicDetails = ({ types, setStep }: Props) => {
         </div>
       </div>
       <div className="space-y-1 mt-3 w-full">
-        <Label className="font-medium text-base text-gray-600">Description</Label>
+        <Label >Description</Label>
         <textarea
           rows={4}
-          className="resize-none w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm overflow-y-auto  focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+          className="resize-none w-full placeholder:text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 overflow-y-auto px-3 py-2 text-sm ring-offset-white border rounded-md"
           placeholder="Enter your product description"
           {...register('description', { required: true })}
         ></textarea>
@@ -142,7 +142,8 @@ const BasicDetails = ({ types, setStep }: Props) => {
       <Button
         type="button"
         onClick={nextStep}
-        className="w-full py-2.5  border border-white hover:border-primary hover:text-primary hover:bg-white duration-500 transition-colors rounded-lg text-white bg-primary mt-2"
+        variant="default"
+        className="w-full"
       >
         Next
       </Button>
