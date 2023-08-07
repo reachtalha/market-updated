@@ -95,9 +95,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
 
   if (productsIsLoading)
     return (
-      <div className="w-screen h-[70vh] flex items-center justify-center">
-        <Loader />
-      </div>
+      <Loader className="w-full h-[80vh] grid place-content-center" />
     );
 
   if (productsError) return <Error />;

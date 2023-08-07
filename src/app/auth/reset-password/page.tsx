@@ -2,8 +2,14 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/lib/firebase/client';
+
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
 import toast from 'react-hot-toast';
 
 const ResetPassword = () => {
@@ -55,22 +61,23 @@ const ResetPassword = () => {
       </p>
       <form onSubmit={handleResetPassword} className="space-y-4 my-3">
         <div className="space-y-1">
-          <label className="text-sm">Email</label>
-          <input
+          <Label>Email</Label>
+          <Input
             type="email"
             name="email"
             aria-label="email"
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px] focus:outline-killarney-700"
+            className="w-full placeholder:text-sm"
             placeholder="Your email"
           />
         </div>
-        <button
+        <Button
           type="submit"
-          disabled={loading ? true : false}
-          className="disabled:cursor-not-allowed w-full border bg-neutral-800 hover:bg-neutral-900 duration-300 transition-colors focus: outline text-white rounded py-2 m-0"
+          variant="default"
+          disabled={loading}
+          className="w-full"
         >
           {loading ? 'Please wait' : 'Reset Password'}
-        </button>
+        </Button>
       </form>
       <p className="text-center mt-3">
         Remember the Password?{' '}

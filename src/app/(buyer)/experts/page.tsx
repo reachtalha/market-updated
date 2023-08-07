@@ -7,7 +7,7 @@ const categories = [
     name: 'View All Experts',
     slug: 'all',
     href: '/experts?category'
-    
+
   },
   {
     name: 'Skincare Experts',
@@ -53,5 +53,5 @@ const getExperts: any = async (): Promise<any> => {
 export default async function Index() {
   const experts = await getExperts();
 
-  return <Experts experts={experts} categories={categories} />;
+  return <Experts expertsJSON={JSON.stringify(experts)} categories={categories} />;
 }

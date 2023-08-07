@@ -25,9 +25,9 @@ const Index = ({ setStep }: Props) => {
     <>
       <Title title="Shop Socials" subTitle={'(Optional)'} />
       <div className="space-y-1 w-full mt-3">
-        <Label className=" font-medium text-base  text-gray-600">Facebook URL</Label>
+        <Label>Facebook URL</Label>
         <Input
-          className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+          className="w-full placeholder:text-sm"
           type="text"
           placeholder="Enter Facebook URL"
           {...register('fbUrl')}
@@ -35,9 +35,9 @@ const Index = ({ setStep }: Props) => {
         {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
       </div>
       <div className="space-y-1 w-full mt-3">
-        <Label className="text-base font-medium  text-gray-600">Instagram URL</Label>
+        <Label>Instagram URL</Label>
         <Input
-          className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+          className="w-full placeholder:text-sm"
           type="text"
           placeholder="Enter Instagram URL"
           {...register('instaUrl')}
@@ -45,9 +45,9 @@ const Index = ({ setStep }: Props) => {
         {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
       </div>
       <div className="space-y-1 w-full mt-3">
-        <Label className="text-base font-medium  text-gray-600">Twitter URL</Label>
+        <Label>Twitter URL</Label>
         <Input
-          className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+          className="w-full placeholder:text-sm"
           type="text"
           placeholder="Enter Twitter URL"
           {...register('twitterUrl')}
@@ -55,9 +55,9 @@ const Index = ({ setStep }: Props) => {
         {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
       </div>
       <div className="space-y-1 w-full mt-3">
-        <Label className="text-base font-medium  text-gray-600">Website URL</Label>
+        <Label>Website URL</Label>
         <Input
-          className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+          className="w-full placeholder:text-sm"
           type="text"
           placeholder="Enter Website URL"
           {...register('websiteUrl')}
@@ -67,14 +67,16 @@ const Index = ({ setStep }: Props) => {
       <div className="flex gap-x-2 mt-4">
         <Button
           type="button"
+          variant="secondary"
           onClick={() => setStep((prev) => prev - 1)}
-          className="w-full py-2.5 bg-gray-200 hover:bg-killarney-200 duration-300 transition-colors rounded-md text-black"
+          className="w-1/2"
         >
           Back
         </Button>
         <Button
           onClick={nextStep}
-          className="disabled:cursor-not-allowed w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white"
+          variant="default"
+          className="w-1/2"
         >
           Next
         </Button>

@@ -18,13 +18,13 @@ interface ProductCard {
 const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: ProductCard) => {
   return (
     <Link href={`/products/${id}`} className={`h-fit relative ${shrink ? '' : 'flex-shrink-0'}`}>
-      <div className="relative bg-accent h-96 w-full drop-shadow-sm">
+      <div className="relative bg-accent group h-96 w-full drop-shadow-sm">
         <Image
           src={image}
           className="object-cover"
           alt={name}
           fill={true}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, (max-width: 1800px) 50vw"
         />
       </div>
       <span className="absolute top-3 text-xs uppercase bg-white left-3 py-1.5 px-6 rounded-lg">

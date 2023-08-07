@@ -1,60 +1,16 @@
-import BoxedContent from '@/components/common/BoxedContent';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import Products from '@/components/common/Buyer/Products';
-import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
-import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
+import Image from 'next/image';
 
 import { getDocs, getDoc, doc, collection } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
-import Image from 'next/image';
 
-const socials = [
-  {
-    name: 'website',
-    link: ''
-  },
-  {
-    name: 'instagram',
-    link: ''
-  },
-  {
-    name: 'tiktok',
-    link: ''
-  },
-  {
-    name: 'youtube',
-    link: ''
-  }
-];
-
-const categories = [
-  {
-    name: 'Shop All',
-    slug: 'all',
-    href: '/experts/1?category'
-  },
-  {
-    name: 'deodorants',
-    slug: 'deodorants',
-    href: '/experts/1?category'
-  },
-  {
-    name: 'face',
-    slug: 'face',
-    href: '/experts/1?category'
-  },
-  {
-    name: 'body',
-    slug: 'body',
-    href: '/experts/1?category'
-  },
-  {
-    name: 'sunscreen',
-    slug: 'sunscreen',
-    href: '/experts/1?category'
-  }
-];
+import { Button } from '@/components/ui/button';
+import BoxedContent from '@/components/common/BoxedContent';
+import Products from '@/components/common/Buyer/Products';
+import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
+import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
+import AddPinnedContentModal from '@/components/modules/Experts/PinnedContent/AddContent';
+import PinnedContentList from '@/components/modules/Experts/PinnedContent/List';
 
 const getCategories = async () => {
   const querySnapshot = await getDocs(collection(db, 'categories'));
@@ -91,8 +47,8 @@ const Expert = async ({ params }: ExpertProps) => {
   return (
     <>
       <BoxedContent className="pt-20 lg:py-20">
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-14">
-          <div className="w-full relative md:w-[400px] h-[400px] lg:h-[606px] lg:w-full rounded-lg ">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-14 relative">
+          <div className="w-full relative md:w-[400px] h-[400px] overflow-hidden lg:h-[606px] lg:w-full rounded-lg ">
             <Image
               src={expert?.photoURL}
               className="h-full w-full object-cover"
@@ -135,8 +91,12 @@ const Expert = async ({ params }: ExpertProps) => {
               </div>
             </div>
           </div>
+          <AddPinnedContentModal uid={params.expertId} pinnedLinks={expert?.pinned} />
         </div>
       </BoxedContent>
+      <section className="container py-16 ">
+        <PinnedContentList list={expert?.pinned} />
+      </section>
       <section className="py-16 container">
         <FeaturedProducts />
       </section>

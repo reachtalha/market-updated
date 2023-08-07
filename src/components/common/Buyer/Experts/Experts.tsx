@@ -19,9 +19,10 @@ type Category = {
 
 type ExpertsProps = {
   categories: Category[];
-  experts: any;
+  expertsJSON: any;
 };
-export default function Experts({ experts, categories }: ExpertsProps) {
+export default function Experts({ expertsJSON, categories }: ExpertsProps) {
+  const experts = JSON.parse(expertsJSON)
   const category = useCategorySlug();
 
   return (
@@ -30,9 +31,9 @@ export default function Experts({ experts, categories }: ExpertsProps) {
       <div className="flex-1 space-y-4">
         <ExpertHeader selectedCategory={category} categories={categories} />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
-          {experts.map((expert: any, i: number) => (
+          {experts?.map((expert: any, i: number) => (
             <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
-              <ExpertCard image={expert.photoURL} name={expert.name} title={expert.topics[0]} />
+              <ExpertCard image={expert?.photoURL} name={expert?.name} title={expert?.topics} />
             </Link>
           ))}
         </div>

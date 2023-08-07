@@ -92,16 +92,15 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
     <>
       <Title title="Create SKU" />
       <div className="w-full  mt-2">
-        <Label className="font-medium text-base text-gray-600">Color</Label>
+        <Label>Color</Label>
         <div className="flex flex-wrap items-center justify-between gap-3 w-full">
           <ul className="flex flex-wrap gap-2 capitalize">
             {colorList.map((c, index) => (
               <li
                 key={index}
                 onClick={() => setColor(c)}
-                className={`cursor-pointer rounded-full bg-gray-100 px-2 border py-1 ${
-                  color === c ? 'bg-primary text-white border-primary' : ''
-                }`}
+                className={`cursor-pointer rounded-full bg-gray-100 px-2 border py-1 ${color === c ? 'bg-primary text-white border-primary' : ''
+                  }`}
               >
                 {c}
               </li>
@@ -111,15 +110,14 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
         </div>
       </div>
       <div className="space-y-2 w-full mt-2">
-        <Label className="font-medium text-base text-gray-600 mb-2  ">Select Measurements</Label>
+        <Label>Select Measurements</Label>
         <ul className="flex flex-wrap  items-center  gap-2">
           {sizeList?.map((s) => (
             <li
               key={Date.now() + Math.random()}
               onClick={() => setMeasurement(s)}
-              className={`cursor-pointer rounded-full bg-gray-100 capitalize px-2 border py-1 ${
-                measurement === s ? 'bg-primary text-white border-primary' : ''
-              }`}
+              className={`cursor-pointer rounded-full bg-gray-100 capitalize px-2 border py-1 ${measurement === s ? 'bg-primary text-white border-primary' : ''
+                }`}
             >
               {s}
             </li>
@@ -131,34 +129,35 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
 
       <div className="flex gap-x-2 mt-3 flex-col items-start">
         <div className="space-y-1 w-full ">
-          <Label className=" font-medium text-base text-gray-600">Product Price</Label>
+          <Label>Product Price</Label>
           <Input
             ref={priceRef}
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm focus:-translate-y-[2px] focus:border-0 py-[1.4rem]"
+            className="w-full placeholder:text-sm"
             type="text"
             inputMode="numeric"
             placeholder="Product Price"
           />
         </div>
         <div className="space-y-1 flex flex-row items-end gap-x-5 justify-between mt-2 w-full">
-          <div className="flex-1">
-            <Label className="font-medium text-base text-gray-600">Quantity</Label>
+          <div className="flex-1 space-y-1">
+            <Label>Quantity</Label>
             <Input
               ref={quantityRef}
-              className="w-full rounded-xl mt-1  border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm focus:-translate-y-[2px] focus:border-0 py-[1.4rem]"
+              className="w-full placeholder:text-sm"
               type="number"
               inputMode="numeric"
               placeholder="Quantity"
             />
           </div>
 
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={createSKU}
-            className="h-12 w-12 rounded-xl flex items-center justify-center text-sm bg-gray-200 border-[2px] border-gray-200 hover:bg-gray-200/80 duration-300 transition-colors text-primary"
+            className="w-12"
           >
             <Plus className="w-6 h-6 text-primary" />
-          </button>
+          </Button>
         </div>
       </div>
       <div className="mt-2">
@@ -183,14 +182,15 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
       <div className="flex gap-x-2 mt-2">
         <Button
           type="button"
+          variant="secondary"
           onClick={() => setStep((prev) => prev - 1)}
-          className="w-full py-2.5 bg-gray-200 hover:bg-killarney-200 duration-300 transition-colors rounded-md text-black"
+          className="w-1/2"
         >
           Back
         </Button>
         <Button
           onClick={nextStep}
-          className="disabled:cursor-not-allowed w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white"
+          className="w-1/2"
         >
           Next
         </Button>

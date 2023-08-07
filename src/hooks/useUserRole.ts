@@ -3,44 +3,28 @@
 import { useState, useEffect, useMemo } from 'react';
 import { auth } from '@/lib/firebase/client';
 
-const useAuthToken = () => {
-  const [token, setToken] = useState<any>(null);
+export const useRole = () => {
+  const [role, setRole] = useState('');
 
   useEffect(() => {
     let isCanceled = false;
 
-    async function fetchToken() {
+    async function fetchRole() {
       const idTokenResult = await auth.currentUser?.getIdTokenResult();
-      if (!isCanceled && !!idTokenResult) {
-        setToken(idTokenResult);
+      if (!isCanceled && !!idTokenResult?.claims.role) {
+        setRole(idTokenResult?.claims.role as string);
       } else {
-        setToken(null);
+        setRole('buyer');
       }
     }
 
-    fetchToken();
+    fetchRole();
 
     return () => {
       isCanceled = true;
     };
-  }, [auth.currentUser]);
-
-  return token;
-};
-
-export const useRole = () => {
-  const [role, setRole] = useState<string>('');
-  const token = useAuthToken();
-
-  useEffect(() => {
-    if (!!token?.claims.role) {
-      setRole(token.claims.role as string);
-    } else {
-      setRole('buyer');
-    }
-  }, [token]);
+  }, []);
 
   const cachedRole = useMemo(() => role, [role]);
-
   return cachedRole;
 };

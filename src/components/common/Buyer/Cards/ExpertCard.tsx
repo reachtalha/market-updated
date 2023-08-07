@@ -26,7 +26,7 @@ export default function ExpertCard({ image, name, title }: IProfileCard) {
         <h3 className="text-2xl capitalize tracking-wide truncate font-alpina font-semibold">
           {name}
         </h3>
-        <p className="capitalize">{title} Expert</p>
+        <p className="capitalize">{title && title[0]} Expert</p>
       </div>
     </div>
   );

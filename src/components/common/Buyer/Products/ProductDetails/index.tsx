@@ -14,29 +14,9 @@ import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard
 
 import useCartStore from '@/state/useCartStore';
 
-const product = {
-  name: 'Body Wash',
-  description:
-    'A multi-benefit, refreshing gel body cleanser with ocean botanicals, antioxidants and natural hydrating ingredients designed to restore skin exposed to the elements. Soften and soothe while cleansing to reverse the drying effects of outdoor activity, wind, sun and sea.',
-  price: 87,
-  reviews: 332,
-  variants: [
-    {
-      label: 'SANTAL & VETIVER',
-      color: 'bg-gray-100'
-    },
-    {
-      label: 'BLACK ROSE & OUD',
-      color: 'bg-black-300'
-    },
-    {
-      label: 'BERGAMOT & HINOKI',
-      color: 'bg-red-200'
-    }
-  ]
-};
 
-export default function Product({ product }: { product: any }) {
+export default function Product({ productJSON }: { productJSON: any }) {
+  const product = JSON.parse(productJSON)
   const uniqueSizesSet = new Set();
   product.SKU.forEach((item: any) => uniqueSizesSet.add(item.measurement));
   // Convert the Set back to an array to be used in the state
@@ -52,7 +32,7 @@ export default function Product({ product }: { product: any }) {
   const { setCartItems } = useCartStore((state: any) => state);
 
   const handleAddToBag = () => {
-    setCartItems({ name: product.name, selectedVariant });
+    setCartItems({ name: product.name, coverImage: product.coverImage, selectedVariant });
   }
 
   return (
@@ -93,9 +73,8 @@ export default function Product({ product }: { product: any }) {
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                    size === selectedSize && ' bg-primary text-white'
-                  } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
+                    } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -113,9 +92,8 @@ export default function Product({ product }: { product: any }) {
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                      variant.id === selectedColor && ' bg-primary text-white'
-                    } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
+                      } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
