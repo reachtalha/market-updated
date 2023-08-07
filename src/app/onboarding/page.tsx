@@ -1,50 +1,35 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { Metadata } from 'next';
-import { useSearchParams, useRouter } from 'next/navigation';
-
-import { db, auth } from '@/lib/firebase/client';
+import { redirect } from 'next/navigation'
+import { db } from '@/lib/firebase/client';
 import { doc, getDoc } from '@firebase/firestore';
 
 import OnBoardingForm from '@/components/modules/OnBoarding';
-import Loader from '@/components/common/Loader';
 
-const OnBoarding = () => {
-  const search = useSearchParams();
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const uid = search?.get('id');
+async function getOnboardingInfo(id: string) {
+  const docRef = await getDoc(doc(db, 'users', `${id}`));
+  if (docRef.exists()) return docRef.data().role;
+  return null;
+}
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        if (!uid || uid !== auth.currentUser?.uid) {
-          router.push('/');
-        }
-        const docRef = await getDoc(doc(db, 'users', `${uid}`));
-        if (docRef.exists()) {
-          if (docRef.data().role === 'buyer') router.push('/');
-          else router.push('/seller/dashboard');
-        }
-      } catch (e: any) {
-        router.push('/500');
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+const OnBoarding = async ({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) => {
 
-  if (loading) {
-    return (
-      <Loader className="grid place-content-center bg-white overflow-hidden h-screen w-full" />
-    );
+  const { id } = searchParams!;
+  if (!id) {
+    redirect('/');
+  }
+  const isOnboarded = await getOnboardingInfo(id);
+  if (isOnboarded === "seller") {
+    redirect('/seller/dashboard')
+  } else if (isOnboarded) {
+    redirect('/');
   }
 
   return (
     <>
-      <section className="relative space-y-3 md:shadow-lg lg:w-[500px] max-w-[550px] rounded-xl border-0 md:border-2 md:p-5 px-3 py-4">
+      <section className="relative space-y-3 lg:w-[500px] max-w-[550px] rounded-xl border-0 md:border-2 md:p-5 px-3 py-4">
         <OnBoardingForm />
       </section>
     </>

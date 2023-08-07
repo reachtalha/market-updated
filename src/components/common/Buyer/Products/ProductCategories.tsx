@@ -33,7 +33,7 @@ export default function ProductCategories({
     <div className="hidden md:block w-48 space-y-4">
       <Accordion type="single" collapsible className="border-0">
         <AccordionItem value="item-1" className="border-0">
-          <AccordionTrigger className="hover:no-underline uppercase tracking-wide text-sm">
+          <AccordionTrigger className="hover:no-underline uppercase tracking-wide text-sm pt-0">
             {selectedCategory}
           </AccordionTrigger>
           <AccordionContent>
