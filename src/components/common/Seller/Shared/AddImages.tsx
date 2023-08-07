@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
 import Title from '@/components/common/Seller/Shared/Title';
+import { Button } from '@/components/ui/button';
 
 const ImageUpload = ({ label, onUpload }: { label: string; onUpload: Function }) => {
   return (
@@ -66,12 +67,6 @@ function AddImages({
       toast.error(`Error! ${e.message}`);
     }
   };
-
-  useEffect(() => {
-    if (isShop) {
-      console.log(logoImage, coverImage);
-    }
-  }, []);
 
   return (
     <>
@@ -160,21 +155,23 @@ function AddImages({
 
       {isShop ? setValue('logoImage', logoImage) : setValue('moreImages', pictures)}
 
-      <div className="mt-5 flex  space-x-3">
-        <button
+      <div className="mt-5 flex gap-x-3">
+        <Button
           type="button"
+          variant="secondary"
           onClick={() => setStep((prev) => prev - 1)}
-          className="w-full py-2.5 bg-gray-200 hover:bg-gray-100 duration-300 transition-colors rounded-md text-black"
+          className="w-1/2"
         >
           Back
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
+          variant="default"
           form={isShop ? 'add-shop-form' : 'add-product-form'}
-          className="w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white"
+          className="w-1/2"
         >
           {isShop ? (isEdit ? 'Update ' : 'Add ') + 'Shop' : 'Add Product'}
-        </button>
+        </Button>
       </div>
     </>
   );
