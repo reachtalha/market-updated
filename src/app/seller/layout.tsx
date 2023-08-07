@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const role = useRole();
   const router = useRouter();
 
-  if (!role || role !== "seller") {
+  if (role && role !== "seller") {
     router.replace('/');
     return <Loader className="bg-white h-screen w-full overflow-hidden grid place-content-center" />
   }
