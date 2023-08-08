@@ -98,12 +98,12 @@ const OnBoardingForm = () => {
             {renderButton('Finish')}
           </>
         )}
-        {/* {step === 2 && role === 'influencer' && (
+        {step === 2 && role === 'influencer' && (
           <>
             <Influencer />
             {renderButton('Finish')}
           </>
-        )} */}
+        )}
       </form>
     </FormProvider>
   );
