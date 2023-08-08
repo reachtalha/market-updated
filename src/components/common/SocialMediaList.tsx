@@ -11,7 +11,7 @@ interface SocialMediaListProps {
 
 const SocialMediaList: React.FC<SocialMediaListProps> = ({ items, onDeleteSocialLink }) => {
   return (
-    <div className="mt-2">
+    <div className="mt-3">
       <h6 className="text-sm text-gray-600">Social Media Links:</h6>
       {items.length === 0 ? (
         <p className="text-sm text-center py-6 text-gray-600">No social media links added yet.</p>

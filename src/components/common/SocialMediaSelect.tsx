@@ -31,10 +31,10 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton }) =>
 
   return (
     <>
-      <Label htmlFor="socialMedia" className="text-sm text-gray-600">
+      <Label htmlFor="socialMedia">
         Social Media
       </Label>
-      <div className="w-full flex gap-x-1 rounded-xl overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800  focus-within:outline-neutral-800">
+      <div className="w-full mt-1 flex gap-x-1 rounded-md overflow-hidden p-1 border-[1px] border-neutral-200 placeholder:text-sm hover:border-neutral-300  focus-within:outline-neutral-300">
         <select
           id="socialMedia"
           value={selectedSocialMedia}
@@ -56,7 +56,7 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton }) =>
           id="link"
           value={link}
           onChange={handleLinkChange}
-          className="focus:outline-none w-full px-1.5 py-1.5"
+          className="focus:outline-none focus:ring-0 focus:ring-offset-0 w-full px-1.5 py-1.5"
           placeholder="Enter social media link"
         />
 

@@ -52,20 +52,20 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
   };
 
   return (
-    <div className="flex space-y-2 flex-col">
-      <Label htmlFor="topicInput" className="text-sm  ">
+    <div className="flex space-y-1 flex-col">
+      <Label htmlFor="topicInput" >
         Add Topics
       </Label>
-      <div className="w-full flex rounded-lg overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm   focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2">
+      <div className="w-full flex rounded-md overflow-hidden p-1 border-[1px] border-neutral-200 placeholder:text-sm focus-within:ring-2 focus-within:ring-neutral-400 focus-within:ring-offset-2">
         {topicsList.map((topic, index) => (
           <span
             key={index}
-            className="w-fit inline-flex items-center gap-x-1 px-2.5 text-sm py-1 mr-1 rounded-xl border bg-gray-100"
+            className="w-fit inline-flex items-center gap-x-1 px-2.5 text-sm py-1 mr-1 rounded-lg border bg-neutral-100"
           >
             {topic}
             <button
               onClick={() => removeTopic(topic)}
-              className="hover:bg-gray-200 rounded-full p-0.5"
+              className="hover:bg-neutral-200 rounded-full p-0.5"
             >
               <Cross1Icon className="w-4 h-4" />
             </button>
@@ -79,7 +79,7 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
             ref={inputRef}
             placeholder="Add Topics"
             onKeyDown={handleInputKeyDown}
-            className="focus:outline-none w-full bg-none px-2 py-1 border-0 focus-visible:ring-0"
+            className="focus:outline-none w-full bg-none px-2 py-1 border-0 focus:ring-0"
           />
           <datalist id="topicsList" className="appearance-none">
             <option value="Health" />
