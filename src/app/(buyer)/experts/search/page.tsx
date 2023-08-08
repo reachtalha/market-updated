@@ -63,7 +63,7 @@ export default async function ExpertsSearch() {
         </header>
         <FeaturedExperts />
       </BoxedContent>
-      <Experts experts={experts} categories={categories} />
+      <Experts expertsJSON={experts} categories={categories} />
       <LatestBlogsSection title="#OrganicSimplified" />
     </>
   );
