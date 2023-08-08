@@ -56,7 +56,7 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
       <Label htmlFor="topicInput" className="text-sm  ">
         Add Topics
       </Label>
-      <div className="w-full flex rounded-lg overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm   focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2">
+      <div className="w-full flex rounded-lg overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm   focus-within:-translate-y-[2px]  hover:border-neutral-800  focus:outline-neutral-800">
         {topicsList.map((topic, index) => (
           <span
             key={index}
@@ -79,7 +79,7 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
             ref={inputRef}
             placeholder="Add Topics"
             onKeyDown={handleInputKeyDown}
-            className="focus:outline-none w-full bg-none px-2 py-1 border-0 focus-visible:ring-0"
+            className="focus:outline-none w-full bg-none px-2 py-1 border-0 focus-visible:ring-0 "
           />
           <datalist id="topicsList" className="appearance-none">
             <option value="Health" />
