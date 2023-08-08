@@ -68,14 +68,14 @@ export default function Products({ categories, foryou }: ProductsProps) {
   const [selectedSubCategory, setSelectedSubCategory] = useState(
     category === 'all'
       ? 'All'
-      : categories.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
+      : categories?.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
   );
 
   useEffect(() => {
     setSelectedSubCategory(
       category === 'All'
         ? 'All'
-        : categories.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
+        : categories?.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
     );
   }, [category, categories]);
 
@@ -98,7 +98,10 @@ export default function Products({ categories, foryou }: ProductsProps) {
       <Loader className="w-full h-[80vh] grid place-content-center" />
     );
 
-  if (productsError) return <Error />;
+  if (productsError) {
+    console.log(productsError)
+    return <Error className="w-full h-[80vh] grid place-content-center" />
+  };
 
   return (
     <>
