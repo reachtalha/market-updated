@@ -6,11 +6,13 @@ import useCategorySlug from '@/hooks/useCategorySlug';
 import Settings from '@/components/modules/Account/Settings';
 import CardInfo from '@/components/modules/Account/CardInfo';
 import OrderHistory from '@/components/modules/Account/OrderHistory';
+import Socials from '@/components/modules/Account/Socials';
 import { getDoc, doc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
 import Loader from '../../Loader';
 import { useRouter } from 'next/navigation';
 import { useRole } from '@/hooks/useUserRole';
+import useSwr from 'swr';
 
 type AccountProps = {
   options: Option[];
@@ -73,6 +75,26 @@ function Index({ options }: AccountProps) {
         );
       case 'order':
         return <OrderHistory />;
+      case 'socials':
+        return (
+          <>
+            {user ? (
+              <div className=" w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
+                <Socials
+                  defaultValues={{
+                    bio: user.bio,
+                    socialMediaLinks: user.socialMediaLinks || [],
+                    topics: user.topics || []
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="h-[50vh] w-full flex items-center justify-center">
+                <Loader />
+              </div>
+            )}
+          </>
+        );
       default:
         return (
           <>
@@ -109,8 +131,8 @@ function Index({ options }: AccountProps) {
                 ...options,
                 {
                   name: 'Socials',
-                  slug: 'Socials',
-                  href: '/account?socials'
+                  slug: 'socials',
+                  href: '/account?display'
                 }
               ]
             : options

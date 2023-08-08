@@ -1,10 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  doc,
-  updateDoc,
-} from 'firebase/firestore';
+
+import { doc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
+
 import toast from 'react-hot-toast';
 
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
@@ -21,7 +20,8 @@ type FormValues = {
   confirmPassword: string;
 };
 
-const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
+const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [isPasswordUpdate, setIsPasswordUpdate] = useState<boolean>(false);
   const { updatePassword } = useAuth();
 
@@ -31,6 +31,10 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
     shouldUnregister: false
   });
   const { handleSubmit, reset } = methods;
+
+  function normalize(text: string) {
+    return text.replace(/[\u2018\u2019\u201C\u201D]/g, "'");
+  }
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -48,11 +52,14 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           return;
         }
         updatePassword(data.currentPassword, data.newPassword);
+
         toast.success('Password Updated Successfully');
       }
       reset();
     } catch (e) {
       toast.error('Error while updating account');
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -69,4 +76,4 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
   );
 };
 
-export default AddShop;
+export default Index;
