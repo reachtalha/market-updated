@@ -230,7 +230,6 @@ export default function NewRegistrationForm() {
           )}
         />
         <Button type="submit" disabled={loading}>
-          {' '}
           {loading ? 'Registering' : 'Register'}{' '}
         </Button>
       </form>

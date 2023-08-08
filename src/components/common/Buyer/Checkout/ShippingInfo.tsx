@@ -1,13 +1,6 @@
 "use client"
-import { useForm } from 'react-hook-form';
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-
-import { Button } from "@/components/ui/button"
 import {
-  Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,46 +9,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Separator } from '@/components/ui/separator';
 
-export default function ShippingInfo(){
-  const formSchema = z.object({
-    email: z.string().min(1, { message: "required" }).email({
-      message: "Must be a valid email",
-    }),
-    firstName: z.string().min(1, { message: "required" }),
-    lastName: z.string().min(1, { message: "required" }),
-    company: z.string().min(1, { message: "required" }),
-    address: z.string().min(1, { message: "required" }),
-    apartments: z.string().min(1, { message: "required" }),
-    city: z.string().min(1, { message: "required" }),
-    state: z.string().min(1, { message: "required" }),
-    postal: z.string().min(1, { message: "required" }),
-    phone: z.string().min(1, { message: "required" }),
-  })
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
-      company: "",
-      address: "",
-      apartments: "",
-      city: "",
-      state: "",
-      postal: "",
-      phone: "",
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('here', values)
-  }
-
+export default function ShippingInfo({ form } : { form: any }){
   return (
-      <section>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+    <section>
             <h2 className="mb-6 text-xl font-medium">Contact</h2>
             <FormField
               control={form.control}
@@ -168,19 +124,19 @@ export default function ShippingInfo(){
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Postal code</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Postal code"  {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {/*<FormField*/}
+              {/*  control={form.control}*/}
+              {/*  name="lastName"*/}
+              {/*  render={({ field }) => (*/}
+              {/*    <FormItem className="w-full">*/}
+              {/*      <FormLabel>Postal code</FormLabel>*/}
+              {/*      <FormControl>*/}
+              {/*        <Input placeholder="Postal code"  {...field} />*/}
+              {/*      </FormControl>*/}
+              {/*      <FormMessage />*/}
+              {/*    </FormItem>*/}
+              {/*  )}*/}
+              {/*/>*/}
             </div>
 
             <FormField
@@ -198,10 +154,6 @@ export default function ShippingInfo(){
             />
 
             <Separator className="my-8" />
-
-            {/*<Button type="submit">Submit</Button>*/}
-          </form>
-        </Form>
-      </section>
+</section>
   )
 }
