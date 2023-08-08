@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 
-import { getDoc, doc, deleteDoc, addDoc, collection, setDoc } from 'firebase/firestore';
+import { getDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import axios, { CancelTokenSource } from 'axios';
 import { toast } from 'react-hot-toast';
@@ -34,8 +34,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
 
   const [loading, setLoading] = useState(false);
 
-  let cancelTokenSource: CancelTokenSource | undefined;
-
   async function generateRandomPassword() {
     const length = Math.floor(Math.random() * 3) + 10; // Random length between 10 and 12
     const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+';
@@ -49,70 +47,40 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
     return password;
   }
 
-  const handleRegistration = async (
-    name: string,
-    email: string,
-    password: string,
-    role: string
-  ) => {
+
+  const handleApprove = async (id: string) => {
     try {
       setLoading(true);
+      const docRef = await getDoc(doc(db, 'waiting-list', id));
 
-      // Cancel any previous request before making a new one
-      if (cancelTokenSource) {
-        cancelTokenSource.cancel('Request canceled');
+      if (!docRef.exists()) {
+        toast.error('User not found in the waiting list. Please refresh the page and try again.');
+        return;
       }
-
-      // Create a new cancel token source
-      cancelTokenSource = axios.CancelToken.source();
-
+      const user = docRef.data();
+      const randomPassword = await generateRandomPassword();
       await axios.post(
         '/api/auth/register',
         {
-          name,
-          email,
-          password,
-          role
-        },
-        {
-          cancelToken: cancelTokenSource.token
-        }
-      );
-
-      toast.success('Expert Approved!');
-    } catch (error: any) {
-      if (axios.isCancel(error)) {
-        console.log('Request canceled:', error.message);
-      } else {
-        toast.error(`Error!: ${error.response.data.message}`);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleApprove = async (id: string) => {
-    const docRef = await getDoc(doc(db, 'waiting-list', id));
-
-    if (docRef.exists()) {
-      try {
-        const user = docRef.data();
-        const randomPassword = await generateRandomPassword();
-        console.log(randomPassword);
-        await handleRegistration(user.name, user.email, randomPassword, user.role);
-        await axios.post('/api/mail/send', {
           name: user.name,
           email: user.email,
-          password: randomPassword
-        });
-        toast.success('Email sent to user');
-        await deleteDoc(doc(db, 'waiting-list', id));
-      } catch (error: any) {
-        console.log(error);
-        toast.error('An error occured');
-      }
-    } else {
-      toast.error('User does not exist');
+          password: randomPassword,
+          role: user.role
+        }
+      );
+      await Promise.all([
+        deleteDoc(doc(db, 'waiting-list', id)),
+        axios.post('/api/mail/send', {
+          name: user.name,
+          email: user.email,
+          password: randomPassword,
+        }),
+      ]);
+      toast.success('An email with account details has been sent to the user.');
+    } catch (error: any) {
+      toast.error('An error occurred while processing your request. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -144,13 +112,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
                   </TableCell>
                 ))}
                 <TableCell>
-                  <Button onClick={() => handleApprove(row?.original?.id)}>Approve</Button>
+                  <Button disabled={loading} onClick={() => handleApprove(row?.original?.id)}>Approve</Button>
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell colSpan={columns.length + 1} className="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>
