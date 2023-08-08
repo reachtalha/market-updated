@@ -3,34 +3,6 @@ import React from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
-const categories = [
-  {
-    name: 'Shop All',
-    slug: 'all',
-    href: '/market?category'
-  },
-  {
-    name: 'deodorants',
-    slug: 'deodorants',
-    href: '/market?category'
-  },
-  {
-    name: 'face',
-    slug: 'face',
-    href: '/market?category'
-  },
-  {
-    name: 'body',
-    slug: 'body',
-    href: '/market?category'
-  },
-  {
-    name: 'sunscreen',
-    slug: 'sunscreen',
-    href: '/market?category'
-  }
-];
-
 const getCategories = async () => {
   const querySnapshot = await getDocs(collection(db, 'categories'));
   let categories: any = [];

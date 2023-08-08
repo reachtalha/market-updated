@@ -22,7 +22,7 @@ const ShopCard = ({ image, shop, desc, type }: Props) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
-      <div className="transition duration-300 ease-in-out invisible absolute border w-full h-full group-hover:bg-[#171717]/50 rounded-lg z-10 top-0 right-0 group-hover:visible">
+      <div className="transition duration-300 ease-in-out invisible absolute border w-full h-full group-hover:bg-[#171717]/50 z-10 top-0 right-0 group-hover:visible">
         <div className="w-full h-full grid place-content-center">
           <span className="text-2xl mb-3 capitalize text-white md:text-4xl font-alpina font-medium">
             {shop}
