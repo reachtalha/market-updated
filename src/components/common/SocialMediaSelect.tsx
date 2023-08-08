@@ -38,11 +38,12 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton }) =>
 
   return (
     <>
-      <Label htmlFor="socialMedia" className="text-sm text-gray-600">
-        Social Media
-      </Label>
-      <div className="w-full flex gap-x-1 rounded-xl overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm focus-within:-translate-y-[2px] hover:border-neutral-800  focus-within:outline-neutral-800">
-        <Select value={selectedSocialMedia} onValueChange={(c) => handleSocialMediaChange(c)}>
+      <Label htmlFor="socialMedia">Social Media</Label>
+      <div className="w-full flex gap-x-1 rounded-xl overflow-hidden p-1 border-[2px] transition-transform duration-300 border-neutral-200 placeholder:text-sm focus-within:ring-0 delay-75 focus-within:-translate-y-[2px] focus-within:ring-neutral-400 focus-within:ring-offset-0">
+        <Select
+          value={selectedSocialMedia === '' ? undefined : selectedSocialMedia}
+          onValueChange={(c) => handleSocialMediaChange(c)}
+        >
           <SelectTrigger className="w-28 focus:outline-none pl-1">
             <SelectValue placeholder="Select" />
           </SelectTrigger>

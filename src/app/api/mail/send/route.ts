@@ -1,26 +1,28 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import type { WaitingListProps } from '@/components/common/Templates/Email';
-import { WaitingList } from '@/components/common/Templates/Email';
-import { render } from '@react-email/render';
+
+const EMAIL = process.env.EMAIL;
+const PASSWORD = process.env.PASSWORD;
+const DOMAIN = process.env.DOMAIN;
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.zoho.com',
+  host: DOMAIN,
   port: 465, // Use 465 for SSL
   secure: true, // Use SSL
   auth: {
-    user: 'email', // Your Zoho Mail email address
-    pass: 'password' // Your Zoho Mail password
+    user: EMAIL, // Your Zoho Mail email address
+    pass: PASSWORD // Your Zoho Mail password
   }
 });
 
 export async function POST(req: Request) {
   const { name, password, email } = await req.json();
+
   try {
     const options = {
-      from: 'dev7@ccript.com',
+      from: EMAIL,
       to: email,
-      subject: 'Account Approved',
+      subject: 'Account Registration Successful',
       html: `
     <!DOCTYPE html>
     <html>

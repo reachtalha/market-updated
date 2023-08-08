@@ -94,9 +94,9 @@ const Expert = async ({ params }: ExpertProps) => {
           <AddPinnedContentModal uid={params.expertId} pinnedLinks={expert?.pinned} />
         </div>
       </BoxedContent>
-      <section className="container py-16 ">
+      {expert?.pinned && <section className="container py-16 ">
         <PinnedContentList list={expert?.pinned} />
-      </section>
+      </section>}
       <section className="py-16 container">
         <FeaturedProducts />
       </section>

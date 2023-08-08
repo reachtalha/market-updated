@@ -7,11 +7,10 @@ import { Button } from '@/components/ui/button';
 import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
 import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
-import market1 from '@/assets/images/market1.png';
 import ShopCard from '@/components/common/Buyer/Cards/ShopCard';
 import MarketHeader from '@/components/common/Buyer/Market/MarketHeader';
 import Loader from '@/components/common/Loader';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSwr from 'swr';
 import { useEffect, useState } from 'react';
@@ -41,12 +40,9 @@ export default function Market({ categories }: MarketProps) {
   useEffect(() => {
     if (shops) {
       if (category === 'all') {
-        console.log(shops);
         setFilteredShops(shops);
       } else {
-        console.log(category);
         const filteredShops = shops.filter((shop: any) => shop.category.split('&')[0] === category);
-        console.log(filteredShops);
         setFilteredShops(filteredShops || []);
       }
     }

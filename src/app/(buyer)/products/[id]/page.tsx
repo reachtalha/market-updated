@@ -1,7 +1,8 @@
 import BoxedContent from '@/components/common/BoxedContent';
 import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
 import Product from '@/components/common/Buyer/Products/ProductDetails';
-import Error from '@/components/common/Error';
+
+import { notFound } from 'next/navigation';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
@@ -36,7 +37,7 @@ export default async function Page({ params }: props) {
   const { id } = params;
   const product = await getProduct(id);
 
-  if (!product) return <Error />;
+  if (!product) return notFound();
 
   return (
     <BoxedContent className="py-20">

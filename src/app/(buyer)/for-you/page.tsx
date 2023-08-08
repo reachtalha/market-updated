@@ -59,7 +59,5 @@ export default function Index() {
 
   if (error) return <Error />;
 
-  console.log(categories);
-
   return <Products foryou categories={categories} />;
 }
