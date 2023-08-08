@@ -1,8 +1,12 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+
+import { auth } from '@/lib/firebase/client';
+
 import Stars from '@/assets/icons/system/Stars';
 import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
 
 import ProductSlider from '@/components/common/Buyer/Products/ProductDetails/ProductSlider';
 import ProductVideo from '@/components/common/Buyer/Products/ProductDetails/ProductVideo';
@@ -11,8 +15,6 @@ import ComplementaryProducts from '@/components/common/Buyer/Products/ProductDet
 import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard';
 
 import useCartStore from '@/state/useCartStore';
-import useAuth from '@/hooks/useAuth';
-import { CircleIcon } from 'lucide-react';
 
 export default function Product({ productJSON }: { productJSON: any }) {
   const product = JSON.parse(productJSON);
@@ -29,7 +31,13 @@ export default function Product({ productJSON }: { productJSON: any }) {
   const [selectedColor, setSelectedColor] = useState(product.SKU[0].id);
 
   const { addToCart, isAddToCartLoading } = useCartStore((state: any) => state);
-  const handleAddToBag = () => addToCart(product.id, selectedVariant.id);
+  const handleAddToBag = () => {
+    if (auth.currentUser) {
+      addToCart(product.id, selectedVariant.id)
+    } else {
+      toast.error("You're not logged in!")
+    }
+  };
 
   return (
     <>

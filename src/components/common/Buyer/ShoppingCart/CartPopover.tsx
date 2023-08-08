@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from '@/components/ui/button';
+import { auth } from "@/lib/firebase/client";
 
 import useCartStore from '@/state/useCartStore';
 import { cn } from '@/lib/utils';
@@ -22,25 +23,25 @@ import { Skeleton } from '@/components/ui/skeleton';
 type CartPopoverProps = {
   trigger: ReactNode
 }
-export default function CartPopover({ trigger }: CartPopoverProps){
+export default function CartPopover({ trigger }: CartPopoverProps) {
   const router = useRouter();
   const { cart, getCart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
-  const { user } = useAuth();
+  const user = auth.currentUser;
 
-  const handleExploreProducts = () =>  router.push('/products');
-  const handleViewCart = () =>  router.push('/cart');
-  const handleViewCheckout = () =>  router.push('/checkout');
+  const handleExploreProducts = () => router.push('/products');
+  const handleViewCart = () => router.push('/cart');
+  const handleViewCheckout = () => router.push('/checkout');
 
   useEffect(() => {
-    getCart(user.uid);
+    if (user) getCart(user.uid);
   }, []);
 
   const handleOnDelete = (item: any) => {
     deleteFromCart(item.docId, item.selectedVariant.id)
   }
 
-   return (
-     <Popover>
+  return (
+    <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
       <PopoverContent className="w-[600px] p-5" align="end">
         <ScrollArea className={cn('w-full', cart?.items?.length > 3 ? 'h-[350px]' : 'h-fit')}>
@@ -69,11 +70,11 @@ export default function CartPopover({ trigger }: CartPopoverProps){
               {!cart?.items?.length ? <div className="text-center">
                 <p>Your Cart is empty!</p>
                 <PopoverClose asChild>
-                <Button onClick={handleExploreProducts} className="w-full mt-3">
-                Explore Products
-                </Button>
+                  <Button onClick={handleExploreProducts} className="w-full mt-3">
+                    Explore Products
+                  </Button>
                 </PopoverClose>
-                </div> : null}
+              </div> : null}
               {!!cart?.items?.length ?
                 <>
                   <PopoverClose asChild>
@@ -93,5 +94,5 @@ export default function CartPopover({ trigger }: CartPopoverProps){
         </ScrollArea>
       </PopoverContent>
     </Popover>
-   )
+  )
 }
