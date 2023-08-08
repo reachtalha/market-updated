@@ -3,11 +3,11 @@ import { SwiperSlide } from 'swiper/react';
 
 import Carousel from '@/components/common/Carousel';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
-import product1 from '@/assets/images/product1.webp';
 import { collection, getDoc, getDocs, query, doc, limit } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
+import Error from "@/components/common/Error";
 import { db } from '@/lib/firebase/client';
-import useSwr from 'swr';
+import useSWR from 'swr';
 
 const featuredProductsBreakpoints = {
   640: {
@@ -28,40 +28,44 @@ const featuredProductsBreakpoints = {
   }
 };
 
-const getProducts: any = async (): Promise<any> => {
-  let products: any = [];
 
-  let docRef;
+const fetchProductDetails = async (product: any) => {
+  const shopDocRef = doc(db, 'shops', product.shopId);
+  const shopDocSnap = await getDoc(shopDocRef);
 
-  docRef = await getDocs(query(collection(db, 'products'), limit(6)));
+  if (shopDocSnap.exists()) {
+    return { ...product, shopName: shopDocSnap.data().name };
+  }
+  return product;
+};
 
-  products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+const fetchFeaturedProducts = async () => {
+  const productsCollectionRef = collection(db, 'products');
+  const productQuery = query(productsCollectionRef, limit(6));
+  const productQuerySnapshot = await getDocs(productQuery);
 
-  products = await Promise.all(
-    products.map(async (product: any) => {
-      const docRef = await getDoc(doc(db, 'shops', product.shopId));
+  const products: any = [];
 
-      if (docRef.exists()) {
-        product.shopName = docRef?.data()?.name;
-      }
-
-      return product;
-    })
-  );
-
-  return products;
+  productQuerySnapshot.forEach((doc) => {
+    products.push({ id: doc.id, ...doc.data() });
+  });
+  const productsWithShopNames = await Promise.all(products.map(fetchProductDetails));
+  return productsWithShopNames;
 };
 
 export default function FeaturedProducts() {
-  const { data: products, error, isLoading } = useSwr('featuredProducts', getProducts);
+  const { data: products, error, isLoading } = useSWR('featuredProducts', fetchFeaturedProducts);
 
   if (isLoading) {
-    return <Loader className="w-screen md:w-[80vw] h-96 flex items-center justify-center " />;
+    return <Loader className="w-full h-96 flex items-center justify-center " />;
+  }
+  if (error) {
+    return <Error className="w-full h-96 flex items-center justify-center " />;
   }
 
   return (
     <Carousel title="Featured Products" breakpoints={featuredProductsBreakpoints}>
-      {products.map((_: any, i: number) => (
+      {products?.map((_: any, i: number) => (
         <SwiperSlide key={i + Math.random()}>
           <ProductCard
             key={i + Math.random()}
