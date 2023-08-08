@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { Cross1Icon } from '@radix-ui/react-icons';
-
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useFormContext } from 'react-hook-form';
 interface TopicListProps {
   maxTopics: number;
   topicsList: string[];
@@ -10,7 +12,9 @@ interface TopicListProps {
 
 const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsChange }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const {
+    formState: { errors }
+  } = useFormContext();
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -48,11 +52,11 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
   };
 
   return (
-    <>
-      <label htmlFor="topicInput" className="text-sm text-gray-600">
+    <div className="flex space-y-2 flex-col">
+      <Label htmlFor="topicInput" className="text-sm  ">
         Add Topics
-      </label>
-      <div className="w-full flex rounded-xl overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-neutral-800  focus-within:outline-neutral-800">
+      </Label>
+      <div className="w-full flex rounded-lg overflow-hidden p-1 border-[2px] border-gray-200 transition-transform delay-75 duration-300 placeholder:text-sm   focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2">
         {topicsList.map((topic, index) => (
           <span
             key={index}
@@ -68,14 +72,14 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
           </span>
         ))}
         <div>
-          <input
+          <Input
             id="topicInput"
             type="text"
             list="topicsList"
             ref={inputRef}
             placeholder="Add Topics"
             onKeyDown={handleInputKeyDown}
-            className="focus:outline-none w-full bg-none px-2 py-1"
+            className="focus:outline-none w-full bg-none px-2 py-1 border-0 focus-visible:ring-0"
           />
           <datalist id="topicsList" className="appearance-none">
             <option value="Health" />
@@ -86,7 +90,8 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
           </datalist>
         </div>
       </div>
-    </>
+      {errors.topics && <span className="text-red-500 text-sm font-semibold">required</span>}
+    </div>
   );
 };
 

@@ -15,39 +15,32 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
 
 import { addDoc, doc, collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import TopicList from '@/components/modules/OnBoarding/Influencer/TopicList';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'required' }),
   email: z.string().min(1, { message: 'required' }).email({
     message: 'Must be a valid email'
   }),
-  bio: z.string().min(1, { message: 'required' }),
-  twitter: z.string().url({ message: 'Must be a valid url' }).optional().or(z.literal('')),
-  facebook: z.string().url({ message: 'Must be a valid url' }).optional().or(z.literal('')),
-  instagram: z.string().url({ message: 'Must be a valid url' }).optional().or(z.literal('')),
-  linkedin: z.string().url({ message: 'Must be a valid url' }).optional().or(z.literal('')),
-  website: z.string().url({ message: 'Must be a valid url' }).optional().or(z.literal(''))
+  role: z.union([z.literal('seller'), z.literal('influencer')])
 });
 
 export default function NewRegistrationForm() {
   const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
       email: '',
-      bio: '',
-      twitter: '',
-      facebook: '',
-      instagram: '',
-      linkedin: '',
-      website: ''
+      role: 'seller'
     }
   });
 
@@ -73,33 +66,12 @@ export default function NewRegistrationForm() {
         toast.error('User with this email already in waiting list');
         return;
       }
+      console.log(values);
 
       await addDoc(collection(db, 'waiting-list'), {
         name: values.name,
         email: values.email,
-        bio: values.bio,
-        socials: [
-          {
-            name: 'twitter',
-            url: values.twitter
-          },
-          {
-            name: 'facebook',
-            url: values.facebook
-          },
-          {
-            name: 'instagram',
-            url: values.instagram
-          },
-          {
-            name: 'linkedin',
-            url: values.linkedin
-          },
-          {
-            name: 'website',
-            url: values.website
-          }
-        ]
+        role: values.role
       });
 
       toast.success('You have been added to the waiting list');
@@ -144,86 +116,31 @@ export default function NewRegistrationForm() {
             )}
           />
         </div>
-
         <FormField
           control={form.control}
-          name="bio"
+          name="role"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl className="mt-5">
-                <Textarea placeholder="Bio" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="flex gap-x-3">
-          <FormField
-            control={form.control}
-            name="twitter"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Twitter</FormLabel>
-                <FormControl className="mt-5">
-                  <Input placeholder="Twitter" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="facebook"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Facebook</FormLabel>
-                <FormControl className="mt-5">
-                  <Input placeholder="Facebook" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="flex gap-x-3">
-          <FormField
-            control={form.control}
-            name="instagram"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Instagram</FormLabel>
-                <FormControl className="mt-5">
-                  <Input placeholder="Instagram" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="linkedin"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>LinkedIn</FormLabel>
-                <FormControl className="mt-5">
-                  <Input placeholder="LinkedIn" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <FormField
-          control={form.control}
-          name="website"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Website</FormLabel>
-              <FormControl className="mt-5">
-                <Input placeholder="Website" {...field} />
+            <FormItem className="space-y-3">
+              <FormLabel>Role</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="seller" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Seller</FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="influencer" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Expert</FormLabel>
+                  </FormItem>
+                </RadioGroup>
               </FormControl>
               <FormMessage />
             </FormItem>
