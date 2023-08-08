@@ -23,12 +23,9 @@ export const columns: ColumnDef<NewUser>[] = [
     accessorKey: 'email',
     header: 'Email'
   },
+
   {
-    accessorKey: 'bio',
-    header: 'Bio'
-  },
-  {
-    accessorKey: 'socials',
-    header: 'Socials'
+    accessorKey: 'role',
+    header: 'Role'
   }
 ];

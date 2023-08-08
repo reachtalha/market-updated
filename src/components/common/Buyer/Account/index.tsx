@@ -10,6 +10,7 @@ import { getDoc, doc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
 import Loader from '../../Loader';
 import { useRouter } from 'next/navigation';
+import { useRole } from '@/hooks/useUserRole';
 
 type AccountProps = {
   options: Option[];
@@ -19,6 +20,7 @@ function Index({ options }: AccountProps) {
   const category = useCategorySlug();
   const [user, setUser] = useState<any>();
   const router = useRouter();
+  const role = useRole();
 
   if (!auth.currentUser) {
     router.push('/auth/login');
@@ -99,7 +101,21 @@ function Index({ options }: AccountProps) {
   };
   return (
     <BoxedContent className="flex flex-col sm:flex-row  border-3 gap-x-5 py-20">
-      <AccountOption selectedOption={category} options={options} />
+      <AccountOption
+        selectedOption={category}
+        options={
+          role === 'influencer'
+            ? [
+                ...options,
+                {
+                  name: 'Socials',
+                  slug: 'Socials',
+                  href: '/account?socials'
+                }
+              ]
+            : options
+        }
+      />
       {renderComponent()}
     </BoxedContent>
   );

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Index from '@/components/common/Buyer/Account/index';
 

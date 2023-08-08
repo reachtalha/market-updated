@@ -15,11 +15,14 @@ async function getData(): Promise<NewUser[]> {
       id: doc.id,
       name: doc.data().name,
       email: doc.data().email,
-      socials: doc
-        .data()
-        .socials?.map((social: any) => social.url.length > 0 && social.url)
-        .join(', '),
-      bio: doc.data().bio
+      socials: doc.data().socials?.map((social: any) => {
+        if (social.url.length > 0) {
+          console.log(social.url.length);
+          return social.url + ', ';
+        }
+        return '';
+      }),
+      role: doc.data().role
     });
   });
   return data;
@@ -27,6 +30,7 @@ async function getData(): Promise<NewUser[]> {
 
 export default async function NewRegisteredUsers() {
   const data = await getData();
+  console.log(data);
 
   return (
     <BoxedContent className="flex gap-x-5 py-20">

@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 
-import { getDoc, doc, deleteDoc } from 'firebase/firestore';
+import { getDoc, doc, deleteDoc, addDoc, collection, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import axios, { CancelTokenSource } from 'axios';
 import { toast } from 'react-hot-toast';
@@ -49,7 +49,12 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
     return password;
   }
 
-  const handleRegistration = async (name: string, email: string, password: string) => {
+  const handleRegistration = async (
+    name: string,
+    email: string,
+    password: string,
+    role: string
+  ) => {
     try {
       setLoading(true);
 
@@ -67,7 +72,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
           name,
           email,
           password,
-          role: 'influencer'
+          role
         },
         {
           cancelToken: cancelTokenSource.token
@@ -89,24 +94,22 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
   const handleApprove = async (id: string) => {
     const docRef = await getDoc(doc(db, 'waiting-list', id));
 
-
     if (docRef.exists()) {
       try {
         const user = docRef.data();
         const randomPassword = await generateRandomPassword();
         console.log(randomPassword);
-        await handleRegistration(user.name, user.email, randomPassword);
+        await handleRegistration(user.name, user.email, randomPassword, user.role);
         await axios.post('/api/mail/send', {
           name: user.name,
           email: user.email,
           password: randomPassword
         });
         toast.success('Email sent to user');
+        await deleteDoc(doc(db, 'waiting-list', id));
       } catch (error: any) {
         console.log(error);
         toast.error('An error occured');
-      } finally {
-        await deleteDoc(doc(db, 'waiting-list', id));
       }
     } else {
       toast.error('User does not exist');
