@@ -7,7 +7,7 @@ import { XIcon } from 'lucide-react';
 import useCartStore from '@/state/useCartStore';
 import { Separator } from '@/components/ui/separator';
 
-export default function OrderSummaryCheckout(){
+export default function OrderSummaryCheckout() {
   const { cartItems } = useCartStore((state: any) => state);
 
   return (
@@ -15,8 +15,8 @@ export default function OrderSummaryCheckout(){
       <h4 className="font-medium mb-6 text-lg">Order Summary</h4>
 
       <ul className="flex flex-col gap-y-8">
-        {cartItems.map((item: any, idx: number) => (
-          <li className="grid grid-cols-2 w-full pb-8 border-b last:pb-0 last:border-0" key={idx}>
+        {cartItems?.map((item: any) => (
+          <li className="grid grid-cols-2 w-full pb-8 border-b last:pb-0 last:border-0" key={item.id}>
             <div className="col-span-2 flex items-center gap-x-3">
               <Image className="border rounded" height={150} width={150} src={item.coverImage} alt={item.name} />
               <div className="">
@@ -28,7 +28,7 @@ export default function OrderSummaryCheckout(){
           </li>
         ))}
       </ul>
-      <Separator className="my-8"/>
+      <Separator className="my-8" />
       <div>
         <div className="flex justify-between border-b pb-3">
           <p>Subtotal</p>
