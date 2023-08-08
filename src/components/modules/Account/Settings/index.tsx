@@ -1,21 +1,8 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import useSWR from 'swr';
-import {
-  getDocs,
-  collection,
-  where,
-  query,
-  getDoc,
-  doc,
-  Timestamp,
-  increment,
-  updateDoc,
-  addDoc,
-  setDoc
-} from 'firebase/firestore';
-import { db, auth, storage } from '@/lib/firebase/client';
-import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
+import React, { useState } from 'react';
+
+import { doc, updateDoc } from 'firebase/firestore';
+import { db, auth } from '@/lib/firebase/client';
 
 import toast from 'react-hot-toast';
 
@@ -33,10 +20,10 @@ type FormValues = {
   confirmPassword: string;
 };
 
-const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
+const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPasswordUpdate, setIsPasswordUpdate] = useState<boolean>(false);
-  const { updatePassword, error } = useAuth();
+  const { updatePassword } = useAuth();
 
   const methods = useForm<FormValues>({
     defaultValues,
@@ -65,10 +52,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           return;
         }
         updatePassword(data.currentPassword, data.newPassword);
-        if (error) {
-          toast.error(error);
-          return;
-        }
+
         toast.success('Password Updated Successfully');
       }
       reset();
@@ -92,4 +76,4 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
   );
 };
 
-export default AddShop;
+export default Index;
