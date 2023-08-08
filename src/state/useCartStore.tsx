@@ -3,7 +3,7 @@ import { db } from '@/lib/firebase/client';
 import {
   addDoc, arrayRemove,
   arrayUnion,
-  collection,
+  collection, deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -59,11 +59,17 @@ const fetchAddToCart = async (productId: string, cartDocId: string, skuId: strin
   });
 }
 
-const calculateCartSummary = (items: any) => {
-  const total = items.reduce((acc: any, curr: any) => acc + curr.selectedVariant.price, 0);
+const fetchClearCart = async (cartDocId: string) => {
+  const cartRef = doc(db, "cart", cartDocId);
+  await deleteDoc(cartRef)
+}
+
+const calculateCartSummary = (items: any = []) => {
+  const total = items?.reduce((acc: any, curr: any) => acc + curr.selectedVariant.price, 0);
+  const shipping = 4;
   return {
-    shipping: 4,
-    total
+    shipping,
+    total: total + shipping
   }
 }
 
@@ -78,6 +84,13 @@ const useCartStore = create((set, get) => ({
   isAddToCartLoading: false,
   setIsAddToCartLoading: (val: boolean) => {
     set({ isAddToCartLoading: val });
+  },
+  clearCart: async () => {
+    set(async (state: any) => {
+      const userId = state?.cart?.userId;
+      await fetchClearCart(state.cart.id);
+      await state.getCart(userId);
+    })
   },
   addToCart: async (productId: string, skuId: string) => {
     set(async (state: any) => {
