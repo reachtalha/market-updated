@@ -1,18 +1,21 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+
+import { useRole } from '@/hooks/useUserRole';
+import useCategorySlug from '@/hooks/useCategorySlug';
+
+import useSWR from 'swr';
+import { getDoc, doc } from 'firebase/firestore';
+import { db, auth } from '@/lib/firebase/client';
+
+import Loader from '@/components/common/Loader';
+import Error from '@/components/common/Error';
+
 import AccountOption, { Option } from '@/components/common/Buyer/Account/AccountOptions';
 import BoxedContent from '@/components/common/BoxedContent';
-import useCategorySlug from '@/hooks/useCategorySlug';
 import Settings from '@/components/modules/Account/Settings';
 import CardInfo from '@/components/modules/Account/CardInfo';
 import OrderHistory from '@/components/modules/Account/OrderHistory';
 import Socials from '@/components/modules/Account/Socials';
-import { getDoc, doc } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase/client';
-import Loader from '../../Loader';
-import { useRouter } from 'next/navigation';
-import { useRole } from '@/hooks/useUserRole';
-import useSwr from 'swr';
 
 type AccountProps = {
   options: Option[];
@@ -20,26 +23,21 @@ type AccountProps = {
 
 function Index({ options }: AccountProps) {
   const category = useCategorySlug();
-  const [user, setUser] = useState<any>();
-  const router = useRouter();
   const role = useRole();
 
-  if (!auth.currentUser) {
-    router.push('/auth/login');
+  const { data: user, isLoading, error } = useSWR("currentUser", async () => {
+    const docRef = doc(db, 'users', `${auth.currentUser?.uid}`);
+    const docSnap = await getDoc(docRef);
+    return { id: docSnap.id, ...docSnap.data() } as any;
+  })
+
+  if (isLoading) {
+    return <Loader className="grid place-content-center h-full w-full" />
   }
 
-  useEffect(() => {
-    const getUser = async () => {
-      const docRef = doc(db, 'users', auth.currentUser?.uid || '');
-      const docSnap = await getDoc(docRef);
-
-      return docSnap.data();
-    };
-
-    getUser()
-      .then((res) => setUser(res))
-      .catch((err) => console.log(err));
-  }, []);
+  if (error) {
+    return <Error className="grid place-content-center h-full w-full" />
+  }
 
   const renderComponent = () => {
     switch (category) {
@@ -128,13 +126,13 @@ function Index({ options }: AccountProps) {
         options={
           role === 'influencer'
             ? [
-                ...options,
-                {
-                  name: 'Socials',
-                  slug: 'socials',
-                  href: '/account?display'
-                }
-              ]
+              ...options,
+              {
+                name: 'Socials',
+                slug: 'socials',
+                href: '/account?display'
+              }
+            ]
             : options
         }
       />
