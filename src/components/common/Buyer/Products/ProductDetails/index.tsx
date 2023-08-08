@@ -5,18 +5,16 @@ import Stars from '@/assets/icons/system/Stars';
 import { Button } from '@/components/ui/button';
 
 import ProductSlider from '@/components/common/Buyer/Products/ProductDetails/ProductSlider';
-import SelectProductVariant from '@/components/common/Buyer/Products/ProductDetails/SelectProductVariant';
-import DetailsAccordion from '@/components/common/Buyer/Products/ProductDetails/DetailsAccordion';
 import ProductVideo from '@/components/common/Buyer/Products/ProductDetails/ProductVideo';
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
 import ComplementaryProducts from '@/components/common/Buyer/Products/ProductDetails/ComplementaryProducts';
 import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard';
 
 import useCartStore from '@/state/useCartStore';
+import useAuth from '@/hooks/useAuth';
+import { CircleIcon } from 'lucide-react';
 
-
-export default function Product({ productJSON }: { productJSON: any }) {
-  const product = JSON.parse(productJSON)
+export default function Product({ product }: { product: any }) {
   const uniqueSizesSet = new Set();
   product.SKU.forEach((item: any) => uniqueSizesSet.add(item.measurement));
   // Convert the Set back to an array to be used in the state
@@ -29,11 +27,8 @@ export default function Product({ productJSON }: { productJSON: any }) {
   const [selectedSize, setSelectedSize] = useState(uniqueSizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.SKU[0].id);
 
-  const { setCartItems } = useCartStore((state: any) => state);
-
-  const handleAddToBag = () => {
-    setCartItems({ name: product.name, coverImage: product.coverImage, selectedVariant });
-  }
+  const { addToCart, isAddToCartLoading } = useCartStore((state: any) => state);
+  const handleAddToBag = () => addToCart(product.id, selectedVariant.id);
 
   return (
     <>
@@ -73,8 +68,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
-                    } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
+                    size === selectedSize && ' bg-primary text-white'
+                  } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -92,8 +88,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
-                      } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
+                      variant.id === selectedColor && ' bg-primary text-white'
+                    } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
@@ -108,7 +105,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
           <span className="">Price</span>
           <p className="font-medium text-2xl mb-3">{selectedVariant.price}$</p>
           <Button onClick={handleAddToBag} className="w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500">
-            Add to bag
+            {isAddToCartLoading ? 'loading...' : 'Add to bag'}
           </Button>
           <Button className="w-full mt-2 bg-transparent hover:tracking-wider hover:bg-transparent hover:text-primary transition-all duration-500 text-primary border-primary border-2 uppercase">
             Save in Wishlist

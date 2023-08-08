@@ -1,9 +1,8 @@
-import React from 'react';
+import Link from 'next/link';
 import { StaticImageData } from 'next/image';
 
 import Image from '@/components/common/FallbackImage';
 import { formatCurrency } from '@/utils/formatters';
-import Link from 'next/link';
 
 interface ProductCard {
   id: string;
