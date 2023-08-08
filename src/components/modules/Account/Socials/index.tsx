@@ -105,7 +105,7 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
             {errors.bio && <span className="text-sm text-red-500">Bio cannot be empty!</span>}
           </div>
           <TopicList maxTopics={4} topicsList={topics} onTopicsChange={handleTopicsChange} />
-          <div className="w-full mt-3 space-y-2">
+          <div className="w-full mt-3">
             <SocialMediaSelect onAddButton={handleAddButton} />
             <SocialMediaList items={socialMediaList} onDeleteSocialLink={deleteSocialLink} />
           </div>
