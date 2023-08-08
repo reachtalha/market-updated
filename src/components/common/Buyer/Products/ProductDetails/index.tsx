@@ -14,7 +14,8 @@ import useCartStore from '@/state/useCartStore';
 import useAuth from '@/hooks/useAuth';
 import { CircleIcon } from 'lucide-react';
 
-export default function Product({ product }: { product: any }) {
+export default function Product({ productJSON }: { productJSON: any }) {
+  const product = JSON.parse(productJSON);
   const uniqueSizesSet = new Set();
   product.SKU.forEach((item: any) => uniqueSizesSet.add(item.measurement));
   // Convert the Set back to an array to be used in the state
@@ -68,9 +69,8 @@ export default function Product({ product }: { product: any }) {
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                    size === selectedSize && ' bg-primary text-white'
-                  } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
+                    } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -88,9 +88,8 @@ export default function Product({ product }: { product: any }) {
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                      variant.id === selectedColor && ' bg-primary text-white'
-                    } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
+                      } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
