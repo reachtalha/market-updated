@@ -28,23 +28,23 @@ const fetchGetCart = async (userId: string) => {
   const cart = await getDocs(query(cartRef, where("userId", "==", userId)));
   const hasCart = !!cart.docs.length;
 
-  if(!hasCart){
+  if (!hasCart) {
     await addDoc(cartRef, {
       userId: userId,
       items: [],
       total: 0
     });
-  }else {
+  } else {
     const cartData = cart.docs[0].data();
     const cartItems = await Promise.all(
       cartData?.items?.map(async (item: any) => {
         const docRef = await getDoc(doc(db, 'products', item.productId));
         const productData = docRef.data();
         const selectedVariant = productData?.SKU.find((sku: any) => sku.id === item.skuId);
-        return {...productData, docId: docRef.id ,selectedVariant};
+        return { ...item, ...productData, docId: docRef.id, selectedVariant };
       })
     );
-   return {userId: cartData.userId, id: cart.docs[0].id, cart: {...cartData, items: cartItems } };
+    return { userId: cartData.userId, id: cart.docs[0].id, cart: { ...cartData, items: cartItems } };
   }
 }
 
