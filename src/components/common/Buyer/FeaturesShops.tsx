@@ -18,6 +18,7 @@ export default function FeaturesShops() {
       {Array.from('abcfghyu').map((shop, i: number) => (
         <SwiperSlide key={i + Math.random()}>
           <ShopCard
+            id={i.toString()}
             key={i + Math.random()}
             image={market1}
             desc="Find harmony with nature as you flow through your practice, surrounded by the pure essence of organic yoga products that honor your well-being and the planet."

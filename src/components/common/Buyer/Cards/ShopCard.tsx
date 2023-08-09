@@ -2,15 +2,21 @@ import { StaticImageData } from 'next/image';
 
 import Image from '@/components/common/FallbackImage';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 type Props = {
+  id: string;
   image: string | StaticImageData;
   shop: string;
   desc: string;
   type: string;
 };
 
-const ShopCard = ({ image, shop, desc, type }: Props) => {
+const ShopCard = ({ id, image, shop, desc, type }: Props) => {
+  const router = useRouter();
+  const handleRedirect = () => {
+    router.push(`/shop/${id}`);
+  };
   return (
     <div className="group h-fit w-full relative">
       <div className="relative h-96 w-full drop-shadow-sm">
@@ -27,7 +33,11 @@ const ShopCard = ({ image, shop, desc, type }: Props) => {
           <span className="text-2xl mb-3 capitalize text-white md:text-4xl font-alpina font-medium">
             {shop}
           </span>
-          <Button size="resp" className="bg-transparent hover:bg-transparent  border rounded-3xl">
+          <Button
+            size="resp"
+            onClick={handleRedirect}
+            className="bg-transparent hover:bg-transparent  border rounded-3xl"
+          >
             Explore Shop
           </Button>
         </div>
@@ -39,7 +49,11 @@ const ShopCard = ({ image, shop, desc, type }: Props) => {
         <div className="flex flex-col gap-y-3 w-full">
           <div className="flex flex-row   justify-between items-center flex-wrap">
             <span className="text-2xl lg:text-3xl capitalize font-medium">{shop}</span>
-            <Button size="resp" className="bg-transparent hover:bg-transparent  border rounded-3xl">
+            <Button
+              size="resp"
+              onClick={handleRedirect}
+              className="bg-transparent hover:bg-transparent  border rounded-3xl"
+            >
               Explore Shop
             </Button>
           </div>
