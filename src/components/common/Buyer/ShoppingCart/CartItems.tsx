@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function CartItems() {
   const { cart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
   const router = useRouter();
-  const filteredItems = cart?.items.map((item: any) => ({
+  const filteredItems = cart?.items?.map((item: any) => ({
     productId: item.productId,
     quantity: item.quantity,
     skuId: item.skuId,
