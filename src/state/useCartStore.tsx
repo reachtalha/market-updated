@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { db } from '@/lib/firebase/client';
+import { db, auth } from '@/lib/firebase/client';
 import {
-  addDoc, arrayRemove,
+  setDoc, arrayRemove,
   arrayUnion,
   collection, deleteDoc,
   doc,
@@ -25,19 +25,15 @@ const fetchDeleteFromCart = async (productId: string, cartDocId: string, skuId: 
 }
 
 
-const fetchGetCart = async (userId: string) => {
-  const cartRef = collection(db, "cart");
-  const cart = await getDocs(query(cartRef, where("userId", "==", userId)));
-  const hasCart = !!cart.docs.length;
+const fetchGetCart = async () => {
+  const cart = await getDoc(doc(db, "cart", `${auth.currentUser?.uid}`));
 
-  if (!hasCart) {
-    await addDoc(cartRef, {
-      userId: userId,
+  if (!cart.exists()) {
+    await setDoc(doc(db, "cart", `${auth.currentUser?.uid}`), {
       items: [],
-      total: 0
     });
   } else {
-    const cartData = cart.docs[0].data();
+    const cartData = cart.data();
     const cartItems = await Promise.all(
       cartData?.items?.map(async (item: any) => {
         const docRef = await getDoc(doc(db, 'products', item.productId));
@@ -46,12 +42,12 @@ const fetchGetCart = async (userId: string) => {
         return { ...item, ...productData, docId: docRef.id, selectedVariant };
       })
     );
-    return { userId: cartData.userId, id: cart.docs[0].id, cart: { ...cartData, items: cartItems } };
+    return { userId: auth.currentUser?.uid, id: cart.id, cart: { ...cartData, items: cartItems } };
   }
 }
 
-const fetchAddToCart = async (productId: string, cartDocId: string, skuId: string) => {
-  const cartRef = doc(db, "cart", cartDocId);
+const fetchAddToCart = async (productId: string, skuId: string) => {
+  const cartRef = doc(db, "cart", `${auth.currentUser?.uid}`);
   await updateDoc(cartRef, {
     items: arrayUnion({
       productId,
@@ -61,8 +57,8 @@ const fetchAddToCart = async (productId: string, cartDocId: string, skuId: strin
   });
 }
 
-const fetchClearCart = async (cartDocId: string) => {
-  const cartRef = doc(db, "cart", cartDocId);
+const fetchClearCart = async () => {
+  const cartRef = doc(db, "cart", `${auth.currentUser?.uid}`);
   await deleteDoc(cartRef)
 }
 
@@ -79,6 +75,18 @@ const calculateCartSummary = (items: any = []) => {
   }
 }
 
+const incrementQuantity = async (items: any, productId: string) => {
+  const newItems = structuredClone(items);
+  for (let i = 0; i < newItems.length; i++) {
+    if (newItems[i].productId === productId) {
+      newItems[i].quantity += 1;
+    }
+  }
+  await updateDoc(doc(db, "cart", `${auth.currentUser?.uid}`), {
+    items: newItems
+  })
+};
+
 const useCartStore = create((set, get) => ({
   cart: {
     userId: '',
@@ -94,14 +102,14 @@ const useCartStore = create((set, get) => ({
   clearCart: async () => {
     set(async (state: any) => {
       const userId = state?.cart?.userId;
-      await fetchClearCart(state.cart.id);
+      await fetchClearCart();
       await state.getCart(userId);
     })
   },
   addToCart: async (productId: string, skuId: string) => {
     set(async (state: any) => {
       state.setIsAddToCartLoading(true);
-      await fetchAddToCart(productId, state.cart.id, skuId);
+      await fetchAddToCart(productId, skuId);
       state.setIsAddToCartLoading(false);
       await state.getCart(state.cart.userId);
     })
@@ -114,8 +122,14 @@ const useCartStore = create((set, get) => ({
   },
   getCart: async (userId: string) => {
     set({ isCartLoading: true });
-    const data = await fetchGetCart(userId);
+    const data = await fetchGetCart();
     set({ isCartLoading: false, cart: { summary: calculateCartSummary(data?.cart?.items), userId: data?.userId, items: data?.cart?.items, id: data?.id } || {} })
+  },
+  increment: async (items: any, productId: string) => {
+    set({ isCartLoading: true });
+    await incrementQuantity(items, productId)
+    await fetchGetCart();
+    set({ isCartLoading: false });
   }
 }));
 
