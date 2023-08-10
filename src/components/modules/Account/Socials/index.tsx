@@ -29,6 +29,7 @@ interface SocialMedia {
   link: string;
 }
 
+const MAX_CHAR = 150;
 const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
   const { mutate } = useSWRConfig();
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,15 +43,35 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
   });
   const {
     handleSubmit,
-    reset,
     setValue,
     register,
+    watch,
+    getValues,
+    setError,
+    clearErrors,
     formState: { errors }
   } = methods;
+  const bio = getValues("bio");
+  const watchBio = watch(["bio"]);
+
+  useEffect(() => {
+    const bioError = errors.bio;
+
+    if (bio.length > MAX_CHAR && !bioError) {
+      setError('bio', {
+        type: 'maxLength',
+        message: `Max length should be ${MAX_CHAR} characters`
+      });
+    } else if (bio.length <= MAX_CHAR && bioError?.type === 'maxLength') {
+      clearErrors('bio');
+    }
+  }, [watchBio, getValues, setError, clearErrors, errors.bio]);
 
   useEffect(() => {
     setValue('socialMediaLinks', socialMediaList);
   }, [socialMediaList]);
+
+
 
   const handleTopicsChange = (updatedTopics: string[]) => {
     setTopics(updatedTopics);
@@ -95,13 +116,22 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
             <Label>Your Bio</Label>
             <Textarea
               rows={3}
-              className="w-full resize-none placeholder:text-sm transition-transform duration-300 border-neutral-200 delay-75 focus-visible:ring-0 focus-within:-translate-y-[2px] focus-within:ring-neutral-400 focus-visible:ring-offset-0"
+              className="w-full resize-none placeholder:text-sm"
               placeholder="Your Bio"
               {...register('bio', {
-                required: true
+                required: true,
+                maxLength: {
+                  value: MAX_CHAR,
+                  message: `Max length should be ${MAX_CHAR} characters`
+                }
               })}
             />
-            {errors.bio && <span className="text-sm text-red-500">Bio cannot be empty!</span>}
+            <div className="text-sm">
+              {bio.length}/{MAX_CHAR} characters
+            </div>
+            {errors.bio && errors.bio.message && (
+              <span className="text-sm text-red-500">{errors.bio.message}</span>
+            )}
           </div>
           <TopicList maxTopics={4} topicsList={topics} onTopicsChange={handleTopicsChange} />
           <div className="w-full mt-3">
