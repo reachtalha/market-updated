@@ -1,8 +1,10 @@
-import Link from 'next/link';
 import Image from 'next/image';
 
 import { getDocs, getDoc, doc, collection } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+
+import { FacebookIcon, InstagramIcon, TwitterIcon, GlobeIcon, YoutubeIcon, LinkIcon } from 'lucide-react';
+import TikTok from '@/assets/icons/social/Tiktok';
 
 import { Button } from '@/components/ui/button';
 import BoxedContent from '@/components/common/BoxedContent';
@@ -44,6 +46,25 @@ type ExpertProps = {
 const Expert = async ({ params }: ExpertProps) => {
   const [categories, expert] = await Promise.all([getCategories(), getExpert(params.expertId)]);
 
+  const renderIcon = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'facebook':
+        return <FacebookIcon className='w-6 h-6 text-neutral-900' />;
+      case 'instagram':
+        return <InstagramIcon className='w-6 h-6 text-neutral-900' />;
+      case 'twitter':
+        return <TwitterIcon className='w-6 h-6 text-neutral-900' />;
+      case 'website':
+        return <GlobeIcon className='w-6 h-6 text-neutral-900' />;
+      case 'youtube':
+        return <YoutubeIcon className='w-6 h-6 text-neutral-900' />;
+      case 'tiktok':
+        return <TikTok className='w-6 h-6 text-neutral-900' />;
+      default:
+        return <LinkIcon className='w-6 h-6 text-neutral-900' />;
+    }
+  };
+
   return (
     <>
       <BoxedContent className="pt-20 lg:py-20">
@@ -62,12 +83,12 @@ const Expert = async ({ params }: ExpertProps) => {
             </h1>
 
             <p className="uppercase mt-3 lg:mt-6">social links</p>
-            <ul className="flex gap-x-4 gap-y-2 lg:gap-10 mt-4 mb-8k flex-wrap">
+            <ul className="flex gap-x-4 gap-y-2 lg:gap-6 mt-4 mb-8k flex-wrap">
               {expert?.socialMediaLinks.map((item: any, idx: number) => (
                 <li key={idx}>
-                  <Link className="underline uppercase" href={item.link}>
-                    {item.type}
-                  </Link>
+                  <a href={item.link} target='_blank'>
+                    {renderIcon(item.type)}
+                  </a>
                 </li>
               ))}
             </ul>
