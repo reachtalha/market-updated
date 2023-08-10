@@ -66,7 +66,7 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
                     <Trash2 size={15} color="#C51605" className="cursor-pointer" />
                     <MoveRight
                       size={15}
-                      onClick={() => router.push(`/seller/orders/${Math.random() < 0.5 ? 1 : 2}`)}
+                      onClick={() => router.push(`/seller/orders/${row?.original?.id}`)}
                       className=" cursor-pointer"
                     />
                   </div>

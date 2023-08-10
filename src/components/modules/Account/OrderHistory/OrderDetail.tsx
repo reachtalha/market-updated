@@ -4,8 +4,7 @@ import { StaticImageData } from 'next/image';
 import Image from '@/components/common/FallbackImage';
 import product1 from '@/assets/images/product1.webp';
 type Props = {
-  orderId: string;
-  order?: any;
+  order: any;
 };
 
 type OrderDetailProps = {
@@ -52,55 +51,42 @@ const SummaryItem = ({ title, amount }: { title: string; amount: number }) => {
   );
 };
 
-const OrderDetail = ({ orderId, order }: Props) => {
+const OrderDetail = ({ order }: Props) => {
   const getSubtotal = () => {
-    if (order) {
-      return order.products.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
-    } else {
-      return 54.0;
-    }
+    return order.products.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
   };
   const getTotal = () => {
-    return getSubtotal() + (order?.shipping.charges || 9.99);
+    return getSubtotal() + order?.shipping.charges;
   };
   return (
     <div className="sticky flex flex-col gap-y-5 top-24 w-full  ">
       <div className="border border-gray-400 rounded-xl flex flex-col p-5">
         <span className="font-medium uppercase">Products</span>
-        {order ? (
-          order.products.map((p: any, index: number) => (
-            <OrderDetailCard
-              key={index}
-              title={p.name}
-              subtitle={p.unit}
-              price={p.price}
-              image={p.image}
-            />
-          ))
-        ) : (
+        {order.products.map((p: any, index: number) => (
           <OrderDetailCard
-            title={'Natural deodrant trio'}
-            subtitle={'2.6 oz / 75 G'}
-            price={54.0}
-            image={product1}
+            key={index}
+            title={p.name}
+            subtitle={p.unit}
+            price={p.price}
+            image={p.image}
           />
-        )}
+        ))}
       </div>
       <div className="flex flex-col lg:flex-row gap-y-5 md:gap-x-5">
         <div className="border rounded-xl p-5 w-full gap-y-2 flex flex-col border-gray-400">
           <span className="font-medium uppercase">Summary</span>
 
           <SummaryItem title="Subtotal" amount={getSubtotal().toFixed(2)} />
-          <SummaryItem title="Shipping" amount={order?.shipping.charges || 9.99} />
+          <SummaryItem title="Shipping" amount={order?.shipping.charges} />
           <hr />
           <SummaryItem title="Total" amount={getTotal().toFixed(2)} />
         </div>
         <div className="border border-gray-400 w-full rounded-xl p-5">
           <span className="uppercase font-medium">Shipping</span>
           <OrderDetailCard
-            title={order?.shipping.name || 'TNT Delivery'}
-            subtitle={`Delivery within ${order?.shipping.days || 3} days`}
-            price={order?.shipping.charges || 9.99}
+            title={order?.shipping.name || 'Standard'}
+            subtitle={`Delivery within ${order?.shipping.days} days`}
+            price={order?.shipping.charges}
             image={product1}
             isShipping
           />

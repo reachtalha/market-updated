@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -11,9 +11,9 @@ import BoxedContent from '@/components/common/BoxedContent';
 import useClickOutside from '@/hooks/useClickOutside';
 
 type SearchbarProps = {
-  isOpen: boolean
-  toggleSearchBar: Function
-}
+  isOpen: boolean;
+  toggleSearchBar: Function;
+};
 
 const quickLinks = [
   {
@@ -35,8 +35,8 @@ const quickLinks = [
     id: 4,
     name: 'BODY WASH',
     link: '/products/123'
-  },
-]
+  }
+];
 export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
   const router = useRouter();
   const searchBoxRef = useRef<HTMLDivElement>(null);
@@ -44,32 +44,44 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
 
   const handleClick = (ref: string) => {
     router.push(ref);
-    toggleSearchBar()
-  }
+    toggleSearchBar();
+  };
   return (
     <div
       ref={searchBoxRef}
       tabIndex={0}
-      className={cn("invisible shadow shadow-gray-200 absolute h-0 transition-all ease-in duration-100 w-full bg-white text-black", isOpen && "visible h-[400px]")}
+      className={cn(
+        'invisible shadow shadow-gray-200 absolute h-0 transition-all ease-in duration-100 w-full bg-white text-black',
+        isOpen && 'visible h-[400px]'
+      )}
     >
       <BoxedContent className="mt-16">
         <form className="pt-6">
           <div className="flex gap-2 items-center">
             <SearchIcon height={25} width={25} />
-            <Input autoFocus className="bg-transparent placeholder:text-black focus-visible:ring-0 border-0 outline-0 text-2xl" placeholder="Search all Organic" />
+            <Input
+              autoFocus
+              className="bg-transparent placeholder:text-black focus-visible:ring-0 border-0 outline-0 text-2xl"
+              placeholder="Search all Organic"
+            />
           </div>
         </form>
 
         <h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>
         <ul className="flex flex-col gap-y-4 mt-4">
-          {quickLinks.map(item => <li className="" key={item.id}>
-            <button className="flex items-center gap-4 hover:underline" onClick={() => handleClick(item.link)}>
-              <ArrowRight className="text-gray-500" />
-              {item.name}
-            </button>
-          </li>)}
+          {quickLinks.map((item) => (
+            <li className="" key={item.id}>
+              <button
+                className="flex items-center gap-4 hover:underline"
+                onClick={() => handleClick(item.link)}
+              >
+                <ArrowRight className="text-gray-500" />
+                {item.name}
+              </button>
+            </li>
+          ))}
         </ul>
       </BoxedContent>
     </div>
-  )
+  );
 }
