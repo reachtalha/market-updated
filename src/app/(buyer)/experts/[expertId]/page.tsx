@@ -9,7 +9,7 @@ import TikTok from '@/assets/icons/social/Tiktok';
 import { Button } from '@/components/ui/button';
 import BoxedContent from '@/components/common/BoxedContent';
 import Products from '@/components/common/Buyer/Products';
-import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
+import FeaturedProducts from '@/components/modules/Experts/FeaturedProducts';
 import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 import AddPinnedContentModal from '@/components/modules/Experts/PinnedContent/AddContent';
 import PinnedContentList from '@/components/modules/Experts/PinnedContent/List';
@@ -119,7 +119,7 @@ const Expert = async ({ params }: ExpertProps) => {
         <PinnedContentList list={expert?.pinned} />
       </section>}
       <section className="py-16 container">
-        <FeaturedProducts />
+        <FeaturedProducts list={expert?.pinnedProducts} />
       </section>
       <section className="">
         <div className="container">
