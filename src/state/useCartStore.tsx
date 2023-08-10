@@ -9,7 +9,8 @@ import {
   getDocs,
   query,
   updateDoc,
-  where
+  where,
+  onSnapshot
 } from 'firebase/firestore';
 
 const fetchDeleteFromCart = async (productId: string, cartDocId: string, skuId: string) => {
@@ -22,6 +23,7 @@ const fetchDeleteFromCart = async (productId: string, cartDocId: string, skuId: 
     })
   });
 }
+
 
 const fetchGetCart = async (userId: string) => {
   const cartRef = collection(db, "cart");
@@ -65,11 +67,15 @@ const fetchClearCart = async (cartDocId: string) => {
 }
 
 const calculateCartSummary = (items: any = []) => {
-  const total = items?.reduce((acc: any, curr: any) => acc + curr.selectedVariant.price, 0);
+  const subTotal = items.reduce((sum: number, item: any) => {
+    const itemTotal = item.quantity * item.selectedVariant.price;
+    return sum + itemTotal;
+  }, 0);
   const shipping = 4;
   return {
     shipping,
-    total: total + shipping
+    subTotal: subTotal,
+    total: subTotal + shipping
   }
 }
 
