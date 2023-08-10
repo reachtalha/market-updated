@@ -12,13 +12,13 @@ export default function ExpertCard({ image, name, title }: IProfileCard) {
   return (
     <div
       key={Math.random() + Date.now()}
-      className="relative min-w-48 max-h-96 rounded-sm overflow-hidden"
+      className="relative min-w-48 h-96 rounded-sm overflow-hidden"
     >
       <Image
         src={image}
         height={550}
         width={450}
-        className="w-full h-full object-cover object-center"
+        className="w-full h-full object-cover"
         alt={name}
       />
       <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/30 to-transparent transition-opacity ease-in duration-300" />
