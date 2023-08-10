@@ -32,7 +32,7 @@ function Index({ options }: AccountProps) {
   })
 
   if (isLoading) {
-    return <Loader className="grid place-content-center h-full w-full" />
+    return <Loader className="grid place-content-center h-screen w-full" />
   }
 
   if (error) {
