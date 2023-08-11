@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+"use client";
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { StaticImageData } from 'next/image';
 
 import { db, auth } from '@/lib/firebase/client';
-import { updateDoc, doc, arrayUnion, getDoc, arrayRemove } from 'firebase/firestore';
+import { updateDoc, doc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { useRole } from '@/hooks/useUserRole';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 
