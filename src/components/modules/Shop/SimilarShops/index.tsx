@@ -65,6 +65,7 @@ export default function SimilarShops({ category }: { category: string }) {
                 <SwiperSlide key={i + Math.random()}>
                     <ShopCard
                         key={i + Math.random()}
+                        id={_.id}
                         image={_.coverImage}
                         desc={_.tagline}
                         shop={_.name}

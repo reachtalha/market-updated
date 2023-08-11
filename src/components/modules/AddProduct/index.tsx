@@ -76,13 +76,13 @@ const getTypeData = async (category: string) => {
 };
 
 const AddProduct = () => {
+  const { data: shop, error: shopError, isLoading: shopIsLoading } = useSWR('shop', getShopData);
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const emptySKUList = useGlobalStore((state: any) => state.emptySKUList);
   const methods = useForm<FormValues>();
   const { handleSubmit, reset } = methods;
 
-  const { data: shop, error: shopError, isLoading: shopIsLoading } = useSWR('shop', getShopData);
 
   useEffect(() => {
     emptySKUList();

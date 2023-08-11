@@ -88,7 +88,7 @@ const Influencer = () => {
           {bio.length}/{MAX_CHAR} characters
         </div>
         {errors.bio && errors.bio.message && (
-          <span className="text-sm text-red-500">{errors.bio.message}</span>
+          <span className="text-sm text-red-500">{errors.bio.message.toString()}</span>
         )}
       </div>
       <TopicList maxTopics={4} topicsList={topics} onTopicsChange={handleTopicsChange} />
