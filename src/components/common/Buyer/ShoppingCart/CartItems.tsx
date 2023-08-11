@@ -38,7 +38,7 @@ export default function CartItems() {
         {cart?.items?.map((item: any, idx: number) => (
           <li className="grid grid-cols-4 w-full pb-8 border-b last:border-0" key={idx}>
             <div className="col-span-2 flex items-center gap-x-3">
-              <Image className="border rounded" height={150} width={150} src={item.coverImage} alt={item.name} />
+              <Image className="border rounded w-full h-36" height={150} width={150} src={item.coverImage} alt={item.name} />
               <div className="">
                 <h6 className="uppercase font-medium w-[250px]">{item.name}</h6>
                 <p>{item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}</p>
@@ -46,7 +46,7 @@ export default function CartItems() {
               </div>
             </div>
             <div className="col-span-1 flex items-center justify-center">
-              <QuantityInput id={cart.id} items={filteredItems} productId={item.productId} quantity={item.quantity} />
+              <QuantityInput items={filteredItems} productId={item.productId} quantity={item.quantity} variant={item.selectedVariant.id} />
             </div>
             <div className="col-span-1 flex justify-end">
               <Button onClick={() => handleOnDelete(item)} className="border rounded p-1 h-fit" variant="ghost">

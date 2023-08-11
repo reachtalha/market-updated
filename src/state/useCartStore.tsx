@@ -86,6 +86,22 @@ const incrementQuantity = async (items: any, productId: string) => {
     items: newItems
   })
 };
+const decrementQuantity = async (items: any, productId: string, variant: string) => {
+  const newItems = structuredClone(items);
+  for (let i = 0; i < newItems.length; i++) {
+    if (newItems[i].productId === productId) {
+      if (newItems[i].quantity >= 2) {
+        newItems[i].quantity -= 1;
+      } else {
+        await fetchDeleteFromCart(productId, `${auth.currentUser?.uid}`, variant)
+        return;
+      }
+    }
+  }
+  await updateDoc(doc(db, "cart", `${auth.currentUser?.uid}`), {
+    items: newItems
+  })
+};
 
 const useCartStore = create((set, get) => ({
   cart: {
@@ -128,8 +144,14 @@ const useCartStore = create((set, get) => ({
   increment: async (items: any, productId: string) => {
     set({ isCartLoading: true });
     await incrementQuantity(items, productId)
-    await fetchGetCart();
-    set({ isCartLoading: false });
+    const data = await fetchGetCart();
+    set({ isCartLoading: false, cart: { summary: calculateCartSummary(data?.cart?.items), userId: data?.userId, items: data?.cart?.items, id: data?.id } || {} })
+  },
+  decrement: async (items: any, productId: string, variant: string) => {
+    set({ isCartLoading: true });
+    await decrementQuantity(items, productId, variant)
+    const data = await fetchGetCart();
+    set({ isCartLoading: false, cart: { summary: calculateCartSummary(data?.cart?.items), userId: data?.userId, items: data?.cart?.items, id: data?.id } || {} })
   }
 }));
 

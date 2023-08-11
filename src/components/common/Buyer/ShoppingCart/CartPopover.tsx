@@ -40,6 +40,12 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
     deleteFromCart(item.docId, item.selectedVariant.id)
   }
 
+  const filteredItems = cart?.items?.map((item: any) => ({
+    productId: item.productId,
+    quantity: item.quantity,
+    skuId: item.skuId,
+  }));
+
   return (
     <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
@@ -59,7 +65,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                       </div>
                     </div>
                     <div>
-                      <QuantityInput />
+                      <QuantityInput items={filteredItems} productId={item.productId} quantity={item.quantity} variant={item.selectedVariant.id} />
                     </div>
                     <Button onClick={() => handleOnDelete(item)} className="border rounded p-1 h-fit" variant="ghost">
                       <XIcon height={17} width={17} />
