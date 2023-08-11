@@ -6,14 +6,13 @@ import {
   collection,
   where,
   query,
-  getDoc,
   doc,
   Timestamp,
   increment,
   updateDoc,
   addDoc
 } from 'firebase/firestore';
-import { db, auth, storage } from '@/lib/firebase/client';
+import { db, auth } from '@/lib/firebase/client';
 
 import toast from 'react-hot-toast';
 import useGlobalStore from '@/state';
@@ -25,6 +24,7 @@ import BasicDetails from './BasicDetails';
 import AddImages from './AddImage';
 import Stepper from '@/components/common/Seller/Shared/Stepper';
 import UploadImage from '@/utils/handlers/image/UploadImage';
+import Loader from '@/components/common/Loader';
 
 const STEPPER_DATA = [
   {
@@ -59,26 +59,24 @@ type FormValues = {
   unit: string;
 };
 
-const getShopData: any = async (): Promise<any> => {
-  const docRef = await getDocs(
-    query(collection(db, 'shops'), where('uid', '==', `${auth.currentUser?.uid}`))
-  );
-
-  return { id: docRef?.docs[0]?.id, ...docRef?.docs[0]?.data() };
-};
-
-const getTypeData = async (category: string) => {
-  const typeRef = await getDocs(
-    query(collection(db, 'categories'), where('title', '==', `${category}`))
-  );
-
-  return typeRef?.docs[0]?.data().list;
-};
 
 const AddProduct = () => {
-  const { data: shop, error: shopError, isLoading: shopIsLoading } = useSWR('shop', getShopData);
+  const { data: shop, error, isLoading } = useSWR<any>('shop', async () => {
+    const docRef = await getDocs(
+      query(collection(db, 'shops'), where('uid', '==', `${auth.currentUser?.uid}`))
+    );
+    if (docRef.docs[0].exists()) {
+      const typeRef = await getDocs(
+        query(collection(db, 'categories'), where('title', '==', `${docRef.docs[0].data().category}`))
+      );
+      return {
+        id: docRef.docs[0].id,
+        ...docRef.docs[0].data(),
+        types: typeRef?.docs[0]?.data().list
+      } as any;
+    }
+  });
   const [step, setStep] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(false);
   const emptySKUList = useGlobalStore((state: any) => state.emptySKUList);
   const methods = useForm<FormValues>();
   const { handleSubmit, reset } = methods;
@@ -88,18 +86,9 @@ const AddProduct = () => {
     emptySKUList();
   }, []);
 
-  const {
-    data: types,
-    error: typesError,
-    isLoading: typesIsLoading
-  } = useSWR(shop ? ['types', shop.category] : null, () => getTypeData(shop.category), {
-    shouldRetryOnError: true
-  });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      setLoading(true);
-
       if (!data.coverImage) {
         toast.error('Please add Cover Image!');
         return;
@@ -122,17 +111,18 @@ const AddProduct = () => {
       const obj = {
         uid: auth.currentUser?.uid,
         shopId: shop.id,
-
         ...data,
         name: data.name?.toLocaleLowerCase(),
         type: data.type?.toLocaleLowerCase(),
         submittedAt: Timestamp.fromDate(new Date()),
         coverImage: coverImageURL,
         moreImages: otherImagesURL,
+        shopName: shop.name,
+        category: shop.category,
         status: 'listed'
       };
 
-      const docRef = await addDoc(collection(db, 'products'), obj);
+      await addDoc(collection(db, 'products'), obj);
       updateDoc(doc(db, 'shops', `${shop.id}`), {
         noOfProducts: increment(1)
       });
@@ -143,19 +133,19 @@ const AddProduct = () => {
       setStep(1);
     } catch (e) {
       toast.error('Something went wrong!');
-    } finally {
-      setLoading(false);
     }
   };
 
+  if (isLoading) {
+    return <Loader className="h-full w-full grid place-content-center" />
+  }
   return (
     <section className="h-full py-10">
       <FormProvider {...methods}>
-        <form id="add-product-form" onSubmit={handleSubmit(onSubmit)} className="">
+        <form id="add-product-form" onSubmit={handleSubmit(onSubmit)}>
           <Stepper addProduct step={step} data={STEPPER_DATA} />
-
           <div className="w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] mx-auto mt-5 pb-5">
-            {step === 1 && <BasicDetails setStep={setStep} types={types} />}
+            {step === 1 && <BasicDetails setStep={setStep} types={shop.types} />}
             {step === 2 && <CreateSKU setStep={setStep} />}
             {step === 3 && <DetailedDescription setStep={setStep} />}
             {step === 4 && <AddImages setStep={setStep} />}
