@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
+import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 
 import Image from 'next/image';
 
 import { useFormContext } from 'react-hook-form';
 
 import { deleteImage, handleImage, handleImages } from '@/components/common/functions';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 import toast from 'react-hot-toast';
@@ -40,6 +40,8 @@ function AddImages({
   images?: any;
   isEdit?: boolean;
 }) {
+  const { pending } = useFormStatus()
+
   const [pictures, setPictures] = useState<any>([]);
   const [coverImage, setCoverImage] = useState<any>(images?.coverImage);
   const [logoImage, setLogoImage] = useState<any>(images?.logoImage);
@@ -167,6 +169,7 @@ function AddImages({
         <Button
           type="submit"
           variant="default"
+          disabled={pending}
           form={isShop ? 'add-shop-form' : 'add-product-form'}
           className="w-1/2"
         >
