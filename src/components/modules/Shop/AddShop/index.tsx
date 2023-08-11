@@ -119,14 +119,14 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
       coverImageURL = await UploadImage({
         collection: 'shops',
         image: data.coverImage,
-        name: 'cover' + new Date().getTime()
+        name: 'cover-' + new Date().getTime() + '-' + data.name
       });
     }
     if (!data.logoImage.includes('firebasestorage.googleapis.com')) {
       logoURL = await UploadImage({
         collection: 'shops',
         image: data.logoImage,
-        name: 'logo' + new Date().getTime()
+        name: 'logo-' + new Date().getTime() + '-' + data.name
       });
     }
 

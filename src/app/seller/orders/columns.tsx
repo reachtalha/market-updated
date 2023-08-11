@@ -33,7 +33,12 @@ export const columns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: 'name',
-    header: 'Name'
+    header: 'Name',
+
+    cell: ({ row }) => {
+      const name: string = String(row.getValue('name'));
+      return <span className="capitalize">{name}</span>;
+    }
   },
   {
     accessorKey: 'email',

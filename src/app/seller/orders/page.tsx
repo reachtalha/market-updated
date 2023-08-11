@@ -1,7 +1,11 @@
+'use client';
+import { auth, db } from '@/lib/firebase/client';
 import { Order, columns } from './columns';
 import { DataTable } from './data-table';
 import Title from '@/components/common/Seller/Shared/Title';
-
+import useSwr from 'swr';
+import { collection, getDocs, query, doc, getDoc, where } from 'firebase/firestore';
+import Loader from '@/components/common/Loader';
 const DummyData: Order[] = [
   {
     id: '1',
@@ -77,13 +81,56 @@ const DummyData: Order[] = [
   }
 ];
 
-export default async function DemoPage() {
+const getOrders = async () => {
+  let orders: any = [];
+  let structuredOrder: any = [];
+  const userId = auth.currentUser?.uid;
+  let docSnapshot = await getDocs(query(collection(db, 'shops'), where('uid', '==', userId)));
+
+  const shopId = docSnapshot.docs[0].id;
+
+  docSnapshot = await getDocs(collection(db, 'orders'));
+  docSnapshot.docs.forEach((doc) => {
+    const products = doc.data().items.filter((item: any) => item.shopId === shopId);
+
+    if (products.length > 0) {
+      orders.push({ id: doc.id, ...doc.data() });
+    }
+  });
+
+  console.log(orders);
+
+  await Promise.all(
+    orders.map(async (order: any) => {
+      const userDoc = await getDoc(doc(db, 'users', order.userId));
+      if (userDoc.exists()) {
+        structuredOrder.push({
+          id: order.id,
+          name: userDoc.data().name,
+          email: userDoc.data().email,
+          status: 'pending',
+          price: order.total + '$',
+          address: order.shippingAddress.address,
+          placedAt: new Date(order.timeStamp || '12-4-2000')
+        });
+      }
+    })
+  );
+
+  return structuredOrder;
+};
+
+export default function DemoPage() {
   const data = DummyData;
+
+  const { data: orders, isLoading } = useSwr('sellerOrders', getOrders);
+
+  if (isLoading) return <Loader className="flex items-center justify-center h-full w-full" />;
 
   return (
     <div className="container mx-auto py-20">
       <Title title="Orders" />
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={orders} />
     </div>
   );
 }

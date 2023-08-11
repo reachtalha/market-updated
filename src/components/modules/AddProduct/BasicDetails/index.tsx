@@ -65,7 +65,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
       <div className="space-y-1 mt-3 w-full">
         <Label>Product Types</Label>
         <Select onValueChange={handleOnChange}>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full bg-white">
             <SelectValue
               {...register('type', { required: true })}
               placeholder="Select Product Type"
@@ -128,7 +128,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
         </div>
       </div>
       <div className="space-y-1 mt-3 w-full">
-        <Label >Description</Label>
+        <Label>Description</Label>
         <textarea
           rows={4}
           className="resize-none w-full placeholder:text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 overflow-y-auto px-3 py-2 text-sm ring-offset-white border rounded-md"
@@ -139,12 +139,8 @@ const BasicDetails = ({ types, setStep }: Props) => {
           <span className="text-sm text-red-500">Description doesn`t look valid</span>
         )}
       </div>
-      <Button
-        type="button"
-        onClick={nextStep}
-        variant="default"
-        className="w-full"
-      >
+
+      <Button type="button" onClick={nextStep} variant="default" className="w-full">
         Next
       </Button>
     </>

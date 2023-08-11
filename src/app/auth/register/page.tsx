@@ -23,7 +23,6 @@ interface RegisterForm {
   name: string;
 }
 
-
 const Register = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -55,7 +54,7 @@ const Register = () => {
           name,
           email,
           password,
-          role: "buyer"
+          role: 'buyer'
         },
         {
           cancelToken: cancelTokenSource.token
@@ -141,12 +140,7 @@ const Register = () => {
           <p className="font-medium text-sm text-gray-600 mb-2">
             By creating an account, you agree to the Terms of Service.
           </p>
-          <Button
-            type="submit"
-            disabled={loading}
-            variant="default"
-            className="w-full "
-          >
+          <Button type="submit" disabled={loading} variant="default" className="w-full ">
             {loading ? 'Registering your account' : 'Register'}
           </Button>
         </form>
@@ -154,23 +148,24 @@ const Register = () => {
           <b>OR</b>
         </p>
         <div className="flex justify-center gap-x-3">
-          <Button type="button"
+          <Button
+            type="button"
             disabled={loading}
-            onClick={signInWithGoogleAccount} className="w-36 h-fit gap-x-2.5 group flex items-center cursor-pointer p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300">
-            <span
-              className="bg-gray-200  rounded-full border p-2"
-            >
+            onClick={signInWithGoogleAccount}
+            className="w-36 h-fit gap-x-2.5 group flex items-center cursor-pointer p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"
+          >
+            <span className="bg-gray-200  rounded-full border p-2">
               <Google className="w-5 2xl:w-8 h-5 2xl:h-8" fill={'#414D35'} />
             </span>
             <span className="mr-auto text-primary group-hover:text-white">Google</span>
           </Button>
-          <Button type="button"
+          <Button
+            type="button"
             disabled={loading}
             onClick={signInWithFacebookAccount}
-            className="w-36 h-fit group flex items-center cursor-pointer gap-x-2.5 p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"            >
-            <span
-              className=" bg-gray-200  rounded-full border p-2"
-            >
+            className="w-36 h-fit group flex items-center cursor-pointer gap-x-2.5 p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"
+          >
+            <span className=" bg-gray-200  rounded-full border p-2">
               <Facebook className="w-5 2xl:w-8 h-5 2xl:h-8 " fill={'#414D35'} />
             </span>
             <span className="mr-auto text-primary group-hover:text-white">Facebook</span>

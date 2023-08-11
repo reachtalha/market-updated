@@ -61,6 +61,7 @@ export default function Market({ categories }: MarketProps) {
               filteredShops.map((shop: any, i: number) => (
                 <ShopCard
                   key={i + Math.random()}
+                  id={shop.id}
                   image={shop.coverImage}
                   desc={shop.tagline}
                   shop={shop.name}

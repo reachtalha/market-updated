@@ -16,26 +16,34 @@ import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard
 
 import useCartStore from '@/state/useCartStore';
 
-export default function Product({ productJSON }: { productJSON: any }) {
-  const product = JSON.parse(productJSON);
+const getUniqueSizes = (product: any) => {
   const uniqueSizesSet = new Set();
   product.SKU.forEach((item: any) => uniqueSizesSet.add(item.measurement));
   // Convert the Set back to an array to be used in the state
   const uniqueSizes = Array.from(uniqueSizesSet);
-  const [selectedVariant, setSelectedVariant] = useState(
-    product.SKU.length === 1
-      ? product.SKU[0]
-      : product.SKU.sort((a: any, b: any) => a.price - b.price)[0]
-  );
+  return uniqueSizes;
+};
+
+const getSelectedVariant = (product: any) =>
+  product.SKU.length === 1
+    ? product.SKU[0]
+    : product.SKU.sort((a: any, b: any) => a.price - b.price)[0];
+
+export default function Product({ productJSON }: { productJSON: any }) {
+  const product = JSON.parse(productJSON);
+  // Convert the Set back to an array to be used in the state
+  const uniqueSizes = getUniqueSizes(product);
+  const [selectedVariant, setSelectedVariant] = useState(getSelectedVariant(product));
   const [selectedSize, setSelectedSize] = useState(uniqueSizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.SKU[0].id);
+  const blocks = product.detailedDescription ? product.detailedDescription.blocks : [];
 
   const { addToCart, isAddToCartLoading } = useCartStore((state: any) => state);
   const handleAddToBag = () => {
     if (auth.currentUser) {
-      addToCart(product.id, selectedVariant.id)
+      addToCart(product.id, selectedVariant.id);
     } else {
-      toast.error("You're not logged in!")
+      toast.error("You're not logged in!");
     }
   };
 
@@ -77,8 +85,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
-                    } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
+                    size === selectedSize && ' bg-primary text-white'
+                  } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -96,8 +105,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
-                      } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
+                      variant.id === selectedColor && ' bg-primary text-white'
+                    } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
@@ -111,7 +121,10 @@ export default function Product({ productJSON }: { productJSON: any }) {
           </div>
           <span className="">Price</span>
           <p className="font-medium text-2xl mb-3">{selectedVariant.price}$</p>
-          <Button onClick={handleAddToBag} className="w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500">
+          <Button
+            onClick={handleAddToBag}
+            className="w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500"
+          >
             {isAddToCartLoading ? 'loading...' : 'Add to bag'}
           </Button>
           <Button className="w-full mt-2 bg-transparent hover:tracking-wider hover:bg-transparent hover:text-primary transition-all duration-500 text-primary border-primary border-2 uppercase">
@@ -122,6 +135,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
           </div>
         </div>
       </div>
+
       <div className="grid items-center gap-y-8 grid-cols-1 lg:grid-cols-3 md:gap-x-16">
         <div className="order-2 md:order-1 gap-y-8 flex flex-col lg:flex-row md:gap-x-10 mt-16 h-full col-span-2">
           <BlogCard />

@@ -54,7 +54,7 @@ const Index = ({ setStep, types }: Props) => {
         {errors.name && <span className="text-sm text-red-500">Shop Name doesn`t look valid</span>}
       </div>
       <div className="space-y-1 w-full mt-3">
-        <Label >Tagline</Label>
+        <Label>Tagline</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
@@ -66,11 +66,10 @@ const Index = ({ setStep, types }: Props) => {
       <div className="space-y-1 mt-3 w-full">
         <Label>Shop Category</Label>
         <Select
-          defaultValue={getValues('category')}
+          defaultValue={getValues('category') !== '' ? getValues('category') : undefined}
           onValueChange={handleChangeValue}
-          {...register('category', { required: true })}
         >
-          <SelectTrigger className="w-full capitalize">
+          <SelectTrigger className="w-full bg-white capitalize">
             <SelectValue placeholder="Select shop category" />
           </SelectTrigger>
           <SelectContent>
@@ -110,7 +109,7 @@ const Index = ({ setStep, types }: Props) => {
         </div>
       </div>
       <div className="space-y-1 w-full mt-3">
-        <Label >Address</Label>
+        <Label>Address</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
@@ -120,11 +119,7 @@ const Index = ({ setStep, types }: Props) => {
         {errors.name && <span className="text-sm text-red-500">Address doesn`t look valid</span>}
       </div>
 
-      <Button
-        type="button"
-        onClick={nextStep}
-        className="w-full py-2.5 rounded-lg  mt-5"
-      >
+      <Button type="button" onClick={nextStep} className="w-full py-2.5 rounded-lg  mt-5">
         Next
       </Button>
     </>
