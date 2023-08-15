@@ -5,6 +5,8 @@ import { DataTable } from './data-table';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
+export const dynamic = 'force-dynamic'
+
 async function getData(): Promise<NewUser[]> {
   const querySnapshot = await getDocs(collection(db, 'waiting-list'));
 
