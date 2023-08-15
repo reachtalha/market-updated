@@ -15,8 +15,7 @@ import { db } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import toast from 'react-hot-toast';
 
-const DEV = 'http://localhost:3000/';
-const PROD = 'http://marketplace.com/';
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 const formSchema = z.object({
   email: z.string().min(1, { message: 'required' }).email({
@@ -84,7 +83,7 @@ export default function Checkout() {
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: DEV + 'account?display=order'
+        return_url: DOMAIN + 'account?display=order'
       }
     });
 
