@@ -57,7 +57,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
           <h1 className="font-medium border-b-2 pb-2 border-black uppercase">
             {product.name}
             <br />
-            <span className="font-light text-xs  ">by {product.shopName}</span>
+            <span className="font-light text-xs  ">by {product.shopName || 'Some Shop'}</span>
           </h1>
 
           <span className="block font-sm text-sm mt-1 capitalize mb-3">

@@ -24,11 +24,6 @@ const getProduct = async (id: string) => {
   if (!docRef.exists()) return null;
 
   let product: Product = { id: docRef.id, ...docRef.data() } as Product;
-  const shopRef = await getDoc(doc(db, 'shops', product.shopId));
-
-  if (shopRef.exists()) {
-    product.shopName = shopRef?.data()?.name;
-  }
   return product;
 };
 

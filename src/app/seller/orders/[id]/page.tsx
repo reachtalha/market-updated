@@ -19,7 +19,7 @@ const getOrder = async (id: string) => {
     data = docRef.data();
     order = {
       id: docRef.id,
-      placedAt: new Date(data.timeStamp || '8/15/2022'),
+      placedAt: data.timeStamp.toDate(),
       status: data.status || 'pending',
       products: data.items.map((item: any) => {
         return {
@@ -27,8 +27,8 @@ const getOrder = async (id: string) => {
           name: item.name,
           price: item.selectedVariant.price,
           unit: item.unit,
-          quantity: item.selectedVariant.quantity,
-          image: item.coverImage
+          quantity: item.quantity,
+          image: item.image
         };
       }),
       shipping: {

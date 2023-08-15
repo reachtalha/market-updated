@@ -14,6 +14,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSwr from 'swr';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const getShops = async () => {
   let shops: any = [];
@@ -35,6 +36,7 @@ type MarketProps = {
 export default function Market({ categories }: MarketProps) {
   const category = useCategorySlug();
   const [filteredShops, setFilteredShops] = useState([]);
+  const router = useRouter();
   const { data: shops, isLoading, error } = useSwr('shops', () => getShops());
 
   useEffect(() => {
@@ -84,6 +86,7 @@ export default function Market({ categories }: MarketProps) {
               variant="outline"
               size="resp"
               className="border-2 uppercase w-fit bg-transparent text-white rounded-3xl"
+              onClick={() => router.push('/experts')}
             >
               Explore Expert Categories
             </Button>

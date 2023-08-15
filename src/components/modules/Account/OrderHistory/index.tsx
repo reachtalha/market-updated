@@ -9,34 +9,6 @@ import Loader from '@/components/common/Loader';
 
 type Props = {};
 
-const orders = [
-  {
-    orderId: 'ABC123',
-    products: ['iPhone 13 Pro', 'AirPods Pro', 'Apple Watch Series 7'],
-    datePlaced: new Date('2023-07-26')
-  },
-  {
-    orderId: 'DEF456',
-    products: ['Samsung Galaxy S21', 'Galaxy Buds Pro', 'Samsung Smart TV'],
-    datePlaced: new Date('2023-07-25')
-  },
-  {
-    orderId: 'GHI789',
-    products: ['Sony PlayStation 5', 'DualSense Wireless Controller', 'FIFA 24'],
-    datePlaced: new Date('2023-07-24')
-  },
-  {
-    orderId: 'JKL012',
-    products: ['MacBook Pro', 'Magic Mouse 2', 'LG UltraFine 4K Display'],
-    datePlaced: new Date('2023-07-23')
-  },
-  {
-    orderId: 'MNO345',
-    products: ['Dell XPS 15', 'Dell UltraSharp Monitor', 'Logitech MX Master 3'],
-    datePlaced: new Date('2023-07-22')
-  }
-];
-
 type Product = {
   id: string;
   name: string;
@@ -80,7 +52,7 @@ const getOrder = async (id: string) => {
     const data = doc.data();
     const order = {
       id: doc.id,
-      placedAt: new Date(data.timeStamp || '8/15/2022'),
+      placedAt: data.timeStamp.toDate(),
       status: data.status || 'pending',
       products: data.items.map((item: any) => {
         return {
@@ -88,8 +60,8 @@ const getOrder = async (id: string) => {
           name: item.name,
           price: item.selectedVariant.price,
           unit: item.unit,
-          quantity: item.selectedVariant.quantity,
-          image: item.coverImage
+          quantity: item.quantity,
+          image: item.image
         };
       }),
       shipping: {

@@ -2,15 +2,10 @@ import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  PopoverClose
-} from "@/components/ui/popover"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { Popover, PopoverContent, PopoverTrigger, PopoverClose } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
-import { auth } from "@/lib/firebase/client";
+import { auth } from '@/lib/firebase/client';
 
 import useCartStore from '@/state/useCartStore';
 import { cn } from '@/lib/utils';
@@ -21,8 +16,8 @@ import useAuth from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type CartPopoverProps = {
-  trigger: ReactNode
-}
+  trigger: ReactNode;
+};
 export default function CartPopover({ trigger }: CartPopoverProps) {
   const router = useRouter();
   const { cart, getCart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
@@ -37,13 +32,13 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   }, []);
 
   const handleOnDelete = (item: any) => {
-    deleteFromCart(item.docId, item.selectedVariant.id)
-  }
+    deleteFromCart(item.docId, item.selectedVariant.id);
+  };
 
   const filteredItems = cart?.items?.map((item: any) => ({
     productId: item.productId,
     quantity: item.quantity,
-    skuId: item.skuId,
+    skuId: item.skuId
   }));
 
   return (
@@ -51,54 +46,83 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
       <PopoverTrigger>{trigger}</PopoverTrigger>
       <PopoverContent className="w-[600px] p-5" align="end">
         <ScrollArea className={cn('w-full', cart?.items?.length > 3 ? 'h-[350px]' : 'h-fit')}>
-          {isCartLoading ? <Skeleton className="h-[200px]" /> : (
+          {isCartLoading ? (
+            <Skeleton className="h-[200px]" />
+          ) : (
             <>
               <ul className="flex flex-col gap-y-5">
                 {cart?.items?.map((item: any, idx: number) => (
                   <li className="flex justify-between pb-4 border-b last:border-0" key={idx}>
                     <div className="flex items-center gap-x-3">
-                      <Image className="border rounded" height={75} width={75} src={item.coverImage} alt={item.name} />
+                      <Image
+                        className="border rounded"
+                        height={75}
+                        width={75}
+                        src={item.image}
+                        alt={item.name}
+                      />
                       <div>
                         <h6 className="uppercase text-sm font-medium w-[250px]">{item.name}</h6>
-                        <p>{item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}</p>
-                        <p className="font-medium text-sm">{formatCurrency(item?.selectedVariant?.price)}</p>
+                        <p>
+                          {item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}
+                        </p>
+                        <p className="font-medium text-sm">
+                          {formatCurrency(item?.selectedVariant?.price)}
+                        </p>
                       </div>
                     </div>
                     <div>
-                      <QuantityInput items={filteredItems} productId={item.productId} quantity={item.quantity} variant={item.selectedVariant.id} />
+                      <QuantityInput
+                        items={filteredItems}
+                        productId={item.productId}
+                        quantity={item.quantity}
+                        variant={item.selectedVariant.id}
+                      />
                     </div>
-                    <Button onClick={() => handleOnDelete(item)} className="border rounded p-1 h-fit" variant="ghost">
+                    <Button
+                      onClick={() => handleOnDelete(item)}
+                      className="border rounded p-1 h-fit"
+                      variant="ghost"
+                    >
                       <XIcon height={17} width={17} />
                     </Button>
                   </li>
                 ))}
               </ul>
-              {!cart?.items?.length ? <div className="text-center">
-                <p>Your Cart is empty!</p>
-                <PopoverClose asChild>
-                  <Button onClick={handleExploreProducts} className="w-full mt-3">
-                    Explore Products
-                  </Button>
-                </PopoverClose>
-              </div> : null}
-              {!!cart?.items?.length ?
+              {!cart?.items?.length ? (
+                <div className="text-center">
+                  <p>Your Cart is empty!</p>
+                  <PopoverClose asChild>
+                    <Button onClick={handleExploreProducts} className="w-full mt-3">
+                      Explore Products
+                    </Button>
+                  </PopoverClose>
+                </div>
+              ) : null}
+              {!!cart?.items?.length ? (
                 <>
                   <PopoverClose asChild>
-                    <Button onClick={handleViewCheckout} className="w-full">Checkout</Button>
+                    <Button onClick={handleViewCheckout} className="w-full">
+                      Checkout
+                    </Button>
                   </PopoverClose>
                   <div className="text-center">
                     <PopoverClose asChild>
-                      <Button variant="link" className="text-[14px] underline" onClick={handleViewCart}>
+                      <Button
+                        variant="link"
+                        className="text-[14px] underline"
+                        onClick={handleViewCart}
+                      >
                         View cart
                       </Button>
                     </PopoverClose>
                   </div>
                 </>
-                : null}
+              ) : null}
             </>
           )}
         </ScrollArea>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

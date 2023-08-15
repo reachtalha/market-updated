@@ -1,20 +1,17 @@
 import { create } from 'zustand';
 import { db, auth } from '@/lib/firebase/client';
 import {
-  setDoc, arrayRemove,
+  setDoc,
+  arrayRemove,
   arrayUnion,
-  collection, deleteDoc,
+  deleteDoc,
   doc,
   getDoc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-  onSnapshot
+  updateDoc
 } from 'firebase/firestore';
 
 const fetchDeleteFromCart = async (productId: string, cartDocId: string, skuId: string) => {
-  const cartRef = doc(db, "cart", cartDocId);
+  const cartRef = doc(db, 'cart', cartDocId);
   await updateDoc(cartRef, {
     items: arrayRemove({
       productId,
@@ -22,15 +19,14 @@ const fetchDeleteFromCart = async (productId: string, cartDocId: string, skuId: 
       quantity: 1
     })
   });
-}
-
+};
 
 const fetchGetCart = async () => {
-  const cart = await getDoc(doc(db, "cart", `${auth.currentUser?.uid}`));
+  const cart = await getDoc(doc(db, 'cart', `${auth.currentUser?.uid}`));
 
   if (!cart.exists()) {
-    await setDoc(doc(db, "cart", `${auth.currentUser?.uid}`), {
-      items: [],
+    await setDoc(doc(db, 'cart', `${auth.currentUser?.uid}`), {
+      items: []
     });
   } else {
     const cartData = cart.data();
@@ -39,15 +35,24 @@ const fetchGetCart = async () => {
         const docRef = await getDoc(doc(db, 'products', item.productId));
         const productData = docRef.data();
         const selectedVariant = productData?.SKU.find((sku: any) => sku.id === item.skuId);
-        return { ...item, ...productData, docId: docRef.id, selectedVariant };
+
+        return {
+          ...item,
+          docId: docRef.id,
+          selectedVariant,
+          image: productData?.coverImage,
+          name: productData?.name,
+          shopId: productData?.shopId,
+          unit: productData?.unit
+        };
       })
     );
     return { userId: auth.currentUser?.uid, id: cart.id, cart: { ...cartData, items: cartItems } };
   }
-}
+};
 
 const fetchAddToCart = async (productId: string, skuId: string) => {
-  const cartRef = doc(db, "cart", `${auth.currentUser?.uid}`);
+  const cartRef = doc(db, 'cart', `${auth.currentUser?.uid}`);
   await updateDoc(cartRef, {
     items: arrayUnion({
       productId,
@@ -55,12 +60,12 @@ const fetchAddToCart = async (productId: string, skuId: string) => {
       quantity: 1
     })
   });
-}
+};
 
 const fetchClearCart = async () => {
-  const cartRef = doc(db, "cart", `${auth.currentUser?.uid}`);
-  await deleteDoc(cartRef)
-}
+  const cartRef = doc(db, 'cart', `${auth.currentUser?.uid}`);
+  await deleteDoc(cartRef);
+};
 
 const calculateCartSummary = (items: any = []) => {
   const subTotal = items.reduce((sum: number, item: any) => {
@@ -72,8 +77,8 @@ const calculateCartSummary = (items: any = []) => {
     shipping,
     subTotal: subTotal,
     total: subTotal + shipping
-  }
-}
+  };
+};
 
 const incrementQuantity = async (items: any, productId: string) => {
   const newItems = structuredClone(items);
@@ -82,9 +87,9 @@ const incrementQuantity = async (items: any, productId: string) => {
       newItems[i].quantity += 1;
     }
   }
-  await updateDoc(doc(db, "cart", `${auth.currentUser?.uid}`), {
+  await updateDoc(doc(db, 'cart', `${auth.currentUser?.uid}`), {
     items: newItems
-  })
+  });
 };
 const decrementQuantity = async (items: any, productId: string, variant: string) => {
   const newItems = structuredClone(items);
@@ -93,14 +98,14 @@ const decrementQuantity = async (items: any, productId: string, variant: string)
       if (newItems[i].quantity >= 2) {
         newItems[i].quantity -= 1;
       } else {
-        await fetchDeleteFromCart(productId, `${auth.currentUser?.uid}`, variant)
+        await fetchDeleteFromCart(productId, `${auth.currentUser?.uid}`, variant);
         return;
       }
     }
   }
-  await updateDoc(doc(db, "cart", `${auth.currentUser?.uid}`), {
+  await updateDoc(doc(db, 'cart', `${auth.currentUser?.uid}`), {
     items: newItems
-  })
+  });
 };
 
 const useCartStore = create((set, get) => ({
@@ -108,7 +113,7 @@ const useCartStore = create((set, get) => ({
     userId: '',
     id: '',
     items: [],
-    summary: null,
+    summary: null
   },
   isCartLoading: false,
   isAddToCartLoading: false,
@@ -120,7 +125,7 @@ const useCartStore = create((set, get) => ({
       const userId = state?.cart?.userId;
       await fetchClearCart();
       await state.getCart(userId);
-    })
+    });
   },
   addToCart: async (productId: string, skuId: string) => {
     set(async (state: any) => {
@@ -128,30 +133,57 @@ const useCartStore = create((set, get) => ({
       await fetchAddToCart(productId, skuId);
       state.setIsAddToCartLoading(false);
       await state.getCart(state.cart.userId);
-    })
+    });
   },
   deleteFromCart: async (productId: string, skuId: string) => {
     set(async (state: any) => {
-      await fetchDeleteFromCart(productId, state.cart.id, skuId)
+      await fetchDeleteFromCart(productId, state.cart.id, skuId);
       await state.getCart(state.cart.userId);
-    })
+    });
   },
   getCart: async (userId: string) => {
     set({ isCartLoading: true });
     const data = await fetchGetCart();
-    set({ isCartLoading: false, cart: { summary: calculateCartSummary(data?.cart?.items), userId: data?.userId, items: data?.cart?.items, id: data?.id } || {} })
+    set({
+      isCartLoading: false,
+      cart:
+        {
+          summary: calculateCartSummary(data?.cart?.items),
+          userId: data?.userId,
+          items: data?.cart?.items,
+          id: data?.id
+        } || {}
+    });
   },
   increment: async (items: any, productId: string) => {
     set({ isCartLoading: true });
-    await incrementQuantity(items, productId)
+    await incrementQuantity(items, productId);
     const data = await fetchGetCart();
-    set({ isCartLoading: false, cart: { summary: calculateCartSummary(data?.cart?.items), userId: data?.userId, items: data?.cart?.items, id: data?.id } || {} })
+    set({
+      isCartLoading: false,
+      cart:
+        {
+          summary: calculateCartSummary(data?.cart?.items),
+          userId: data?.userId,
+          items: data?.cart?.items,
+          id: data?.id
+        } || {}
+    });
   },
   decrement: async (items: any, productId: string, variant: string) => {
     set({ isCartLoading: true });
-    await decrementQuantity(items, productId, variant)
+    await decrementQuantity(items, productId, variant);
     const data = await fetchGetCart();
-    set({ isCartLoading: false, cart: { summary: calculateCartSummary(data?.cart?.items), userId: data?.userId, items: data?.cart?.items, id: data?.id } || {} })
+    set({
+      isCartLoading: false,
+      cart:
+        {
+          summary: calculateCartSummary(data?.cart?.items),
+          userId: data?.userId,
+          items: data?.cart?.items,
+          id: data?.id
+        } || {}
+    });
   }
 }));
 
