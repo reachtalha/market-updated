@@ -77,7 +77,7 @@ export const columns: ColumnDef<Order>[] = [
     header: 'Placed At',
     cell: ({ row }) => {
       const date = new Date(row.getValue('placedAt'));
-      return <span>{date.toLocaleDateString()}</span>;
+      return <span>{date.toDateString()}</span>;
     }
   }
 ];

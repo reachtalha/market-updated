@@ -3,29 +3,12 @@ import { SwiperSlide } from 'swiper/react';
 
 import Carousel from '@/components/common/Carousel';
 import FeaturedExpertCard, { Expert } from '@/components/common/Buyer/Cards/FeaturedExpertCard';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import Link from 'next/link';
+import { db } from '@/lib/firebase/client';
+import useSwr from 'swr';
 
-const experts = [
-  {
-    name: 'Olivia Olivera',
-    description: 'Herbs are for everyone - find the blend that makes your life smoother and easier.'
-  },
-  {
-    name: 'Matthew Barnes',
-    description:
-      'Find harmony with nature as you flow through your practice, surrounded by the pure\n' +
-      'essence of organic yoga products that honor your well-being and the planet.'
-  },
-  {
-    name: 'Olivia Olivera',
-    description: 'Herbs are for everyone - find the blend that makes your life smoother and easier.'
-  },
-  {
-    name: 'Matthew Barnes',
-    description:
-      'Find harmony with nature as you flow through your practice, surrounded by the pure\n' +
-      'essence of organic yoga products that honor your well-being and the planet.'
-  }
-];
+import Loader from '@/components/common/Loader';
 
 const featuredExpertsBreakpoints = {
   768: {
@@ -34,7 +17,19 @@ const featuredExpertsBreakpoints = {
   }
 };
 
+const getExperts: any = async (): Promise<any> => {
+  let experts: any = [];
+
+  const docRef = await getDocs(query(collection(db, 'users'), where('role', '==', 'influencer')));
+  experts = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+  return experts;
+};
+
 export default function FeaturedExperts() {
+  const { data: experts, isLoading } = useSwr('featuresExperts', getExperts);
+  if (isLoading) return <Loader className="w-full flex items-center justify-center" />;
+
   return (
     <Carousel showNavigation={false} breakpoints={featuredExpertsBreakpoints}>
       {experts.map((expert: Expert, i: number) => (

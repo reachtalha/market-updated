@@ -5,8 +5,22 @@ import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifie
 import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
 import BoxedContent from '@/components/common/BoxedContent';
 import OurMission from '@/components/common/Buyer/OurMission';
+import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import Link from 'next/link';
+import { db } from '@/lib/firebase/client';
 
-export default function Home() {
+const getExperts: any = async (): Promise<any> => {
+  let experts: any = [];
+
+  const docRef = await getDocs(query(collection(db, 'users'), where('role', '==', 'influencer')));
+  experts = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+  return experts;
+};
+export default async function Home() {
+  const experts = await getExperts();
+  console.log(experts);
   return (
     <>
       <Hero
@@ -36,17 +50,10 @@ export default function Home() {
             </p>
           </div>
           <ul className="flex gap-x-4 items-start pl-10 overflow-auto no-scrollbar snap-x snap-start">
-            {Array.from('abvderf').map((_, i: number) => (
-              <li key={Date.now() + Math.random() + i} className="flex-shrink-0">
-                <div
-                  // src={user}
-                  style={{ width: 300, height: 400 }}
-                  // width={300}
-                  // height={400}
-                  className="w-64 h-96 rounded-xl object-cover bg-gray-100"
-                  // alt="expert"
-                />
-              </li>
+            {experts.map((expert: any, i: number) => (
+              <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
+                <ExpertCard image={expert?.photoURL} name={expert?.name} title={expert?.topics} />
+              </Link>
             ))}
           </ul>
         </BoxedContent>

@@ -20,6 +20,7 @@ type Props = {
 };
 
 function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: Props) {
+  console.log(placedAt);
   return (
     <div
       onClick={() => setSelectedOrder(id)}
@@ -35,7 +36,7 @@ function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: 
         <h6 className="font-medium text-base">Products:</h6>
         <ul className="space-y-1 mt-1">
           {products.map((product) => (
-            <li key={product.id} className="flex gap-x-2 items-center">
+            <li key={product.id} className="flex capitalize gap-x-2 items-center">
               <Image
                 src={product.image}
                 height={100}
@@ -43,6 +44,7 @@ function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: 
                 className="object-cover w-8 h-8 rounded-sm"
                 alt=""
               />
+
               {product.name}
             </li>
           ))}
@@ -50,7 +52,7 @@ function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: 
       </span>
       <hr className="border-b-[1px] border-neutral-100" />
       <span>
-        <span className="font-medium">Date Placed:</span> {placedAt.toDateString() || ''}
+        <span className="font-medium">Date Placed:</span> {placedAt.toDateString()}
       </span>
     </div>
   );

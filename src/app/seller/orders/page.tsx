@@ -98,8 +98,6 @@ const getOrders = async () => {
     }
   });
 
-  console.log(orders);
-
   await Promise.all(
     orders.map(async (order: any) => {
       const userDoc = await getDoc(doc(db, 'users', order.userId));
@@ -111,7 +109,7 @@ const getOrders = async () => {
           status: 'pending',
           price: order.total + '$',
           address: order.shippingAddress.address,
-          placedAt: new Date(order.timeStamp || '12-4-2000')
+          placedAt: order.timeStamp.toDate()
         });
       }
     })

@@ -4,6 +4,10 @@ import { SwiperSlide } from 'swiper/react';
 import Carousel from '@/components/common/Carousel';
 import ShopCard from './Cards/ShopCard';
 import market1 from '@/assets/images/market1.png';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
+import useSwr from 'swr';
+import Loader from '@/components/common/Loader';
 
 const featuredShopsBreakpoints = {
   768: {
@@ -12,18 +16,34 @@ const featuredShopsBreakpoints = {
   }
 };
 
+const getShops = async () => {
+  let shops: any = [];
+  const querySnapshot = await getDocs(collection(db, 'shops'));
+
+  querySnapshot.forEach((doc: any) => {
+    shops.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+
+  return shops;
+};
+
 export default function FeaturesShops() {
+  const { data: shops, isLoading } = useSwr('featuresShops', getShops);
+  if (isLoading) return <Loader className="w-full flex items-center justify-center" />;
   return (
     <Carousel showNavigation={false} breakpoints={featuredShopsBreakpoints}>
-      {Array.from('abcfghyu').map((shop, i: number) => (
+      {shops.map((shop: any, i: number) => (
         <SwiperSlide key={i + Math.random()}>
           <ShopCard
-            id={i.toString()}
             key={i + Math.random()}
-            image={market1}
-            desc="Find harmony with nature as you flow through your practice, surrounded by the pure essence of organic yoga products that honor your well-being and the planet."
-            shop="Salt & Stone"
-            type="Skin Care"
+            id={shop.id}
+            image={shop.coverImage}
+            desc={shop.tagline}
+            shop={shop.name}
+            type={shop.category}
           />
         </SwiperSlide>
       ))}

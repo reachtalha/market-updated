@@ -43,18 +43,6 @@ const getProducts: any = async (
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
 
-  products = await Promise.all(
-    products.map(async (product: any) => {
-      const docRef = await getDoc(doc(db, 'shops', product.shopId));
-
-      if (docRef.exists()) {
-        product.shopName = docRef?.data()?.name;
-      }
-
-      return product;
-    })
-  );
-
   return products;
 };
 
@@ -93,15 +81,12 @@ export default function Products({ categories, foryou }: ProductsProps) {
     getProducts(selectedSubCategory, categories, foryou)
   );
 
-  if (productsIsLoading)
-    return (
-      <Loader className="w-full h-[80vh] grid place-content-center" />
-    );
+  if (productsIsLoading) return <Loader className="w-full h-[80vh] grid place-content-center" />;
 
   if (productsError) {
-    console.log(productsError)
-    return <Error className="w-full h-[80vh] grid place-content-center" />
-  };
+    console.log(productsError);
+    return <Error className="w-full h-[80vh] grid place-content-center" />;
+  }
 
   return (
     <>
@@ -131,7 +116,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
                       ? _.SKU[0].price
                       : _.SKU.sort((a: any, b: any) => a.price - b.price)[0].price
                   }
-                  shop={_.shopName}
+                  shop={_.shopName || 'some shop'}
                   type={_.type}
                 />
               ))
