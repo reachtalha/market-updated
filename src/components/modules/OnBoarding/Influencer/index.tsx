@@ -34,12 +34,12 @@ const Influencer = () => {
   useEffect(() => {
     const bioError = errors.bio;
 
-    if (bio.length > MAX_CHAR && !bioError) {
+    if (bio?.length > MAX_CHAR && !bioError) {
       setError('bio', {
         type: 'maxLength',
         message: `Max length should be ${MAX_CHAR} characters`
       });
-    } else if (bio.length <= MAX_CHAR && bioError?.type === 'maxLength') {
+    } else if (bio?.length <= MAX_CHAR && bioError?.type === 'maxLength') {
       clearErrors('bio');
     }
   }, [watchBio, getValues, setError, clearErrors, errors.bio]);
@@ -84,8 +84,8 @@ const Influencer = () => {
             }
           })}
         />
-        <div className="text-sm">
-          {bio.length}/{MAX_CHAR} characters
+        <div className="text-sm mb-2">
+          {bio ? bio.length : "0"}/{MAX_CHAR} characters
         </div>
         {errors.bio && errors.bio.message && (
           <span className="text-sm text-red-500">{errors.bio.message.toString()}</span>
