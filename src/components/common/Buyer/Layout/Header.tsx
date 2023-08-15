@@ -26,27 +26,29 @@ const Header = () => {
   return (
     <nav
       className={`${
-        (isScrollChanged || toggleSearchbar)
+        isScrollChanged || toggleSearchbar
           ? 'bg-neutral-50 text-black duration-300 transition-colors ease-in'
           : `${
               isColoredRoute(pathname) ? 'text-black' : 'text-white'
             } bg-none duration-300 transition-colors ease-out`
       } justify-between`}
     >
-      <Searchbar isOpen={toggleSearchbar}  toggleSearchBar={onToggleSearchBar}/>
+      <Searchbar isOpen={toggleSearchbar} toggleSearchBar={onToggleSearchBar} />
       <BoxedContent className="flex py-4 justify-between items-center">
         <div>
           <div className="block md:hidden">
-            <HeaderSheet triggerIcon={
-              <HamburgerMenuIcon
-                height={30}
-                width={30}
-                className={cn(
-                  `text-white z-2 relative`,
-                  (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) && 'text-black'
-                )}
-              />
-            } />
+            <HeaderSheet
+              triggerIcon={
+                <HamburgerMenuIcon
+                  height={30}
+                  width={30}
+                  className={cn(
+                    `text-white z-2 relative`,
+                    (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) && 'text-black'
+                  )}
+                />
+              }
+            />
           </div>
           <Link href="/" className="hidden relative z-2 md:block font-alpina text-xl italic">
             All Organics <span className="text-xs align-bottom">&reg;</span>
@@ -62,17 +64,30 @@ const Header = () => {
           <NavLink href="/experts" title="Experts" />
         </div>
         <div className="inline-flex gap-x-6 items-center">
-          <Button onClick={() => setToggleSearchBar(!toggleSearchbar)} size="icon" variant="link" className={cn("z-2 text-white relative", (toggleSearchbar || isColoredRoute(pathname) || isScrollChanged) && "text-black")}><SearchIcon height={18} width={18} /></Button>
+          <Button
+            onClick={() => setToggleSearchBar(!toggleSearchbar)}
+            size="icon"
+            variant="link"
+            className={cn(
+              'z-2 text-white relative',
+              (toggleSearchbar || isColoredRoute(pathname) || isScrollChanged) && 'text-black'
+            )}
+          >
+            <SearchIcon height={18} width={18} />
+          </Button>
           <NavLink className="hidden md:block" href="/account" title="Account" />
           <CartPopover
             trigger={
               <Button
-                className={cn("z-2 text-white relative w-fit",
+                className={cn(
+                  'z-2 text-white relative w-fit',
                   (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) && 'text-black'
-                  )}
+                )}
                 size="icon"
                 variant="link"
-              >Cart ({cart?.items?.length || 0})</Button>
+              >
+                Cart ({cart?.items?.length || 0})
+              </Button>
             }
           />
         </div>

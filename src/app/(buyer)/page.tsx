@@ -20,7 +20,7 @@ const getExperts: any = async (): Promise<any> => {
 };
 export default async function Home() {
   const experts = await getExperts();
-  console.log(experts);
+
   return (
     <>
       <Hero
