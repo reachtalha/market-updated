@@ -67,6 +67,8 @@ const fetchCreateOrder = async (
   });
 };
 
+console.log({ DOMAIN });
+
 export default function Checkout() {
   const [processing, setProcessing] = useState(false);
   const [isOrderLoading, setIsOrderLoading] = useState(false);
