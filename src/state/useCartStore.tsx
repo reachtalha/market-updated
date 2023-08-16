@@ -10,13 +10,13 @@ import {
   updateDoc
 } from 'firebase/firestore';
 
-const fetchDeleteFromCart = async (productId: string, cartDocId: string, skuId: string) => {
+const fetchDeleteFromCart = async (productId: string, cartDocId: string, skuId: string, quantity: number) => {
   const cartRef = doc(db, 'cart', cartDocId);
   await updateDoc(cartRef, {
     items: arrayRemove({
       productId,
       skuId,
-      quantity: 1
+      quantity
     })
   });
 };
@@ -98,7 +98,7 @@ const decrementQuantity = async (items: any, productId: string, variant: string)
       if (newItems[i].quantity >= 2) {
         newItems[i].quantity -= 1;
       } else {
-        await fetchDeleteFromCart(productId, `${auth.currentUser?.uid}`, variant);
+        await fetchDeleteFromCart(productId, `${auth.currentUser?.uid}`, variant, 1);
         return;
       }
     }
@@ -135,9 +135,9 @@ const useCartStore = create((set, get) => ({
       await state.getCart(state.cart.userId);
     });
   },
-  deleteFromCart: async (productId: string, skuId: string) => {
+  deleteFromCart: async (productId: string, skuId: string, quantity: number) => {
     set(async (state: any) => {
-      await fetchDeleteFromCart(productId, state.cart.id, skuId);
+      await fetchDeleteFromCart(productId, state.cart.id, skuId, quantity);
       await state.getCart(state.cart.userId);
     });
   },
