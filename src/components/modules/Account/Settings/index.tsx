@@ -56,6 +56,7 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
         toast.success('Password Updated Successfully');
       }
       reset();
+      window.location.reload();
     } catch (e) {
       toast.error('Error while updating account');
     } finally {

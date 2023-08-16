@@ -134,9 +134,12 @@ const Expert = async ({ params }: ExpertProps) => {
           <PinnedContentList list={expert?.pinned} />
         </section>
       )}
-      <section className="py-16 container">
-        <FeaturedProducts list={expert?.pinnedProducts} />
-      </section>
+      {expert?.pinnedProducts && (
+        <section className="py-16 container">
+          <FeaturedProducts list={expert?.pinnedProducts} />
+        </section>
+      )}
+
       <section className="">
         <div className="container">
           <div className="border-t-2 border-black" />
