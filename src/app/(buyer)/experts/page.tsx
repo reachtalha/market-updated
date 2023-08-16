@@ -2,12 +2,13 @@ import Experts from '@/components/common/Buyer/Experts/Experts';
 import { getDocs, collection, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
+export const dynamic = 'force-dynamic';
+
 const categories = [
   {
     name: 'View All Experts',
     slug: 'all',
     href: '/experts?category'
-
   },
   {
     name: 'Skincare Experts',
