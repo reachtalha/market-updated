@@ -89,7 +89,7 @@ const AddPinnedContentModal = ({ uid, pinnedLinks }: { uid: string; pinnedLinks:
         <Button
           variant="ghost"
           title="Manage Pinned Content"
-          className="rounded-full absolute w-fit h-fit p-1.5 top-0 right-0"
+          className="rounded-full z-20  absolute w-fit h-fit trans p-1.5 top-14 md:top-36 lg:top-40 right-0"
         >
           <Pin className="text-neutral-600" />
         </Button>
@@ -102,7 +102,7 @@ const AddPinnedContentModal = ({ uid, pinnedLinks }: { uid: string; pinnedLinks:
             done.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="flex gap-x-2 items-center">
+        <form onSubmit={handleSubmit} className="flex  gap-x-2 items-center">
           <Input name="link" type="text" placeholder="Add embedded link" />
           <Button variant="default" className="w-fit h-fit p-2">
             <PlusIcon />
