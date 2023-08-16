@@ -40,8 +40,6 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
     skuId: item.skuId
   }));
 
-  console.log({ cart });
-
   return (
     <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
@@ -53,7 +51,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
             <>
               <ul className="flex flex-col gap-y-5">
                 {cart?.items?.map((item: any, idx: number) => (
-                  <li className="flex justify-between pb-4 border-b last:border-0" key={idx}>
+                  <li className="flex flex-wrap justify-between pb-4 border-b last:border-0" key={idx}>
                     <div className="flex items-center gap-x-3">
                       <Image
                         className="border rounded"

@@ -148,7 +148,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
           <ComplementaryProducts />
         </div>
       </div>
-      <div className="pt-16">
+      <div className="prose lg:prose-xl pt-16">
         {blocks?.map((block: any, idx: number) => {
           const parsedBlock = edjsParser?.parseBlock(block);
           return <div key={idx} dangerouslySetInnerHTML={{__html: parsedBlock }} />;

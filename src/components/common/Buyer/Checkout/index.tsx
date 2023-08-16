@@ -112,7 +112,6 @@ export default function Checkout() {
       phone: ''
     }
   });
-  console.log(cart);
 
   async function onSubmit(values: any) {
     try {
