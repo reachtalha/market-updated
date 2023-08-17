@@ -1,6 +1,8 @@
 import React from 'react';
 import { StaticImageData } from 'next/image';
 
+import { useRouter } from 'next/navigation';
+
 import Image from '@/components/common/FallbackImage';
 import product1 from '@/assets/images/product1.webp';
 type Props = {
@@ -13,11 +15,16 @@ type OrderDetailProps = {
   subtitle: string;
   isShipping?: boolean;
   price: number;
+  id?: string | number;
 };
-const OrderDetailCard = ({ isShipping, title, subtitle, price, image }: OrderDetailProps) => {
+const OrderDetailCard = ({ id, isShipping, title, subtitle, price, image }: OrderDetailProps) => {
+  const router = useRouter();
   return (
     <div className="flex font-america flex-row justify-between mt-2 w-full items-center">
-      <div className="flex flex-row  gap-x-2 items-center">
+      <div
+        onClick={() => router.push('/products/' + id)}
+        className="flex flex-row cursor-pointer  gap-x-2 items-center"
+      >
         <Image
           src={image}
           className={`${isShipping ? ' w-20 h-28' : ' w-28 h-24'} object-cover rounded-lg`}
@@ -58,6 +65,7 @@ const OrderDetail = ({ order }: Props) => {
   const getTotal = () => {
     return getSubtotal() + order?.shipping.charges;
   };
+
   return (
     <div className="sticky flex flex-col gap-y-5 top-24 w-full  ">
       <div className="border border-gray-400 rounded-xl flex flex-col p-5">
@@ -65,6 +73,7 @@ const OrderDetail = ({ order }: Props) => {
         {order.products.map((p: any, index: number) => (
           <OrderDetailCard
             key={index}
+            id={p.id}
             title={p.name}
             subtitle={p.unit}
             price={p.price}

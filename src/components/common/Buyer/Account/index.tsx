@@ -16,6 +16,7 @@ import Settings from '@/components/modules/Account/Settings';
 import CardInfo from '@/components/modules/Account/CardInfo';
 import OrderHistory from '@/components/modules/Account/OrderHistory';
 import Socials from '@/components/modules/Account/Socials';
+import Wishlist from '@/components/modules/Account/Wishlist';
 
 type AccountProps = {
   options: Option[];
@@ -25,18 +26,22 @@ function Index({ options }: AccountProps) {
   const category = useCategorySlug();
   const role = useRole();
 
-  const { data: user, isLoading, error } = useSWR("currentUser", async () => {
+  const {
+    data: user,
+    isLoading,
+    error
+  } = useSWR('currentUser', async () => {
     const docRef = doc(db, 'users', `${auth.currentUser?.uid}`);
     const docSnap = await getDoc(docRef);
     return { id: docSnap.id, ...docSnap.data() } as any;
-  })
+  });
 
   if (isLoading) {
-    return <Loader className="grid place-content-center h-screen w-full" />
+    return <Loader className="grid place-content-center h-screen w-full" />;
   }
 
   if (error) {
-    return <Error className="grid place-content-center h-full w-full" />
+    return <Error className="grid place-content-center h-full w-full" />;
   }
 
   const renderComponent = () => {
@@ -93,6 +98,21 @@ function Index({ options }: AccountProps) {
             )}
           </>
         );
+      case 'wishlist':
+        return (
+          <>
+            {user ? (
+              <div className=" w-full ">
+                <Wishlist />
+              </div>
+            ) : (
+              <div className="h-[50vh] w-full flex items-center justify-center">
+                <Loader />
+              </div>
+            )}
+          </>
+        );
+
       default:
         return (
           <>
@@ -126,13 +146,13 @@ function Index({ options }: AccountProps) {
         options={
           role === 'influencer'
             ? [
-              ...options,
-              {
-                name: 'Socials',
-                slug: 'socials',
-                href: '/account?display'
-              }
-            ]
+                ...options,
+                {
+                  name: 'Socials',
+                  slug: 'socials',
+                  href: '/account?display'
+                }
+              ]
             : options
         }
       />
