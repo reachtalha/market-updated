@@ -156,7 +156,7 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
             {result.length > 0 ? (
               result.slice(0, 5).map((product: any, index: number) => (
                 <div
-                  onClick={() => router.push('/product/' + product.id)}
+                  onClick={() => router.push('/products/' + product.id)}
                   key={index}
                   className="flex cursor-pointer gap-x-2  flex-row items-center"
                 >
