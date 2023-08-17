@@ -1,6 +1,6 @@
 import React from 'react';
-import { doc, getDoc, query, collection, where, getDocs } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase/client';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
 
 import Header from '@/components/modules/chat/Room/Header';
 import ChatBox from '@/components/modules/chat/Room/ChatBox';
