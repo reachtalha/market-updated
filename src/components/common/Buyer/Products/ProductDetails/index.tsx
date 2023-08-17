@@ -2,23 +2,46 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-import { auth } from '@/lib/firebase/client';
+import { auth, db } from '@/lib/firebase/client';
 
 import Stars from '@/assets/icons/system/Stars';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
+import useSwr, { mutate } from 'swr';
 
 import ProductSlider from '@/components/common/Buyer/Products/ProductDetails/ProductSlider';
 import ProductVideo from '@/components/common/Buyer/Products/ProductDetails/ProductVideo';
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
 import ComplementaryProducts from '@/components/common/Buyer/Products/ProductDetails/ComplementaryProducts';
 import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard';
-import edjsHTML from "editorjs-html";
+import edjsHTML from 'editorjs-html';
 
 const edjsParser = edjsHTML();
 import SimiliarProducts from '@/components/common/Buyer/SimiliarProducts';
 
 import useCartStore from '@/state/useCartStore';
+import {
+  addDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDoc,
+  doc,
+  setDoc
+} from 'firebase/firestore';
+import Loader from '@/components/common/Loader';
+
+const isInWishlist = async (productId: string) => {
+  if (!auth.currentUser) return false;
+  const wishlistRef = await getDoc(doc(db, 'wishlist', auth.currentUser?.uid));
+
+  if (wishlistRef.exists()) {
+    const productIds = wishlistRef.data().productIds;
+    return productIds.includes(productId);
+  }
+  return false;
+};
 
 const getUniqueSizes = (product: any) => {
   const uniqueSizesSet = new Set();
@@ -35,20 +58,72 @@ const getSelectedVariant = (product: any) =>
 
 export default function Product({ productJSON }: { productJSON: any }) {
   const product = JSON.parse(productJSON);
-  // Convert the Set back to an array to be used in the state
   const uniqueSizes = getUniqueSizes(product);
-  const [selectedVariant, setSelectedVariant] = useState(getSelectedVariant(product));
+
+  const [loading, setLoading] = useState(false);
   const [selectedSize, setSelectedSize] = useState(uniqueSizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.SKU[0].id);
+  const [selectedVariant, setSelectedVariant] = useState(getSelectedVariant(product));
+
   const blocks = product.detailedDescription ? product.detailedDescription.blocks : [];
 
   const { addToCart, isAddToCartLoading } = useCartStore((state: any) => state);
+
+  const { data: isInWishlistData, isLoading } = useSwr('isInWishlist', () =>
+    isInWishlist(product.id)
+  );
+
+  if (isLoading) return <Loader />;
+
   const handleAddToBag = () => {
     if (auth.currentUser) {
       addToCart(product.id, selectedVariant.id);
     } else {
       toast.error("You're not logged in!");
     }
+  };
+
+  const handleRemoveFromWishlist = async () => {
+    setLoading(true);
+    if (auth.currentUser) {
+      const wishlistRef = await getDoc(doc(db, 'wishlist', auth.currentUser?.uid));
+      if (wishlistRef.exists()) {
+        const productIds = wishlistRef.data().productIds;
+        const newProductIds = productIds.filter((id: string) => id !== product.id);
+        await updateDoc(doc(db, 'wishlist', auth.currentUser.uid), {
+          productIds: newProductIds
+        });
+      }
+    }
+    toast.success('Removed from wishlist!');
+    setLoading(false);
+    mutate('isInWishlist');
+  };
+
+  const handleAddToWishlist = async () => {
+    setLoading(true);
+    if (auth.currentUser) {
+      try {
+        const wishlistRef = await getDoc(doc(db, 'wishlist', auth.currentUser.uid));
+        if (wishlistRef.exists()) {
+          await updateDoc(doc(db, 'wishlist', auth.currentUser.uid), {
+            productIds: [...wishlistRef.data().productIds, product.id]
+          });
+          //update
+        } else {
+          await setDoc(doc(db, 'wishlist', auth.currentUser.uid), {
+            productIds: [product.id]
+          });
+        }
+        toast.success('Added to wishlist!');
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    } else {
+      toast.error("You're not logged in!");
+    }
+    mutate('isInWishlist');
+    setLoading(false);
   };
 
   return (
@@ -125,20 +200,23 @@ export default function Product({ productJSON }: { productJSON: any }) {
           <span className="">Price</span>
           <p className="font-medium text-2xl mb-3">{selectedVariant.price}$</p>
 
-          {selectedVariant.quantity <= 0 && (
-            <div className="mt-5">
-              <span className="uppercase bg-red-500 text-white rounded-lg py-2 px-3">sold out</span>
-            </div>
-          )}
           <Button
             disabled={selectedVariant.quantity <= 0}
             onClick={handleAddToBag}
-            className="w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500"
+            className={`w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500`}
           >
-            {isAddToCartLoading ? 'loading...' : 'Add to bag'}
+            {selectedVariant.quantity <= 0
+              ? 'Sold Out'
+              : isAddToCartLoading
+              ? 'loading...'
+              : 'Add to bag'}
           </Button>
-          <Button className="w-full mt-2 bg-transparent hover:tracking-wider hover:bg-transparent hover:text-primary transition-all duration-500 text-primary border-primary border-2 uppercase">
-            Save in Wishlist
+          <Button
+            disabled={loading}
+            onClick={isInWishlistData ? handleRemoveFromWishlist : handleAddToWishlist}
+            className="w-full mt-2 bg-transparent hover:tracking-wider hover:bg-transparent hover:text-primary transition-all duration-500 text-primary border-primary border-2 uppercase"
+          >
+            {isInWishlistData ? 'Remove from' : 'Save in'} Wishlist
           </Button>
           <Link href={`/chat/?id=${product?.uid}`}
             className="text-xs flex justify-center cursor-pointer underline mt-3"
@@ -164,7 +242,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
         })}
       </div>
       <ProductVideo />
-      <ProductReviews />
+      <ProductReviews productId={product.id} />
       <SimiliarProducts category={product.category} currentProduct={product.id as string} />
     </>
   );

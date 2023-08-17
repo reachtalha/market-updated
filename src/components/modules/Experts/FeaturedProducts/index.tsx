@@ -35,16 +35,22 @@ const fetchProductDetails = async (productId: string) => {
     return;
   }
   const productData = productDoc.data();
-  const shopDocSnap = await getDoc(doc(db, 'shops', productData.shopId));
-  return { id: productDoc.id, ...productData, shopName: shopDocSnap.data()?.name };
+
+  return { id: productDoc.id, ...productData };
 };
 
-export default function FeaturedProducts({ list }: { list: string[] }) {
+export default function FeaturedProducts({
+  list,
+  isFav = false
+}: {
+  list: string[];
+  isFav?: boolean;
+}) {
   const {
     data: products,
     error,
     isLoading
-  } = useSWR(`${auth.currentUser?.uid}-featured`, async () => {
+  } = useSWR(`${auth.currentUser?.uid}-${isFav ? 'fav' : 'featured'}`, async () => {
     const products = await Promise.all(list.map((id) => fetchProductDetails(id)));
     return products;
   });
@@ -57,7 +63,10 @@ export default function FeaturedProducts({ list }: { list: string[] }) {
   }
 
   return (
-    <Carousel title="Featured Products" breakpoints={featuredProductsBreakpoints}>
+    <Carousel
+      title={`${isFav ? 'Favourite' : 'Featured'} Products`}
+      breakpoints={featuredProductsBreakpoints}
+    >
       {products?.map((_: any, i: number) => (
         <SwiperSlide key={i + Math.random()}>
           <ProductCard

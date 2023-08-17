@@ -1,0 +1,80 @@
+import React from 'react';
+
+import { auth, db } from '@/lib/firebase/client';
+import { useRouter } from 'next/navigation';
+
+import { collection, doc, where, query, getDocs, getDoc } from 'firebase/firestore';
+import useSwr from 'swr';
+
+import Loader from '@/components/common/Loader';
+import Error from '@/components/common/Error';
+import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
+
+type Props = {};
+
+const getWishlistProduct = async () => {
+  const userId = auth.currentUser?.uid;
+
+  if (!userId) {
+    return []; // No user ID, return an empty array
+  }
+
+  const productsRef = await getDoc(doc(db, 'wishlist', userId));
+
+  if (!productsRef.exists()) {
+    return []; // Wishlist doesn't exist, return an empty array
+  }
+
+  const productIds = productsRef.data().productIds || [];
+
+  const productPromises = productIds.map(async (productId: string) => {
+    const productRef = doc(db, 'products', productId);
+    const productSnapshot = await getDoc(productRef);
+
+    if (productSnapshot.exists()) {
+      return productSnapshot.data();
+    } else {
+      return null; // Handle the case where a product doesn't exist
+    }
+  });
+
+  const products = await Promise.all(productPromises);
+
+  // Filter out any null values (non-existent products)
+  return products.filter((product) => product !== null);
+};
+
+const Wishlist = (props: Props) => {
+  const { data: products, isLoading, error } = useSwr('wishlist', getWishlistProduct);
+  if (isLoading) return <Loader />;
+  if (error) return <Error />;
+  return (
+    <div className="w-full">
+      <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
+        {products && products.length > 0 ? (
+          products.map((_: any, i: number) => (
+            <ProductCard
+              key={i + Math.random()}
+              id={_.id}
+              image={_.coverImage}
+              name={_.name}
+              price={
+                _.SKU?.length === 1
+                  ? _.SKU[0].price
+                  : _.SKU.sort((a: any, b: any) => a.price - b.price)[0].price
+              }
+              shop={_.shopName || 'some shop'}
+              type={_.type}
+            />
+          ))
+        ) : (
+          <div className="text-center  flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
+            No products found
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Wishlist;

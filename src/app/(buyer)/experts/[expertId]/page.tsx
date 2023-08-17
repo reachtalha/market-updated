@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { getDocs, getDoc, doc, collection } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
 import {
@@ -17,28 +17,11 @@ import hero from '@/assets/images/hero-expert.png';
 
 import { Button } from '@/components/ui/button';
 import BoxedContent from '@/components/common/BoxedContent';
-import Products from '@/components/common/Buyer/Products';
+import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import FeaturedProducts from '@/components/modules/Experts/FeaturedProducts';
 import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 import AddPinnedContentModal from '@/components/modules/Experts/PinnedContent/AddContent';
 import PinnedContentList from '@/components/modules/Experts/PinnedContent/List';
-
-const getCategories = async () => {
-  const querySnapshot = await getDocs(collection(db, 'categories'));
-  let categories: any = [];
-
-  querySnapshot.forEach((doc) => {
-    categories.push({
-      name: doc.data().title,
-      subCategories: doc.data().list,
-      lifeSpan: doc.data().lifeSpaan,
-      image: doc.data().image,
-      slug: doc.data().title,
-      href: '/products?category'
-    });
-  });
-  return categories;
-};
 
 const getExpert = async (expertId: string) => {
   const docRef = await getDoc(doc(db, 'users', expertId));
@@ -46,6 +29,19 @@ const getExpert = async (expertId: string) => {
 
   return expert;
 };
+
+const getfavProducts = async (expertId: string) => {
+  const productsRef = await getDoc(doc(db, 'wishlist', expertId));
+
+  if (!productsRef.exists()) {
+    return []; // Wishlist doesn't exist, return an empty array
+  }
+
+  const productIds = productsRef.data().productIds;
+
+  return productIds;
+};
+
 type ExpertProps = {
   params: {
     expertId: string;
@@ -53,7 +49,10 @@ type ExpertProps = {
 };
 
 const Expert = async ({ params }: ExpertProps) => {
-  const [categories, expert] = await Promise.all([getCategories(), getExpert(params.expertId)]);
+  const [favProducts, expert] = await Promise.all([
+    getfavProducts(params.expertId),
+    getExpert(params.expertId)
+  ]);
 
   const renderIcon = (type: string) => {
     switch (type.toLowerCase()) {
@@ -79,7 +78,7 @@ const Expert = async ({ params }: ExpertProps) => {
       <div className="w-screen overflow-y-hidden relative mt-20 h-[500px]">
         <Image src={hero} className="h-full w-full object-cover" fill alt="expert-cover" />
       </div>
-      <BoxedContent className=" mt-[-10%] md:mt-[-10%]  ">
+      <BoxedContent className=" mt-[-10%] md:mt-[-10%] pb-5  ">
         <div className="flex flex-col w-[90%] items-center mx-auto relative">
           <AddPinnedContentModal uid={params.expertId} pinnedLinks={expert?.pinned} />
           <div className="flex w-full flex-row mb-5 gap-x-4 md:gap-x-8 items-end">
@@ -139,12 +138,16 @@ const Expert = async ({ params }: ExpertProps) => {
           <FeaturedProducts list={expert?.pinnedProducts} />
         </section>
       )}
+      {favProducts && favProducts.length > 0 && (
+        <section className="py-16 container">
+          <FeaturedProducts list={favProducts} isFav />
+        </section>
+      )}
 
       <section className="">
         <div className="container">
           <div className="border-t-2 border-black" />
         </div>
-        <Products categories={categories} />
       </section>
       <LatestBlogsSection title="Latest blogs" />
     </>
