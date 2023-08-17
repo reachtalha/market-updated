@@ -25,7 +25,6 @@ const Header = ({ chatId, users }: HeaderProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { mutate } = useSWRConfig();
-  console.log(users, 'users', auth.currentUser?.uid);
   const { name, photoURL } = users.filter((user: any) => user.uid !== auth.currentUser?.uid)[0];
 
   async function handleDelete() {
@@ -41,7 +40,7 @@ const Header = ({ chatId, users }: HeaderProps) => {
       batch.delete(chatRef);
       await batch.commit();
       mutate('user_chats');
-      router.push('/chat');
+      router.replace('/chat');
     } catch (error) {
       toast.error('Oops! Something went wrong!');
     } finally {
@@ -49,7 +48,7 @@ const Header = ({ chatId, users }: HeaderProps) => {
     }
   }
   return (
-    <header className="relative flex w-full items-center space-x-3 border-b py-3 px-3 md:px-0">
+    <header className="relative flex w-full items-center space-x-3 border-b py-2.5 px-3 md:px-0">
       <button
         onClick={() => router.replace('/chat')}
         className="block md:hidden active:bg-gray-100 focus:bg-gray-100 rounded-full p-1"
@@ -65,11 +64,10 @@ const Header = ({ chatId, users }: HeaderProps) => {
           </button>
         </PopoverTrigger>
         <PopoverContent className="rounded py-2 w-40 px-1 bg-white drop-shadow" sideOffset={5}>
-          {' '}
           <button
             disabled={loading ? true : false}
             onClick={handleDelete}
-            className="disabled:cursor-not-allowed text-left pl-2 duration-300 transition-colors w-full rounded-sm py-2 bg-red-100 text-red-500 hover:bg-red-200"
+            className="disabled:cursor-not-allowed text-left pl-2 duration-300 transition-colors w-full rounded py-2 bg-red-100 text-red-500 hover:bg-red-200"
           >
             {loading ? 'Deleting' : ' Delete Chat'}
           </button>
