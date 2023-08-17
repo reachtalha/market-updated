@@ -13,7 +13,9 @@ import ProductVideo from '@/components/common/Buyer/Products/ProductDetails/Prod
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
 import ComplementaryProducts from '@/components/common/Buyer/Products/ProductDetails/ComplementaryProducts';
 import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard';
-import SimiliarProducts from '@/components/common/Buyer/SimiliarProducts';
+import edjsHTML from "editorjs-html";
+
+const edjsParser = edjsHTML();
 
 import useCartStore from '@/state/useCartStore';
 
@@ -120,17 +122,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
               })}
             </div>
           </div>
-
           <span className="">Price</span>
           <p className="font-medium text-2xl mb-3">{selectedVariant.price}$</p>
-
-          {selectedVariant.quantity <= 0 && (
-            <div className="mt-5">
-              <span className="uppercase bg-red-500 text-white rounded-lg py-2 px-3">sold out</span>
-            </div>
-          )}
           <Button
-            disabled={selectedVariant.quantity <= 0}
             onClick={handleAddToBag}
             className="w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500"
           >
@@ -154,9 +148,14 @@ export default function Product({ productJSON }: { productJSON: any }) {
           <ComplementaryProducts />
         </div>
       </div>
+      <div className="prose lg:prose-xl pt-16">
+        {blocks?.map((block: any, idx: number) => {
+          const parsedBlock = edjsParser?.parseBlock(block);
+          return <div key={idx} dangerouslySetInnerHTML={{__html: parsedBlock }} />;
+        })}
+      </div>
       <ProductVideo />
       <ProductReviews />
-      <SimiliarProducts category={product.category} currentProduct={product.id as string} />
     </>
   );
 }

@@ -10,12 +10,12 @@ import ShippingInfo from '@/components/common/Buyer/Checkout/ShippingInfo';
 import OrderSummaryCheckout from '@/components/common/Buyer/Checkout/OrderSummaryCheckout';
 import CheckoutForm from '@/components/common/Buyer/Checkout/CheckoutForm';
 import { Form } from '@/components/ui/form';
-import { addDoc, collection, getDoc, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import toast from 'react-hot-toast';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'https://market.com/';
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 const formSchema = z.object({
   email: z.string().min(1, { message: 'required' }).email({
@@ -67,19 +67,7 @@ const fetchCreateOrder = async (
   });
 };
 
-const decreaseQuantity = async (docId: string, SKUId: string, quantity: number) => {
-  const productRef = await getDoc(doc(db, 'products', docId));
-  const SKUs = productRef?.data()?.SKU;
-  //decrease quantity of selected SKU
-  SKUs.map((sku: any) => {
-    if (sku.id === SKUId) {
-      sku.quantity -= quantity;
-    }
-  });
-  await updateDoc(doc(db, 'products', docId), {
-    SKU: SKUs
-  });
-};
+console.log({ DOMAIN });
 
 export default function Checkout() {
   const [processing, setProcessing] = useState(false);
@@ -124,7 +112,7 @@ export default function Checkout() {
       phone: ''
     }
   });
-  console.log(cart);
+
   async function onSubmit(values: any) {
     try {
       setIsOrderLoading(true);
@@ -144,9 +132,6 @@ export default function Checkout() {
         cart?.summary?.total
       );
       submitPayment();
-      cart.items.map((item: any) => {
-        decreaseQuantity(item.docId, item.skuId, item.quantity);
-      });
       clearCart();
       toast.success('We have received your order!');
     } catch (err) {

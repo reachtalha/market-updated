@@ -48,7 +48,7 @@ export default function OrderSummaryCheckout({
       <div>
         <div className="flex justify-between border-b pb-3">
           <p>Subtotal</p>
-          <p className="font-medium">{formatCurrency(cart?.summary?.total)}</p>
+          <p className="font-medium">{formatCurrency(cart?.summary?.subTotal)}</p>
         </div>
         <div className="flex justify-between border-b pt-3 pb-3">
           <p>Shipping estimate</p>
@@ -57,7 +57,7 @@ export default function OrderSummaryCheckout({
         <div className="flex justify-between pb-3 pt-3">
           <p className="font-medium">Order Total</p>
           <p className="font-medium">
-            {formatCurrency(cart?.summary?.total + cart?.summary?.shipping)}
+            {formatCurrency(cart?.summary?.total)}
           </p>
         </div>
       </div>
