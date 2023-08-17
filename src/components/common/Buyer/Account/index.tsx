@@ -2,6 +2,7 @@
 
 import { useRole } from '@/hooks/useUserRole';
 import useCategorySlug from '@/hooks/useCategorySlug';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 import useSWR from 'swr';
 import { getDoc, doc } from 'firebase/firestore';
@@ -24,19 +25,10 @@ type AccountProps = {
 function Index({ options }: AccountProps) {
   const category = useCategorySlug();
   const role = useRole();
-
-  const { data: user, isLoading, error } = useSWR("currentUser", async () => {
-    const docRef = doc(db, 'users', `${auth.currentUser?.uid}`);
-    const docSnap = await getDoc(docRef);
-    return { id: docSnap.id, ...docSnap.data() } as any;
-  })
+  const { user, isLoading } = useCurrentUser()
 
   if (isLoading) {
     return <Loader className="grid place-content-center h-screen w-full" />
-  }
-
-  if (error) {
-    return <Error className="grid place-content-center h-full w-full" />
   }
 
   const renderComponent = () => {
