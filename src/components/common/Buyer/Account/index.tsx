@@ -4,13 +4,7 @@ import { useRole } from '@/hooks/useUserRole';
 import useCategorySlug from '@/hooks/useCategorySlug';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 
-import useSWR from 'swr';
-import { getDoc, doc } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase/client';
-
 import Loader from '@/components/common/Loader';
-import Error from '@/components/common/Error';
-
 import AccountOption, { Option } from '@/components/common/Buyer/Account/AccountOptions';
 import BoxedContent from '@/components/common/BoxedContent';
 import Settings from '@/components/modules/Account/Settings';
