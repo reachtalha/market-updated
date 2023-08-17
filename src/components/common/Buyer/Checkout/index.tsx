@@ -94,16 +94,17 @@ export default function Checkout() {
     if (!stripe || !elements) return;
     setProcessing(true);
 
+    console.log({ DOMAIN })
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: DOMAIN + 'account?display=order'
+        return_url: 'http://localhost:3000' + '/account?display=order'
       }
     });
 
     if (result.error) {
-      setError(`Payment failed: ${result.error.message}`);
       setProcessing(false);
+      throw new Error(`Payment failed: ${result.error.message}`)
     } else {
       setProcessing(false);
     }
@@ -127,6 +128,7 @@ export default function Checkout() {
   console.log(cart);
   async function onSubmit(values: any) {
     try {
+      await submitPayment();
       setIsOrderLoading(true);
       await fetchCreateOrder(
         {
@@ -143,7 +145,6 @@ export default function Checkout() {
         cart?.userId,
         cart?.summary?.total
       );
-      submitPayment();
       clearCart();
       toast.success('We have received your order!');
     } catch (err) {
