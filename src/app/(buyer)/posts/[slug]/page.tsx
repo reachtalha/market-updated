@@ -3,6 +3,7 @@ import BoxedContent from '@/components/common/BoxedContent';
 import { allPosts } from 'contentlayer/generated';
 import { useMDXComponent } from 'next-contentlayer/hooks'
 
+// don't change, are used contentlayer
 export const generateStaticParams = async () => allPosts.map((post: any) => ({ slug: post._raw.flattenedPath }))
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
