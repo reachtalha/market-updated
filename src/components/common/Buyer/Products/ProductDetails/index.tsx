@@ -13,6 +13,9 @@ import ProductVideo from '@/components/common/Buyer/Products/ProductDetails/Prod
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
 import ComplementaryProducts from '@/components/common/Buyer/Products/ProductDetails/ComplementaryProducts';
 import BlogCard from '@/components/common/Buyer/Products/ProductDetails/BlogCard';
+import edjsHTML from "editorjs-html";
+
+const edjsParser = edjsHTML();
 import SimiliarProducts from '@/components/common/Buyer/SimiliarProducts';
 
 import useCartStore from '@/state/useCartStore';
@@ -153,6 +156,12 @@ export default function Product({ productJSON }: { productJSON: any }) {
         <div className="order-1 md:order-2 col-span-1">
           <ComplementaryProducts />
         </div>
+      </div>
+      <div className="prose lg:prose-xl pt-16">
+        {blocks?.map((block: any, idx: number) => {
+          const parsedBlock = edjsParser?.parseBlock(block);
+          return <div key={idx} dangerouslySetInnerHTML={{__html: parsedBlock }} />;
+        })}
       </div>
       <ProductVideo />
       <ProductReviews />

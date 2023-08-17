@@ -12,7 +12,6 @@ import { cn } from '@/lib/utils';
 import { XIcon } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatters';
 import QuantityInput from '@/components/common/Buyer/ShoppingCart/QuantityInput';
-import useAuth from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type CartPopoverProps = {
@@ -32,7 +31,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   }, []);
 
   const handleOnDelete = (item: any) => {
-    deleteFromCart(item.docId, item.selectedVariant.id);
+    deleteFromCart(item.docId, item.selectedVariant.id, item.quantity);
   };
 
   const filteredItems = cart?.items?.map((item: any) => ({
@@ -52,7 +51,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
             <>
               <ul className="flex flex-col gap-y-5">
                 {cart?.items?.map((item: any, idx: number) => (
-                  <li className="flex justify-between pb-4 border-b last:border-0" key={idx}>
+                  <li className="flex flex-wrap justify-between pb-4 border-b last:border-0" key={idx}>
                     <div className="flex items-center gap-x-3">
                       <Image
                         className="border rounded"

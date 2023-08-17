@@ -18,7 +18,7 @@ export default function CartItems() {
     skuId: item.skuId
   }));
   const handleOnDelete = (item: any) => {
-    deleteFromCart(item.docId, item.selectedVariant.id);
+    deleteFromCart(item.docId, item.selectedVariant.id, item.quantity);
   };
   const handleExploreProducts = () => router.push('/products');
 
