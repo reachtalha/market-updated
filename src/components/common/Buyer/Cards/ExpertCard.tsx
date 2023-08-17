@@ -18,7 +18,7 @@ export default function ExpertCard({ image, name, title }: IProfileCard) {
         src={image}
         height={550}
         width={450}
-        className="w-full h-full object-cover"
+        className="max-w-96 h-full object-cover"
         alt={name}
       />
       <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/30 to-transparent transition-opacity ease-in duration-300" />
