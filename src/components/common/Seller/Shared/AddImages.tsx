@@ -32,12 +32,14 @@ function AddImages({
   setStep,
   isShop,
   images,
-  isEdit
+  isEdit,
+  loading = false
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isShop?: boolean;
   images?: any;
   isEdit?: boolean;
+  loading?: boolean;
 }) {
 
   const [pictures, setPictures] = useState<any>([]);
@@ -167,6 +169,7 @@ function AddImages({
         <Button
           type="submit"
           variant="default"
+          disabled={loading}
           form={isShop ? 'add-shop-form' : 'add-product-form'}
           className="w-1/2"
         >
