@@ -127,8 +127,8 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
   const searchBoxRef = useRef<HTMLDivElement>(null);
   useClickOutside(searchBoxRef, toggleSearchBar);
 
-  const handleClick = (ref: string) => {
-    router.push(ref);
+  const handleProductClick = (id: string) => {
+    router.push('/products/' + id);
     toggleSearchBar();
   };
   return (
@@ -158,7 +158,7 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
             {result.length > 0 ? (
               result.slice(0, 5).map((product: any, index: number) => (
                 <div
-                  onClick={() => router.push('/product/' + product.id)}
+                  onClick={() => handleProductClick(product.id)}
                   key={index}
                   className="flex cursor-pointer gap-x-2  flex-row items-center"
                 >
@@ -184,20 +184,20 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
           </div>
         )}
 
-        <h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>
-        <ul className="flex flex-col gap-y-4 mt-4">
-          {quickLinks.map((item) => (
-            <li className="" key={item.id}>
-              <button
-                className="flex items-center gap-4 hover:underline"
-                onClick={() => handleClick(item.link)}
-              >
-                <ArrowRight className="text-gray-500" />
-                {item.name}
-              </button>
-            </li>
-          ))}
-        </ul>
+        {/*<h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>*/}
+        {/*<ul className="flex flex-col gap-y-4 mt-4">*/}
+        {/*  {quickLinks.map((item) => (*/}
+        {/*    <li className="" key={item.id}>*/}
+        {/*      <button*/}
+        {/*        className="flex items-center gap-4 hover:underline"*/}
+        {/*        onClick={() => handleClick(item.link)}*/}
+        {/*      >*/}
+        {/*        <ArrowRight className="text-gray-500" />*/}
+        {/*        {item.name}*/}
+        {/*      </button>*/}
+        {/*    </li>*/}
+        {/*  ))}*/}
+        {/*</ul>*/}
       </BoxedContent>
     </div>
   );
