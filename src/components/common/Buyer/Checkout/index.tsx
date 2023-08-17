@@ -15,7 +15,7 @@ import { db } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import toast from 'react-hot-toast';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'https://market.com/';
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 const formSchema = z.object({
   email: z.string().min(1, { message: 'required' }).email({
@@ -144,9 +144,6 @@ export default function Checkout() {
         cart?.summary?.total
       );
       submitPayment();
-      cart.items.map((item: any) => {
-        decreaseQuantity(item.docId, item.skuId, item.quantity);
-      });
       clearCart();
       toast.success('We have received your order!');
     } catch (err) {
