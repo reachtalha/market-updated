@@ -56,7 +56,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
 
       <div className={` ${isPasswordUpdate && ' hidden'} `}>
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base">Name</Label>
+          <Label>Name</Label>
           <Input
             className="w-full placeholder:text-sm capitalize"
             type="text"
@@ -67,7 +67,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base">Email</Label>
+          <Label>Email</Label>
           <Input
             className="w-full placeholder:text-sm"
             type="email"
@@ -78,7 +78,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base">Phone</Label>
+          <Label>Phone</Label>
           <Input
             className="w-full placeholder:text-sm"
             type="text"
@@ -89,7 +89,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base">Address</Label>
+          <Label>Address</Label>
           <Input
             className="w-full placeholder:text-sm"
             type="text"
@@ -117,7 +117,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base">New Password</Label>
+          <Label>New Password</Label>
           <Input
             className="w-full placeholder:text-sm"
             type="password"
@@ -129,7 +129,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base">
+          <Label>
             Confirm Password
           </Label>
           <Input
