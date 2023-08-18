@@ -94,7 +94,6 @@ export default function Checkout() {
     if (!stripe || !elements) return;
     setProcessing(true);
 
-    console.log({ DOMAIN })
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -104,7 +103,7 @@ export default function Checkout() {
 
     if (result.error) {
       setProcessing(false);
-      throw new Error(`Payment failed: ${result.error.message}`)
+      throw new Error(`Payment failed: ${result.error.message}`);
     } else {
       setProcessing(false);
     }
