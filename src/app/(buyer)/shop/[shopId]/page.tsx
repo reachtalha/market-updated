@@ -11,6 +11,7 @@ import { getDocs, collection, doc, getDoc, where, query } from 'firebase/firesto
 import { db } from '@/lib/firebase/client';
 import { StaticImageData } from 'next/image';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
+import SimiliarShops from '@/components/common/Buyer/SimilarShops';
 
 const getProducts = async (shopId: string) => {
   const querySnapshot = await getDocs(
@@ -44,6 +45,7 @@ type Shop = {
   name: string;
   tagline: string;
   coverImage: StaticImageData;
+  category: string;
 };
 
 export default async function Shop({ params }: ShopProps) {
@@ -95,6 +97,7 @@ export default async function Shop({ params }: ShopProps) {
 
       <Testimonials />
       <TakeQuizSection />
+      <SimiliarShops category={shop.category} currentShop={params.shopId} />
       <BoxedContent className="my-16">
         <OrganicSimplifiedSection />
       </BoxedContent>

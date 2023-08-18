@@ -47,7 +47,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
     return password;
   }
 
-
   const handleApprove = async (id: string) => {
     try {
       setLoading(true);
@@ -59,24 +58,22 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
       }
       const user = docRef.data();
       const randomPassword = await generateRandomPassword();
-      await axios.post(
-        '/api/auth/register',
-        {
-          name: user.name,
-          email: user.email,
-          password: randomPassword,
-          role: user.role
-        }
-      );
+      await axios.post('/api/auth/register', {
+        name: user.name,
+        email: user.email,
+        password: randomPassword,
+        role: user.role
+      });
       await Promise.all([
         deleteDoc(doc(db, 'waiting-list', id)),
         axios.post('/api/mail/send', {
           name: user.name,
           email: user.email,
-          password: randomPassword,
-        }),
+          password: randomPassword
+        })
       ]);
       toast.success('An email with account details has been sent to the user.');
+      window.location.reload();
     } catch (error: any) {
       toast.error('An error occurred while processing your request. Please try again later.');
     } finally {
@@ -112,7 +109,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
                   </TableCell>
                 ))}
                 <TableCell>
-                  <Button disabled={loading} onClick={() => handleApprove(row?.original?.id)}>Approve</Button>
+                  <Button disabled={loading} onClick={() => handleApprove(row?.original?.id)}>
+                    Approve
+                  </Button>
                 </TableCell>
               </TableRow>
             ))

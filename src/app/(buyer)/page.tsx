@@ -6,7 +6,7 @@ import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
 import BoxedContent from '@/components/common/BoxedContent';
 import OurMission from '@/components/common/Buyer/OurMission';
 import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where  } from 'firebase/firestore';
 import Link from 'next/link';
 import { db } from '@/lib/firebase/client';
 

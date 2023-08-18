@@ -122,8 +122,6 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
     setResult(list.filter((a, i) => list.findIndex((s) => a.id === s.id) === i));
   }
 
-  console.log(result, searchQuery);
-
   const searchBoxRef = useRef<HTMLDivElement>(null);
   useClickOutside(searchBoxRef, toggleSearchBar);
 

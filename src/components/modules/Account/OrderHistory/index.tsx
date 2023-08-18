@@ -56,7 +56,7 @@ const getOrder = async (id: string) => {
       status: data.status || 'pending',
       products: data.items.map((item: any) => {
         return {
-          id: item.uid,
+          id: item.productId,
           name: item.name,
           price: item.selectedVariant.price,
           unit: item.unit,
