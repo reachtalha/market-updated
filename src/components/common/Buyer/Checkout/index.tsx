@@ -10,12 +10,12 @@ import ShippingInfo from '@/components/common/Buyer/Checkout/ShippingInfo';
 import OrderSummaryCheckout from '@/components/common/Buyer/Checkout/OrderSummaryCheckout';
 import CheckoutForm from '@/components/common/Buyer/Checkout/CheckoutForm';
 import { Form } from '@/components/ui/form';
-import { addDoc, collection, getDoc, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, getDoc, doc, updateDoc, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import toast from 'react-hot-toast';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || "http://localhost:3000";
 
 const formSchema = z.object({
   email: z.string().min(1, { message: 'required' }).email({
@@ -28,7 +28,6 @@ const formSchema = z.object({
   apartments: z.string().min(1, { message: 'required' }),
   city: z.string().min(1, { message: 'required' }),
   state: z.string().min(1, { message: 'required' }),
-  // postal: z.string().min(1, { message: "required" }),
   phone: z.string().min(1, { message: 'required' })
 });
 
@@ -54,6 +53,7 @@ type ItemsType = CartItemType[];
 const fetchCreateOrder = async (
   shippingAddress: ShippingAddressType,
   items: ItemsType,
+  shops: string[],
   userId: string,
   total: number
 ) => {
@@ -61,7 +61,8 @@ const fetchCreateOrder = async (
   await addDoc(ordersRef, {
     userId,
     total,
-    timeStamp: new Date(),
+    shops,
+    timeStamp: Timestamp.fromDate(new Date()),
     items: items,
     shippingAddress
   });
@@ -84,7 +85,6 @@ const decreaseQuantity = async (docId: string, SKUId: string, quantity: number) 
 export default function Checkout() {
   const [processing, setProcessing] = useState(false);
   const [isOrderLoading, setIsOrderLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -93,12 +93,10 @@ export default function Checkout() {
   const submitPayment = async () => {
     if (!stripe || !elements) return;
     setProcessing(true);
-
-    console.log({ DOMAIN })
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000' + '/account?display=order'
+        return_url: DOMAIN + '/account?display=order'
       }
     });
 
@@ -121,30 +119,52 @@ export default function Checkout() {
       apartments: '',
       city: '',
       state: '',
-      // postal: "",
       phone: ''
     }
   });
-  console.log(cart);
   async function onSubmit(values: any) {
     try {
-      await submitPayment();
       setIsOrderLoading(true);
+      const shops = cart?.items.map((s: any) => {
+        return s.shopId;
+      })
+      const items = cart?.items.map((i: any) => {
+        return {
+          id: i.docId,
+          image: i.image,
+          name: i.name,
+          quantity: i.quantity,
+          shopId: i.shopId,
+          unit: i.unit,
+          selectedVariant: {
+            id: i.selectedVariant.id,
+            color: i.selectedVariant.color,
+            measurement: i.selectedVariant.measurement,
+            price: i.selectedVariant.price,
+          }
+        }
+      })
+
       await fetchCreateOrder(
         {
           firstName: values.firstName,
           lastName: values.lastName,
           phone: values.phone,
-          country: values.country || 'Pakistan',
+          country: values.country || "Pakistan",
           company: values.company,
           apartment: values.apartments || '',
           city: values.city,
           address: values.address
         },
-        cart?.items,
+        items,
+        shops,
         cart?.userId,
         cart?.summary?.total
       );
+      cart.items.map((item: any) => {
+        decreaseQuantity(item.docId, item.skuId, item.quantity);
+      });
+      submitPayment();
       clearCart();
       toast.success('We have received your order!');
     } catch (err) {
