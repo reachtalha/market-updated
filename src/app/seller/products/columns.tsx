@@ -15,14 +15,14 @@ export type Product = {
 export const columns: ColumnDef<Product>[] = [
   {
     id: 'select',
-    header: ({ table }) => (
+    header: ({ table }: { table: any }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
-    cell: ({ row }) => (
+    cell: ({ row }: { row: any }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value: any) => row.toggleSelected(!!value)}
@@ -46,12 +46,12 @@ export const columns: ColumnDef<Product>[] = [
     header: 'Quantity'
   },
   {
-    accessorKey: "type",
-    header: "Type",
+    accessorKey: 'type',
+    header: 'Type'
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: 'status',
+    header: 'Status'
   },
 
   {

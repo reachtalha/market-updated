@@ -66,13 +66,6 @@ type FormValues = {
   twitterUrl?: string;
   websiteUrl?: string;
 };
-const getShopData: any = async (): Promise<any> => {
-  const docRef = await getDocs(
-    query(collection(db, 'shops'), where('uid', '==', `${auth.currentUser?.uid}`))
-  );
-
-  return { id: docRef?.docs[0]?.id, ...docRef?.docs[0]?.data() };
-};
 
 const getTypeData = async (category: string) => {
   const querySnapshot = await getDocs(collection(db, 'categories'));

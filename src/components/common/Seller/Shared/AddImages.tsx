@@ -41,8 +41,7 @@ function AddImages({
   isEdit?: boolean;
   loading?: boolean;
 }) {
-
-  const [pictures, setPictures] = useState<any>([]);
+  const [pictures, setPictures] = useState<any>(images?.moreImages);
   const [coverImage, setCoverImage] = useState<any>(images?.coverImage);
   const [logoImage, setLogoImage] = useState<any>(images?.logoImage);
 
@@ -161,7 +160,7 @@ function AddImages({
         <Button
           type="button"
           variant="secondary"
-          onClick={() => setStep((prev) => prev - 1)}
+          onClick={() => setStep((prev: any) => prev - 1)}
           className="w-1/2"
         >
           Back
@@ -173,7 +172,7 @@ function AddImages({
           form={isShop ? 'add-shop-form' : 'add-product-form'}
           className="w-1/2"
         >
-          {isShop ? (isEdit ? 'Update ' : 'Add ') + 'Shop' : 'Add Product'}
+          {(isEdit ? 'Update ' : 'Add ') + (isShop ? 'Shop' : 'Product')}
         </Button>
       </div>
     </>

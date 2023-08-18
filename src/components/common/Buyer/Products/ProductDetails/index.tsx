@@ -164,8 +164,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
-                    } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
+                    size === selectedSize && ' bg-primary text-white'
+                  } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -183,8 +184,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
-                      } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
+                      variant.id === selectedColor && ' bg-primary text-white'
+                    } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
@@ -218,7 +220,8 @@ export default function Product({ productJSON }: { productJSON: any }) {
           >
             {isInWishlistData ? 'Remove from' : 'Save in'} Wishlist
           </Button>
-          <Link href={`/chat/?id=${product?.uid}`}
+          <Link
+            href={`/chat/?id=${product?.uid}`}
             className="text-xs flex justify-center cursor-pointer underline mt-3"
           >
             Chat with Seller
@@ -226,22 +229,13 @@ export default function Product({ productJSON }: { productJSON: any }) {
         </div>
       </div>
 
-      <div className="grid items-center gap-y-8 grid-cols-1 lg:grid-cols-3 md:gap-x-16">
-        <div className="order-2 md:order-1 gap-y-8 flex flex-col lg:flex-row md:gap-x-10 mt-16 h-full col-span-2">
-          <BlogCard />
-          <BlogCard />
-        </div>
-        <div className="order-1 md:order-2 col-span-1">
-          <ComplementaryProducts />
-        </div>
-      </div>
       <div className="prose lg:prose-xl pt-16">
         {blocks?.map((block: any, idx: number) => {
           const parsedBlock = edjsParser?.parseBlock(block);
           return <div key={idx} dangerouslySetInnerHTML={{ __html: parsedBlock }} />;
         })}
       </div>
-      <ProductVideo />
+
       <ProductReviews productId={product.id} />
       <SimiliarProducts category={product.category} currentProduct={product.id as string} />
     </>
