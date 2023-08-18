@@ -97,7 +97,7 @@ export default function Checkout() {
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000' + '/account?display=order'
+        return_url: DOMAIN + '/account?display=order'
       }
     });
 
