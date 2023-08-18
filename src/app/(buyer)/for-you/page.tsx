@@ -55,9 +55,9 @@ const getFavCategory = async () => {
 export default function Index() {
   const { data: categories, error, isLoading } = useSWR('forYouCategories', getFavCategory);
 
-  if (isLoading) return <Loader className="w-screen h-[70vh] flex items-center justify-center" />;
+  if (isLoading) return <Loader className="w-full h-[70vh] flex items-center justify-center" />;
 
-  if (error) return <Error />;
+  if (error) return <Error className="w-full h-[70vh] flex items-center justify-center" />;
 
   return <Products foryou categories={categories} />;
 }

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { collection, query, doc, where, getDocs, getDoc, DocumentData } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
@@ -68,13 +68,15 @@ export const getUser = async (userId: string): Promise<DocumentData | undefined>
 };
 
 export default function Chat() {
-  const [search, setSearch] = useState('');
-  const router = useRouter();
   const {
     data: chats,
     error,
     isLoading
   }: SWRResponse<Chat[], Error> = useSWR('user_chats', fetchChats);
+  const [search, setSearch] = useState('');
+  const router = useRouter();
+  const pathname = usePathname()
+
   if (isLoading) {
     return <Loader />;
   }
@@ -92,7 +94,7 @@ export default function Chat() {
       <div className="flex items-center gap-x-2">
         <Button
           onClick={() => router.push('/')}
-          className="block md:hidden p-1 hover:bg-gray-100 rounded-full"
+          className="block md:hidden p-1 hover:bg-neutral-100 rounded-full"
         >
           <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
         </Button>
@@ -102,16 +104,16 @@ export default function Chat() {
             inputMode="search"
             placeholder="Search User"
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none placeholder:text-sm text-gray-600"
+            className="w-full border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none placeholder:text-sm text-neutral-600"
           />
-          <Search className="w-5 h-5 text-gray-400" color="currentColor" strokeWidth={2} />
+          <Search className="w-5 h-5 text-neutral-400" color="currentColor" strokeWidth={2} />
         </div>
       </div>
-      <h6 className="text-gray-500 text-sm mt-4 mb-3">Your Chats</h6>
+      <h6 className="text-neutral-500 text-sm mt-4 mb-3">Your Chats</h6>
       {filteredChats?.length === 0 && (
         <div className="grid place-content-center">
           <NoSearchResult className="w-28 h-28 place-self-center" />
-          <h4 className="text-gray-800 font-semibold place-self-center">No Results</h4>
+          <h4 className="text-neutral-800 font-semibold place-self-center">No Results</h4>
           <p className="text-center text-gray-500">
             Sorry, there are no results for this search. Please try another name
           </p>
@@ -119,11 +121,12 @@ export default function Chat() {
       )}
       <ul className="divide-y">
         {filteredChats?.map((chat) => {
+          const path = `/chat/${chat.chatId}`;
           return (
             <li
               key={chat.chatId}
-              onClick={() => router.replace(`/chat/${chat.chatId}`)}
-              className="flex cursor-pointer items-center space-x-2 rounded-md px-1 py-2 transition delay-75 duration-300 ease-in-out hover:bg-gray-100 focus:outline-none"
+              onClick={() => router.replace(path)}
+              className={`flex cursor-pointer items-center space-x-2 rounded-md px-1 py-2 transition delay-75 duration-300 ease-in-out hover:bg-neutral-100 focus:outline-none ${pathname === path ? "bg-neutral-100" : "bg-none"}`}
             >
               <Avatar name={chat.name} photoURL={chat.photoURL} />
               <span className="capitalize">{chat.name ? chat.name : ''}</span>

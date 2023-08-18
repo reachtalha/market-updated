@@ -1,5 +1,5 @@
 'use client';
-import Image from 'next/image';
+import Image from '@/components/common/FallbackImage';
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, SearchIcon } from 'lucide-react';
@@ -22,23 +22,23 @@ type SearchbarProps = {
 const quickLinks = [
   {
     id: 1,
-    name: 'BODY WASH',
-    link: '/products/123'
+    name: 'Apparels',
+    link: '/products?category=organic%20clothing%20&%20apparel'
   },
   {
     id: 2,
-    name: 'BODY WASH',
-    link: '/products/123'
+    name: 'Sweat Shirts',
+    link: '/products?category=organic%20clothing%20&%20apparel'
   },
   {
     id: 3,
-    name: 'BODY WASH',
-    link: '/products/123'
+    name: 'Essential Oils',
+    link: '/products?category=organic%20hair%20oil'
   },
   {
     id: 4,
-    name: 'BODY WASH',
-    link: '/products/123'
+    name: 'Cosmetics',
+    link: '/products?category=organic%20cosmetics'
   }
 ];
 export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
@@ -125,9 +125,9 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
   const searchBoxRef = useRef<HTMLDivElement>(null);
   useClickOutside(searchBoxRef, toggleSearchBar);
 
-  const handleProductClick = (id: string) => {
-    router.push('/products/' + id);
-    toggleSearchBar();
+  const handleClick = (ref: string) => {
+    toggleSearchBar(false);
+    router.push(ref);
   };
   return (
     <div
@@ -151,51 +151,51 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
           </div>
         </form>
 
-        {searchQuery.length > 0 && (
+        {searchQuery.length > 0 ? (
           <div className="flex flex-col ms-7 mt-2 gap-y-2 items-start">
             {result.length > 0 ? (
-              result.slice(0, 5).map((product: any, index: number) => (
+              result.map((product: any, index: number) => (
                 <div
-                  onClick={() => handleProductClick(product.id)}
+                  onClick={() => handleClick('/products/' + product.id)}
                   key={index}
-                  className="flex cursor-pointer gap-x-2  flex-row items-center"
+                  className="w-full flex cursor-pointer gap-x-2  flex-row items-center hover:bg-neutral-100 rounded p-1"
                 >
-                  <div className="relative w-16 h-16 ">
+                  <div className="relative w-20 h-20 rounded">
                     <Image
                       src={product.image}
-                      className="object-cover"
+                      className="object-cover drop-shadow-sm"
                       alt={'product'}
                       fill={true}
                     />
                   </div>
                   <div className="flex flex-col items-start">
                     <div className="font-medium capitalize ">{product.name}</div>
-                    <div className="text-sm capitalize">{product.shop || 'Shopname'}</div>
+                    <div className="text-sm">by <span className="capitalize">{product.shop}</span></div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className=" mt-5 flex items-center justify-center w-screen">
+              <div className=" py-6 flex items-center justify-center w-full">
                 <span>No result found</span>
               </div>
             )}
-          </div>
-        )}
-
-        {/*<h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>*/}
-        {/*<ul className="flex flex-col gap-y-4 mt-4">*/}
-        {/*  {quickLinks.map((item) => (*/}
-        {/*    <li className="" key={item.id}>*/}
-        {/*      <button*/}
-        {/*        className="flex items-center gap-4 hover:underline"*/}
-        {/*        onClick={() => handleClick(item.link)}*/}
-        {/*      >*/}
-        {/*        <ArrowRight className="text-gray-500" />*/}
-        {/*        {item.name}*/}
-        {/*      </button>*/}
-        {/*    </li>*/}
-        {/*  ))}*/}
-        {/*</ul>*/}
+          </div>)
+          : (<>
+            <h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>
+            <ul className="flex flex-col gap-y-4 mt-4">
+              {quickLinks.map((item) => (
+                <li className="" key={item.id}>
+                  <button
+                    className="flex items-center gap-4 uppercase hover:underline"
+                    onClick={() => handleClick(item.link)}
+                  >
+                    <ArrowRight className="text-gray-500" />
+                    {item.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>)}
       </BoxedContent>
     </div>
   );

@@ -3,10 +3,11 @@ import React from 'react';
 
 type Props = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  loading?: boolean;
 };
 
-const Index = ({ setStep }: Props) => {
-  return <AddImages setStep={setStep} />;
+const Index = ({ setStep, loading }: Props) => {
+  return <AddImages setStep={setStep} loading={loading} />;
 };
 
 export default Index;

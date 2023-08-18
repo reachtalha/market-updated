@@ -56,9 +56,9 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
 
       <div className={` ${isPasswordUpdate && ' hidden'} `}>
         <div className="space-y-1 w-full mt-3">
-          <Label className=" font-medium text-sm md:text-base  text-gray-600">Name</Label>
+          <Label>Name</Label>
           <Input
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+            className="w-full placeholder:text-sm capitalize"
             type="text"
             {...register('name')}
             disabled={!isEdit}
@@ -67,9 +67,9 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base font-medium  text-gray-600">Email</Label>
+          <Label>Email</Label>
           <Input
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+            className="w-full placeholder:text-sm"
             type="email"
             {...register('email')}
             disabled={!isEdit}
@@ -78,9 +78,9 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base font-medium  text-gray-600">Phone</Label>
+          <Label>Phone</Label>
           <Input
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+            className="w-full placeholder:text-sm"
             type="text"
             {...register('phone')}
             disabled={!isEdit}
@@ -89,9 +89,9 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base font-medium  text-gray-600">Address</Label>
+          <Label>Address</Label>
           <Input
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+            className="w-full placeholder:text-sm"
             type="text"
             {...register('address')}
             disabled={!isEdit}
@@ -107,7 +107,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
             Current Password
           </Label>
           <Input
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+            className="w-full placeholder:text-sm"
             type="password"
             {...register('currentPassword')}
             placeholder="Enter Current Password"
@@ -117,9 +117,9 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base font-medium  text-gray-600">New Password</Label>
+          <Label>New Password</Label>
           <Input
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+            className="w-full placeholder:text-sm"
             type="password"
             {...register('newPassword')}
             placeholder="Enter New Password"
@@ -129,11 +129,11 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label className="text-sm md:text-base font-medium  text-gray-600">
+          <Label>
             Confirm Password
           </Label>
           <Input
-            className="w-full rounded-xl border-[2px] border-gray-300 p-2.5 transition-transform delay-75 duration-300 placeholder:text-sm hover:border-killarney-700 focus:-translate-y-[2px]  focus:border-0 py-[1.4rem]"
+            className="w-full placeholder:text-sm"
             type="password"
             {...register('confirmPassword')}
             placeholder="Confirm Password"
@@ -146,7 +146,8 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
           <Button
             onClick={handleCancel}
             type="button"
-            className="w-full py-2.5 bg-gray-200 hover:bg-killarney-200 duration-300 transition-colors rounded-md text-black"
+            variant="outline"
+            className="w-full"
           >
             Cancel
           </Button>
@@ -155,7 +156,8 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         <Button
           type={isEdit ? 'submit' : isPasswordUpdate ? 'submit' : 'button'}
           onClick={handleUpdate}
-          className="disabled:cursor-not-allowed w-full py-2.5 bg-primary hover:bg-killarney-800 duration-300 transition-colors rounded-md text-white"
+          variant="default"
+          className="w-full"
         >
           Update {isEdit ? 'Profile' : 'Password'}
         </Button>

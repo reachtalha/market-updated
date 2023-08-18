@@ -7,7 +7,7 @@ import { db } from '@/lib/firebase/client';
 export interface ICategory {
   id: string;
   image: string;
-  name: string;
+  title: string;
   lifespan: string;
 }
 

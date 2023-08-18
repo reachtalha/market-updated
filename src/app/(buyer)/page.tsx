@@ -6,14 +6,14 @@ import FeaturedProducts from '@/components/common/Buyer/FeaturedProducts';
 import BoxedContent from '@/components/common/BoxedContent';
 import OurMission from '@/components/common/Buyer/OurMission';
 import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
-import { collection, getDocs, query, where  } from 'firebase/firestore';
+import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import Link from 'next/link';
 import { db } from '@/lib/firebase/client';
 
 const getExperts: any = async (): Promise<any> => {
   let experts: any = [];
 
-  const docRef = await getDocs(query(collection(db, 'users'), where('role', '==', 'influencer')));
+  const docRef = await getDocs(query(collection(db, 'users'), where('role', '==', 'influencer'), limit(6)));
   experts = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
   return experts;
@@ -51,7 +51,7 @@ export default async function Home() {
           </div>
           <ul className="flex gap-x-4 items-start pl-10 overflow-auto no-scrollbar snap-x snap-start">
             {experts.map((expert: any, i: number) => (
-              <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
+              <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()} >
                 <ExpertCard image={expert?.photoURL} name={expert?.name} title={expert?.topics} />
               </Link>
             ))}

@@ -164,9 +164,8 @@ export default function Product({ productJSON }: { productJSON: any }) {
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                    size === selectedSize && ' bg-primary text-white'
-                  } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
+                    } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -184,9 +183,8 @@ export default function Product({ productJSON }: { productJSON: any }) {
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                      variant.id === selectedColor && ' bg-primary text-white'
-                    } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
+                      } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
@@ -220,9 +218,11 @@ export default function Product({ productJSON }: { productJSON: any }) {
           >
             {isInWishlistData ? 'Remove from' : 'Save in'} Wishlist
           </Button>
-          <div className="w-full flex items-center mt-3">
-            <span className="text-xs cursor-pointer underline mx-auto ">Chat with Seller</span>
-          </div>
+          <Link href={`/chat/?id=${product?.uid}`}
+            className="text-xs flex justify-center cursor-pointer underline mt-3"
+          >
+            Chat with Seller
+          </Link>
         </div>
       </div>
 

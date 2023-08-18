@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 
 import Image from 'next/image';
 
@@ -33,20 +32,21 @@ function AddImages({
   setStep,
   isShop,
   images,
-  isEdit
+  isEdit,
+  loading = false
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isShop?: boolean;
   images?: any;
   isEdit?: boolean;
+  loading?: boolean;
 }) {
-  const { pending } = useFormStatus()
 
   const [pictures, setPictures] = useState<any>([]);
   const [coverImage, setCoverImage] = useState<any>(images?.coverImage);
   const [logoImage, setLogoImage] = useState<any>(images?.logoImage);
 
-  const { setValue, getValues } = useFormContext();
+  const { setValue } = useFormContext();
 
   const handleImageUpload = (e: any) => {
     try {
@@ -169,7 +169,7 @@ function AddImages({
         <Button
           type="submit"
           variant="default"
-          disabled={pending}
+          disabled={loading}
           form={isShop ? 'add-shop-form' : 'add-product-form'}
           className="w-1/2"
         >

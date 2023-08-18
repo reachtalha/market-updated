@@ -77,6 +77,7 @@ const AddProduct = () => {
     }
   });
   const [step, setStep] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
   const emptySKUList = useGlobalStore((state: any) => state.emptySKUList);
   const methods = useForm<FormValues>();
   const { handleSubmit, reset } = methods;
@@ -89,6 +90,7 @@ const AddProduct = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
+      setLoading(true);
       if (!data.coverImage) {
         toast.error('Please add Cover Image!');
         return;
@@ -133,6 +135,8 @@ const AddProduct = () => {
       setStep(1);
     } catch (e) {
       toast.error('Something went wrong!');
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -148,7 +152,7 @@ const AddProduct = () => {
             {step === 1 && <BasicDetails setStep={setStep} types={shop.types} />}
             {step === 2 && <CreateSKU setStep={setStep} />}
             {step === 3 && <DetailedDescription setStep={setStep} />}
-            {step === 4 && <AddImages setStep={setStep} />}
+            {step === 4 && <AddImages setStep={setStep} loading={loading} />}
           </div>
         </form>
       </FormProvider>

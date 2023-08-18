@@ -31,7 +31,6 @@ const BasicDetails = ({ types, setStep }: Props) => {
     trigger,
     formState: { errors }
   } = useFormContext();
-  console.log(register('type').name);
 
   const nextStep = async () => {
     const isValid = await trigger(['name', 'type', 'gender', 'unit', 'type', 'description']);

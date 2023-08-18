@@ -2,14 +2,9 @@
 
 import { useRole } from '@/hooks/useUserRole';
 import useCategorySlug from '@/hooks/useCategorySlug';
-
-import useSWR from 'swr';
-import { getDoc, doc } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase/client';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 import Loader from '@/components/common/Loader';
-import Error from '@/components/common/Error';
-
 import AccountOption, { Option } from '@/components/common/Buyer/Account/AccountOptions';
 import BoxedContent from '@/components/common/BoxedContent';
 import Settings from '@/components/modules/Account/Settings';
@@ -18,6 +13,7 @@ import OrderHistory from '@/components/modules/Account/OrderHistory';
 import Socials from '@/components/modules/Account/Socials';
 import Wishlist from '@/components/modules/Account/Wishlist';
 
+
 type AccountProps = {
   options: Option[];
 };
@@ -25,23 +21,10 @@ type AccountProps = {
 function Index({ options }: AccountProps) {
   const category = useCategorySlug();
   const role = useRole();
-
-  const {
-    data: user,
-    isLoading,
-    error
-  } = useSWR('currentUser', async () => {
-    const docRef = doc(db, 'users', `${auth.currentUser?.uid}`);
-    const docSnap = await getDoc(docRef);
-    return { id: docSnap.id, ...docSnap.data() } as any;
-  });
+  const { user, isLoading } = useCurrentUser()
 
   if (isLoading) {
-    return <Loader className="grid place-content-center h-screen w-full" />;
-  }
-
-  if (error) {
-    return <Error className="grid place-content-center h-full w-full" />;
+    return <Loader className="grid place-content-center h-screen w-full" />
   }
 
   const renderComponent = () => {
@@ -78,6 +61,20 @@ function Index({ options }: AccountProps) {
         );
       case 'order':
         return <OrderHistory />;
+      case 'wishlist':
+        return (
+          <>
+            {user ? (
+              <div className=" w-full ">
+                <Wishlist />
+              </div>
+            ) : (
+              <div className="h-[50vh] w-full flex items-center justify-center">
+                <Loader />
+              </div>
+            )}
+          </>
+        );
       case 'socials':
         return (
           <>
@@ -98,21 +95,6 @@ function Index({ options }: AccountProps) {
             )}
           </>
         );
-      case 'wishlist':
-        return (
-          <>
-            {user ? (
-              <div className=" w-full ">
-                <Wishlist />
-              </div>
-            ) : (
-              <div className="h-[50vh] w-full flex items-center justify-center">
-                <Loader />
-              </div>
-            )}
-          </>
-        );
-
       default:
         return (
           <>
@@ -146,13 +128,13 @@ function Index({ options }: AccountProps) {
         options={
           role === 'influencer'
             ? [
-                ...options,
-                {
-                  name: 'Socials',
-                  slug: 'socials',
-                  href: '/account?display'
-                }
-              ]
+              ...options,
+              {
+                name: 'Socials',
+                slug: 'socials',
+                href: '/account?display'
+              }
+            ]
             : options
         }
       />
