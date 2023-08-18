@@ -1,11 +1,6 @@
-"use client";
+'use client';
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
 import {
   Table,
@@ -13,13 +8,19 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Product } from "./columns";
+  TableRow
+} from '@/components/ui/table';
+import { Product } from './columns';
 
 import { Pencil, Trash2 } from 'lucide-react';
 import ImageWithFallback from '@/components/common/FallbackImage';
 import { Input } from '@/components/ui/input';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
+import toast from 'react-hot-toast';
+import { mutate } from 'swr';
+
+import { useRouter } from 'next/navigation';
 
 interface DataTableProps<TValue> {
   columns: ColumnDef<Product, TValue>[];
@@ -30,9 +31,19 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    getCoreRowModel: getCoreRowModel()
   });
+  const router = useRouter();
 
+  const handleDelete = async (id: string) => {
+    await deleteDoc(doc(db, 'products', id));
+    toast.success('Product Successfully Deleted');
+    mutate('sellerProducts');
+  };
+
+  const handleEdit = async (id: string) => {
+    router.push(`/seller/products/edit/${id}`);
+  };
   return (
     <div className="rounded-md border mt-5">
       <div className="p-5">
@@ -40,10 +51,10 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
       </div>
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
+          {table.getHeaderGroups().map((headerGroup: any) => (
             <TableRow key={headerGroup.id}>
               <TableHead>#</TableHead>
-              {headerGroup.headers.map((header) => {
+              {headerGroup.headers.map((header: any) => {
                 return (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
@@ -58,13 +69,10 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+            table.getRowModel().rows.map((row: any) => (
+              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                 <TableCell>{row.index + 1}</TableCell>
-                {row.getVisibleCells().map((cell) => {
+                {row.getVisibleCells().map((cell: any) => {
                   return (
                     <TableCell key={cell.id} className="capitalize">
                       <div className="flex flex-row gap-x-4 items-center">
@@ -82,13 +90,18 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
                     </TableCell>
                   );
                 })}
-                <TableCell onClick={() => console.log(row?.original?.id)}>
-                  <div className='flex flex-row gap-x-4'>
-                    <Pencil size={15} className='cursor-pointer' />
+                <TableCell>
+                  <div className="flex flex-row gap-x-4">
+                    <Pencil
+                      size={15}
+                      className="cursor-pointer"
+                      onClick={() => handleEdit(row?.original?.id)}
+                    />
                     <Trash2
                       size={15}
-                      color='#C51605'
-                      className='cursor-pointer'
+                      color="#C51605"
+                      className="cursor-pointer"
+                      onClick={() => handleDelete(row?.original?.id)}
                     />
                   </div>
                 </TableCell>
@@ -96,7 +109,7 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className='h-24 text-center'>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>

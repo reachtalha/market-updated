@@ -17,7 +17,6 @@ import hero from '@/assets/images/hero-expert.png';
 
 import { Button } from '@/components/ui/button';
 import BoxedContent from '@/components/common/BoxedContent';
-import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import FeaturedProducts from '@/components/modules/Experts/FeaturedProducts';
 import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 import AddPinnedContentModal from '@/components/modules/Experts/PinnedContent/AddContent';

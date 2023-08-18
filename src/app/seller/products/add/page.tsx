@@ -1,5 +1,4 @@
 import AddProduct from '@/components/modules/AddProduct';
-import React from 'react';
 
 type Props = {};
 
