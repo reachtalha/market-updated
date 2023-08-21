@@ -10,7 +10,6 @@ export function isColoredRoute(route: string) {
   return (
     coloredRoutes.includes(route) ||
     route.startsWith('/experts') ||
-    route.startsWith('/products') ||
-    route.startsWith('/posts')
+    route.startsWith('/products')
   );
 }
