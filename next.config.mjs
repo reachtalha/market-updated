@@ -1,9 +1,13 @@
-import { withContentlayer } from 'next-contentlayer';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        port: '',
+        pathname: '/**'
+      },
       {
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
@@ -41,4 +45,4 @@ const nextConfig = {
   }
 };
 
-export default withContentlayer(nextConfig);
+export default nextConfig;
