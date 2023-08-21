@@ -10,7 +10,7 @@ import useCategorySlug from '@/hooks/useCategorySlug';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import { Button } from '@/components/ui/button';
-import { getDocs, getDoc, collection, query, where, doc } from 'firebase/firestore';
+import { getDocs, collection, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSWR, { mutate } from 'swr';
 
@@ -52,7 +52,7 @@ const getProducts: any = async (
 
     return product;
   });
-  console.log(products);
+
   return products;
 };
 
@@ -70,13 +70,13 @@ export default function Products({ categories, foryou }: ProductsProps) {
   );
 
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
-
+  const [triggerRender, setTriggerRender] = useState(false);
   const sortProductsBy = useSortingStore((state: any) => state.sortProductsBy);
 
   const {
     data: products,
-    error: productsError,
-    isLoading: productsIsLoading
+    error,
+    isLoading
   } = useSWR(['products', selectedSubCategory], () =>
     getProducts(selectedSubCategory, categories, foryou)
   );
@@ -97,14 +97,25 @@ export default function Products({ categories, foryou }: ProductsProps) {
 
   useEffect(() => {
     if (!products) return;
-    if (sortProductsBy === '' || sortProductsBy === 'reviews') {
-      setFilteredProducts(products);
-    } else if (sortProductsBy === 'price') {
-      setFilteredProducts(products.sort((a: any, b: any) => a.price - b.price));
-    } else if (sortProductsBy === 'name') {
-      setFilteredProducts(products.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+
+    switch (sortProductsBy) {
+      case 'price':
+        setFilteredProducts(products.sort((a: any, b: any) => a.price - b.price));
+        break;
+      case 'name':
+        setFilteredProducts(products.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+        break;
+      case 'reviews':
+        setFilteredProducts(products);
+        break;
+      default:
+        setFilteredProducts(products);
     }
-  }, [sortProductsBy]);
+    setTriggerRender((prev) => !prev);
+  }, [sortProductsBy, products]);
+
+  if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
+  if (error) return <Error />;
 
   return (
     <>
