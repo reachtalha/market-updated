@@ -11,7 +11,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { Order } from './columns';
-import { Trash2, MoveRight } from 'lucide-react';
+import { MoveRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 
@@ -61,15 +61,12 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
                     </TableCell>
                   );
                 })}
-                <TableCell onClick={() => console.log(row?.original?.id)}>
-                  <div className="flex flex-row items-center justify-center gap-x-3">
-                    <Trash2 size={15} color="#C51605" className="cursor-pointer" />
-                    <MoveRight
-                      size={15}
-                      onClick={() => router.push(`/seller/orders/${row?.original?.id}`)}
-                      className=" cursor-pointer"
-                    />
-                  </div>
+                <TableCell>
+                  <MoveRight
+                    size={15}
+                    onClick={() => router.push(`/seller/orders/${row?.original?.id}`)}
+                    className="cursor-pointer"
+                  />
                 </TableCell>
               </TableRow>
             ))
