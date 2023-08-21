@@ -26,6 +26,9 @@ export default function ProductHeader({
           categories={categories}
         />
       </div>
+      <div className="hidden md:block">
+        <SortByDropdown type="products" />
+      </div>
     </div>
   );
 }

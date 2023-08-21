@@ -11,6 +11,8 @@ import Settings from '@/components/modules/Account/Settings';
 import CardInfo from '@/components/modules/Account/CardInfo';
 import OrderHistory from '@/components/modules/Account/OrderHistory';
 import Socials from '@/components/modules/Account/Socials';
+import Wishlist from '@/components/modules/Account/Wishlist';
+
 
 type AccountProps = {
   options: Option[];
@@ -59,6 +61,20 @@ function Index({ options }: AccountProps) {
         );
       case 'order':
         return <OrderHistory />;
+      case 'wishlist':
+        return (
+          <>
+            {user ? (
+              <div className=" w-full ">
+                <Wishlist />
+              </div>
+            ) : (
+              <div className="h-[50vh] w-full flex items-center justify-center">
+                <Loader />
+              </div>
+            )}
+          </>
+        );
       case 'socials':
         return (
           <>

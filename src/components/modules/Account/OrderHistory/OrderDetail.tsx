@@ -19,6 +19,7 @@ type OrderDetailProps = {
 };
 const OrderDetailCard = ({ id, isShipping, title, subtitle, price, image }: OrderDetailProps) => {
   const router = useRouter();
+  console.log('Id is', id);
   return (
     <div className="flex font-america flex-row justify-between mt-2 w-full items-center">
       <div
@@ -65,6 +66,8 @@ const OrderDetail = ({ order }: Props) => {
   const getTotal = () => {
     return getSubtotal() + order?.shipping.charges;
   };
+
+  console.log(order.products);
 
   return (
     <div className="sticky flex flex-col gap-y-5 top-24 w-full  ">

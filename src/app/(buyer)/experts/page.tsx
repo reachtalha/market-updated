@@ -11,8 +11,13 @@ const categories = [
     href: '/experts?category'
   },
   {
+    name: 'Health Experts',
+    slug: 'health',
+    href: '/experts?category'
+  },
+  {
     name: 'Skincare Experts',
-    slug: 'skin-care',
+    slug: 'skincare',
     href: '/experts?category'
   },
   {
@@ -21,23 +26,18 @@ const categories = [
     href: '/experts?category'
   },
   {
-    name: 'Nutrition Experts',
-    slug: 'nutrition',
+    name: 'Food Experts',
+    slug: 'food',
     href: '/experts?category'
   },
   {
-    name: 'Fashion Experts',
+    name: 'Fasion Experts',
     slug: 'fashion',
     href: '/experts?category'
   },
   {
-    name: 'Pet Experts',
-    slug: 'pet',
-    href: '/experts?category'
-  },
-  {
-    name: 'Miscellaneous Experts',
-    slug: 'miscellaneous',
+    name: 'Others',
+    slug: 'other',
     href: '/experts?category'
   }
 ];

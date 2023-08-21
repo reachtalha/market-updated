@@ -21,7 +21,7 @@ export default function ExpertHeader({ selectedCategory = '', categories }: Prod
       <div className="md:hidden">
         <CategoryDropdown categories={categories} />
       </div>
-      <SortByDropdown />
+      <SortByDropdown type="expert" />
     </div>
   );
 }

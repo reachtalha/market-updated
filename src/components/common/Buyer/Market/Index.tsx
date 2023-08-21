@@ -15,6 +15,7 @@ import { db } from '@/lib/firebase/client';
 import useSwr from 'swr';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import useSortingStore from '@/state/useSortingStore';
 
 const getShops = async () => {
   let shops: any = [];
@@ -34,9 +35,11 @@ type MarketProps = {
   categories: Category[];
 };
 export default function Market({ categories }: MarketProps) {
+  const router = useRouter();
   const category = useCategorySlug();
   const [filteredShops, setFilteredShops] = useState([]);
-  const router = useRouter();
+  const sortShopsBy = useSortingStore((state: any) => state.sortShopsBy);
+
   const { data: shops, isLoading, error } = useSwr('shops', () => getShops());
 
   useEffect(() => {
@@ -50,6 +53,16 @@ export default function Market({ categories }: MarketProps) {
     }
   }, [shops, category]);
 
+  console.log('sort', sortShopsBy);
+
+  useEffect(() => {
+    if (shops) {
+      if (sortShopsBy === 'name') {
+       
+        setFilteredShops(filteredShops.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+      }
+    }
+  }, [sortShopsBy]);
   if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
 
   return (

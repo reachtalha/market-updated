@@ -12,6 +12,8 @@ import toast from 'react-hot-toast';
 
 import { useRole } from '@/hooks/useUserRole';
 
+import { Button } from '@/components/ui/button';
+
 import BasicDetails from '@/components/modules/OnBoarding/BasicDetails';
 import Categories from '@/components/modules/OnBoarding/Categories';
 import Influencer from '@/components/modules/OnBoarding/Influencer';
@@ -74,13 +76,13 @@ const OnBoardingForm = () => {
   };
 
   const renderButton = (label: string) => (
-    <button
+    <Button
       type="submit"
       disabled={loading}
-      className="bg-primary opacity-90 hover:opacity-100 mt-3 rounded-md duration-300 transition-colors w-full text-white py-2.5"
+      className="mt-3 w-full"
     >
       {loading ? 'Please wait...' : label}
-    </button>
+    </Button>
   );
 
   return (

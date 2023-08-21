@@ -45,7 +45,7 @@ const updateOrder = async (orderId: string, productId: string) => {
   if (orderRef.exists()) {
     let items: any = [];
     orderRef.data().items.forEach((item: any) => {
-      if (item.productId === productId) {
+      if (item.id === productId) {
         item.reviewed = true;
       }
       items.push(item);

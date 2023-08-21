@@ -31,8 +31,6 @@ const Payment = ({ children }: { children: ReactNode }) => {
     }
   );
 
-  console.log({ isLoading, isCartLoading });
-
   return isLoading || cart?.summary?.total == null ? (
     <Skeleton className="h-[100px] w-full bg-gray-200" />
   ) : (

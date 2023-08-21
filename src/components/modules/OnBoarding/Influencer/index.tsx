@@ -71,7 +71,7 @@ const Influencer = () => {
     <>
       <h4 className="text-primary font-semibold mb-3 text-2xl">Add Personal Info</h4>
       <div className="w-full">
-        <Label className="text-sm text-gray-600">Your Bio</Label>
+        <Label>Your Bio</Label>
         <Textarea
           rows={3}
           className="w-full resize-none placeholder:text-sm"

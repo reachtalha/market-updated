@@ -23,7 +23,7 @@ const canReview = async (productId: string) => {
 
   orderRef.forEach((doc) => {
     doc.data().items.forEach((item: any) => {
-      if (item.productId === productId && !item?.reviewed) {
+      if (item.id === productId && !item?.reviewed) {
         _canReview = {
           state: true,
           orderId: doc.id

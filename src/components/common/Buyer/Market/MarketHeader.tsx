@@ -13,14 +13,15 @@ type MarketHeaderProps = {
 };
 export default function MarketHeader({ selectedCategory = '', categories }: MarketHeaderProps) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center  justify-between">
       <p className="hidden md:block uppercase font-medium tracking-wide text-sm">
         {selectedCategory}
       </p>
       <div className="md:hidden">
         <CategoryDropdown categories={categories} />
       </div>
-      <SortByDropdown />
+
+      <SortByDropdown type="shop" />
     </div>
   );
 }

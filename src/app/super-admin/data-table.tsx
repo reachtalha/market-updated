@@ -17,6 +17,7 @@ import { getDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import axios, { CancelTokenSource } from 'axios';
 import { toast } from 'react-hot-toast';
+import { Console } from 'console';
 
 // Rest of your email sending code
 
@@ -75,6 +76,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
       toast.success('An email with account details has been sent to the user.');
       window.location.reload();
     } catch (error: any) {
+      console.log(error);
       toast.error('An error occurred while processing your request. Please try again later.');
     } finally {
       setLoading(false);
