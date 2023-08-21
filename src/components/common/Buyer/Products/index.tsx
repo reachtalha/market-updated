@@ -44,14 +44,29 @@ const getProducts: any = async (
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
 
-  products = products.map((product: any) => {
+  const _products = products.map(async (product: any) => {
     product.price =
       product.SKU?.length === 1
         ? product.SKU[0].price
         : product.SKU.sort((a: any, b: any) => a.price - b.price)[0].price;
 
+    const reviewDocs = await getDocs(
+      query(collection(db, 'reviews'), where('productId', '==', product.id))
+    );
+
+    const reviews = reviewDocs.docs.map((doc) => doc.data());
+    let rating = 4;
+    if (reviews.length > 0) {
+      rating =
+        reviews?.reduce((acc: number, review: any) => acc + review.rating, 0) / reviews?.length;
+    }
+
+    product.rating = rating;
     return product;
   });
+
+  products = await Promise.all(_products);
+  console.log(products);
 
   return products;
 };
@@ -98,6 +113,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
   useEffect(() => {
     if (!products) return;
 
+    console.log(sortProductsBy);
     switch (sortProductsBy) {
       case 'price':
         setFilteredProducts(products.sort((a: any, b: any) => a.price - b.price));
@@ -106,13 +122,15 @@ export default function Products({ categories, foryou }: ProductsProps) {
         setFilteredProducts(products.sort((a: any, b: any) => a.name.localeCompare(b.name)));
         break;
       case 'reviews':
-        setFilteredProducts(products);
+        setFilteredProducts(products.sort((a: any, b: any) => b.rating - a.rating));
         break;
       default:
         setFilteredProducts(products);
     }
     setTriggerRender((prev) => !prev);
   }, [sortProductsBy, products]);
+
+  console.log(error);
 
   if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
   if (error) return <Error />;

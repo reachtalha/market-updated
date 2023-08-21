@@ -53,12 +53,9 @@ export default function Market({ categories }: MarketProps) {
     }
   }, [shops, category]);
 
-  console.log('sort', sortShopsBy);
-
   useEffect(() => {
     if (shops) {
       if (sortShopsBy === 'name') {
-       
         setFilteredShops(filteredShops.sort((a: any, b: any) => a.name.localeCompare(b.name)));
       }
     }
