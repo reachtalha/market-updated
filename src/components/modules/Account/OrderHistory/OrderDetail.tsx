@@ -65,6 +65,8 @@ const OrderDetail = ({ order }: Props) => {
     return getSubtotal() + order?.shipping.charges;
   };
 
+  console.log(order.products);
+
   return (
     <div className="sticky flex flex-col gap-y-5 top-24 w-full  ">
       <div className="border border-gray-400 rounded-xl flex flex-col p-5">

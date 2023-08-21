@@ -54,9 +54,10 @@ const getOrder = async (id: string) => {
       id: doc.id,
       placedAt: data.timeStamp.toDate(),
       status: data.status || 'pending',
+
       products: data.items.map((item: any) => {
         return {
-          id: item.productId,
+          id: item.id,
           name: item.name,
           price: item.selectedVariant.price,
           unit: item.unit,
@@ -103,6 +104,8 @@ const Index = (props: Props) => {
   if (isLoading) {
     return <Loader className="w-full h-64 flex items-center justify-center" />;
   }
+
+  console.log(orders);
 
   return (
     <section className="py-10 sm:py-0  w-full flex">

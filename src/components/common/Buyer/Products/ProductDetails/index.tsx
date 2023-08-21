@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 import { auth, db } from '@/lib/firebase/client';
 
-import Stars from '@/assets/icons/system/Stars';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 import useSwr, { mutate } from 'swr';
+import ReactStars from 'react-stars';
 
 import ProductSlider from '@/components/common/Buyer/Products/ProductDetails/ProductSlider';
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
@@ -56,6 +56,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
   const [loading, setLoading] = useState(false);
   const [selectedSize, setSelectedSize] = useState(uniqueSizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.SKU[0].id);
+  const [averageReviews, setAverageReviews] = useState(5);
   const [selectedVariant, setSelectedVariant] = useState(getSelectedVariant(product));
 
   const blocks = product.detailedDescription ? product.detailedDescription.blocks : [];
@@ -137,18 +138,19 @@ export default function Product({ productJSON }: { productJSON: any }) {
           </span>
           <p className="font-medium">{product.description}</p>
 
-          <p className="font-medium mt-4">
-            Looking for the{' '}
-            <Link href="#" className="underline">
-              Body Wash Refill?
-            </Link>
-          </p>
-
           <div className="flex border-t-2 border-black pt-4 justify-between items-center mt-6">
             <p className="uppercase">reviews</p>
+
             <div className="flex items-center gap-2">
-              <Stars />
-              {product.reviews}
+              {averageReviews < 0 ? (
+                <span className="font-medium">No reviews yet</span>
+              ) : (
+                <>
+                  {' '}
+                  <ReactStars value={averageReviews} edit={false} color2="#000000" />
+                  <span className="font-medium">{averageReviews}</span>
+                </>
+              )}
             </div>
           </div>
           <div className="flex flex-col mt-3">
@@ -227,7 +229,11 @@ export default function Product({ productJSON }: { productJSON: any }) {
         })}
       </div>
 
-      <ProductReviews productId={product.id} />
+      <ProductReviews
+        averageReviews={averageReviews}
+        setAverageReviews={setAverageReviews}
+        productId={product.id}
+      />
       <SimiliarProducts category={product.category} currentProduct={product.id as string} />
     </>
   );

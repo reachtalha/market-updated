@@ -9,6 +9,7 @@ import useSwr from 'swr';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import ReactStars from 'react-stars';
+import { useEffect } from 'react';
 
 const canReview = async (productId: string) => {
   const userId = auth.currentUser?.uid;
@@ -22,7 +23,7 @@ const canReview = async (productId: string) => {
 
   orderRef.forEach((doc) => {
     doc.data().items.forEach((item: any) => {
-      if (item.productId === productId && !item?.reviewed) {
+      if (item.id === productId && !item?.reviewed) {
         _canReview = {
           state: true,
           orderId: doc.id
@@ -60,7 +61,15 @@ const getReviews = async (productId: string) => {
   return reviews;
 };
 
-export default function ProductReviews({ productId }: { productId: string }) {
+export default function ProductReviews({
+  productId,
+  averageReviews,
+  setAverageReviews
+}: {
+  productId: string;
+  averageReviews: number;
+  setAverageReviews: (value: number) => void;
+}) {
   const { data: _canReview, error: canReviewError } = useSwr('review-eligible', () =>
     canReview(productId)
   );
@@ -70,19 +79,30 @@ export default function ProductReviews({ productId }: { productId: string }) {
     isLoading
   } = useSwr('product-reviews', () => getReviews(productId));
 
+  useEffect(() => {
+    const averageRating =
+      reviews &&
+      reviews?.reduce((acc: number, review: any) => acc + review.rating, 0) / reviews?.length;
+    setAverageReviews(averageRating || -1);
+  }, [reviews]);
+
+  console.log(averageReviews);
   if (isLoading) return <Loader className="flex w-full h-52 justify-center items-center" />;
   if (error || canReviewError) return <Error />;
 
-  const averageRating =
-    reviews &&
-    reviews?.reduce((acc: number, review: any) => acc + review.rating, 0) / reviews?.length;
   return (
     <div className="bg-neutral-100 rounded-lg p-6 md:p-9">
       <header className="flex flex-col items-center md:flex-row md:justify-between">
         <div className="flex flex-col items-center md:items-start md:justify-center w-full md:w-fit">
           <h6 className="flex gap-2 items-center mb-1">
-            <span className="font-medium">{averageRating}</span>
-            <ReactStars value={averageRating} edit={false} color2="#000000" />
+            {averageReviews < 0 ? (
+              <span className="font-medium">No reviews yet</span>
+            ) : (
+              <>
+                <span className="font-medium">{averageReviews}</span>
+                <ReactStars value={averageReviews} edit={false} color2="#000000" />
+              </>
+            )}
           </h6>
           <p className="text-sm">AVERAGE RATING</p>
           <Button variant="outline" className="w-full mt-6 border-neutral-900 text-neutral-900">

@@ -24,7 +24,11 @@ export default function ProductHeader({
           selectedSubCategory={selectedSubCategory}
           setSelectedSubCategory={setSelectedSubCategory}
           categories={categories}
+          type="products"
         />
+      </div>
+      <div className="hidden md:block">
+        <SortByDropdown type="products" />
       </div>
     </div>
   );

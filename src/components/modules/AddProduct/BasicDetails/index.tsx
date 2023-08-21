@@ -138,7 +138,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
           rows={4}
           className="resize-none w-full placeholder:text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 overflow-y-auto px-3 py-2 text-sm ring-offset-white border rounded-md"
           placeholder="Enter your product description"
-          maxLength={72}
+          maxLength={280}
           {...register('description', { required: true })}
         ></textarea>
         {errors.description && (

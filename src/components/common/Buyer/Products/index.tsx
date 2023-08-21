@@ -10,11 +10,12 @@ import useCategorySlug from '@/hooks/useCategorySlug';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import { Button } from '@/components/ui/button';
-import { getDocs, getDoc, collection, query, where, doc } from 'firebase/firestore';
+import { getDocs, collection, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSWR, { mutate } from 'swr';
 
 import FeaturesShops from '../FeaturesShops';
+import useSortingStore from '@/state/useSortingStore';
 
 const getProducts: any = async (
   category: string,
@@ -43,6 +44,15 @@ const getProducts: any = async (
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
 
+  products = products.map((product: any) => {
+    product.price =
+      product.SKU?.length === 1
+        ? product.SKU[0].price
+        : product.SKU.sort((a: any, b: any) => a.price - b.price)[0].price;
+
+    return product;
+  });
+
   return products;
 };
 
@@ -59,6 +69,18 @@ export default function Products({ categories, foryou }: ProductsProps) {
       : categories?.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
   );
 
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [triggerRender, setTriggerRender] = useState(false);
+  const sortProductsBy = useSortingStore((state: any) => state.sortProductsBy);
+
+  const {
+    data: products,
+    error,
+    isLoading
+  } = useSWR(['products', selectedSubCategory], () =>
+    getProducts(selectedSubCategory, categories, foryou)
+  );
+
   useEffect(() => {
     setSelectedSubCategory(
       category === 'All'
@@ -73,20 +95,27 @@ export default function Products({ categories, foryou }: ProductsProps) {
     }
   }, [selectedSubCategory]);
 
-  const {
-    data: products,
-    error: productsError,
-    isLoading: productsIsLoading
-  } = useSWR(['products', selectedSubCategory], () =>
-    getProducts(selectedSubCategory, categories, foryou)
-  );
+  useEffect(() => {
+    if (!products) return;
 
-  if (productsIsLoading) return <Loader className="w-full h-[80vh] grid place-content-center" />;
+    switch (sortProductsBy) {
+      case 'price':
+        setFilteredProducts(products.sort((a: any, b: any) => a.price - b.price));
+        break;
+      case 'name':
+        setFilteredProducts(products.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+        break;
+      case 'reviews':
+        setFilteredProducts(products);
+        break;
+      default:
+        setFilteredProducts(products);
+    }
+    setTriggerRender((prev) => !prev);
+  }, [sortProductsBy, products]);
 
-  if (productsError) {
-    console.log(productsError);
-    return <Error className="w-full h-[80vh] grid place-content-center" />;
-  }
+  if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
+  if (error) return <Error />;
 
   return (
     <>
@@ -104,18 +133,14 @@ export default function Products({ categories, foryou }: ProductsProps) {
             categories={categories}
           />
           <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {products.length > 0 ? (
-              products.map((_: any, i: number) => (
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((_: any, i: number) => (
                 <ProductCard
                   key={i + Math.random()}
                   id={_.id}
                   image={_.coverImage}
                   name={_.name}
-                  price={
-                    _.SKU?.length === 1
-                      ? _.SKU[0].price
-                      : _.SKU.sort((a: any, b: any) => a.price - b.price)[0].price
-                  }
+                  price={_.price}
                   shop={_.shopName || 'some shop'}
                   type={_.type}
                 />

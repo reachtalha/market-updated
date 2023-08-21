@@ -43,11 +43,13 @@ type FiltersProps = {
   categories: Category[];
   setSelectedSubCategory?: (subCategory: string) => void;
   selectedSubCategory?: string;
+  type: string;
 };
 
 export default function Filters({
   categories,
   setSelectedSubCategory,
+  type,
   selectedSubCategory = ''
 }: FiltersProps) {
   const router = useRouter();
@@ -93,7 +95,7 @@ export default function Filters({
             </CategoryDropdown>
           )}
 
-          <SortByDropdown />
+          <SortByDropdown type={type} />
         </DialogContent>
       </Dialog>
     </>

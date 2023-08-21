@@ -104,7 +104,7 @@ export default function Checkout() {
 
     if (result.error) {
       setProcessing(false);
-      throw new Error(`Payment failed: ${result.error.message}`)
+      throw new Error(`Payment failed: ${result.error.message}`);
     } else {
       setProcessing(false);
     }
