@@ -111,15 +111,17 @@ const Index = (props: Props) => {
     <section className="py-10 sm:py-0  w-full flex">
       <div className="px-1 sm:px-5 gap-y-3 w-full md:w-2/5 flex flex-col ">
         <span className="text-primary text-sm sm:text-base font-medium uppercase">My Orders</span>
-        {orders &&
-          orders.map((order, index) => (
-            <OrderCard
-              {...order}
-              selectedOrder={selectedOrder}
-              setSelectedOrder={setSelectedOrder}
-              key={index}
-            />
-          ))}
+        {
+          orders?.length === 0 && <p className="text-sm 3xl:text-base text-neutral-700 py-[5%]">No Orders found</p>
+        }
+        {orders?.map((order, index) => (
+          <OrderCard
+            {...order}
+            selectedOrder={selectedOrder}
+            setSelectedOrder={setSelectedOrder}
+            key={index}
+          />
+        ))}
       </div>
       {selectedOrder !== '' && (
         <div className="hidden  sm:relative  sm:flex flex-col gap-3 md:w-3/5">

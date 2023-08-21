@@ -15,12 +15,11 @@ const getOrder = async (id: string) => {
   let data = null;
   let order;
   if (docRef.exists()) {
-    const userRef = await getDoc(doc(db, 'users', docRef.data().userId));
     data = docRef.data();
     order = {
       id: docRef.id,
       placedAt: data.timeStamp.toDate(),
-      status: data.status || 'pending',
+      status: data.status || 'processing',
       products: data.items.map((item: any) => {
         return {
           id: item.uid,
@@ -37,10 +36,10 @@ const getOrder = async (id: string) => {
         charges: data.shippingCharges || 5.0
       },
       customer: {
-        name: userRef.data()?.name,
-        email: userRef.data()?.email,
+        name: data?.shippingAddress.firstName + ' ' + data?.shippingAddress.lastName,
+        email: data?.shippingAddress.email,
         address: data.shippingAddress.address,
-        image: userRef.data()?.photoURL
+        image: data?.photoURL
       }
     };
   }
@@ -87,13 +86,12 @@ const page = async ({ params }: Props) => {
           {order.placedAt.toLocaleDateString()}, {order.placedAt.toLocaleTimeString()}
         </span>
         <div
-          className={`capitalize w-28 rounded-3xl   p-2 px-4 flex items-center font-medium justify-center ${
-            order?.status.toLowerCase() === 'delivered'
-              ? 'bg-green-100 text-green-500'
-              : order?.status.toLowerCase() === 'pending'
+          className={`capitalize w-28 rounded-3xl   p-2 px-4 flex items-center font-medium justify-center ${order?.status.toLowerCase() === 'delivered'
+            ? 'bg-green-100 text-green-500'
+            : order?.status.toLowerCase() === 'processing'
               ? 'bg-yellow-100 text-yellow-500'
               : 'bg-red-100 text-red-500'
-          }`}
+            }`}
         >
           <span>{order.status}</span>
         </div>

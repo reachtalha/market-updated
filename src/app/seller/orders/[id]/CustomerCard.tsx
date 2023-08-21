@@ -1,4 +1,8 @@
-import ImageWithFallback from '@/components/common/FallbackImage';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 import EmailIcon from '@/assets/icons/social/Email';
 type CustomerCardProps = {
   name: string;
@@ -14,13 +18,10 @@ function CustomerCard({ name, email, address, image }: CustomerCardProps) {
       <span className="uppercase font-semibold">Customer Details</span>
       <hr className="border-b-[1px] border-primary" />
       <div className="capitalize flex flex-row items-center gap-x-4 py-1">
-        <ImageWithFallback
-          src={image}
-          height={30}
-          width={30}
-          className="w-10 h-10 rounded-full object-cover"
-          alt="customer"
-        />
+        <Avatar className="h-9 w-9">
+          <AvatarImage src={image} alt="Avatar" />
+          <AvatarFallback>{name[0]}</AvatarFallback>
+        </Avatar>
         <span className="font-medium"> {name}</span>
       </div>
       <hr className="border-b-[1px] border-primary" />

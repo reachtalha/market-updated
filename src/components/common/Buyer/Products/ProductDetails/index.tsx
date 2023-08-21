@@ -10,7 +10,6 @@ import useSwr, { mutate } from 'swr';
 import ReactStars from 'react-stars';
 
 import ProductSlider from '@/components/common/Buyer/Products/ProductDetails/ProductSlider';
-
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
 import edjsHTML from 'editorjs-html';
 
@@ -19,11 +18,7 @@ import SimiliarProducts from '@/components/common/Buyer/SimiliarProducts';
 
 import useCartStore from '@/state/useCartStore';
 import {
-  addDoc,
   updateDoc,
-  collection,
-  query,
-  where,
   getDoc,
   doc,
   setDoc
@@ -72,7 +67,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
     isInWishlist(product.id)
   );
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <Loader className="h-screen w-full grid place-content-center" />;
 
   const handleAddToBag = () => {
     if (auth.currentUser) {
@@ -164,9 +159,8 @@ export default function Product({ productJSON }: { productJSON: any }) {
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                    size === selectedSize && ' bg-primary text-white'
-                  } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
+                    } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -184,9 +178,8 @@ export default function Product({ productJSON }: { productJSON: any }) {
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                      variant.id === selectedColor && ' bg-primary text-white'
-                    } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
+                      } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
@@ -210,8 +203,8 @@ export default function Product({ productJSON }: { productJSON: any }) {
             {selectedVariant.quantity <= 0
               ? 'Sold Out'
               : isAddToCartLoading
-              ? 'loading...'
-              : 'Add to bag'}
+                ? 'loading...'
+                : 'Add to bag'}
           </Button>
           <Button
             disabled={loading}

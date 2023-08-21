@@ -1,10 +1,11 @@
 import React from 'react';
 import { StaticImageData } from 'next/image';
 
-import { useRouter } from 'next/navigation';
-
+import Link from 'next/link';
 import Image from '@/components/common/FallbackImage';
+import { formatCurrency } from '@/utils/formatters';
 import product1 from '@/assets/images/product1.webp';
+
 type Props = {
   order: any;
 };
@@ -18,12 +19,9 @@ type OrderDetailProps = {
   id?: string | number;
 };
 const OrderDetailCard = ({ id, isShipping, title, subtitle, price, image }: OrderDetailProps) => {
-  const router = useRouter();
-  console.log('Id is', id);
   return (
     <div className="flex font-america flex-row justify-between mt-2 w-full items-center">
-      <div
-        onClick={() => router.push('/products/' + id)}
+      <Link href={`/products/${id}`}
         className="flex flex-row cursor-pointer  gap-x-2 items-center"
       >
         <Image
@@ -42,8 +40,8 @@ const OrderDetailCard = ({ id, isShipping, title, subtitle, price, image }: Orde
             {subtitle}
           </span>
         </div>
-      </div>
-      <span>$ {price}</span>
+      </Link>
+      <span>{formatCurrency(price)}</span>
     </div>
   );
 };
@@ -53,7 +51,7 @@ const SummaryItem = ({ title, amount }: { title: string; amount: number }) => {
     <div className="flex flex-row items-center justify-between">
       <span>{title}</span>
       <span>
-        <span className="font-medium">$</span> {amount}
+        {formatCurrency(amount)}
       </span>
     </div>
   );

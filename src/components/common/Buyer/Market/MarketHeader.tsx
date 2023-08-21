@@ -18,7 +18,7 @@ export default function MarketHeader({ selectedCategory = '', categories }: Mark
         {selectedCategory}
       </p>
       <div className="md:hidden">
-        <CategoryDropdown categories={categories} />
+        <CategoryDropdown categories={categories} type="shop" />
       </div>
 
       <SortByDropdown type="shop" />

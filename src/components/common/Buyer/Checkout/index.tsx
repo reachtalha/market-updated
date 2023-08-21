@@ -11,7 +11,7 @@ import OrderSummaryCheckout from '@/components/common/Buyer/Checkout/OrderSummar
 import CheckoutForm from '@/components/common/Buyer/Checkout/CheckoutForm';
 import { Form } from '@/components/ui/form';
 import { addDoc, collection, getDoc, doc, updateDoc, Timestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase/client';
+import { db, auth } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import toast from 'react-hot-toast';
 
@@ -32,6 +32,7 @@ const formSchema = z.object({
 });
 
 type ShippingAddressType = {
+  email: string;
   firstName: string;
   lastName: string;
   phone: string;
@@ -59,6 +60,7 @@ const fetchCreateOrder = async (
 ) => {
   const ordersRef = collection(db, 'orders');
   await addDoc(ordersRef, {
+    photoURL: auth.currentUser?.photoURL,
     userId,
     total,
     shops,
@@ -154,7 +156,8 @@ export default function Checkout() {
           company: values.company,
           apartment: values.apartments || '',
           city: values.city,
-          address: values.address
+          address: values.address,
+          email: values.email,
         },
         items,
         shops,

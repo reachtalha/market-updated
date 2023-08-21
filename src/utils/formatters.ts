@@ -18,3 +18,10 @@ export function formatDate(date: number, locale = 'en-US') {
 
   return formattedDate;
 }
+
+export function formatMonth(seconds: any) {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    month: 'short'
+  });
+  return formatter.format(new Date(seconds));
+}

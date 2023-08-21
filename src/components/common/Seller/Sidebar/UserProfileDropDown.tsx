@@ -4,19 +4,26 @@ import useAuth from '@/hooks/useAuth';
 
 import { auth } from '@/lib/firebase/client';
 
-import Avatar from '@/components/common/Avatar';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { GearIcon, PinLeftIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
 const UserProfileDropDown = () => {
   const { logout } = useAuth();
-  const currentUser = auth.currentUser;
+  const currentUser = auth.currentUser as any;
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild className="focus:outline-none">
         <button className="flex items-center gap-x-1.5 p-1 hover:bg-neutral-300/25  rounded-lg cursor-pointer">
-          <Avatar photoURL={currentUser?.photoURL} name={currentUser?.displayName} />
+          <Avatar className="h-9 w-9">
+            <AvatarImage src={currentUser?.photoURL} alt="Avatar" />
+            <AvatarFallback>{currentUser?.displayName[0]}</AvatarFallback>
+          </Avatar>
           <div className="flex-1">
             <h6 className="font-semibold text-left truncate">{currentUser?.displayName}</h6>
             <p className="text-sm text-left text-neutral-300  truncate">{currentUser?.email}</p>
