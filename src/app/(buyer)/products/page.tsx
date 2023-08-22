@@ -9,7 +9,7 @@ const getCategories = async () => {
   querySnapshot.forEach((doc) => {
     categories.push({
       name: doc.data().title,
-      subCategories: doc.data().list,
+      subCategories: ['All', ...doc.data().list],
       lifeSpan: doc.data().lifeSpaan,
       image: doc.data().image,
       slug: doc.data().title,

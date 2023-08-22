@@ -43,7 +43,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   return (
     <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
-      <PopoverContent className="w-[600px] p-5" align="end">
+      <PopoverContent className=" w-[80vw]  md:w-[600px] p-5" align="end">
         <ScrollArea className={cn('w-full', cart?.items?.length > 3 ? 'h-[350px]' : 'h-fit')}>
           {isCartLoading ? (
             <Skeleton className="h-[200px]" />
@@ -51,8 +51,11 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
             <>
               <ul className="flex flex-col gap-y-5">
                 {cart?.items?.map((item: any, idx: number) => (
-                  <li className="flex flex-wrap justify-between pb-4 border-b last:border-0" key={idx}>
-                    <div className="flex items-center gap-x-3">
+                  <li
+                    className="flex flex-wrap justify-between pb-4 border-b last:border-0"
+                    key={idx}
+                  >
+                    <div className="flex items-center mb-2 md:mb-0 md:gap-x-3">
                       <Image
                         className="border rounded"
                         height={75}
@@ -60,7 +63,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                         src={item.image}
                         alt={item.name}
                       />
-                      <div>
+                      <div className="ms-2">
                         <h6 className="uppercase text-sm font-medium w-[250px]">{item.name}</h6>
                         <p>
                           {item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}

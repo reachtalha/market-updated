@@ -1,5 +1,5 @@
 import React from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
 import Header from '@/components/modules/chat/Room/Header';
@@ -10,6 +10,25 @@ import Error from '@/components/common/Error';
 
 type Props = {
   chatId: string;
+};
+
+const getShopData = async (user: any) => {
+  let name, photoURL;
+  if (user.data().role === 'seller') {
+    const shopsQuery = await getDocs(query(collection(db, 'shops'), where('uid', '==', user.id)));
+    if (shopsQuery.docs.length > 0) {
+      name = shopsQuery.docs[0].data().name;
+      photoURL = shopsQuery.docs[0].data().coverImage;
+    } else {
+      name = user.data().name;
+      photoURL = user.data().photoURL;
+    }
+  } else {
+    name = user.data().name;
+    photoURL = user.data().photoURL;
+  }
+
+  return { name, photoURL };
 };
 
 const getUsers = async (chatId: string) => {
@@ -23,18 +42,23 @@ const getUsers = async (chatId: string) => {
   const userDoc1 = await getDoc(doc(db, 'users', `${users[0]}`));
   const userDoc2 = await getDoc(doc(db, 'users', `${users[1]}`));
 
-  usersData.push({
-    chatId: chatDoc.id,
-    uid: userDoc1.id,
-    name: userDoc1.data()?.name,
-    photoURL: userDoc1.data()?.photoURL
-  });
-  usersData.push({
-    chatId: chatDoc.id,
-    uid: userDoc2.id,
-    name: userDoc2.data()?.name,
-    photoURL: userDoc2.data()?.photoURL
-  });
+  if (userDoc1.exists() && userDoc2.exists()) {
+    let { name, photoURL } = await getShopData(userDoc1);
+    usersData.push({
+      name,
+      photoURL,
+      chatId: chatDoc.id,
+      uid: userDoc1.id
+    });
+
+    const { name: _name, photoURL: _photoURL } = await getShopData(userDoc2);
+    usersData.push({
+      name: _name,
+      photoURL: _photoURL,
+      chatId: chatDoc.id,
+      uid: userDoc2.id
+    });
+  }
 
   return usersData;
 };

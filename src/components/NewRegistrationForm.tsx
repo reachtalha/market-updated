@@ -18,11 +18,9 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { Textarea } from '@/components/ui/textarea';
 
-import { addDoc, doc, collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
-import TopicList from '@/components/modules/OnBoarding/Influencer/TopicList';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'required' }),

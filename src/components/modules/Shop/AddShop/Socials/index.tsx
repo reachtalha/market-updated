@@ -24,7 +24,7 @@ const Index = ({ setStep }: Props) => {
   return (
     <>
       <Title title="Shop Socials" subTitle={'(Optional)'} />
-      <div className="space-y-1 w-full mt-3">
+      <div className="space-y-1 w-full mt-3 xl:mt-5">
         <Label>Facebook URL</Label>
         <Input
           className="w-full placeholder:text-sm"
@@ -34,7 +34,7 @@ const Index = ({ setStep }: Props) => {
         />
         {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
       </div>
-      <div className="space-y-1 w-full mt-3">
+      <div className="space-y-1 w-full mt-3 xl:mt-5">
         <Label>Instagram URL</Label>
         <Input
           className="w-full placeholder:text-sm"
@@ -44,7 +44,7 @@ const Index = ({ setStep }: Props) => {
         />
         {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
       </div>
-      <div className="space-y-1 w-full mt-3">
+      <div className="space-y-1 w-full mt-3 xl:mt-5">
         <Label>Twitter URL</Label>
         <Input
           className="w-full placeholder:text-sm"
@@ -54,7 +54,7 @@ const Index = ({ setStep }: Props) => {
         />
         {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
       </div>
-      <div className="space-y-1 w-full mt-3">
+      <div className="space-y-1 w-full mt-3 xl:mt-5">
         <Label>Website URL</Label>
         <Input
           className="w-full placeholder:text-sm"
@@ -64,7 +64,7 @@ const Index = ({ setStep }: Props) => {
         />
         {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
       </div>
-      <div className="flex gap-x-2 mt-4">
+      <div className="flex gap-x-2 mt-5 xl:mt-8">
         <Button
           type="button"
           variant="secondary"
@@ -73,11 +73,7 @@ const Index = ({ setStep }: Props) => {
         >
           Back
         </Button>
-        <Button
-          onClick={nextStep}
-          variant="default"
-          className="w-1/2"
-        >
+        <Button onClick={nextStep} variant="default" className="w-1/2">
           Next
         </Button>
       </div>

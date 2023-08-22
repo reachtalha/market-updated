@@ -91,7 +91,7 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
   return (
     <>
       <Title title="Create SKU" />
-      <div className="w-full  mt-2">
+      <div className="w-full  mt-3 xl:mt-5">
         <Label>Color</Label>
         <div className="flex flex-wrap items-center justify-between gap-3 w-full">
           <ul className="flex flex-wrap gap-2 capitalize">
@@ -99,8 +99,9 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
               <li
                 key={index}
                 onClick={() => setColor(c)}
-                className={`cursor-pointer rounded-full bg-gray-100 px-2 border py-1 ${color === c ? 'bg-primary text-white border-primary' : ''
-                  }`}
+                className={`cursor-pointer rounded-full bg-gray-100 px-2 border py-1 ${
+                  color === c ? 'bg-primary text-white border-primary' : ''
+                }`}
               >
                 {c}
               </li>
@@ -109,15 +110,16 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
           </ul>
         </div>
       </div>
-      <div className="space-y-2 w-full mt-2">
+      <div className="space-y-2 w-full mt-3 xl:mt-5">
         <Label>Select Measurements</Label>
         <ul className="flex flex-wrap  items-center  gap-2">
           {sizeList?.map((s) => (
             <li
               key={Date.now() + Math.random()}
               onClick={() => setMeasurement(s)}
-              className={`cursor-pointer rounded-full bg-gray-100 capitalize px-2 border py-1 ${measurement === s ? 'bg-primary text-white border-primary' : ''
-                }`}
+              className={`cursor-pointer rounded-full bg-gray-100 capitalize px-2 border py-1 ${
+                measurement === s ? 'bg-primary text-white border-primary' : ''
+              }`}
             >
               {s}
             </li>
@@ -138,7 +140,7 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
             placeholder="Product Price"
           />
         </div>
-        <div className="space-y-1 flex flex-row items-end gap-x-5 justify-between mt-2 w-full">
+        <div className="space-y-1 flex flex-row items-end gap-x-5 justify-between mt-3 xl:mt-5 w-full">
           <div className="flex-1 space-y-1">
             <Label>Quantity</Label>
             <Input
@@ -150,17 +152,12 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
             />
           </div>
 
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={createSKU}
-            className="w-12"
-          >
+          <Button type="button" variant="secondary" onClick={createSKU} className="w-12">
             <Plus className="w-6 h-6 text-primary" />
           </Button>
         </div>
       </div>
-      <div className="mt-2">
+      <div className="mt-3 xl:mt-5">
         <Accordion type="single" collapsible>
           {SKUList.map((l: any, index: number) => (
             <AccordionItem key={index} value={`item-${index + 1}`}>
@@ -179,7 +176,7 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
           ))}
         </Accordion>
       </div>
-      <div className="flex gap-x-2 mt-2">
+      <div className="flex gap-x-2 mt-5 xl:mt-8">
         <Button
           type="button"
           variant="secondary"
@@ -188,10 +185,7 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
         >
           Back
         </Button>
-        <Button
-          onClick={nextStep}
-          className="w-1/2"
-        >
+        <Button onClick={nextStep} className="w-1/2">
           Next
         </Button>
       </div>

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 const EMAIL = 'dev10@ccript.com';
-const PASSWORD = 'wbom#p3M';
+const PASSWORD = 'helloworld123A$';
 const DOMAIN = 'smtppro.zoho.com';
 
 const transporter = nodemailer.createTransport({

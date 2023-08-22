@@ -85,7 +85,7 @@ const Index = ({ setStep }: Props) => {
   return (
     <>
       <Title title="Detailed Description" />
-      <div className="w-full mt-2">
+      <div className="w-full mt-3 xl:mt-5">
         <div className="prose prose-stone mx-auto w-full dark:prose-invert">
           <div id="editor" className=" p-5 bg-white shadow-sm rounded-lg border" />
           <p className="text-sm text-gray-500">
@@ -94,7 +94,7 @@ const Index = ({ setStep }: Props) => {
           </p>
         </div>
       </div>
-      <div className="flex gap-x-2 mt-2">
+      <div className="flex gap-x-2 mt-5 xl:mt-8">
         <Button
           type="button"
           variant="secondary"
