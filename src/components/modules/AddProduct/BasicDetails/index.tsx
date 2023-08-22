@@ -47,7 +47,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
     });
   };
 
-  console.log(getValues('gender'));
+  console.log(getValues('type'));
 
   return (
     <>
@@ -71,14 +71,11 @@ const BasicDetails = ({ types, setStep }: Props) => {
           onValueChange={handleOnChange}
         >
           <SelectTrigger className="w-full bg-white capitalize ">
-            <SelectValue
-              {...register('type', { required: true })}
-              placeholder="Select Product Type"
-            />
+            <SelectValue placeholder="Select Product Type" />
           </SelectTrigger>
           <SelectContent>
             {types?.map((c: any, index: number) => (
-              <SelectItem className="capitalize" key={index} value={c}>
+              <SelectItem className="capitalize" key={index} value={c.toLowerCase()}>
                 {c}
               </SelectItem>
             ))}

@@ -1,7 +1,4 @@
 'use client';
-
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-
 import {
   Table,
   TableBody,
@@ -10,6 +7,16 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import {
+  ColumnDef,
+  SortingState,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable
+} from '@tanstack/react-table';
+
 import { Product } from './columns';
 
 import { Pencil, Trash2 } from 'lucide-react';
@@ -21,19 +28,28 @@ import toast from 'react-hot-toast';
 import { mutate } from 'swr';
 
 import { useRouter } from 'next/navigation';
+import SortByDropdown from '@/components/common/SortByDropdown';
+import { useEffect, useState } from 'react';
+import useSortingStore from '@/state/useSortingStore';
 
 interface DataTableProps<TValue> {
   columns: ColumnDef<Product, TValue>[];
   data: Product[];
+  search: string;
+  setSearch: (value: string) => void;
 }
 
-export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
+export function DataTable<TValue>({ columns, data, search, setSearch }: DataTableProps<TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel()
   });
   const router = useRouter();
+
+  useEffect(() => {
+    console.log('Data Changes');
+  }, [data]);
 
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, 'products', id));
@@ -46,17 +62,24 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
   };
   return (
     <div className="rounded-md border mt-5">
-      <div className="p-5">
-        <Input type="search" placeholder="search" className="w-[20%]" />
+      <div className="p-5 flex justify-between items-center">
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          type="search"
+          placeholder="search"
+          className="w-[20%]"
+        />
+        <SortByDropdown type="seller-product" />
       </div>
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup: any) => (
-            <TableRow key={headerGroup.id}>
+          {table.getHeaderGroups().map((headerGroup: any, index: number) => (
+            <TableRow key={index}>
               <TableHead>#</TableHead>
-              {headerGroup.headers.map((header: any) => {
+              {headerGroup.headers.map((header: any, index: number) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={index}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -69,12 +92,12 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row: any) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+            table.getRowModel().rows.map((row: any, index: number) => (
+              <TableRow key={index} data-state={row.getIsSelected() && 'selected'}>
                 <TableCell>{row.index + 1}</TableCell>
-                {row.getVisibleCells().map((cell: any) => {
+                {row.getVisibleCells().map((cell: any, index: number) => {
                   return (
-                    <TableCell key={cell.id} className="capitalize">
+                    <TableCell key={index} className="capitalize">
                       <div className="flex flex-row gap-x-4 items-center">
                         {cell.column.columnDef.header === 'Name' && (
                           <ImageWithFallback
@@ -90,7 +113,7 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
                     </TableCell>
                   );
                 })}
-                <TableCell>
+                <TableCell key={index}>
                   <div className="flex flex-row gap-x-4">
                     <Pencil
                       size={15}

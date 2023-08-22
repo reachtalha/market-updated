@@ -17,12 +17,7 @@ const edjsParser = edjsHTML();
 import SimiliarProducts from '@/components/common/Buyer/SimiliarProducts';
 
 import useCartStore from '@/state/useCartStore';
-import {
-  updateDoc,
-  getDoc,
-  doc,
-  setDoc
-} from 'firebase/firestore';
+import { updateDoc, getDoc, doc, setDoc } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
 
 const isInWishlist = async (productId: string) => {
@@ -148,7 +143,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
                 <>
                   {' '}
                   <ReactStars value={averageReviews} edit={false} color2="#000000" />
-                  <span className="font-medium">{averageReviews}</span>
+                  <span className="font-medium">{averageReviews.toFixed(2)}</span>
                 </>
               )}
             </div>
@@ -159,8 +154,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
-                    } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
+                    size === selectedSize && ' bg-primary text-white'
+                  } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -178,8 +174,9 @@ export default function Product({ productJSON }: { productJSON: any }) {
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
-                      } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
+                      variant.id === selectedColor && ' bg-primary text-white'
+                    } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
@@ -203,8 +200,8 @@ export default function Product({ productJSON }: { productJSON: any }) {
             {selectedVariant.quantity <= 0
               ? 'Sold Out'
               : isAddToCartLoading
-                ? 'loading...'
-                : 'Add to bag'}
+              ? 'loading...'
+              : 'Add to bag'}
           </Button>
           <Button
             disabled={loading}
