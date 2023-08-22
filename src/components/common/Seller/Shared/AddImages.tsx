@@ -72,7 +72,7 @@ function AddImages({
   return (
     <>
       <Title title="Add Images" />
-      <div className="mt-2">
+      <div className="mt-3 xl:mt-5">
         <div className="relative h-fit w-full rounded-lg border p-5 2xl:border-2">
           <p className="text-sm text-neutral-600 mb-2">
             <span className="font-medium">Files Supported</span>: JPG,JPEG, PNG, Webp
@@ -156,7 +156,7 @@ function AddImages({
 
       {isShop ? setValue('logoImage', logoImage) : setValue('moreImages', pictures)}
 
-      <div className="mt-5 flex gap-x-3">
+      <div className="mt-5 xl:mt-8 flex gap-x-3">
         <Button
           type="button"
           variant="secondary"

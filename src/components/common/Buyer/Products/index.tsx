@@ -19,15 +19,16 @@ import useSortingStore from '@/state/useSortingStore';
 
 const getProducts: any = async (
   category: string,
-  categories: any,
+  allCategories: any,
   foryou?: boolean
 ): Promise<any> => {
   let products: any = [];
 
-  if (category === 'All' || !category) {
+  console.log('------------------', category, allCategories);
+  if (category === 'all' || category === 'All' || !category) {
     let docRef;
     if (foryou) {
-      const list = categories.map((cat: any) => cat.subCategories).flat();
+      const list = allCategories.map((cat: any) => cat.subCategories).flat();
 
       docRef = await getDocs(
         query(collection(db, 'products'), where('type', 'in', list.slice(0, 29)))
@@ -38,8 +39,13 @@ const getProducts: any = async (
 
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } else {
+    if (category.trim() === 'organic clothing') {
+      console.log('Changing category');
+      category = 'organic clothing & apparel';
+    }
+    console.log('Category is now', category);
     const docRef = await getDocs(
-      query(collection(db, 'products'), where('type', '==', `${category.toLowerCase()}`))
+      query(collection(db, 'products'), where('category', '==', `${category.toLowerCase()}`))
     );
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
@@ -67,7 +73,6 @@ const getProducts: any = async (
 
   products = await Promise.all(_products);
   console.log(products);
-
   return products;
 };
 
@@ -92,9 +97,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
     data: products,
     error,
     isLoading
-  } = useSWR(['products', selectedSubCategory], () =>
-    getProducts(selectedSubCategory, categories, foryou)
-  );
+  } = useSWR(['products', selectedSubCategory], () => getProducts(category, categories, foryou));
 
   useEffect(() => {
     setSelectedSubCategory(
@@ -108,12 +111,11 @@ export default function Products({ categories, foryou }: ProductsProps) {
     if (selectedSubCategory) {
       mutate(['products', selectedSubCategory]);
     }
-  }, [selectedSubCategory]);
+  }, [selectedSubCategory, category]);
 
   useEffect(() => {
     if (!products) return;
 
-    console.log(sortProductsBy);
     switch (sortProductsBy) {
       case 'price':
         setFilteredProducts(products.sort((a: any, b: any) => a.price - b.price));
@@ -130,18 +132,26 @@ export default function Products({ categories, foryou }: ProductsProps) {
     setTriggerRender((prev) => !prev);
   }, [sortProductsBy, products]);
 
-  console.log(error);
-
   if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
   if (error) return <Error />;
 
+  console.log(selectedSubCategory);
   return (
     <>
       <BoxedContent className="flex gap-x-5 py-20">
         <ProductCategories
           setSelectedSubCategory={setSelectedSubCategory}
           selectedCategory={category}
-          categories={categories}
+          categories={[
+            {
+              name: 'All',
+              subCategories: [],
+              image: '',
+              slug: 'All',
+              href: '/products?category'
+            },
+            ...categories
+          ]}
         />
         <div className="flex-1 space-y-4">
           <ProductHeader
@@ -152,17 +162,22 @@ export default function Products({ categories, foryou }: ProductsProps) {
           />
           <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
             {filteredProducts.length > 0 ? (
-              filteredProducts.map((_: any, i: number) => (
-                <ProductCard
-                  key={i + Math.random()}
-                  id={_.id}
-                  image={_.coverImage}
-                  name={_.name}
-                  price={_.price}
-                  shop={_.shopName || 'some shop'}
-                  type={_.type}
-                />
-              ))
+              filteredProducts
+                .filter((_) => {
+                  if (selectedSubCategory === 'All' || !selectedSubCategory) return true;
+                  return _.type.toLowerCase() === selectedSubCategory?.toLowerCase();
+                })
+                .map((_: any, i: number) => (
+                  <ProductCard
+                    key={i + Math.random()}
+                    id={_.id}
+                    image={_.coverImage}
+                    name={_.name}
+                    price={_.price}
+                    shop={_.shopName || 'some shop'}
+                    type={_.type}
+                  />
+                ))
             ) : (
               <div className="text-center flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
                 No products found {foryou && 'for you'}

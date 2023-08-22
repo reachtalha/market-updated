@@ -52,7 +52,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
   return (
     <>
       <Title title="Basic Details" />
-      <div className="space-y-1 w-full mt-3">
+      <div className="space-y-1 w-full mt-3 xl:mt-5 ">
         <Label>Product Name</Label>
         <Input
           className="w-full placeholder:text-sm"
@@ -64,7 +64,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
           <span className="text-sm text-red-500">Product Name doesn`t look valid</span>
         )}
       </div>
-      <div className="space-y-1 mt-3 w-full">
+      <div className="space-y-1 mt-3 xl:mt-5  w-full">
         <Label>Product Types</Label>
         <Select
           defaultValue={getValues('type') !== '' ? getValues('type') : undefined}
@@ -87,8 +87,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
 
         {errors.type && <span className="text-sm text-red-500">Please select product type</span>}
       </div>
-
-      <div className="w-full mt-3">
+      <div className="w-full mt-3 xl:mt-5 ">
         <Label>Gender</Label>
         <div className="flex flex-wrap gap-3 w-full">
           {['Male', 'Female', 'Unisex'].map((s, index) => (
@@ -111,8 +110,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
           ))}
         </div>
       </div>
-
-      <div className="w-full mt-3">
+      <div className="w-full mt-3 xl:mt-5 ">
         <Label className="font-medium text-base text-gray-600">Select Unit</Label>
         <div className="flex flex-wrap gap-3 w-full">
           {UNITS.map((s, index) => (
@@ -132,7 +130,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
           ))}
         </div>
       </div>
-      <div className="space-y-1 mt-3 w-full">
+      <div className="space-y-1 mt-3 xl:mt-5  w-full">
         <Label>Description</Label>
         <textarea
           rows={4}
@@ -146,7 +144,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
         )}
       </div>
 
-      <Button type="button" onClick={nextStep} variant="default" className="w-full">
+      <Button type="button" onClick={nextStep} variant="default" className="w-full xl:mt-8 mt-2 ">
         Next
       </Button>
     </>

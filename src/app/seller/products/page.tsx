@@ -7,6 +7,7 @@ import Title from '@/components/common/Seller/Shared/Title';
 import useSwr from 'swr';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
+import { useState, useEffect } from 'react';
 async function getData(): Promise<Product[]> {
   const q = query(collection(db, 'products'), where('uid', '==', auth.currentUser?.uid));
   const querySnapshot = await getDocs(q);
@@ -35,7 +36,11 @@ async function getData(): Promise<Product[]> {
 }
 
 export default function DemoPage() {
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const { data, isLoading, error } = useSwr('sellerProducts', getData);
+  //  useEffect(() => {
+  //    setFilteredProducts(data);
+  //  }, []);
   if (isLoading)
     return (
       <div className="h-full w-full flex items-center justify-center">
@@ -43,6 +48,7 @@ export default function DemoPage() {
       </div>
     );
   if (error) return <Error />;
+
   return (
     <div className="container mx-auto py-20">
       <Title title="Products" />

@@ -20,11 +20,11 @@ export default function AccountOption({ options, selectedOption }: AccountOption
   };
   return (
     <div className="block w-full sm:w-48 space-y-4">
-      <ul className="sm:space-y-1  justify-between    flex flex-row  sm:flex-col items-center sm:items-start  sm:uppercase text-xs sm:text-sm hover:text-neutral-400">
+      <ul className="sm:space-y-1  md:justify-between  flex-wrap gap-x-4  gap-y-2 md:gap-y-0 md:gap-x-0   flex flex-row  sm:flex-col items-center sm:items-start  sm:uppercase text-xs sm:text-sm hover:text-neutral-400">
         {options.map((category, idx) => (
           <li
             key={idx}
-            className="tracking-wide   cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
+            className="tracking-wide  cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
           >
             <Link
               className={category.slug === selectedOption ? 'font-medium' : ''}

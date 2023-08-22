@@ -59,10 +59,21 @@ const getChats = async (): Promise<{ chatId: string; users: Record<string, boole
 
 export const getUser = async (userId: string): Promise<DocumentData | undefined> => {
   const userDoc = await getDoc(doc(db, 'users', userId));
+
   if (userDoc.exists()) {
+    const shopDoc = await getDocs(query(collection(db, 'shops'), where('uid', '==', userId)));
+    let name, photoURL;
+
+    if (shopDoc.docs.length > 0) {
+      name = shopDoc.docs[0].data().name;
+      photoURL = shopDoc.docs[0].data().coverImage;
+    } else {
+      name = userDoc.data().name;
+      photoURL = userDoc.data().photoURL;
+    }
     return {
-      name: userDoc.data().name,
-      photoURL: userDoc.data().photoURL ?? ''
+      name,
+      photoURL
     };
   }
 };
@@ -75,7 +86,7 @@ export default function Chat() {
   }: SWRResponse<Chat[], Error> = useSWR('user_chats', fetchChats);
   const [search, setSearch] = useState('');
   const router = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   if (isLoading) {
     return <Loader />;
@@ -126,7 +137,9 @@ export default function Chat() {
             <li
               key={chat.chatId}
               onClick={() => router.replace(path)}
-              className={`flex cursor-pointer items-center space-x-2 rounded-md px-1 py-2 transition delay-75 duration-300 ease-in-out hover:bg-neutral-100 focus:outline-none ${pathname === path ? "bg-neutral-100" : "bg-none"}`}
+              className={`flex cursor-pointer items-center space-x-2 rounded-md px-1 py-2 transition delay-75 duration-300 ease-in-out hover:bg-neutral-100 focus:outline-none ${
+                pathname === path ? 'bg-neutral-100' : 'bg-none'
+              }`}
             >
               <Avatar name={chat.name} photoURL={chat.photoURL} />
               <span className="capitalize">{chat.name ? chat.name : ''}</span>

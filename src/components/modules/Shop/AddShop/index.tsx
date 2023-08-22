@@ -1,20 +1,8 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import useSWR from 'swr';
-import {
-  getDocs,
-  collection,
-  where,
-  query,
-  getDoc,
-  doc,
-  Timestamp,
-  increment,
-  updateDoc,
-  addDoc,
-  setDoc
-} from 'firebase/firestore';
+import { getDocs, collection, doc, Timestamp, updateDoc, addDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
 
 import toast from 'react-hot-toast';
@@ -27,7 +15,6 @@ import ShopInformation from '@/components/modules/Shop/AddShop/ShopInformation';
 import AddImages from '@/components/modules/Shop/AddShop/AddImages';
 
 import Stepper from '@/components/common/Seller/Shared/Stepper';
-import Loader from '@/components/common/Loader';
 
 import { List, Link, Image } from 'lucide-react';
 import EditNavbar from '@/components/common/Seller/Shared/EditNavbar';
@@ -85,11 +72,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
   });
   const { handleSubmit, reset } = methods;
 
-  const {
-    data: types,
-    error: typesError,
-    isLoading: typesIsLoading
-  } = useSWR('types', getTypeData);
+  const { data: types } = useSWR('types', getTypeData);
 
   function normalize(text: string) {
     return text.replace(/[\u2018\u2019\u201C\u201D]/g, "'");
@@ -184,7 +167,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
             <Stepper step={step} data={STEPPER_DATA} />
           )}
 
-          <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] m-auto mt-5">
+          <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] m-auto mt-5 xl:mt-16">
             {step === 1 && <ShopInformation setStep={setStep} types={types as string[]} />}
             {step === 2 && <Socials setStep={setStep} />}
             {step === 3 && (

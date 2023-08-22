@@ -13,7 +13,9 @@ import { db } from '@/lib/firebase/client';
 const getExperts: any = async (): Promise<any> => {
   let experts: any = [];
 
-  const docRef = await getDocs(query(collection(db, 'users'), where('role', '==', 'influencer'), limit(6)));
+  const docRef = await getDocs(
+    query(collection(db, 'users'), where('role', '==', 'influencer'), limit(6))
+  );
   experts = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
   return experts;
@@ -49,9 +51,9 @@ export default async function Home() {
               THEY DO THE TRIAL AND ERROR, SO YOU DON’T HAVE TO.
             </p>
           </div>
-          <ul className="flex gap-x-4 items-start pl-10 overflow-auto no-scrollbar snap-x snap-start">
+          <ul className="flex gap-y-4 md:gap-x-4 flex-col md:flex-row items-start md:pl-10 overflow-auto no-scrollbar snap-x snap-start">
             {experts.map((expert: any, i: number) => (
-              <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()} >
+              <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
                 <ExpertCard image={expert?.photoURL} name={expert?.name} title={expert?.topics} />
               </Link>
             ))}
