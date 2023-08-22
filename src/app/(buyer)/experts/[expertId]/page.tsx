@@ -13,20 +13,17 @@ import {
 } from 'lucide-react';
 import TikTok from '@/assets/icons/social/Tiktok';
 
-import hero from '@/assets/images/hero-expert.png';
-
 import { Button } from '@/components/ui/button';
 import BoxedContent from '@/components/common/BoxedContent';
 import FeaturedProducts from '@/components/modules/Experts/FeaturedProducts';
 import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 import AddPinnedContentModal from '@/components/modules/Experts/PinnedContent/AddContent';
 import PinnedContentList from '@/components/modules/Experts/PinnedContent/List';
+import ExpertCoverImage from '@/components/modules/Experts/CoverImage';
 
 const getExpert = async (expertId: string) => {
   const docRef = await getDoc(doc(db, 'users', expertId));
-  const expert = docRef.data();
-
-  return expert;
+  return { id: docRef.id, ...docRef.data() } as any;
 };
 
 const getfavProducts = async (expertId: string) => {
@@ -74,14 +71,12 @@ const Expert = async ({ params }: ExpertProps) => {
 
   return (
     <>
-      <div className="w-screen overflow-y-hidden relative mt-20 h-[500px]">
-        <Image src={hero} className="h-full w-full object-cover" fill alt="expert-cover" />
-      </div>
+      <ExpertCoverImage uid={expert?.id} coverImage={expert?.coverImage} />
       <BoxedContent className=" mt-[-10%] md:mt-[-10%] pb-5  ">
         <div className="flex flex-col w-[90%] items-center mx-auto relative">
           <AddPinnedContentModal uid={params.expertId} pinnedLinks={expert?.pinned} />
           <div className="flex w-full flex-row mb-5 gap-x-4 md:gap-x-8 items-end">
-            <div className="w-[150px] h-[150px] relative md:w-[200px] md:h-[200px] overflow-hidden lg:h-[250px] lg:w-[250px] rounded-full ">
+            <div className="w-[150px] z-20 h-[150px] ring-2 ring-offset-2 ring-neutral-300 relative md:w-[200px] md:h-[200px] overflow-hidden lg:h-[250px] lg:w-[250px] rounded-full ">
               <Image
                 src={expert?.photoURL}
                 className="h-full w-full object-cover"
@@ -90,8 +85,7 @@ const Expert = async ({ params }: ExpertProps) => {
               />
             </div>
             <div className="flex flex-col">
-              {' '}
-              <h1 className="font-alpina capitalize text-3xl md:text-5xl lg:text-6xl italic font-medium">
+              <h1 className="font-alpina capitalize text-3xl md:text-5xl 2xl:text-6xl italic font-medium">
                 {expert?.name}
               </h1>
               <ul className="flex gap-x-4 gap-y-2  mt-4 flex-wrap">

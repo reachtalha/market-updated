@@ -6,11 +6,16 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function isColoredRoute(route: string) {
-  const coloredRoutes = ['/experts', '/market', '/account', '/cart','/for-you', '/checkout', '/new-registration'];
+  const coloredRoutes = [
+    '/experts',
+    '/market',
+    '/account',
+    '/cart',
+    '/for-you',
+    '/checkout',
+    '/new-registration'
+  ];
   return (
-    coloredRoutes.includes(route) ||
-    route.startsWith('/experts') ||
-    route.startsWith('/products') ||
-    route.startsWith('/posts')
+    coloredRoutes.includes(route) || route.startsWith('/products') || route.startsWith('/posts')
   );
 }

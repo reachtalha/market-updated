@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import BoxedContent from '@/components/common/BoxedContent';
+import Link from 'next/link';
 
 const DISCOUNT = 10;
 
@@ -30,6 +31,8 @@ const Footer = () => {
             <h6 className="font-medium uppercase">About All Organics</h6>
             <ul className="space-y-1 text-sm">
               <li className="hover:underline cursor-pointer">About</li>
+              <li>
+                <Link href="/new-registration" className="hover:underline cursor-pointer">Register Now</Link></li>
               <li className="hover:underline cursor-pointer">Experts Program</li>
               <li className="hover:underline cursor-pointer">Brands & Shops</li>
               <li className="hover:underline cursor-pointer">Contact</li>
