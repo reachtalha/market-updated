@@ -99,7 +99,7 @@ export default function ProductReviews({
               <span className="font-medium">No reviews yet</span>
             ) : (
               <>
-                <span className="font-medium">{averageReviews}</span>
+                <span className="font-medium">{averageReviews.toFixed(2)}</span>
                 <ReactStars value={averageReviews} edit={false} color2="#000000" />
               </>
             )}

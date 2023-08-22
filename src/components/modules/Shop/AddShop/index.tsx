@@ -167,7 +167,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
             <Stepper step={step} data={STEPPER_DATA} />
           )}
 
-          <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] m-auto mt-5 xl:mt-16">
+          <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] m-auto mt-5 2xl:mt-16">
             {step === 1 && <ShopInformation setStep={setStep} types={types as string[]} />}
             {step === 2 && <Socials setStep={setStep} />}
             {step === 3 && (

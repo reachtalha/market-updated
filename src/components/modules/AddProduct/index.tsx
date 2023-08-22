@@ -191,7 +191,7 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
             <Stepper addProduct step={step} data={STEPPER_DATA} />
           )}
 
-          <div className="w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] mx-auto mt-5 xl:mt-16 pb-5">
+          <div className="w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] mx-auto mt-5 2xl:mt-16 pb-5">
             {step === 1 && <BasicDetails setStep={setStep} types={shop.types} />}
             {step === 2 && <CreateSKU setStep={setStep} />}
             {step === 3 && <DetailedDescription setStep={setStep} />}

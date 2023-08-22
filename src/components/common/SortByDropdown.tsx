@@ -14,7 +14,9 @@ export default function SortByDropdown({ type }: { type: string }) {
     setSortShopsBy,
     setSortExpertBy,
     sortShopsBy,
-    sortExpertBy
+    sortExpertBy,
+    sortSellerProductsBy,
+    setSortSellerProductsBy
   } = useSortingStore() as any;
 
   const handleSelect = (sortBy: string) => {
@@ -24,6 +26,8 @@ export default function SortByDropdown({ type }: { type: string }) {
       setSortShopsBy(sortBy);
     } else if (type === 'expert') {
       setSortExpertBy(sortBy);
+    } else if (type === 'seller-product') {
+      setSortSellerProductsBy(sortBy);
     }
   };
 
@@ -32,7 +36,13 @@ export default function SortByDropdown({ type }: { type: string }) {
       <DropdownMenuTrigger className="flex gap-2 items-center capitalize font-america text-sm">
         <ChevronDownIcon height={19} width={19} />
         Sort by -{' '}
-        {type === 'products' ? sortProductsBy : type === 'shop' ? sortShopsBy : sortExpertBy}
+        {type === 'products'
+          ? sortProductsBy
+          : type === 'shop'
+          ? sortShopsBy
+          : type === 'seller-product'
+          ? sortSellerProductsBy
+          : sortExpertBy}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onSelect={() => handleSelect('name')}>Name</DropdownMenuItem>
@@ -41,6 +51,13 @@ export default function SortByDropdown({ type }: { type: string }) {
             {' '}
             <DropdownMenuItem onSelect={() => handleSelect('price')}>Price</DropdownMenuItem>
             <DropdownMenuItem onSelect={() => handleSelect('reviews')}>Reviews</DropdownMenuItem>
+          </>
+        )}
+        {type === 'seller-product' && (
+          <>
+            {' '}
+            <DropdownMenuItem onSelect={() => handleSelect('quantity')}>Quantity</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => handleSelect('type')}>Type</DropdownMenuItem>
           </>
         )}
       </DropdownMenuContent>
