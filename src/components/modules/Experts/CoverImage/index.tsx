@@ -54,21 +54,20 @@ const ExpertCoverImage = ({ uid, coverImage }: { uid: string; coverImage: string
 
     return (
         <div className="w-full group relative h-[500px] before:content-[''] before:absolute before:inset-0  before:bg-gradient-to-b before:from-black/30 before:via-black/20 before:z-10">
-            {auth.currentUser?.uid === uid ? (
+            {coverImage ? (
+                <Image
+                    src={coverImage}
+                    className="h-full w-full object-cover"
+                    fill
+                    alt="expert-cover"
+                />
+            ) : (
+                <div className="h-full w-full bg-neutral-700 grid place-content-center">
+                    <ImageIcon className="h-20 w-20 text-neutral-50 place-self-center" />
+                </div>
+            )}
+            {auth.currentUser?.uid === uid &&
                 <>
-                    {coverImage ? (
-                        <Image
-                            src={coverImage}
-                            className="h-full w-full object-cover"
-                            fill
-                            alt="expert-cover"
-                        />
-                    ) : (
-                        <div className="h-full w-full bg-neutral-700 grid place-content-center">
-                            <ImageIcon className="h-20 w-20 text-neutral-50 place-self-center" />
-                            <span className="text-center mt-1.5 text-neutral-50">Add Cover Image</span>
-                        </div>
-                    )}
                     {processing ? (
                         <div className="absolute inset-0 bg-black/50  duration-300 transition-colors ease-in-out w-full h-full z-10">
                             <Loader className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2" />
@@ -92,9 +91,7 @@ const ExpertCoverImage = ({ uid, coverImage }: { uid: string; coverImage: string
                         </div>
                     )}
                 </>
-            ) : (
-                <Image src={coverImage} className="h-full w-full object-cover" fill alt="expert-cover" />
-            )}
+            }
         </div>
     );
 };
