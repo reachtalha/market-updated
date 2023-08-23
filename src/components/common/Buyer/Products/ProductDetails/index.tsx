@@ -135,7 +135,6 @@ export default function Product({ productJSON }: { productJSON: any }) {
 
           <div className="flex border-t-2 border-black pt-4 justify-between items-center mt-6">
             <p className="uppercase">reviews</p>
-
             <div className="flex items-center gap-2">
               {averageReviews < 0 ? (
                 <span className="font-medium">No reviews yet</span>

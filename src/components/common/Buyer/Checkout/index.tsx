@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useElements, useStripe } from '@stripe/react-stripe-js';
-
+import axios from 'axios';
+import { CancelTokenSource } from 'axios';
 import BoxedContent from '@/components/common/BoxedContent';
 import ShippingInfo from '@/components/common/Buyer/Checkout/ShippingInfo';
 import OrderSummaryCheckout from '@/components/common/Buyer/Checkout/OrderSummaryCheckout';
@@ -15,7 +16,7 @@ import { db, auth } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import toast from 'react-hot-toast';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || "http://localhost:3000";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:3000';
 
 const formSchema = z.object({
   email: z.string().min(1, { message: 'required' }).email({
@@ -98,7 +99,7 @@ export default function Checkout() {
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: DOMAIN + '/account?display=order'
+        return_url: `${DOMAIN}/account?display=order`
       }
     });
 
@@ -129,7 +130,7 @@ export default function Checkout() {
       setIsOrderLoading(true);
       const shops = cart?.items.map((s: any) => {
         return s.shopId;
-      })
+      });
       const items = cart?.items.map((i: any) => {
         return {
           id: i.docId,
@@ -142,31 +143,33 @@ export default function Checkout() {
             id: i.selectedVariant.id,
             color: i.selectedVariant.color,
             measurement: i.selectedVariant.measurement,
-            price: i.selectedVariant.price,
+            price: i.selectedVariant.price
           }
-        }
-      })
-
-      await fetchCreateOrder(
-        {
+        };
+      });
+      const order = {
+        shippingAddress: {
           firstName: values.firstName,
           lastName: values.lastName,
           phone: values.phone,
-          country: values.country || "Pakistan",
+          country: values.country || 'Pakistan',
           company: values.company,
           apartment: values.apartments || '',
           city: values.city,
           address: values.address,
-          email: values.email,
+          email: values.email
         },
-        items,
-        shops,
-        cart?.userId,
-        cart?.summary?.total
-      );
-      cart.items.map((item: any) => {
-        decreaseQuantity(item.docId, item.skuId, item.quantity);
+        items: items,
+        shops: shops,
+        userId: cart?.userId,
+        total: cart?.summary?.total
+      };
+      await axios.post('/api/checkout', {
+        order,
+        photoURL: auth.currentUser?.photoURL,
+        cart
       });
+
       submitPayment();
       clearCart();
       toast.success('We have received your order!');

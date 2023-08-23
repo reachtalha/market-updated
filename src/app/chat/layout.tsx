@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
 import React from 'react';
-import { redirect, useSearchParams, useRouter } from 'next/navigation'
+import { redirect, useSearchParams, useRouter } from 'next/navigation';
 
 import { auth, db } from '@/lib/firebase/client';
-import { getDocs, query, collection, where, limit, addDoc } from "firebase/firestore";
-
+import { getDocs, query, collection, where, limit, addDoc } from 'firebase/firestore';
+import useSwr from 'swr';
 
 import Chats from '@/components/modules/chat/Chat';
 import { ArrowLeft } from 'lucide-react';
+import Loader from '@/components/common/Loader';
 
 const getChat = async (seller: string, router: any) => {
   try {
@@ -17,42 +18,49 @@ const getChat = async (seller: string, router: any) => {
       (
         await getDocs(
           query(
-            collection(db, "chat"),
-            where(`users.${seller}`, "==", true),
-            where(`users.${customer}`, "==", true),
+            collection(db, 'chat'),
+            where(`users.${seller}`, '==', true),
+            where(`users.${customer}`, '==', true),
             limit(1)
           )
         )
       ).docs[0]?.id ??
       (
-        await addDoc(collection(db, "chat"), {
+        await addDoc(collection(db, 'chat'), {
           users: {
             [seller as string]: true,
-            [customer as string]: true,
-          },
+            [customer as string]: true
+          }
         })
       ).id;
-    router.push(`/chat/${chatId}`)
+    router.push(`/chat/${chatId}`);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const seller = searchParams.get('id');
+  let loading = false;
 
   if (!auth.currentUser) {
-    redirect("/auth/login");
+    redirect('/auth/login');
   }
 
   if (seller) {
+    loading = true;
     getChat(seller, router);
   }
+
+  if (loading) return <Loader className="h-screen flex items-center justify-center w-screen" />;
   return (
     <section className="relative grid h-screen w-full md:overflow-hidden place-content-center bg-gray-100">
-      <button onClick={() => router.back()} className="hidden md:block fixed left-5 top-3 z-50 rounded-full border bg-white p-2 hover:bg-gray-100">
+      <button
+        onClick={() => router.back()}
+        className="hidden md:block fixed left-5 top-3 z-50 rounded-full border bg-white p-2 hover:bg-gray-100"
+      >
         <ArrowLeft className="h-6 w-6" strokeWidth={1.5} />
       </button>
       <div className="overflow-hidden w-screen h-screen md:h-full md:mx-auto md:flex gap-2 px-0 md:px-3 py-0 md:flex-row md:gap-5 md:py-10 lg:w-[900px] 2xl:w-[1020px]">
