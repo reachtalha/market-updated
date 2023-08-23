@@ -9,7 +9,7 @@ import useSwr from 'swr';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import ReactStars from 'react-stars';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const canReview = async (productId: string) => {
   const userId = auth.currentUser?.uid;
@@ -70,6 +70,8 @@ export default function ProductReviews({
   averageReviews: number;
   setAverageReviews: (value: number) => void;
 }) {
+  const [sort, setSort] = useState('highest');
+  const [showReviews, setShowReviews] = useState(2);
   const { data: _canReview, error: canReviewError } = useSwr('review-eligible', () =>
     canReview(productId)
   );
@@ -86,7 +88,6 @@ export default function ProductReviews({
     setAverageReviews(averageRating || -1);
   }, [reviews]);
 
-  console.log(averageReviews);
   if (isLoading) return <Loader className="flex w-full h-52 justify-center items-center" />;
   if (error || canReviewError) return <Error />;
 
@@ -105,9 +106,6 @@ export default function ProductReviews({
             )}
           </h6>
           <p className="text-sm">AVERAGE RATING</p>
-          <Button variant="outline" className="w-full mt-6 border-neutral-900 text-neutral-900">
-            Filters
-          </Button>
         </div>
 
         {_canReview?.state && (
@@ -128,30 +126,42 @@ export default function ProductReviews({
 
       <div className="mt-10 flex items-center justify-between pb-3 border-b border-neutral-900/15">
         <p>{reviews?.length} reviews</p>
-        <SortByRating />
+        <SortByRating sort={sort} setSort={setSort} />
       </div>
       <ul className="">
-        {reviews?.map((review: any) => (
-          <li
-            className="grid gap-y-4 md:grid-cols-3 py-5 border-b border-neutral-900/15"
-            key={review.id}
-          >
-            <div className="col-span-1">
-              <p className="font-medium">{review.reviewer}</p>
-              <span>Verified Buyer</span>
-            </div>
-            <div className="col-span-2">
-              <ReactStars value={review.rating} edit={false} color2="#000000" />
-              <p className="mt-1 md:mt-3">{review.review}</p>
-            </div>
-          </li>
-        ))}
+        {reviews
+          ?.slice(0, showReviews)
+          .sort((a: any, b: any) => {
+            if (sort === 'highest') return b.rating - a.rating;
+            else return a.rating - b.rating;
+          })
+          .map((review: any) => (
+            <li
+              className="grid gap-y-4 md:grid-cols-3 py-5 border-b border-neutral-900/15"
+              key={review.id}
+            >
+              <div className="col-span-1">
+                <p className="font-medium capitalize">{review.reviewer}</p>
+                <span>Verified Buyer</span>
+              </div>
+              <div className="col-span-2">
+                <ReactStars value={review.rating} edit={false} color2="#000000" />
+                <p className="mt-1 md:mt-3">{review.review}</p>
+              </div>
+            </li>
+          ))}
       </ul>
-      <div className="flex justify-end mt-10">
-        <Button variant="outline" className="border-neutral-900 px-14 text-neutral-900">
-          show more
-        </Button>
-      </div>
+      {reviews && reviews?.length > showReviews && (
+        <div className="flex justify-end mt-10">
+          <Button
+            onClick={() => setShowReviews(reviews.length)}
+            variant="outline"
+            className="border-neutral-900 px-14 text-neutral-900"
+          >
+            show more
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

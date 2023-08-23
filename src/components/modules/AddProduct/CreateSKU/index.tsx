@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import {
   Accordion,
@@ -11,8 +11,9 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
 import toast from 'react-hot-toast';
-import { Plus } from 'lucide-react';
+import { Plus, Pencil } from 'lucide-react';
 import AddModal from '@/components/common/Seller/AddProduct/AddModal';
+
 import { formatCurrency } from '@/components/common/functions/index';
 import Title from '@/components/common/Seller/Shared/Title';
 import useGlobalStore from '@/state';
@@ -29,8 +30,19 @@ type ListItem = {
   color?: string;
 };
 
+const initialSKUState = {
+  id: '',
+  price: 0,
+  quantity: 0,
+  measurement: '',
+  color: ''
+};
+
 const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<number>> }) => {
   const { setValue, getValues } = useFormContext();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [sku, setSKU] = useState(initialSKUState);
+  const [editSkuId, setEditSkuId] = useState<string>();
 
   const unit = getValues('unit');
   const name = getValues('name');
@@ -40,12 +52,15 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
     unit === 'size' ? SIZE : unit === 'l' || unit === 'kg' ? LARGE : SMALL
   );
   const [colorList, setColorList] = useState<string[]>(['meteorite', 'black', 'navy', 'charcoal']);
-  const [measurement, setMeasurement] = useState<string>('');
-  const [color, setColor] = useState<string>('');
+
   const [isColors, setIsColors] = useState<boolean>(false);
 
   const priceRef = useRef<HTMLInputElement | null>(null);
   const quantityRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (isEdit) setSKU(SKUList.filter((l: any) => l.id === editSkuId)[0]);
+  }, [editSkuId]);
 
   function generateSKU(productName: string, productAttributes: any) {
     const name = productName?.split(' ')[0];
@@ -56,27 +71,29 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
   }
 
   function createSKU() {
-    const price = priceRef.current?.value;
-    const quantity = quantityRef.current?.value;
-
-    if (!price || !quantity || (isColors && !color) || !measurement) {
+    if (!sku.price || !sku.quantity || (isColors && !sku.color) || !sku.measurement) {
       toast.error('Please fill out all required fields!');
       return;
     }
 
-    const sku = generateSKU(name, [color, measurement]);
-    setSKUList({
-      id: sku,
-      price: Number(price),
-      quantity: Number(quantity),
-      measurement: measurement,
-      ...(color ? { color: color } : {})
-    });
+    if (isEdit) {
+      const index = SKUList.findIndex((l: any) => l.id === editSkuId);
+      SKUList[index] = {
+        ...sku,
+        id: editSkuId
+      };
 
-    if (priceRef.current) priceRef.current.value = '';
-    if (quantityRef.current) quantityRef.current.value = '';
-    setColor('');
-    setMeasurement('');
+      setIsEdit(false);
+      setEditSkuId('');
+    } else {
+      const skuId = generateSKU(name, [sku.color, sku.measurement]);
+      setSKUList({
+        ...sku,
+        id: skuId
+      });
+    }
+
+    setSKU(initialSKUState);
   }
 
   const nextStep = async () => {
@@ -98,9 +115,9 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
             {colorList.map((c, index) => (
               <li
                 key={index}
-                onClick={() => setColor(c)}
+                onClick={() => setSKU((prev) => ({ ...prev, color: c }))}
                 className={`cursor-pointer rounded-full bg-gray-100 px-2 border py-1 ${
-                  color === c ? 'bg-primary text-white border-primary' : ''
+                  sku?.color === c ? 'bg-primary text-white border-primary' : ''
                 }`}
               >
                 {c}
@@ -113,12 +130,12 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
       <div className="space-y-2 w-full mt-3 xl:mt-5">
         <Label>Select Measurements</Label>
         <ul className="flex flex-wrap  items-center  gap-2">
-          {sizeList?.map((s) => (
+          {sizeList?.map((s, index) => (
             <li
-              key={Date.now() + Math.random()}
-              onClick={() => setMeasurement(s)}
+              key={index}
+              onClick={() => setSKU((prev) => ({ ...prev, measurement: s }))}
               className={`cursor-pointer rounded-full bg-gray-100 capitalize px-2 border py-1 ${
-                measurement === s ? 'bg-primary text-white border-primary' : ''
+                sku?.measurement === s ? 'bg-primary text-white border-primary' : ''
               }`}
             >
               {s}
@@ -133,22 +150,24 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
         <div className="space-y-1 w-full ">
           <Label>Product Price</Label>
           <Input
-            ref={priceRef}
+            onChange={(e: any) => setSKU((prev) => ({ ...prev, price: parseInt(e.target.value) }))}
             className="w-full placeholder:text-sm"
             type="text"
             inputMode="numeric"
             placeholder="Product Price"
+            value={sku.price}
           />
         </div>
         <div className="space-y-1 flex flex-row items-end gap-x-5 justify-between mt-3 xl:mt-5 w-full">
           <div className="flex-1 space-y-1">
             <Label>Quantity</Label>
             <Input
-              ref={quantityRef}
+              onChange={(e) => setSKU((prev) => ({ ...prev, quantity: parseInt(e.target.value) }))}
               className="w-full placeholder:text-sm"
               type="number"
               inputMode="numeric"
               placeholder="Quantity"
+              value={sku.quantity}
             />
           </div>
 
@@ -161,7 +180,19 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
         <Accordion type="single" collapsible>
           {SKUList.map((l: any, index: number) => (
             <AccordionItem key={index} value={`item-${index + 1}`}>
-              <AccordionTrigger>{l.id}</AccordionTrigger>
+              <AccordionTrigger>
+                <div className="flex w-full items-center justify-between">
+                  <span>{l.id}</span>
+                  <Pencil
+                    size={14}
+                    className="cursor-pointer me-1"
+                    onClick={() => {
+                      setIsEdit(true);
+                      setEditSkuId(l.id);
+                    }}
+                  />
+                </div>
+              </AccordionTrigger>
               <AccordionContent>
                 <ul>
                   <li>Price: {formatCurrency(l.price)}</li>
