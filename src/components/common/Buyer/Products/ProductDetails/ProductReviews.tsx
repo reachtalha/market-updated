@@ -71,7 +71,7 @@ export default function ProductReviews({
   setAverageReviews: (value: number) => void;
 }) {
   const [sort, setSort] = useState('highest');
-  const [showReviews, setShowReviews] = useState(2);
+  const [showReviews, setShowReviews] = useState(4);
   const { data: _canReview, error: canReviewError } = useSwr('review-eligible', () =>
     canReview(productId)
   );
