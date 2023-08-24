@@ -101,12 +101,13 @@ export default Header;
 interface NavLinkProps extends LinkProps {
   title: string;
   className?: string;
+  href: string;
 }
 export const NavLink = ({ title, href, className = '', ...props }: NavLinkProps) => {
   const pathname = usePathname();
   const classNames = cn(
     'relative uppercase duration-300 md:hover:underline transition-opacity cursor-pointer tracking-wide text-xs underline-offset-2',
-    pathname === href ? 'md:underline' : '',
+    pathname.startsWith(href) ? 'md:underline' : '',
     className
   );
   return (
