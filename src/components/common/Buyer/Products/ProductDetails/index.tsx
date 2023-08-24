@@ -62,8 +62,6 @@ export default function Product({ productJSON }: { productJSON: any }) {
     isInWishlist(product.id)
   );
 
-  if (isLoading) return <Loader className="h-screen w-full grid place-content-center" />;
-
   const handleAddToBag = () => {
     if (auth.currentUser) {
       addToCart(product.id, selectedVariant.id);
@@ -140,7 +138,6 @@ export default function Product({ productJSON }: { productJSON: any }) {
                 <span className="font-medium">No reviews yet</span>
               ) : (
                 <>
-                  {' '}
                   <ReactStars value={averageReviews} edit={false} color2="#000000" />
                   <span className="font-medium">{averageReviews.toFixed(2)}</span>
                 </>
@@ -203,7 +200,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
               : 'Add to bag'}
           </Button>
           <Button
-            disabled={loading}
+            disabled={loading || isLoading}
             onClick={isInWishlistData ? handleRemoveFromWishlist : handleAddToWishlist}
             className="w-full mt-2 bg-transparent hover:tracking-wider hover:bg-transparent hover:text-primary transition-all duration-500 text-primary border-primary border-2 uppercase"
           >
