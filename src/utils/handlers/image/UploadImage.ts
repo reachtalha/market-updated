@@ -3,9 +3,11 @@ import { auth, storage } from '@/lib/firebase/client';
 
 interface UploadImageProps {
   collection: string;
-  image: string;
+  image: any;
   name?: string;
 }
+
+
 
 const UploadImage = async ({ collection, image, name }: UploadImageProps) => {
   const fileType = image.split(';')[0].split('/')[1];
