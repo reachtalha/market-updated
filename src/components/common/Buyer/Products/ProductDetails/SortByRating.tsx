@@ -20,8 +20,8 @@ export default function SortByRating({
         Sort by - {sort} rating
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onSelect={() => setSort('highest')}>highest</DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => setSort('lowest')}>lowest</DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => setSort('highest')}>Highest</DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => setSort('lowest')}>Lowest</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
