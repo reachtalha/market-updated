@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 
 import SortByRating from '@/components/common/Buyer/Products/ProductDetails/SortByRating';
-import LeaveReviewModal from '@/components/common/Buyer/Products/ProductDetails/LeaveReviewModal';
 
 import { auth, db } from '@/lib/firebase/client';
 import { collection, getDoc, query, where, getDocs, doc } from 'firebase/firestore';
@@ -10,31 +9,6 @@ import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import ReactStars from 'react-stars';
 import { useEffect, useState } from 'react';
-
-const canReview = async (productId: string) => {
-  const userId = auth.currentUser?.uid;
-
-  const orderRef = await getDocs(query(collection(db, 'orders'), where('userId', '==', userId)));
-  let count = 0;
-  let _canReview = {
-    state: false,
-    orderId: ''
-  };
-
-  orderRef.forEach((doc) => {
-    doc.data().items.forEach((item: any) => {
-      if (item.id === productId && !item?.reviewed) {
-        _canReview = {
-          state: true,
-          orderId: doc.id
-        };
-        count++;
-      }
-    });
-  });
-  console.log(count);
-  return _canReview;
-};
 
 const getReviews = async (productId: string) => {
   const reviewDocs = await getDocs(
@@ -72,9 +46,7 @@ export default function ProductReviews({
 }) {
   const [sort, setSort] = useState('highest');
   const [showReviews, setShowReviews] = useState(4);
-  const { data: _canReview, error: canReviewError } = useSwr('review-eligible', () =>
-    canReview(productId)
-  );
+
   const {
     data: reviews,
     error,
@@ -89,7 +61,7 @@ export default function ProductReviews({
   }, [reviews]);
 
   if (isLoading) return <Loader className="flex w-full h-52 justify-center items-center" />;
-  if (error || canReviewError) return <Error />;
+  if (error) return <Error />;
 
   return (
     <div className="bg-neutral-100 rounded-lg p-6 md:p-9">
@@ -107,21 +79,6 @@ export default function ProductReviews({
           </h6>
           <p className="text-sm">AVERAGE RATING</p>
         </div>
-
-        {_canReview?.state && (
-          <LeaveReviewModal
-            trigger={
-              <Button
-                variant="outline"
-                className="w-full mt-3 md:mt-0 flex items-end border-neutral-900 px-14 text-neutral-900"
-              >
-                Write a review
-              </Button>
-            }
-            productId={productId}
-            orderId={_canReview?.orderId}
-          />
-        )}
       </header>
 
       <div className="mt-10 flex items-center justify-between pb-3 border-b border-neutral-900/15">

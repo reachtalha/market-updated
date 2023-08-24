@@ -7,11 +7,12 @@ import { Pencil } from 'lucide-react';
 import { useFormContext } from 'react-hook-form';
 
 type Props = {
+  loading: boolean;
   isPasswordUpdate: boolean;
   setIsPasswordUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
+const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const {
@@ -129,9 +130,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label>
-            Confirm Password
-          </Label>
+          <Label>Confirm Password</Label>
           <Input
             className="w-full placeholder:text-sm"
             type="password"
@@ -143,12 +142,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
 
       <div className="flex gap-x-2 mt-4">
         {(isEdit || isPasswordUpdate) && (
-          <Button
-            onClick={handleCancel}
-            type="button"
-            variant="outline"
-            className="w-full"
-          >
+          <Button onClick={handleCancel} type="button" variant="outline" className="w-full">
             Cancel
           </Button>
         )}
@@ -158,6 +152,7 @@ const EditAccount = ({ isPasswordUpdate, setIsPasswordUpdate }: Props) => {
           onClick={handleUpdate}
           variant="default"
           className="w-full"
+          disabled={loading}
         >
           Update {isEdit ? 'Profile' : 'Password'}
         </Button>

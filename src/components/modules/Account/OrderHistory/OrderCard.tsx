@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from '@/components/common/FallbackImage';
 
-import image from '@/assets/images/market1.png';
 
 type Product = {
   id: string;
