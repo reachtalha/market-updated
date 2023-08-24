@@ -177,6 +177,13 @@ const Register = () => {
             Login
           </Link>
         </p>
+        <p className="text-center mt-3">
+          Want to Join as{' '}
+          <Link href="/new-registration" className="font-semibold underline">
+            Seller/Expert
+          </Link>{' '}
+          ?
+        </p>
       </div>
     </>
   );

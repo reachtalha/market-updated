@@ -16,6 +16,9 @@ export function isColoredRoute(route: string) {
     '/new-registration'
   ];
   return (
-    coloredRoutes.includes(route) || route.startsWith('/products') || route.startsWith('/posts')
+    coloredRoutes.includes(route) ||
+    route.startsWith('/products') ||
+    route.startsWith('/posts') ||
+    route.startsWith('/orders')
   );
 }
