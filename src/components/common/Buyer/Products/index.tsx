@@ -24,7 +24,6 @@ const getProducts: any = async (
 ): Promise<any> => {
   let products: any = [];
 
-  console.log('------------------', category, allCategories);
   if (category === 'all' || category === 'All' || !category) {
     let docRef;
     if (foryou) {
@@ -40,10 +39,8 @@ const getProducts: any = async (
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } else {
     if (category.trim() === 'organic clothing') {
-      console.log('Changing category');
       category = 'organic clothing & apparel';
     }
-    console.log('Category is now', category);
     const docRef = await getDocs(
       query(collection(db, 'products'), where('category', '==', `${category.toLowerCase()}`))
     );
@@ -72,7 +69,6 @@ const getProducts: any = async (
   });
 
   products = await Promise.all(_products);
-  console.log(products);
   return products;
 };
 
@@ -135,7 +131,6 @@ export default function Products({ categories, foryou }: ProductsProps) {
   if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
   if (error) return <Error />;
 
-  console.log(selectedSubCategory);
   return (
     <>
       <BoxedContent className="flex gap-x-5 py-20">
