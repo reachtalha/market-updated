@@ -2,10 +2,9 @@ import { Button } from '@/components/ui/button';
 
 import SortByRating from '@/components/common/Buyer/Products/ProductDetails/SortByRating';
 
-import { auth, db } from '@/lib/firebase/client';
+import { db } from '@/lib/firebase/client';
 import { collection, getDoc, query, where, getDocs, doc } from 'firebase/firestore';
 import useSwr from 'swr';
-import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import ReactStars from 'react-stars';
 import { useEffect, useState } from 'react';
@@ -22,7 +21,7 @@ const getReviews = async (productId: string) => {
 
       return {
         id: document.id,
-        reviewer: userDoc.exists() ? userDoc.data().name : 'Unknown User',
+        reviewer: userDoc.exists() ? userDoc.data().name : 'Anonymous',
         review: document.data().description,
         rating: document.data().rating
       };
@@ -60,11 +59,23 @@ export default function ProductReviews({
     setAverageReviews(averageRating || -1);
   }, [reviews]);
 
-  if (isLoading) return <Loader className="flex w-full h-52 justify-center items-center" />;
-  if (error) return <Error />;
+  if (isLoading) {
+    return <div className="bg-neutral-100 rounded-lg px-3 py-6 md:py-12 animate-pulse mb-5"></div>;
+  }
+  if (error) return <Error className="grid w-full h-52 place-content-center" />;
 
+  if (reviews?.length === 0) {
+    return (
+      <div className="bg-neutral-100 rounded-lg px-3 py-6 md:py-12 mb-5">
+        <p className="text-center text-lg 2xl:text-xl font-semibold">No reviews as of yet</p>
+        <p className="text-center text-sm 2xl:text-base">
+          Be the first to leave a review and share your experience!
+        </p>
+      </div>
+    );
+  }
   return (
-    <div className="bg-neutral-100 rounded-lg p-6 md:p-9">
+    <div className="bg-neutral-100 rounded-lg p-6 md:p-9 mb-5">
       <header className="flex flex-col items-center md:flex-row md:justify-between">
         <div className="flex flex-col items-center md:items-start md:justify-center w-full md:w-fit">
           <h6 className="flex gap-2 items-center mb-1">
