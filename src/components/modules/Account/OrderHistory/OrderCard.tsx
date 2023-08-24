@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from '@/components/common/FallbackImage';
-
+import { useRouter } from 'next/navigation';
 
 type Product = {
   id: string;
@@ -19,10 +19,17 @@ type Props = {
 };
 
 function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: Props) {
-  console.log(placedAt);
+  const router = useRouter();
+  const handleClick = () => {
+    if (window.innerWidth < 756) {
+      router.push(`/orders/${id}`);
+    } else {
+      setSelectedOrder(id);
+    }
+  };
   return (
     <div
-      onClick={() => setSelectedOrder(id)}
+      onClick={handleClick}
       className={`border p-5 flex rounded-xl gap-y-2 flex-col  cursor-pointer ${
         selectedOrder === id && ' border-2 border-primary'
       }`}

@@ -69,7 +69,7 @@ export default function LeaveReviewModal({ trigger, order }: LeaveReviewModalPro
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{trigger}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="w-[90%] md:w-full ">
         <DialogHeader>
           <DialogTitle>
             {reviewingProduct === '' ? (
