@@ -14,12 +14,13 @@ import {
   setPersistence,
   reauthenticateWithCredential,
   updatePassword as firebaseUpdatePassword,
-  EmailAuthProvider
+  EmailAuthProvider,
+  updateEmail,
+  updateProfile
 } from 'firebase/auth';
 
 import { auth } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
-import Loader from '@/components/common/Loader';
 
 const provider = new GoogleAuthProvider();
 const fbprovider = new FacebookAuthProvider();
@@ -32,17 +33,19 @@ interface IAuthContext {
   signInWithGoogleAccount: () => Promise<void>;
   signInWithFacebookAccount: () => Promise<void>;
   updatePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  updateCurrentUser: (displayName: string, email: string) => Promise<void>;
   loading: boolean;
 }
 
 const AuthContext = createContext<IAuthContext>({
   user: null,
-  signIn: async (email: string, password: string) => { },
-  logout: async () => { },
-  sessionBasedSignin: async (email: string, password: string) => { },
-  signInWithGoogleAccount: async () => { },
-  signInWithFacebookAccount: async () => { },
-  updatePassword: async () => { },
+  signIn: async (email: string, password: string) => {},
+  logout: async () => {},
+  sessionBasedSignin: async (email: string, password: string) => {},
+  signInWithGoogleAccount: async () => {},
+  signInWithFacebookAccount: async () => {},
+  updatePassword: async () => {},
+  updateCurrentUser: async () => {},
   loading: false
 });
 
@@ -71,14 +74,10 @@ export const AuthProvider = ({ children }: any) => {
       await signInWithPopup(auth, provider);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {
-      if (e.code === "auth/user-not-found") {
-        toast.error(
-          "Sorry, your account is not registered. Please check your email"
-        );
-      } else if (e.code === "auth/wrong-password") {
-        toast.error(
-          "Oops! The password you entered is incorrect. Please try again."
-        );
+      if (e.code === 'auth/user-not-found') {
+        toast.error('Sorry, your account is not registered. Please check your email');
+      } else if (e.code === 'auth/wrong-password') {
+        toast.error('Oops! The password you entered is incorrect. Please try again.');
       } else {
         toast.error(
           "Oops! Something went wrong, and we couldn't sign you in. Please try again later."
@@ -95,16 +94,11 @@ export const AuthProvider = ({ children }: any) => {
       await signInWithPopup(auth, fbprovider);
       setUser(user);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
-
     } catch (e: any) {
-      if (e.code === "auth/user-not-found") {
-        toast.error(
-          "Sorry, your account is not registered. Please check your email"
-        );
-      } else if (e.code === "auth/wrong-password") {
-        toast.error(
-          "Oops! The password you entered is incorrect. Please try again."
-        );
+      if (e.code === 'auth/user-not-found') {
+        toast.error('Sorry, your account is not registered. Please check your email');
+      } else if (e.code === 'auth/wrong-password') {
+        toast.error('Oops! The password you entered is incorrect. Please try again.');
       } else {
         toast.error(
           "Oops! Something went wrong, and we couldn't sign you in. Please try again later."
@@ -121,16 +115,11 @@ export const AuthProvider = ({ children }: any) => {
       const userCredentials = await signInWithEmailAndPassword(auth, email, password);
       setUser(userCredentials.user);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
-
     } catch (e: any) {
-      if (e.code === "auth/user-not-found") {
-        toast.error(
-          "Sorry, your account is not registered. Please check your email"
-        );
-      } else if (e.code === "auth/wrong-password") {
-        toast.error(
-          "Oops! The password you entered is incorrect. Please try again."
-        );
+      if (e.code === 'auth/user-not-found') {
+        toast.error('Sorry, your account is not registered. Please check your email');
+      } else if (e.code === 'auth/wrong-password') {
+        toast.error('Oops! The password you entered is incorrect. Please try again.');
       } else {
         toast.error(
           "Oops! Something went wrong, and we couldn't sign you in. Please try again later."
@@ -148,14 +137,10 @@ export const AuthProvider = ({ children }: any) => {
       await signInWithEmailAndPassword(auth, email, password);
       router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {
-      if (e.code === "auth/user-not-found") {
-        toast.error(
-          "Sorry, your account is not registered. Please check your email"
-        );
-      } else if (e.code === "auth/wrong-password") {
-        toast.error(
-          "Oops! The password you entered is incorrect. Please try again."
-        );
+      if (e.code === 'auth/user-not-found') {
+        toast.error('Sorry, your account is not registered. Please check your email');
+      } else if (e.code === 'auth/wrong-password') {
+        toast.error('Oops! The password you entered is incorrect. Please try again.');
       } else {
         toast.error(
           "Oops! Something went wrong, and we couldn't sign you in. Please try again later."
@@ -185,7 +170,24 @@ export const AuthProvider = ({ children }: any) => {
         await reauthenticateWithCredential(user, credentials);
         firebaseUpdatePassword(user, newPassword);
       } catch (err: any) {
-        toast.error(`Oops! We encountered an issue while trying to update your password.`);
+        throw new Error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const updateCurrentUser = async (displayName: string, email: string) => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        setLoading(true);
+        await updateEmail(user, email);
+        await updateProfile(user, {
+          displayName: displayName
+        });
+      } catch (err: any) {
+        throw new Error(err);
       } finally {
         setLoading(false);
       }
@@ -201,7 +203,8 @@ export const AuthProvider = ({ children }: any) => {
       signInWithFacebookAccount,
       logout,
       updatePassword,
-      loading,
+      updateCurrentUser,
+      loading
     }),
     [
       user,
@@ -211,7 +214,8 @@ export const AuthProvider = ({ children }: any) => {
       signInWithFacebookAccount,
       logout,
       updatePassword,
-      loading,
+      updateCurrentUser,
+      loading
     ]
   );
 

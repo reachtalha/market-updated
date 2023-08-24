@@ -3,7 +3,8 @@ import OrderCard from './OrderCard';
 import OrderDetail from './OrderDetail';
 import { auth, db } from '@/lib/firebase/client';
 import { collection, doc, getDoc, query, where, getDocs } from 'firebase/firestore';
-import Title from '@/components/common/Seller/Shared/Title';
+import { Button } from '@/components/ui/button';
+import LeaveReviewModal from '@/components/common/Buyer/LeaveReviewModal';
 import useSwr from 'swr';
 import Loader from '@/components/common/Loader';
 
@@ -16,6 +17,7 @@ type Product = {
   unit: string;
   quantity: number;
   image: string;
+  reviewed: Boolean;
 };
 type Order = {
   id: string;
@@ -62,7 +64,8 @@ const getOrder = async (id: string) => {
           price: item.selectedVariant.price,
           unit: item.unit,
           quantity: item.quantity,
-          image: item.image
+          image: item.image,
+          reviewed: item.reviewed || false
         };
       }),
       shipping: {
@@ -111,9 +114,9 @@ const Index = (props: Props) => {
     <section className="py-10 sm:py-0  w-full flex">
       <div className="px-1 sm:px-5 gap-y-3 w-full md:w-2/5 flex flex-col ">
         <span className="text-primary text-sm sm:text-base font-medium uppercase">My Orders</span>
-        {
-          orders?.length === 0 && <p className="text-sm 3xl:text-base text-neutral-700 py-[5%]">No Orders found</p>
-        }
+        {orders?.length === 0 && (
+          <p className="text-sm 3xl:text-base text-neutral-700 py-[5%]">No Orders found</p>
+        )}
         {orders?.map((order, index) => (
           <OrderCard
             {...order}
@@ -125,9 +128,23 @@ const Index = (props: Props) => {
       </div>
       {selectedOrder !== '' && (
         <div className="hidden  sm:relative  sm:flex flex-col gap-3 md:w-3/5">
-          <span className="text-primary text-sm sm:text-base font-medium uppercase">
-            Order Details
-          </span>
+          <div className="flex flex-row items-center justify-between">
+            <span className="text-primary text-sm sm:text-base font-medium uppercase">
+              Order Details
+            </span>
+
+            <LeaveReviewModal
+              trigger={
+                <Button
+                  variant="outline"
+                  className="w-full mt-3 md:mt-0 flex items-end border-neutral-900 px-10 text-neutral-900"
+                >
+                  review
+                </Button>
+              }
+              order={orders?.filter((order) => order.id === selectedOrder)[0]}
+            />
+          </div>
           <OrderDetail order={orders?.filter((order) => order.id === selectedOrder)[0]} />
         </div>
       )}

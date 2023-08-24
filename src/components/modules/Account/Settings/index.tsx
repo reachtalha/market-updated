@@ -23,7 +23,7 @@ type FormValues = {
 const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPasswordUpdate, setIsPasswordUpdate] = useState<boolean>(false);
-  const { updatePassword } = useAuth();
+  const { updatePassword, updateCurrentUser } = useAuth();
 
   const methods = useForm<FormValues>({
     defaultValues,
@@ -32,11 +32,8 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
   });
   const { handleSubmit, reset } = methods;
 
-  function normalize(text: string) {
-    return text.replace(/[\u2018\u2019\u201C\u201D]/g, "'");
-  }
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    setLoading(true);
     try {
       if (!isPasswordUpdate) {
         await updateDoc(doc(db, 'users', auth.currentUser?.uid as string), {
@@ -45,18 +42,28 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
           phone: data.phone,
           address: data.address
         });
-        toast.success('Account Updated Successfully');
+        try {
+          await updateCurrentUser(data?.name, data?.email);
+          toast.success('Account Updated Successfully');
+          reset();
+          window.location.reload();
+        } catch (error) {
+          toast.error('Error while updating account');
+        }
       } else {
         if (data.confirmPassword !== data.newPassword) {
           toast.error("Password doesn't match");
           return;
         }
-        updatePassword(data.currentPassword, data.newPassword);
-
-        toast.success('Password Updated Successfully');
+        try {
+          await updatePassword(data.currentPassword, data.newPassword);
+          toast.success('Password Updated Successfully');
+          reset();
+          window.location.reload();
+        } catch (error: any) {
+          toast.error(error.message);
+        }
       }
-      reset();
-      window.location.reload();
     } catch (e) {
       toast.error('Error while updating account');
     } finally {
@@ -70,6 +77,7 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
           <EditAccount
             isPasswordUpdate={isPasswordUpdate}
             setIsPasswordUpdate={setIsPasswordUpdate}
+            loading={loading}
           />
         </form>
       </FormProvider>
