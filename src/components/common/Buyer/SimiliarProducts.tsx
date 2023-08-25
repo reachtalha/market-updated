@@ -4,7 +4,6 @@ import { db } from '@/lib/firebase/client';
 
 import useSWR from 'swr';
 
-import ShopCard from '@/components/common/Buyer/Cards/ShopCard';
 import Carousel from '@/components/common/Carousel';
 import { SwiperSlide } from 'swiper/react';
 

@@ -7,7 +7,7 @@ import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
 
 import Testimonials from '@/components/common/Buyer/Testimonials';
-import { getDocs, collection, doc, getDoc, where, query } from 'firebase/firestore';
+import { getDocs, collection, doc, getDoc, where, query, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import { StaticImageData } from 'next/image';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
@@ -30,9 +30,25 @@ const getProducts = async (shopId: string) => {
 };
 
 const getShop = async (shopId: string) => {
-  const querySnapshot = await getDoc(doc(db, 'shops', shopId));
+  const docRef = await getDoc(doc(db, 'shops', shopId));
 
-  return querySnapshot.data();
+  return docRef.data();
+};
+
+const getExperts = async () => {
+  const querySnapshot = await getDocs(
+    query(collection(db, 'users'), where('role', '==', 'influencer'), limit(4))
+  );
+
+  let experts: any = [];
+
+  querySnapshot.forEach((doc) => {
+    experts.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+  return experts;
 };
 
 type ShopProps = {
@@ -49,8 +65,11 @@ type Shop = {
 };
 
 export default async function Shop({ params }: ShopProps) {
-  const shop: Shop = (await getShop(params.shopId)) as Shop;
-  const products = await getProducts(params.shopId);
+  const [shop, products, experts]: [any, any, any] = await Promise.all([
+    getShop(params.shopId),
+    getProducts(params.shopId),
+    getExperts()
+  ]);
 
   return (
     <>
@@ -95,7 +114,7 @@ export default async function Shop({ params }: ShopProps) {
         )}
       </div>
 
-      <Testimonials />
+      <Testimonials expertsJSON={JSON.stringify(experts)} />
       <TakeQuizSection />
       <SimiliarShops category={shop.category} currentShop={params.shopId} />
       <BoxedContent className="my-16">
