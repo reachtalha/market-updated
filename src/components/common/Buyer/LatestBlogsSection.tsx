@@ -1,25 +1,29 @@
+"use client"
 import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
 
 import BoxedContent from '@/components/common/BoxedContent';
 
+import { db } from '@/lib/firebase/client';
 import { cn } from '@/lib/utils';
+import { collection, getDocs, limit, query } from 'firebase/firestore';
+import useSwr from 'swr';
 
 type PostCardProps = {
   title: string
   slug: string
-  date: string
-}
-function PostCard({ title, slug, date}: PostCardProps) {
 
+  thumbnailImage: string
+}
+function PostCard({ title, slug, thumbnailImage }: PostCardProps) {
   return (
-    <Link href={`/posts/${slug}`} className="p-3 w-full h-[200px] md:h-[350px] grid place-content-center rounded-lg object-cover bg-gray-100">
-      <Image className="w-full h-[200px] md:h-[240px] rounded-lg" width={200} height={350} src="" alt={title} />
+    <Link href={`/post/${slug}`} className="p-3 w-full h-[200px] md:h-[350px] grid place-content-center rounded-lg object-cover bg-gray-100">
+      <Image className="w-full h-[200px] md:h-[240px] rounded-lg" width={200} height={350} src={thumbnailImage} alt={title} />
       <h2 className="font-medium text-primary text-2xl mt-5">
         {title}
       </h2>
-      {date != null && <p className="pb-3 text-gray-800">Published at {format(new Date(date), 'dd-MM-yyyy')}</p>}
+      {/*{date != null && <p className="pb-3 text-gray-800">Published at {format(new Date(date), 'dd-MM-yyyy')}</p>}*/}
     </Link>
   )
 }
@@ -29,7 +33,31 @@ type LatestBlogsSectionProps = {
   className?: string;
 };
 
-export default async function LatestBlogsSection({ title, className = '' }: LatestBlogsSectionProps) {
+const fetchGetLatestBlogPosts = async () => {
+  const q = query(collection(db, "blog-posts"), limit(4));
+  const querySnapshot = await getDocs(q);
+  let result: any = [];
+  querySnapshot.forEach((doc) => {
+    result.push({ ...doc.data(), id: doc.id });
+  });
+
+  return result;
+}
+
+export default function LatestBlogsSection({ title, className = '' }: LatestBlogsSectionProps) {
+  const { data, isLoading } = useSwr(
+    'latest-blog-posts',
+    fetchGetLatestBlogPosts,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0
+    }
+  );
+
+  console.log({ data })
 
   return (
     <BoxedContent className={cn(`mb-[8rem]`, className)}>
@@ -38,12 +66,12 @@ export default async function LatestBlogsSection({ title, className = '' }: Late
         <h3 className="text-lg md:text-3xl">@allorganicsmarket</h3>
       </header>
       <div className="flex flex-col md:flex-row justify-between gap-y-4 md:gap-x-4">
-        {[].map((post: any) => (
+        {data?.map((post: any) => (
           <PostCard
-            key={post._id}
+            key={post?.id}
             title={post.title}
-            slug={post.slug}
-            date={post?.publishedAt}
+            slug={post?.id}
+            thumbnailImage={post?.thumbnailImage}
           />
         ))}
       </div>

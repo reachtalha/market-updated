@@ -26,7 +26,12 @@ const options = [
     name: 'Order History',
     slug: 'order',
     href: '/account?display'
-  }
+  },
+  {
+    name: 'Write blog',
+    slug: 'experts',
+    href: '/experts/blog/new-post'
+  },
 ];
 
 type Props = {};
