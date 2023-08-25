@@ -14,7 +14,7 @@ const getExperts: any = async (): Promise<any> => {
   let experts: any = [];
 
   const docRef = await getDocs(
-    query(collection(db, 'users'), where('role', '==', 'influencer'), limit(6))
+    query(collection(db, 'users'), where('role', '==', 'influencer'), limit(4))
   );
   experts = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 

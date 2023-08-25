@@ -76,7 +76,7 @@ const Expert = async ({ params }: ExpertProps) => {
         <div className="flex flex-col w-[90%] items-center mx-auto relative">
           <AddPinnedContentModal uid={params.expertId} pinnedLinks={expert?.pinned} />
           <div className="flex w-full flex-row mb-5 gap-x-4 md:gap-x-8 items-end">
-            <div className="w-[150px] z-20 h-[150px] ring-2 ring-offset-2 ring-neutral-300 relative md:w-[200px] md:h-[200px] overflow-hidden lg:h-[250px] lg:w-[250px] rounded-full ">
+            <div className="w-[150px] z-20 h-[150px] bg-gray-200 ring-2 ring-offset-2 ring-neutral-300 relative md:w-[200px] md:h-[200px] overflow-hidden lg:h-[250px] lg:w-[250px] rounded-full ">
               <Image
                 src={expert?.photoURL}
                 className="h-full w-full object-cover"

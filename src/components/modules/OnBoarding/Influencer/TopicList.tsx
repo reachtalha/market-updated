@@ -10,6 +10,8 @@ interface TopicListProps {
   onTopicsChange: (topics: string[]) => void;
 }
 
+const topics = ['Health', 'Skincare', 'Supplements', 'Food', 'Fashion'];
+
 const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsChange }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const {
@@ -28,7 +30,10 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
       toast.error('Please enter a topic!');
       return;
     }
-
+    if (!topics.includes(currentTopic)) {
+      toast.error('Please select from available topics!');
+      return;
+    }
     if (topicsList.includes(currentTopic)) {
       toast.error('Topic is already added!');
       return;
@@ -80,11 +85,9 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
             className="w-full bg-none px-2 py-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <datalist id="topicsList" className="appearance-none">
-            <option value="Health" />
-            <option value="Skincare" />
-            <option value="Supplements" />
-            <option value="Food" />
-            <option value="Fashion" />
+            {topics.map((t: string) => (
+              <option value={t} key={t} />
+            ))}
           </datalist>
         </div>
       </div>

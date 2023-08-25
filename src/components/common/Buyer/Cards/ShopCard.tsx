@@ -15,7 +15,7 @@ type Props = {
 const ShopCard = ({ id, image, shop, desc, type }: Props) => {
   const router = useRouter();
   const handleRedirect = () => {
-    router.push(`/shop/${id}`);
+    router.push(`/market/${id}`);
   };
   return (
     <div className="group h-fit w-full relative">

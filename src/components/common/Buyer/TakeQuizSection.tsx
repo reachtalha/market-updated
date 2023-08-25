@@ -18,7 +18,7 @@ export default function TakeQuizSection({ className = '', buttonClassName = '' }
         <span className="ml-2 font-alpina font-normal italic tracking-tight">curated for you</span>
       </h2>
       <p className="text-xl mt-2">Get personalized product picks from a Real Expert — for free.</p>
-      <Button
+      {/* <Button
         variant="outline"
         size="lg"
         className={twMerge(
@@ -27,7 +27,7 @@ export default function TakeQuizSection({ className = '', buttonClassName = '' }
         )}
       >
         Take our quiz
-      </Button>
+      </Button> */}
     </div>
   );
 }

@@ -12,7 +12,7 @@ import CardInfo from '@/components/modules/Account/CardInfo';
 import OrderHistory from '@/components/modules/Account/OrderHistory';
 import Socials from '@/components/modules/Account/Socials';
 import Wishlist from '@/components/modules/Account/Wishlist';
-
+import { AccountsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 type AccountProps = {
   options: Option[];
@@ -21,10 +21,10 @@ type AccountProps = {
 function Index({ options }: AccountProps) {
   const category = useCategorySlug();
   const role = useRole();
-  const { user, isLoading } = useCurrentUser()
+  const { user, isLoading } = useCurrentUser();
 
   if (isLoading) {
-    return <Loader className="grid place-content-center h-screen w-full" />
+    return <AccountsLoader />;
   }
 
   const renderComponent = () => {
@@ -128,13 +128,13 @@ function Index({ options }: AccountProps) {
         options={
           role === 'influencer'
             ? [
-              ...options,
-              {
-                name: 'Socials',
-                slug: 'socials',
-                href: '/account?display'
-              }
-            ]
+                ...options,
+                {
+                  name: 'Socials',
+                  slug: 'socials',
+                  href: '/account?display'
+                }
+              ]
             : options
         }
       />

@@ -6,6 +6,7 @@ import ProductCategories, { Category } from '@/components/common/Buyer/Products/
 import ProductHeader from '@/components/common/Buyer/Products/ProductHeader';
 import OrganicSimplifiedSection from '../OrganicSimplifiedSection';
 import useCategorySlug from '@/hooks/useCategorySlug';
+import { ProductsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
@@ -92,7 +93,9 @@ export default function Products({ categories, foryou }: ProductsProps) {
     data: products,
     error,
     isLoading
-  } = useSWR(['products', selectedSubCategory], () => getProducts(category, categories, foryou));
+  } = useSWR([`products-${category}`, selectedSubCategory], () =>
+    getProducts(category, categories, foryou)
+  );
 
   useEffect(() => {
     setSelectedSubCategory(
@@ -128,8 +131,8 @@ export default function Products({ categories, foryou }: ProductsProps) {
     }
   }, [sortProductsBy, products]);
 
-  if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
-  if (error) return <Error />;
+  if (isLoading) return <ProductsLoader />;
+  if (error) return <Error className="h-screen w-full grid place-content-center" />;
 
   return (
     <>

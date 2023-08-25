@@ -114,7 +114,7 @@ export default async function Shop({ params }: ShopProps) {
         )}
       </div>
 
-      <Testimonials expertsJSON={JSON.stringify(experts)} />
+      {/* <Testimonials expertsJSON={JSON.stringify(experts)} /> */}
       <TakeQuizSection />
       <SimiliarShops category={shop.category} currentShop={params.shopId} />
       <BoxedContent className="my-16">

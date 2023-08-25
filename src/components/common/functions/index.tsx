@@ -111,6 +111,7 @@ export const handleImage = (file: any, setImage: any) => {
   }
   const reader = new FileReader();
   reader.readAsDataURL(file);
+
   reader.onload = () => {
     setImage(reader.result);
   };
@@ -145,3 +146,13 @@ export const handleImages = (e: any, limit: number = 4, list: any, setList: any)
 export const deleteImage = (file: any, setList: any) => {
   setList((imgs: any) => imgs.filter((img: any) => img !== file));
 };
+
+export function getBase64(file: any) {
+  const reader = new FileReader()
+  return new Promise(resolve => {
+    reader.onload = (ev: any) => {
+      resolve(ev.target.result)
+    }
+    reader.readAsDataURL(file)
+  })
+}
