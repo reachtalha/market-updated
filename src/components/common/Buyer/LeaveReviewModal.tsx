@@ -131,6 +131,7 @@ const AddReview = ({
 }) => {
   const [rating, setRating] = useState(5);
   const [description, setDescription] = useState('');
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -139,6 +140,7 @@ const AddReview = ({
       return;
     }
     try {
+      setLoading(true);
       await addReview(rating, description, productId, orderId);
       await updateOrder(orderId, productId);
 
@@ -148,6 +150,8 @@ const AddReview = ({
       setReviewingProduct('');
     } catch (error) {
       toast.error('Something went wrong!');
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -170,7 +174,9 @@ const AddReview = ({
           />
         </div>
         <div className="flex justify-end mt-8">
-          <Button type="submit">Submit</Button>
+          <Button disabled={loading} type="submit">
+            {loading ? 'Adding Review...' : 'Add Review'}
+          </Button>
         </div>
       </form>
     </div>

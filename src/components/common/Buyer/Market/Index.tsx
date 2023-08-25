@@ -10,6 +10,7 @@ import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
 import ShopCard from '@/components/common/Buyer/Cards/ShopCard';
 import MarketHeader from '@/components/common/Buyer/Market/MarketHeader';
 import Loader from '@/components/common/Loader';
+import Error from '@/components/common/Error';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSwr from 'swr';
@@ -61,6 +62,7 @@ export default function Market({ categories }: MarketProps) {
     }
   }, [sortShopsBy]);
   if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
+  if (error) return <Error className="mt-20" />;
 
   return (
     <>

@@ -58,9 +58,13 @@ export default function Product({ productJSON }: { productJSON: any }) {
 
   const { addToCart, isAddToCartLoading } = useCartStore((state: any) => state);
 
-  const { data: isInWishlistData, isLoading } = useSwr('isInWishlist', () =>
-    isInWishlist(product.id)
-  );
+  const {
+    data: isInWishlistData,
+    isLoading,
+    error
+  } = useSwr('isInWishlist', () => isInWishlist(product.id));
+
+  if (error) return toast.error(error.message);
 
   const handleAddToBag = () => {
     if (auth.currentUser) {
