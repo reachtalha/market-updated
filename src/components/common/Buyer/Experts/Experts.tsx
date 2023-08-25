@@ -27,7 +27,6 @@ export default function Experts({ expertsJSON, categories }: ExpertsProps) {
 
   const [filteredExperts, setFilteredExperts] = useState(experts);
   const sortExpertBy = useSortingStore((state: any) => state.sortExpertBy);
-  console.log(experts);
   useEffect(() => {
     if (category !== 'all') {
       setFilteredExperts(

@@ -1,21 +1,26 @@
 'use client';
+import { useEffect, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
+
+import useSwr from 'swr';
+
+import useCategorySlug from '@/hooks/useCategorySlug';
+import useSortingStore from '@/state/useSortingStore';
 
 import BoxedContent from '@/components/common/BoxedContent';
-import MarketCategories, { Category } from '@/components/common/Buyer/Market/MarketCategories';
-import useCategorySlug from '@/hooks/useCategorySlug';
 import { Button } from '@/components/ui/button';
+
+import MarketCategories, { Category } from '@/components/common/Buyer/Market/MarketCategories';
 import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
 import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
 import ShopCard from '@/components/common/Buyer/Cards/ShopCard';
 import MarketHeader from '@/components/common/Buyer/Market/MarketHeader';
-import Loader from '@/components/common/Loader';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '@/lib/firebase/client';
-import useSwr from 'swr';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import useSortingStore from '@/state/useSortingStore';
+import { MarketLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 const getShops = async () => {
   let shops: any = [];
@@ -40,7 +45,7 @@ export default function Market({ categories }: MarketProps) {
   const [filteredShops, setFilteredShops] = useState([]);
   const sortShopsBy = useSortingStore((state: any) => state.sortShopsBy);
 
-  const { data: shops, isLoading, error } = useSwr('shops', () => getShops());
+  const { data: shops, isLoading } = useSwr('shops', () => getShops());
 
   useEffect(() => {
     if (shops) {
@@ -60,7 +65,8 @@ export default function Market({ categories }: MarketProps) {
       }
     }
   }, [sortShopsBy]);
-  if (isLoading) return <Loader className="h-screen w-screen flex items-center justify-center" />;
+
+  if (isLoading) return <MarketLoader />;
 
   return (
     <>
