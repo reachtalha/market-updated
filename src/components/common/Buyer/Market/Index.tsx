@@ -21,6 +21,7 @@ import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
 import ShopCard from '@/components/common/Buyer/Cards/ShopCard';
 import MarketHeader from '@/components/common/Buyer/Market/MarketHeader';
 import { MarketLoader } from '@/components/common/Skeleton/SkeletonLoader';
+import Error from '@/components/common/Error';
 
 const getShops = async () => {
   let shops: any = [];
@@ -45,7 +46,7 @@ export default function Market({ categories }: MarketProps) {
   const [filteredShops, setFilteredShops] = useState([]);
   const sortShopsBy = useSortingStore((state: any) => state.sortShopsBy);
 
-  const { data: shops, isLoading } = useSwr('shops', () => getShops());
+  const { data: shops, isLoading, error } = useSwr('shops', () => getShops());
 
   useEffect(() => {
     if (shops) {
@@ -67,6 +68,7 @@ export default function Market({ categories }: MarketProps) {
   }, [sortShopsBy]);
 
   if (isLoading) return <MarketLoader />;
+  if (error) return <Error className=" grid place-content-center h-screen w-full" />;
 
   return (
     <>

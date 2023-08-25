@@ -8,7 +8,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <header className="w-full fixed top-0 z-50">
         <Header />
       </header>
-
+      
       <main>{children}</main>
       <Footer />
     </>

@@ -87,7 +87,6 @@ export default function Products({ categories, foryou }: ProductsProps) {
   );
 
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
-  const [triggerRender, setTriggerRender] = useState(false);
   const sortProductsBy = useSortingStore((state: any) => state.sortProductsBy);
 
   const {
@@ -117,18 +116,19 @@ export default function Products({ categories, foryou }: ProductsProps) {
 
     switch (sortProductsBy) {
       case 'price':
-        setFilteredProducts(products.sort((a: any, b: any) => a.price - b.price));
+        setFilteredProducts([...filteredProducts].sort((a: any, b: any) => a.price - b.price));
         break;
       case 'name':
-        setFilteredProducts(products.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+        setFilteredProducts(
+          [...filteredProducts].sort((a: any, b: any) => a.name.localeCompare(b.name))
+        );
         break;
       case 'reviews':
-        setFilteredProducts(products.sort((a: any, b: any) => b.rating - a.rating));
+        setFilteredProducts([...filteredProducts].sort((a: any, b: any) => b.rating - a.rating));
         break;
       default:
         setFilteredProducts(products);
     }
-    setTriggerRender((prev) => !prev);
   }, [sortProductsBy, products]);
 
   if (isLoading) return <ProductsLoader />;

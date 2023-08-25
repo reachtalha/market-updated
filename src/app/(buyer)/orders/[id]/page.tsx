@@ -8,6 +8,7 @@ import OrderDetail from '@/components/modules/Account/OrderHistory/OrderDetail';
 import Loader from '@/components/common/Loader';
 import { Button } from '@/components/ui/button';
 import LeaveReviewModal from '@/components/common/Buyer/LeaveReviewModal';
+import Error from '@/components/common/Error';
 
 type Props = {
   params: {
@@ -86,11 +87,12 @@ const getOrder = async (id: string) => {
 const Order = (props: Props) => {
   const router = useRouter();
 
-  const { data, isLoading } = useSwr('mobile-orders', () => getOrder(props.params.id));
+  const { data, isLoading, error } = useSwr('mobile-orders', () => getOrder(props.params.id));
 
   if (window.innerWidth > 756) router.push('/account?display=orders');
 
   if (isLoading) return <Loader className="w-full h-80 flex items-center justify-center" />;
+  if (error) return <Error className="mt-20" />;
 
   return (
     <div className=" w-[90%] m-auto mt-20">

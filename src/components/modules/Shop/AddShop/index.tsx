@@ -178,6 +178,7 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
                   logoImage: defaultValues.logoImage
                 }}
                 isEdit={isEdit}
+                loading={loading}
               />
             )}
           </div>
