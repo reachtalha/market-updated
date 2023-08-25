@@ -35,21 +35,21 @@ const getShop = async (shopId: string) => {
   return docRef.data();
 };
 
-const getExperts = async () => {
-  const querySnapshot = await getDocs(
-    query(collection(db, 'users'), where('role', '==', 'influencer'), limit(4))
-  );
+// const getExperts = async () => {
+//   const querySnapshot = await getDocs(
+//     query(collection(db, 'users'), where('role', '==', 'influencer'), limit(4))
+//   );
 
-  let experts: any = [];
+//   let experts: any = [];
 
-  querySnapshot.forEach((doc) => {
-    experts.push({
-      id: doc.id,
-      ...doc.data()
-    });
-  });
-  return experts;
-};
+//   querySnapshot.forEach((doc) => {
+//     experts.push({
+//       id: doc.id,
+//       ...doc.data()
+//     });
+//   });
+//   return experts;
+// };
 
 type ShopProps = {
   params: {
@@ -65,10 +65,9 @@ type Shop = {
 };
 
 export default async function Shop({ params }: ShopProps) {
-  const [shop, products, experts]: [any, any, any] = await Promise.all([
+  const [shop, products]: [any, any] = await Promise.all([
     getShop(params.shopId),
-    getProducts(params.shopId),
-    getExperts()
+    getProducts(params.shopId)
   ]);
 
   return (
@@ -116,7 +115,10 @@ export default async function Shop({ params }: ShopProps) {
 
       {/* <Testimonials expertsJSON={JSON.stringify(experts)} /> */}
       <TakeQuizSection />
-      <SimiliarShops category={shop.category} currentShop={params.shopId} />
+      <BoxedContent className="mt-10">
+        <SimiliarShops category={shop.category} currentShop={params.shopId} />
+      </BoxedContent>
+
       <BoxedContent className="my-16">
         <OrganicSimplifiedSection />
       </BoxedContent>
