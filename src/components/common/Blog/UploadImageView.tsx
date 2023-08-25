@@ -5,12 +5,14 @@ import UploadImage from '@/utils/handlers/image/UploadImage';
 import { useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
+import { Input } from '@/components/ui/input';
 
 type UploadImageProps = {
   onUploadSuccess: any
+  value: string
 }
-export default function UploadImageView({ onUploadSuccess }: UploadImageProps){
-  const [url, setURL] = useState<string>("");
+export default function UploadImageView({ value, onUploadSuccess }: UploadImageProps){
+  const [url, setURL] = useState<string>(value);
   const [isLoading, setIsLoading] = useState(false);
   const handleUploadImage = async (base64Image: string) => {
     try {
@@ -21,6 +23,7 @@ export default function UploadImageView({ onUploadSuccess }: UploadImageProps){
         name: 'blog-' + new Date().getTime()
       })
 
+      onUploadSuccess(resp);
       setURL(resp);
     }catch(err){
       console.log(err);
@@ -34,22 +37,22 @@ export default function UploadImageView({ onUploadSuccess }: UploadImageProps){
 
   return (
     <div className="flex items-center justify-center w-full">
-      {isLoading ? <Skeleton className="h-[220px] w-full bg-gray-200" /> : (
+      {isLoading ? <Skeleton className="h-[120px] w-full bg-gray-200" /> : (
         <>
-          {url !== "" ? <div className="relative border w-full">
-            <button className="absolute -top-3 -right-3 m-0 p-1 rounded-full shadow-lg border bg-white">
+          {url !== "" ? <div className="flex justify-between rounded-md items-center p-4 border w-full">
+            <Image alt={url} src={url} height={50} width={50} className="w-[50px] h-[50px] object-cover rounded-lg" />
+            <button className="m-0 p-2 rounded-md shadow-lg border bg-white">
               <XIcon height={16} width={16} />
             </button>
-              <Image alt={url} src={url} height={300} width={300} className="w-full h-[220px] object-cover rounded-lg" />
           </div>
-          :<label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+          :<label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-[120px] border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <UploadIcon className="mb-3" />
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
                 className="font-semibold">Click to upload</span></p>
               <p className="text-xs text-gray-500 dark:text-gray-400">Supported files are jpg, jpeg, png, webp</p>
             </div>
-            <input onChange={handleFileSelect} id="dropzone-file" type="file" className="hidden" />
+            <Input onChange={handleFileSelect} id="dropzone-file" type="file" className="hidden" />
           </label>}
         </>
       )}

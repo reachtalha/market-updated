@@ -26,12 +26,21 @@ export default function AccountOption({ options, selectedOption }: AccountOption
             key={idx}
             className="tracking-wide  cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
           >
+            {category.slug === 'experts' ?  (
+                <Link
+                  className={category.slug === selectedOption ? 'font-medium' : ''}
+                  href={category.href}
+                >
+                  {category.name}
+                </Link>
+              ) :
             <Link
               className={category.slug === selectedOption ? 'font-medium' : ''}
               href={`${category.href}=${category.slug}`}
             >
               {category.name}
             </Link>
+            }
           </li>
         ))}
         <li
