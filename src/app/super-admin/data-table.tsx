@@ -83,7 +83,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
     }
   };
   return (
-    <div className="rounded-md w-full border">
+    <div className="rounded-md mx-auto w-full border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

@@ -12,6 +12,14 @@ export type NewUser = {
 
 export const columns: ColumnDef<NewUser>[] = [
   {
+    accessorKey: 'id',
+    header: 'User ID',
+    cell: ({ row }) => {
+      const id: string = String(row.getValue('id'));
+      return <span className="capitalize">{id}</span>;
+    }
+  },
+  {
     accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => {
@@ -26,6 +34,14 @@ export const columns: ColumnDef<NewUser>[] = [
 
   {
     accessorKey: 'role',
-    header: 'Role'
+    header: 'Role',
+    cell: ({ row }) => {
+      const role: string = String(row.getValue('role'));
+      return (
+        <span className="capitalize px-2.5 rounded-full border  border-neutral-200 bg-neutral-100 py-1.5">
+          {role}
+        </span>
+      );
+    }
   }
 ];

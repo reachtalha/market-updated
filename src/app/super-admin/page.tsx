@@ -1,5 +1,4 @@
 'use client';
-import BoxedContent from '@/components/common/BoxedContent';
 
 import { NewUser, columns } from './columns';
 import { DataTable } from './data-table';
@@ -8,10 +7,6 @@ import { db } from '@/lib/firebase/client';
 import useSwr from 'swr';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
-import { useRole } from '@/hooks/useUserRole';
-import useAuth from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,33 +25,14 @@ async function getData(): Promise<NewUser[]> {
 }
 
 export default function NewRegisteredUsers() {
-  const { logout } = useAuth();
   const { data, error, isLoading } = useSwr('new-registered-users', getData);
-  const role = useRole();
-  const router = useRouter();
-  console.log(role);
-
-  if (!role) {
-    return <Loader className="w-screen h-screen flex items-center justify-center" />;
-  }
-
-  if (role !== 'superadmin') {
-    router.back();
-  }
   if (isLoading) {
-    return <Loader className="w-screen h-screen flex items-center justify-center" />;
+    return <Loader className="w-full h-[70vh] grid place-content-center" />;
   }
 
   if (error) {
-    return <Error />;
+    return <Error className="w-full h-[50vh] grid place-content-center" />;
   }
 
-  return (
-    <BoxedContent className="flex flex-col gap-x-5 py-10">
-      <Button onClick={() => logout()} className="w-20 ms-auto mb-5 hover:bg-red-600 bg-red-500 ">
-        Logout
-      </Button>
-      <DataTable columns={columns} data={data} />
-    </BoxedContent>
-  );
+  return <DataTable columns={columns} data={data} />;
 }
