@@ -13,6 +13,19 @@ import { StaticImageData } from 'next/image';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import SimiliarShops from '@/components/common/Buyer/SimilarShops';
 
+type ShopProps = {
+  params: {
+    shopId: string;
+  };
+};
+
+type Shop = {
+  name: string;
+  tagline: string;
+  coverImage: StaticImageData;
+  category: string;
+};
+
 const getProducts = async (shopId: string) => {
   const querySnapshot = await getDocs(
     query(collection(db, 'products'), where('shopId', '==', shopId))
@@ -32,25 +45,14 @@ const getProducts = async (shopId: string) => {
 const getShop = async (shopId: string) => {
   const querySnapshot = await getDoc(doc(db, 'shops', shopId));
 
-  return querySnapshot.data();
-};
-
-type ShopProps = {
-  params: {
-    shopId: string;
-  };
-};
-
-type Shop = {
-  name: string;
-  tagline: string;
-  coverImage: StaticImageData;
-  category: string;
+  return querySnapshot.data() as Shop;
 };
 
 export default async function Shop({ params }: ShopProps) {
-  const shop: Shop = (await getShop(params.shopId)) as Shop;
-  const products = await getProducts(params.shopId);
+  const shopPromise = getShop(params.shopId);
+  const productsPromise = getProducts(params.shopId);
+
+  const [shop, products] = await Promise.all([shopPromise, productsPromise]);
 
   return (
     <>

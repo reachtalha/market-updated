@@ -66,3 +66,18 @@ export const ExpertLoader = () => {
     </BoxedContent>
   );
 };
+
+export const AccountsLoader = () => {
+  return (
+    <BoxedContent className="flex flex-col md:flex-row gap-x-5 py-20">
+      <div className="flex flex-row md:flex-col w-full md:w-48 gap-4">
+        <div className="w-1/3 md:w-full rounded h-4 bg-gray-200 animate-pulse" />
+        <div className="w-1/3 md:w-full rounded h-4 bg-gray-200 animate-pulse" />
+        <div className="w-1/3 md:w-full rounded h-4 bg-gray-200 animate-pulse" />
+      </div>
+      <div className="flex-1 h-[80vh] grid place-content-center">
+        <div className="bg-gray-200 h-96 w-96 animate-pulse rounded-md" />
+      </div>
+    </BoxedContent>
+  );
+};
