@@ -62,6 +62,7 @@ const Header = () => {
           <NavLink href="/products" title="All Products" />
           <NavLink href="/market" title="Market" />
           <NavLink href="/experts" title="Experts" />
+          <NavLink href="/blogs" title="Blogs" />
         </div>
         <div className="inline-flex gap-x-6 items-center">
           <Button
