@@ -8,10 +8,10 @@ import Loader from '@/components/common/Loader';
 import AccountOption, { Option } from '@/components/common/Buyer/Account/AccountOptions';
 import BoxedContent from '@/components/common/BoxedContent';
 import Settings from '@/components/modules/Account/Settings';
-import CardInfo from '@/components/modules/Account/CardInfo';
 import OrderHistory from '@/components/modules/Account/OrderHistory';
 import Socials from '@/components/modules/Account/Socials';
 import Wishlist from '@/components/modules/Account/Wishlist';
+import ManageBlogs from '@/components/modules/Blogs/ManageBlogs';
 import { AccountsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 type AccountProps = {
@@ -53,14 +53,10 @@ function Index({ options }: AccountProps) {
             )}
           </>
         );
-      case 'card':
-        return (
-          <div className=" w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
-            <CardInfo />
-          </div>
-        );
       case 'order':
         return <OrderHistory />;
+      case 'blogs':
+        return <ManageBlogs />;
       case 'wishlist':
         return (
           <>
@@ -132,6 +128,11 @@ function Index({ options }: AccountProps) {
                 {
                   name: 'Socials',
                   slug: 'socials',
+                  href: '/account?display'
+                },
+                {
+                  name: 'Manage Blogs',
+                  slug: 'blogs',
                   href: '/account?display'
                 }
               ]

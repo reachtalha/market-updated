@@ -142,7 +142,7 @@ const Expert = async ({ params }: ExpertProps) => {
           <div className="border-t-2 border-black" />
         </div>
       </section>
-      <LatestBlogsSection title="Latest blogs" />
+      <LatestBlogsSection uid={params.expertId} title="blogs" />
     </>
   );
 };
