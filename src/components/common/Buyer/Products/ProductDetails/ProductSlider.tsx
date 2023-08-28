@@ -9,7 +9,7 @@ export default function ProductSlider({ images }: { images: string[] }) {
   return (
     <Swiper
       loop
-      pagination
+      pagination={{ clickable: true }}
       keyboard
       modules={[Keyboard, Pagination]}
       className="container w-full h-full mySwiper"

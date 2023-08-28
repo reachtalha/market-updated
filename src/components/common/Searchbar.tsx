@@ -13,6 +13,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 
 import { getDocs, collection, query, where, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type SearchbarProps = {
   isOpen: boolean;
@@ -45,6 +46,7 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
   const router = useRouter();
   const [searchQuery, setQuery] = useState('');
   const [result, setResult] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
 
   const debouncedSearch = useDebounce(searchQuery, 150);
 
@@ -61,6 +63,7 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
   }, [searchQuery]);
 
   async function search() {
+    setLoading(true);
     const nameQuery = getDocs(
       query(
         collection(db, 'products'),
@@ -120,6 +123,7 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
     });
     const list = [...nameList, ...shopList, ...typeList];
     setResult(list.filter((a, i) => list.findIndex((s) => a.id === s.id) === i));
+    setLoading(false);
   }
 
   const searchBoxRef = useRef<HTMLDivElement>(null);
@@ -129,6 +133,52 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
     toggleSearchBar(false);
     router.push(ref);
   };
+
+  const renderSearchView = () => {
+    if(loading){
+      return (
+        <div className="flex flex-col gap-2 w-full">
+          <Skeleton className="w-full h-[40px] bg-gray-200" />
+          <Skeleton className="w-full h-[40px] bg-gray-200" />
+          <Skeleton className="w-full h-[40px] bg-gray-200" />
+        </div>
+      )
+    }
+
+    if(searchQuery.length > 0){
+      if(result.length > 0){
+        return  result.map((product: any, index: number) => (
+          <div
+            onClick={() => handleClick('/products/' + product.id)}
+            key={index}
+            className="w-full flex cursor-pointer gap-x-2  flex-row items-center hover:bg-neutral-100 rounded p-1"
+          >
+            <div className="relative w-20 h-20 rounded">
+              <Image
+                src={product.image}
+                className="object-cover drop-shadow-sm"
+                alt={'product'}
+                fill={true}
+              />
+            </div>
+            <div className="flex flex-col items-start">
+              <div className="font-medium capitalize ">{product.name}</div>
+              <div className="text-sm">by <span className="capitalize">{product.shop}</span></div>
+            </div>
+          </div>
+        ))
+      }else {
+        return (
+          <div className=" py-6 flex items-center justify-center w-full">
+            <span>No result found</span>
+          </div>
+        )
+      }
+    }
+
+    return null;
+  }
+
   return (
     <div
       ref={searchBoxRef}
@@ -139,7 +189,7 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
       )}
     >
       <BoxedContent className="mt-16">
-        <form className="pt-6">
+        <form onSubmit={(e: any) => e.preventDefault()} className="pt-6">
           <div className="flex gap-2 items-center">
             <SearchIcon height={25} width={25} />
             <Input
@@ -150,39 +200,10 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
             />
           </div>
         </form>
-
-        {searchQuery.length > 0 ? (
           <div className="flex flex-col ms-7 mt-2 gap-y-2 items-start">
-            {result.length > 0 ? (
-              result.map((product: any, index: number) => (
-                <div
-                  onClick={() => handleClick('/products/' + product.id)}
-                  key={index}
-                  className="w-full flex cursor-pointer gap-x-2  flex-row items-center hover:bg-neutral-100 rounded p-1"
-                >
-                  <div className="relative w-20 h-20 rounded">
-                    <Image
-                      src={product.image}
-                      className="object-cover drop-shadow-sm"
-                      alt={'product'}
-                      fill={true}
-                    />
-                  </div>
-                  <div className="flex flex-col items-start">
-                    <div className="font-medium capitalize ">{product.name}</div>
-                    <div className="text-sm">by <span className="capitalize">{product.shop}</span></div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className=" py-6 flex items-center justify-center w-full">
-                <span>No result found</span>
-              </div>
-            )}
-          </div>)
-          : (<>
-            <h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>
-            <ul className="flex flex-col gap-y-4 mt-4">
+            {renderSearchView()}
+            {searchQuery.length < 1 && <ul className="flex flex-col gap-y-4 mt-4">
+              <h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>
               {quickLinks.map((item) => (
                 <li className="" key={item.id}>
                   <button
@@ -194,8 +215,8 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
                   </button>
                 </li>
               ))}
-            </ul>
-          </>)}
+            </ul>}
+          </div>
       </BoxedContent>
     </div>
   );

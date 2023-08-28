@@ -14,7 +14,7 @@ import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/Pr
 import edjsHTML from 'editorjs-html';
 
 const edjsParser = edjsHTML();
-import SimiliarProducts from '@/components/common/Buyer/SimiliarProducts';
+import SimiliarProducts from '@/components/common/Buyer/SimilarProducts';
 
 import useCartStore from '@/state/useCartStore';
 import { updateDoc, getDoc, doc, setDoc } from 'firebase/firestore';
@@ -201,7 +201,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
               ? 'Sold Out'
               : isAddToCartLoading
               ? 'loading...'
-              : 'Add to bag'}
+              : 'Add to cart'}
           </Button>
           <Button
             disabled={loading || isLoading}

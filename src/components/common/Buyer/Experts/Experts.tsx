@@ -48,7 +48,7 @@ export default function Experts({ expertsJSON, categories }: ExpertsProps) {
   }, [sortExpertBy]);
 
   return (
-    <BoxedContent className="flex gap-x-5 py-20">
+    <BoxedContent className="flex gap-x-5 py-20 mt-8">
       <ExpertCategories selectedCategory={category} categories={categories} />
       <div className="flex-1 space-y-4">
         <ExpertHeader selectedCategory={category} categories={categories} />

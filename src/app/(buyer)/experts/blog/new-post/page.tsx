@@ -40,7 +40,7 @@ export default function NewPost(){
 
   if(isLoading){
     return (
-      <BoxedContent className="py-24">
+      <BoxedContent className="py-24 mt-8">
         <Skeleton className="h-[40px] w-full bg-gray-200" />
         <Skeleton className="mt-4 h-[120px] w-full bg-gray-200" />
         <Skeleton className="mt-4 h-[120px] w-full bg-gray-200" />

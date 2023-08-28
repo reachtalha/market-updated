@@ -105,7 +105,7 @@ export default function ProductReviews({
           })
           .map((review: any) => (
             <li
-              className="grid gap-y-4 md:grid-cols-3 py-5 border-b border-neutral-900/15"
+              className="grid gap-y-4 md:grid-cols-3 py-5 last:border-0 border-b border-neutral-900/15"
               key={review.id}
             >
               <div className="col-span-1">

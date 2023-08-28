@@ -4,7 +4,7 @@ import ProductCartSkeleton from '@/components/common/Skeleton/ProductCardSkeleto
 const Loading = () => {
   return (
     <>
-      <div className="h-screen flex items-end justify-start w-full bg-gray-200 bg-gradient-to-b from-black/40 to-transparent">
+      <div className="mt-8 h-screen flex items-end justify-start w-full bg-gray-200 bg-gradient-to-b from-black/40 to-transparent">
         <header className="flex px-3 md:px-6 w-full animate-pulse justify-between items-center mb-14">
           <div className="space-y-3">
             <div className="bg-gray-100 rounded animate-pulse h-10 w-28" />

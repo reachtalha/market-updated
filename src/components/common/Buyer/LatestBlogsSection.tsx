@@ -57,15 +57,13 @@ export default function LatestBlogsSection({ title, className = '' }: LatestBlog
     }
   );
 
-  console.log({ data })
-
   return (
-    <BoxedContent className={cn(`mb-[8rem]`, className)}>
+    <BoxedContent className={cn(`mb-[8rem] mt-8`, className)}>
       <header className="flex flex-wrap justify-between items-center mb-3">
-        <h3 className="text-lg md:text-3xl">{title}</h3>
-        <h3 className="text-lg md:text-3xl">@allorganicsmarket</h3>
+        <h3 className="text-lg md:text-2xl">{title}</h3>
+        <h3 className="text-lg md:text-2xl">@allorganicsmarket</h3>
       </header>
-      <div className="flex flex-col md:flex-row justify-between gap-y-4 md:gap-x-4">
+      <div className="grid grid-cols-4 justify-between gap-y-4 md:gap-x-4">
         {data?.map((post: any) => (
           <PostCard
             key={post?.id}
