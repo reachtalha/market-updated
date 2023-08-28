@@ -74,7 +74,7 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
     data: shop,
     error,
     isLoading
-  } = useSWR<any>('shop', async () => {
+  } = useSWR<any>('seller-shop', async () => {
     const docRef = await getDocs(
       query(collection(db, 'shops'), where('uid', '==', `${auth.currentUser?.uid}`))
     );
@@ -91,6 +91,7 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
         types: typeRef?.docs[0]?.data().list
       } as any;
     }
+    return false;
   });
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -181,6 +182,15 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
   if (isLoading) {
     return <Loader className="h-full w-full grid place-content-center" />;
   }
+
+  console.log(shop, isEdit);
+
+  if (!shop && !isEdit)
+    return (
+      <div className="h-full w-full grid place-content-center text-gray-500">
+        Please Create A Shop First
+      </div>
+    );
   return (
     <section className={`h-full ${isEdit ? 'pb-10' : 'py-10'} `}>
       <FormProvider {...methods}>

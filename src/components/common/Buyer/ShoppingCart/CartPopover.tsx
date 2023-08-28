@@ -22,7 +22,6 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   const { cart, getCart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
   const user = auth.currentUser;
 
-  console.log(cart);
   const handleExploreProducts = () => router.push('/products');
   const handleViewCart = () => router.push('/cart');
   const handleViewCheckout = () => router.push('/checkout');
@@ -34,12 +33,6 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   const handleOnDelete = (item: any) => {
     deleteFromCart(item.itemId);
   };
-
-  const filteredItems = cart?.items?.map((item: any) => ({
-    productId: item.productId,
-    quantity: item.quantity,
-    skuId: item.skuId
-  }));
 
   return (
     <Popover>

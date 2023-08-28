@@ -32,8 +32,8 @@ type ListItem = {
 
 const initialSKUState = {
   id: '',
-  price: 0,
-  quantity: 0,
+  price: 1,
+  quantity: 1,
   measurement: '',
   color: ''
 };
@@ -55,9 +55,6 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
 
   const [isColors, setIsColors] = useState<boolean>(false);
 
-  const priceRef = useRef<HTMLInputElement | null>(null);
-  const quantityRef = useRef<HTMLInputElement | null>(null);
-
   useEffect(() => {
     if (isEdit) setSKU(SKUList.filter((l: any) => l.id === editSkuId)[0]);
   }, [editSkuId]);
@@ -71,6 +68,16 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
   }
 
   function createSKU() {
+    if (sku.price < 1) {
+      toast.error('Price cannot be less than 1');
+      return;
+    }
+
+    if (sku.quantity < 1) {
+      toast.error('Quantity cannot be less than 1');
+      return;
+    }
+
     if (!sku.price || !sku.quantity || (isColors && !sku.color) || !sku.measurement) {
       toast.error('Please fill out all required fields!');
       return;
@@ -152,7 +159,7 @@ const CreateSKU = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<n
           <Input
             onChange={(e: any) => setSKU((prev) => ({ ...prev, price: parseInt(e.target.value) }))}
             className="w-full placeholder:text-sm"
-            type="text"
+            type="number"
             inputMode="numeric"
             placeholder="Product Price"
             value={sku.price}
