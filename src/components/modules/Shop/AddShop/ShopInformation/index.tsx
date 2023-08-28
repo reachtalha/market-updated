@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -13,19 +13,22 @@ import {
 } from '@/components/ui/select';
 
 import Title from '@/components/common/Seller/Shared/Title';
+import { PenBox, Pencil } from 'lucide-react';
 
 type Props = {
   types: String[];
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  isEdit?: boolean;
 };
 
-const Index = ({ setStep, types }: Props) => {
+const Index = ({ setStep, types, isEdit = false }: Props) => {
   const {
     register,
     trigger,
     getValues,
     formState: { errors }
   } = useFormContext();
+  const [editMode, setEditMode] = useState(false);
 
   const nextStep = async () => {
     const isValid = await trigger(['name', 'category', 'tagline', 'phone', 'address', 'email']);
@@ -42,7 +45,12 @@ const Index = ({ setStep, types }: Props) => {
 
   return (
     <>
-      <Title title="Shop Details" />
+      <div className="flex items-center justify-between w-full ">
+        <Title title="Shop Details" />
+        {isEdit && (
+          <Pencil className="cursor-pointer" onClick={() => setEditMode(true)} size={17} />
+        )}
+      </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5">
         <Label>Shop Name</Label>
         <Input
@@ -50,6 +58,7 @@ const Index = ({ setStep, types }: Props) => {
           type="text"
           placeholder="Enter Shop Name"
           {...register('name', { required: true })}
+          disabled={isEdit && !editMode}
         />
         {errors.name && <span className="text-sm text-red-500">Shop Name doesn`t look valid</span>}
       </div>
@@ -60,6 +69,7 @@ const Index = ({ setStep, types }: Props) => {
           type="text"
           placeholder="Enter tagline"
           {...register('tagline', { required: true })}
+          disabled={isEdit && !editMode}
         />
         {errors.name && <span className="text-sm text-red-500">Tagline doesn`t look valid</span>}
       </div>
@@ -68,6 +78,7 @@ const Index = ({ setStep, types }: Props) => {
         <Select
           defaultValue={getValues('category') !== '' ? getValues('category') : undefined}
           onValueChange={handleChangeValue}
+          disabled={isEdit && !editMode}
         >
           <SelectTrigger className="w-full bg-white capitalize">
             <SelectValue placeholder="Select shop category" />
@@ -92,6 +103,7 @@ const Index = ({ setStep, types }: Props) => {
             type="text"
             placeholder="Enter Email"
             {...register('email', { required: true })}
+            disabled={isEdit && !editMode}
           />
           {errors.name && <span className="text-sm text-red-500">Email doesn`t look valid</span>}
         </div>
@@ -102,6 +114,7 @@ const Index = ({ setStep, types }: Props) => {
             type="text"
             placeholder="Enter Phone Number"
             {...register('phone', { required: true })}
+            disabled={isEdit && !editMode}
           />
           {errors.name && (
             <span className="text-sm text-red-500">Phone Number doesn`t look valid</span>
@@ -115,13 +128,20 @@ const Index = ({ setStep, types }: Props) => {
           type="text"
           placeholder="Enter Shop Address"
           {...register('address', { required: true })}
+          disabled={isEdit && !editMode}
         />
         {errors.name && <span className="text-sm text-red-500">Address doesn`t look valid</span>}
       </div>
 
-      <Button type="button" onClick={nextStep} className="w-full py-2.5 rounded-lg  mt-5 xl:mt-8">
-        Next
-      </Button>
+      {(!isEdit || editMode) && (
+        <Button
+          type={isEdit && editMode ? 'submit' : 'button'}
+          onClick={isEdit ? () => {} : nextStep}
+          className="w-full py-2.5 rounded-lg  mt-5 xl:mt-8"
+        >
+          {isEdit && editMode ? ' Update' : ' Next'}
+        </Button>
+      )}
     </>
   );
 };

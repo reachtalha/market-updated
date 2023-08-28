@@ -33,6 +33,8 @@ const Index = ({ setStep }: Props) => {
         onReady() {
           ref.current = editor;
         },
+
+        autofocus: true,
         placeholder: 'Type product details here',
         inlineToolbar: true,
         data: getValues('detailedDescription') || '',
@@ -40,7 +42,6 @@ const Index = ({ setStep }: Props) => {
           header: {
             class: Header,
             inlineToolbar: ['link'],
-
             config: {
               placeholder: 'Header'
             },
@@ -86,8 +87,8 @@ const Index = ({ setStep }: Props) => {
     <>
       <Title title="Detailed Description" />
       <div className="w-full mt-3 xl:mt-5">
-        <div className="prose prose-stone mx-auto w-full dark:prose-invert">
-          <div id="editor" className=" p-5 bg-white shadow-sm rounded-lg border" />
+        <div className=" w-full ">
+          <div id="editor" className=" p-5 bg-white  shadow-sm rounded-lg border" />
           <p className="text-sm text-gray-500">
             Use <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">Tab</kbd> to open
             the command menu.

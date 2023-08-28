@@ -168,8 +168,10 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
           )}
 
           <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] m-auto mt-5 2xl:mt-16">
-            {step === 1 && <ShopInformation setStep={setStep} types={types as string[]} />}
-            {step === 2 && <Socials setStep={setStep} />}
+            {step === 1 && (
+              <ShopInformation setStep={setStep} isEdit={isEdit} types={types as string[]} />
+            )}
+            {step === 2 && <Socials setStep={setStep} isEdit={isEdit} />}
             {step === 3 && (
               <AddImages
                 setStep={setStep}

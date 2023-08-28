@@ -52,7 +52,7 @@ type CartItemType = {
 
 type ItemsType = CartItemType[];
 
-export default function Checkout() {
+export default function Checkout({ user }: { user: any }) {
   const [processing, setProcessing] = useState(false);
   const [isOrderLoading, setIsOrderLoading] = useState(false);
 
@@ -81,16 +81,17 @@ export default function Checkout() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      firstName: '',
-      lastName: '',
+      email: user.email,
+      firstName: user.name.split(' ')[0],
+      lastName: user.name.split(' ').length > 1 ? user.name.split(' ')[1] : '',
       company: '',
-      address: '',
+      address: user.address,
       apartments: '',
-      city: '',
+      city: user.city,
       state: '',
-      phone: ''
-    }
+      phone: user.phone
+    },
+    shouldUnregister: false
   });
   async function onSubmit(values: any) {
     try {
