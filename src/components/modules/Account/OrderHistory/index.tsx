@@ -39,7 +39,7 @@ type Order = {
 
 const getOrder = async (id: string) => {
   const userId = auth.currentUser?.uid;
-  const orders: Order[] = [];
+  let orders: Order[] = [];
 
   const querySnapshot = await getDocs(
     query(collection(db, 'orders'), where('userId', '==', userId))
@@ -82,6 +82,8 @@ const getOrder = async (id: string) => {
     };
     orders.push(order);
   });
+
+  orders = orders.sort((a: any, b: any) => b.placedAt - a.placedAt);
 
   return orders;
 };

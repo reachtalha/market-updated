@@ -22,6 +22,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   const { cart, getCart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
   const user = auth.currentUser;
 
+  console.log(cart);
   const handleExploreProducts = () => router.push('/products');
   const handleViewCart = () => router.push('/cart');
   const handleViewCheckout = () => router.push('/checkout');
@@ -31,7 +32,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   }, []);
 
   const handleOnDelete = (item: any) => {
-    deleteFromCart(item.docId, item.selectedVariant.id, item.quantity);
+    deleteFromCart(item.itemId);
   };
 
   const filteredItems = cart?.items?.map((item: any) => ({
@@ -74,12 +75,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                       </div>
                     </div>
                     <div>
-                      <QuantityInput
-                        items={filteredItems}
-                        productId={item.productId}
-                        quantity={item.quantity}
-                        variant={item.selectedVariant.id}
-                      />
+                      <QuantityInput quantity={item.quantity} docId={item.itemId} />
                     </div>
                     <Button
                       onClick={() => handleOnDelete(item)}

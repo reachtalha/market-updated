@@ -52,39 +52,6 @@ type CartItemType = {
 
 type ItemsType = CartItemType[];
 
-const fetchCreateOrder = async (
-  shippingAddress: ShippingAddressType,
-  items: ItemsType,
-  shops: string[],
-  userId: string,
-  total: number
-) => {
-  const ordersRef = collection(db, 'orders');
-  await addDoc(ordersRef, {
-    photoURL: auth.currentUser?.photoURL,
-    userId,
-    total,
-    shops,
-    timeStamp: Timestamp.fromDate(new Date()),
-    items: items,
-    shippingAddress
-  });
-};
-
-const decreaseQuantity = async (docId: string, SKUId: string, quantity: number) => {
-  const productRef = await getDoc(doc(db, 'products', docId));
-  const SKUs = productRef?.data()?.SKU;
-  //decrease quantity of selected SKU
-  SKUs.map((sku: any) => {
-    if (sku.id === SKUId) {
-      sku.quantity -= quantity;
-    }
-  });
-  await updateDoc(doc(db, 'products', docId), {
-    SKU: SKUs
-  });
-};
-
 export default function Checkout() {
   const [processing, setProcessing] = useState(false);
   const [isOrderLoading, setIsOrderLoading] = useState(false);
