@@ -15,6 +15,7 @@ import { SearchIcon } from 'lucide-react';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import CartPopover from '@/components/common/Buyer/ShoppingCart/CartPopover';
 import useCartStore from '@/state/useCartStore';
+import TopBanner from '@/components/common/Buyer/TopBanner';
 
 const Header = () => {
   const [toggleSearchbar, setToggleSearchBar] = useState(false);
@@ -24,6 +25,8 @@ const Header = () => {
 
   const onToggleSearchBar = (val: boolean) => setToggleSearchBar(val);
   return (
+    <>
+    <TopBanner />
     <nav
       className={`${
         isScrollChanged || toggleSearchbar
@@ -94,6 +97,7 @@ const Header = () => {
         </div>
       </BoxedContent>
     </nav>
+    </>
   );
 };
 

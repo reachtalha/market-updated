@@ -72,7 +72,7 @@ export default function Market({ categories }: MarketProps) {
 
   return (
     <>
-      <BoxedContent className="flex gap-x-5 py-20">
+      <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <MarketCategories selectedCategory={category} categories={categories} />
         <div className="flex-1 space-y-4">
           <MarketHeader selectedCategory={category} categories={categories} />

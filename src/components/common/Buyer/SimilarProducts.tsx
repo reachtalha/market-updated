@@ -53,7 +53,7 @@ const getproducts = async (category: string) => {
   return products as Product[];
 };
 
-export default function Similarproducts({
+export default function SimilarProducts({
   category,
   currentProduct
 }: {

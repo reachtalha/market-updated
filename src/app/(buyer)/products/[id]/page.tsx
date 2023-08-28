@@ -35,7 +35,7 @@ export default async function Page({ params }: props) {
   if (!product) return notFound();
 
   return (
-    <BoxedContent className="py-20">
+    <BoxedContent className="py-20 mt-8">
       <Product productJSON={JSON.stringify(product)} />
       <div className="py-5 md:py-10">
         <OrganicSimplifiedSection />

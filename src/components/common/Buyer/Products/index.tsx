@@ -136,7 +136,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
 
   return (
     <>
-      <BoxedContent className="flex gap-x-5 py-20">
+      <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <ProductCategories
           setSelectedSubCategory={setSelectedSubCategory}
           selectedCategory={category}

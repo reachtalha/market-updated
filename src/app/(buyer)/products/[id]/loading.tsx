@@ -3,7 +3,7 @@ import React from 'react';
 
 const Loading = () => {
   return (
-    <BoxedContent className="py-20">
+    <BoxedContent className="py-20 mt-8">
       <div className="grid items-center h-screen gap-y-8 grid-cols-1 md:grid-cols-3 md:gap-x-16">
         <div className="col-span-2 h-full bg-gray-200 rounded animate-pulse"></div>
         <div className="w-full h-full md:col-span-1 animate-puls space-y-5">

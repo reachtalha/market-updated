@@ -32,7 +32,7 @@ const Payment = ({ children }: { children: ReactNode }) => {
   );
 
   return isLoading || cart?.summary?.total == null ? (
-    <BoxedContent className="flex gap-x-5 py-20">
+    <BoxedContent className="flex gap-x-5 py-24 mt-8">
       <div className="grid lg:grid-cols-2 gap-x-10">
         <div className="h-4/5 w-full bg-gray-200 animate-pulse" />
         <div className="h-96 w-full bg-gray-200 animate-pulse" />

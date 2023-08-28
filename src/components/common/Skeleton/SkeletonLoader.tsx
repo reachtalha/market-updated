@@ -4,7 +4,7 @@ import MarketCardSkeleton from '@/components/common/Skeleton/MarketCardSkeletion
 
 export const ProductsLoader = () => {
   return (
-    <BoxedContent className="flex gap-x-5 py-20">
+    <BoxedContent className="flex gap-x-5 py-20 mt-8">
       <div className="hidden md:block w-48 space-y-4">
         <div className="w-full rounded h-4 bg-gray-200 animate-pulse" />
       </div>
@@ -25,7 +25,7 @@ export const ProductsLoader = () => {
 
 export const MarketLoader = () => {
   return (
-    <BoxedContent className="flex gap-x-5 py-20">
+    <BoxedContent className="flex gap-x-5 py-20 mt-8">
       <div className="hidden md:block w-48 space-y-4">
         <div className="w-full rounded h-4 bg-gray-200 animate-pulse" />
       </div>
@@ -46,7 +46,7 @@ export const MarketLoader = () => {
 
 export const ExpertLoader = () => {
   return (
-    <BoxedContent className="flex gap-x-5 py-20">
+    <BoxedContent className="flex gap-x-5 py-20 mt-8">
       <div className="hidden md:block w-48 space-y-4">
         <div className="w-full rounded h-4 bg-gray-200 animate-pulse" />
       </div>

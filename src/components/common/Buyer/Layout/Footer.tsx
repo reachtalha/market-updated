@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="">
       <BoxedContent className="flex flex-col lg:flex-row  w-full mx-auto my-12">
-        <div className="w-full md:w-1/2 space-y-6">
+        <div className="w-full space-y-6">
           <p className="uppercase text-sm">Sign Up and save {DISCOUNT}%</p>
           <form className="flex items-center p-2 w-full md:w-2/3 gap-x-1 border placeholder:text-sm border-neutral-500 placeholder:text-neutral-500 focus-within:border-neutral-900 rounded-md">
             <input
@@ -31,10 +31,12 @@ const Footer = () => {
             <h6 className="font-medium uppercase">About All Organics</h6>
             <ul className="space-y-1 text-sm">
               <li className="hover:underline cursor-pointer">About</li>
-              <li>
-                <Link href="/new-registration" className="hover:underline cursor-pointer">Register Now</Link></li>
               <li className="hover:underline cursor-pointer">Experts Program</li>
-              <li className="hover:underline cursor-pointer">Brands & Shops</li>
+              <li className="hover:underline cursor-pointer">
+                <Link href="/market">
+                  Brands & Shops
+                </Link>
+              </li>
               <li className="hover:underline cursor-pointer">Contact</li>
             </ul>
           </div>
