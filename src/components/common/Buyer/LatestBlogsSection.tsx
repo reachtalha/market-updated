@@ -3,7 +3,7 @@ import BlogCard from '@/components/common/Buyer/Cards/BlogCard';
 
 import { db } from '@/lib/firebase/client';
 import { cn } from '@/lib/utils';
-import { collection, getDocs, limit, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 type LatestBlogsSectionProps = {
   title: string;

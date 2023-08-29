@@ -31,12 +31,11 @@ export default function Market({ categories }: MarketProps) {
   const category = useCategorySlug();
   const [filteredShops, setFilteredShops] = useState([]);
   const sortShopsBy = useSortingStore((state: any) => state.sortShopsBy);
-
   const {
     data: shops,
     isLoading,
     error
-  } = useSwr('shops', async () => {
+  } = useSwr('shops-buyer-side', async () => {
     let shops: any = [];
     const querySnapshot = await getDocs(collection(db, 'shops'));
 
@@ -51,6 +50,7 @@ export default function Market({ categories }: MarketProps) {
   });
 
   useEffect(() => {
+    console.log('We are here');
     if (shops) {
       if (category === 'all') {
         setFilteredShops(shops);
@@ -71,7 +71,7 @@ export default function Market({ categories }: MarketProps) {
 
   if (isLoading) return <MarketLoader />;
   if (error) return <Error className=" grid place-content-center h-screen w-full" />;
-
+  console.log(isLoading);
   return (
     <>
       <BoxedContent className="flex gap-x-5 py-20 mt-8">

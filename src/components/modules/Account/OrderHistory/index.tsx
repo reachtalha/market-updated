@@ -62,6 +62,7 @@ const getOrder = async (id: string) => {
           id: item.id,
           name: item.name,
           price: item.selectedVariant.price,
+          selectedVariant: item.selectedVariant,
           unit: item.unit,
           quantity: item.quantity,
           image: item.image,
@@ -110,6 +111,7 @@ const Index = (props: Props) => {
     return <Loader className="w-full h-64 flex items-center justify-center" />;
   }
 
+  console.log(orders);
   return (
     <section className="py-10 sm:py-0  w-full flex">
       <div className="px-1 sm:px-5 gap-y-3 w-full md:w-2/5 flex flex-col ">
