@@ -7,7 +7,6 @@ export default function Page() {
   const { user, isLoading } = useCurrentUser();
 
   if (isLoading) return <Loader className="w-full h-96 flex items-center justify-center" />;
-  console.log(user);
   return (
     <Payment>
       <Checkout user={user} />

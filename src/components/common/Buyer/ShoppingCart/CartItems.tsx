@@ -58,12 +58,7 @@ export default function CartItems() {
               </div>
             </div>
             <div className="col-span-1 flex items-center justify-center">
-              <QuantityInput
-                items={filteredItems}
-                productId={item.productId}
-                quantity={item.quantity}
-                variant={item.selectedVariant.id}
-              />
+              <QuantityInput quantity={item.quantity} docId={item.itemId} />
             </div>
             <div className="col-span-1 flex justify-end">
               <Button
