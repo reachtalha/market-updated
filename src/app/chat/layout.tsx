@@ -11,7 +11,7 @@ import Chats from '@/components/modules/chat/Chat';
 import { ArrowLeft } from 'lucide-react';
 import Loader from '@/components/common/Loader';
 
-const getChat = async (seller: string, router: any) => {
+const getChat = async (seller: string, router: any, returnUrl: string) => {
   try {
     const customer = auth.currentUser?.uid;
     const chatId =
@@ -33,7 +33,7 @@ const getChat = async (seller: string, router: any) => {
           }
         })
       ).id;
-    router.push(`/chat/${chatId}`);
+    router.push(`/chat/${chatId}?return_url=${returnUrl}`);
   } catch (error) {
     console.log(error);
   }
@@ -43,6 +43,7 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const seller = searchParams.get('id');
+  const returnUrl = searchParams.get('return_url') || "";
   let loading = false;
 
   if (!auth.currentUser) {
@@ -51,14 +52,16 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
 
   if (seller) {
     loading = true;
-    getChat(seller, router);
+    getChat(seller, router, returnUrl);
   }
 
   if (loading) return <Loader className="h-screen flex items-center justify-center w-screen" />;
   return (
     <section className="relative grid h-screen w-full md:overflow-hidden place-content-center bg-gray-100">
       <button
-        onClick={() => router.back()}
+        onClick={() => {
+          router.push(`/${returnUrl}`);
+        }}
         className="hidden md:block fixed left-5 top-3 z-50 rounded-full border bg-white p-2 hover:bg-gray-100"
       >
         <ArrowLeft className="h-6 w-6" strokeWidth={1.5} />

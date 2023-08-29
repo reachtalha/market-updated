@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 import { collection, query, doc, where, getDocs, getDoc, DocumentData } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
@@ -87,6 +87,8 @@ export default function Chat() {
   const [search, setSearch] = useState('');
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get('return_url') || "";
 
   if (isLoading) {
     return <Loader />;
@@ -104,7 +106,7 @@ export default function Chat() {
     <section className="selection:h-full overflow-y-auto">
       <div className="flex items-center gap-x-2">
         <Button
-          onClick={() => router.push('/')}
+          onClick={() => router.push(`/${returnUrl}`)}
           className="block md:hidden p-1 hover:bg-neutral-100 rounded-full"
         >
           <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
@@ -132,7 +134,7 @@ export default function Chat() {
       )}
       <ul className="divide-y">
         {filteredChats?.map((chat) => {
-          const path = `/chat/${chat.chatId}`;
+          const path = `/chat/${chat.chatId}?return_url=${returnUrl}`;
           return (
             <li
               key={chat.chatId}

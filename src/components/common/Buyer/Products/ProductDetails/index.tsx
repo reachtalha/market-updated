@@ -211,7 +211,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
             {isInWishlistData ? 'Remove from' : 'Save in'} Wishlist
           </Button>
           <Link
-            href={`/chat/?id=${product?.uid}`}
+            href={`/chat/?id=${product?.uid}&return_url=products/${product.id}`}
             className="text-xs flex justify-center cursor-pointer underline mt-3"
           >
             Chat with Seller

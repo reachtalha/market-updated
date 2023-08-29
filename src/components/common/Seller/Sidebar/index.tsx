@@ -53,7 +53,7 @@ const Sidebar = () => {
       title: 'Orders'
     },
     {
-      href: '/chat',
+      href: '/chat?return_url=seller/dashboard',
       icon: <Chat className="w-6 h-6 text-current" />,
       title: 'Chat'
     }

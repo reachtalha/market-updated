@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { ChevronRightIcon, ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Swiper, SwiperProps, useSwiper } from 'swiper/react';
@@ -13,23 +13,30 @@ import { cn } from '@/lib/utils';
 
 interface ICarousel extends SwiperProps {
   title?: string;
+  navigationClassName?: string;
   children: ReactNode;
   showNavigation?: boolean;
 }
 
-const SwiperCustomNavigation = () => {
+const SwiperCustomNavigation = ({ forceRerender, setForceRerender } : { forceRerender: any, setForceRerender: any}) => {
   const swiper = useSwiper();
   return (
     <div className="inline-flex gap-x-2">
       <button
         className={cn("disabled:opacity-70 disabled:cursor-not-allowed border opacity-100 border-neutral-900 duration-300 transition-colors hover:bg-neutral-100 rounded-full p-0.5", swiper.isBeginning && "border-neutral-400")}
-        onClick={() => swiper.slidePrev()}
+        onClick={() => {
+          setForceRerender(!forceRerender);
+          swiper.slidePrev()
+        }}
       >
         <ChevronLeftIcon className={swiper.isBeginning ? 'text-neutral-400' : ''} />
       </button>
       <button
         className={cn("disabled:opacity-70 disabled:cursor-not-allowed border opacity-100 border-neutral-900 duration-300 transition-colors hover:bg-neutral-100 rounded-full p-0.5", swiper.isEnd && "border-neutral-400")}
-        onClick={() => swiper.slideNext()}
+        onClick={() => {
+          setForceRerender(!forceRerender);
+          swiper.slideNext()
+        }}
       >
         <ChevronRightIcon className={swiper.isEnd ? 'text-neutral-400': ''} />
       </button>
@@ -37,15 +44,21 @@ const SwiperCustomNavigation = () => {
   );
 };
 
-export default function Carousel({ title, showNavigation = true, children, ...props }: ICarousel) {
+export default function Carousel({ title, showNavigation = true, navigationClassName = "", children, ...props }: ICarousel) {
+  const [forceRerender, setForceRerender] = useState(false);
+
   return (
     <>
-      <Swiper keyboard modules={[Keyboard]} className="container mySwiper" {...props}>
+      <Swiper onSlideChange={() => {
+        console.log('hello');
+        setForceRerender(!forceRerender);
+      }}
+       keyboard modules={[Keyboard]} className="container mySwiper" {...props}>
         {children}
         {showNavigation && (
-          <div className="border-t-2 border-black pt-8 pb-5 flex items-center justify-between">
+          <div className={cn("border-t-2 border-black pt-8 pb-5 flex items-center justify-between", navigationClassName)}>
             <h3 className="uppercase font-medium text-sm">{title}</h3>
-            <SwiperCustomNavigation />
+            <SwiperCustomNavigation forceRerender={forceRerender} setForceRerender={setForceRerender} />
           </div>
         )}
       </Swiper>
