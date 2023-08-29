@@ -5,6 +5,7 @@ import { auth } from '@/lib/firebase/client';
 import { useRouter } from 'next/navigation';
 import Index from '@/components/common/Buyer/Account/index';
 import Loader from '@/components/common/Loader';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 const options = [
   {
@@ -28,6 +29,7 @@ type Props = {};
 
 const Page = (props: Props) => {
   const router = useRouter();
+
   if (!auth.currentUser) {
     router.replace('/auth/login');
     return (

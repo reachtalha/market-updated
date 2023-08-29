@@ -29,7 +29,7 @@ const getWishlistProduct = async () => {
     const productSnapshot = await getDoc(productRef);
 
     if (productSnapshot.exists()) {
-      return productSnapshot.data();
+      return { id: productId, ...productSnapshot.data() };
     } else {
       return null; // Handle the case where a product doesn't exist
     }
@@ -45,6 +45,7 @@ const Wishlist = () => {
   const { data: products, isLoading, error } = useSwr('wishlist', getWishlistProduct);
   if (isLoading) return <Loader className="grid place-content-center h-[50vh] w-full" />;
   if (error) return <Error className="grid place-content-center h-[50vh] w-full" />;
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 mt-4 md:mt-0  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">

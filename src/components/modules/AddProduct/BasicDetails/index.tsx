@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,7 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import Title from '@/components/common/Seller/Shared/Title';
+import { Pencil } from 'lucide-react';
 
 const UNITS = [
   { id: 'ml', label: 'Milli-litre' },
@@ -24,15 +25,16 @@ const UNITS = [
 type Props = {
   types: String[];
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  isEdit?: boolean;
 };
-const BasicDetails = ({ types, setStep }: Props) => {
+const BasicDetails = ({ types, setStep, isEdit = false }: Props) => {
   const {
     register,
     trigger,
     formState: { errors },
     getValues
   } = useFormContext();
-
+  const [editMode, setEditMode] = useState(false);
   const nextStep = async () => {
     const isValid = await trigger(['name', 'type', 'gender', 'unit', 'type', 'description']);
     if (isValid) setStep((e: number) => e + 1);
@@ -47,11 +49,14 @@ const BasicDetails = ({ types, setStep }: Props) => {
     });
   };
 
-  console.log(getValues('type'));
-
   return (
     <>
-      <Title title="Basic Details" />
+      <div className="flex items-center justify-between w-full">
+        <Title title="Basic Details" />
+        {isEdit && (
+          <Pencil className="cursor-pointer" onClick={() => setEditMode(true)} size={17} />
+        )}
+      </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5 ">
         <Label>Product Name</Label>
         <Input
@@ -59,6 +64,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
           type="text"
           placeholder="Your Product Name"
           {...register('name', { required: true })}
+          disabled={isEdit && !editMode}
         />
         {errors.name && (
           <span className="text-sm text-red-500">Product Name doesn`t look valid</span>
@@ -69,6 +75,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
         <Select
           defaultValue={getValues('type') !== '' ? getValues('type') : undefined}
           onValueChange={handleOnChange}
+          disabled={isEdit && !editMode}
         >
           <SelectTrigger className="w-full bg-white capitalize ">
             <SelectValue placeholder="Select Product Type" />
@@ -96,6 +103,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
                 {...register('gender', { required: true })}
                 defaultChecked={getValues('gender') ? getValues('gender') === s : index === 0}
                 className="peer/gender accent-primary  w-4 h-4 bg-gray-100 border-gray-300 focus:ring-primary"
+                disabled={isEdit && !editMode}
               />
               <Label
                 htmlFor={index.toString()}
@@ -119,6 +127,7 @@ const BasicDetails = ({ types, setStep }: Props) => {
                 {...register('unit', { required: true })}
                 defaultChecked={getValues('unit') ? getValues('unit') === s : index === 0}
                 className="peer/unit accent-primary w-4 h-4 bg-gray-100 border-gray-300 focus:ring-primary"
+                disabled={isEdit && !editMode}
               />
               <Label htmlFor={s.id} className="peer-checked/unit:text-primary text-sm font-medium ">
                 {s.label}
@@ -135,15 +144,23 @@ const BasicDetails = ({ types, setStep }: Props) => {
           placeholder="Enter your product description"
           maxLength={280}
           {...register('description', { required: true })}
+          disabled={isEdit && !editMode}
         ></textarea>
         {errors.description && (
           <span className="text-sm text-red-500">Description doesn`t look valid</span>
         )}
       </div>
 
-      <Button type="button" onClick={nextStep} variant="default" className="w-full xl:mt-8 mt-2 ">
-        Next
-      </Button>
+      {(!isEdit || editMode) && (
+        <Button
+          type={isEdit && editMode ? 'submit' : 'button'}
+          onClick={isEdit ? () => {} : nextStep}
+          className="w-full xl:mt-8 mt-2 "
+          variant="default"
+        >
+          {isEdit && editMode ? ' Update' : ' Next'}
+        </Button>
+      )}
     </>
   );
 };

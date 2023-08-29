@@ -157,22 +157,25 @@ function AddImages({
       {isShop ? setValue('logoImage', logoImage) : setValue('moreImages', pictures)}
 
       <div className="mt-5 xl:mt-8 flex gap-x-3">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={() => setStep((prev: any) => prev - 1)}
-          className="w-1/2"
-        >
-          Back
-        </Button>
+        {!isEdit && (
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setStep((prev: any) => prev - 1)}
+            className="w-1/2"
+          >
+            Back
+          </Button>
+        )}
+
         <Button
           type="submit"
           variant="default"
           disabled={loading}
           form={isShop ? 'add-shop-form' : 'add-product-form'}
-          className="w-1/2"
+          className={!isEdit ? 'w-1/2' : 'w-full'}
         >
-          {(isEdit ? 'Update ' : 'Add ') + (isShop ? 'Shop' : 'Product')}
+          {(isEdit ? 'Update ' : 'Add ') + (isEdit ? '' : isShop ? 'Shop' : 'Product')}
         </Button>
       </div>
     </>
