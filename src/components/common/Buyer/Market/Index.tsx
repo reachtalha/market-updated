@@ -1,12 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 
 import { useRouter } from 'next/navigation';
-
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '@/lib/firebase/client';
-
-import useSwr from 'swr';
 
 import useCategorySlug from '@/hooks/useCategorySlug';
 import useSortingStore from '@/state/useSortingStore';
@@ -20,57 +15,30 @@ import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifie
 import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
 import ShopCard from '@/components/common/Buyer/Cards/ShopCard';
 import MarketHeader from '@/components/common/Buyer/Market/MarketHeader';
-import { MarketLoader } from '@/components/common/Skeleton/SkeletonLoader';
-import Error from '@/components/common/Error';
 
 type MarketProps = {
   categories: Category[];
+  shopsJSON: any;
 };
-export default function Market({ categories }: MarketProps) {
+export default function Market({ categories, shopsJSON }: MarketProps) {
+  const shops = JSON.parse(shopsJSON);
   const router = useRouter();
   const category = useCategorySlug();
-  const [filteredShops, setFilteredShops] = useState([]);
   const sortShopsBy = useSortingStore((state: any) => state.sortShopsBy);
 
-  const {
-    data: shops,
-    isLoading,
-    error
-  } = useSwr('shops', async () => {
-    let shops: any = [];
-    const querySnapshot = await getDocs(collection(db, 'shops'));
+  const filteredShops = useMemo(() => {
+    if (!shops) return [];
 
-    querySnapshot.forEach((doc: any) => {
-      shops.push({
-        id: doc.id,
-        ...doc.data()
-      });
-    });
-
-    return shops;
-  });
-
-  useEffect(() => {
-    if (shops) {
-      if (category === 'all') {
-        setFilteredShops(shops);
-      } else {
-        const filteredShops = shops.filter((shop: any) => shop.category.split('&')[0] === category);
-        setFilteredShops(filteredShops || []);
-      }
+    if (category === 'all') {
+      return shops;
+    } else {
+      return shops.filter((shop: any) => shop.category.split('&')[0] === category);
     }
   }, [shops, category]);
 
-  useEffect(() => {
-    if (shops) {
-      if (sortShopsBy === 'name') {
-        setFilteredShops(filteredShops.sort((a: any, b: any) => a.name.localeCompare(b.name)));
-      }
-    }
-  }, [sortShopsBy]);
-
-  if (isLoading) return <MarketLoader />;
-  if (error) return <Error className=" grid place-content-center h-screen w-full" />;
+  if (sortShopsBy === 'name') {
+    filteredShops.sort((a: any, b: any) => a.name.localeCompare(b.name));
+  }
 
   return (
     <>
@@ -79,8 +47,8 @@ export default function Market({ categories }: MarketProps) {
         <div className="flex-1 space-y-4">
           <MarketHeader selectedCategory={category} categories={categories} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {filteredShops.length > 0 ? (
-              filteredShops.map((shop: any, i: number) => (
+            {filteredShops?.length > 0 ? (
+              filteredShops?.map((shop: any, i: number) => (
                 <ShopCard
                   key={i + Math.random()}
                   id={shop.id}

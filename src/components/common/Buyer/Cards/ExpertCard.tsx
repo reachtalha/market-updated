@@ -26,11 +26,11 @@ export default function ExpertCard({ image, name, title, bio }: IProfileCard) {
         {title && title[0]} Expert
       </span>
       <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/30 to-transparent transition-opacity ease-in duration-300" />
-      <div className="z-[2] absolute bottom-4 left-4 text-white">
+      <div className="z-[2] absolute bottom-4 left-4 text-white w-66">
         <h3 className="text-2xl capitalize tracking-wide truncate font-alpina font-semibold">
           {name}
         </h3>
-        <p className="capitalize truncate w-[300px]">{bio}</p>
+        <p className="capitalize w-[25ch] truncate">{bio}</p>
       </div>
     </div>
   );

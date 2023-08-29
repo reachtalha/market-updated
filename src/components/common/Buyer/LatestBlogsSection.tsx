@@ -34,6 +34,7 @@ export default async function LatestBlogsSection({
         <h3 className="uppercase font-medium text-sm">{title}</h3>
         <h3 className="font-medium text-lg">@allorganicsmarket</h3>
       </header>
+      <div>{data?.length === 0 && <p className="py-16 text-center">No Blogs Found</p>}</div>
       <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-5">
         {data?.map((post: any) => (
           <BlogCard
