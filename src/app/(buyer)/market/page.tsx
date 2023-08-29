@@ -1,6 +1,7 @@
+import Market from '@/components/common/Buyer/Market/Index';
+import React from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
-import Market from '@/components/common/Buyer/Market/Index';
 
 const getCategories = async () => {
   const querySnapshot = await getDocs(collection(db, 'categories'));
@@ -19,25 +20,9 @@ const getCategories = async () => {
   return categories;
 };
 
-const getShops = async () => {
-  let shops: any = [];
-  const querySnapshot = await getDocs(collection(db, 'shops'));
-
-  querySnapshot.forEach((doc: any) => {
-    shops.push({
-      id: doc.id,
-      ...doc.data()
-    });
-  });
-
-  return shops;
-};
-
 const Page = async () => {
-  const categoriesPromise = getCategories();
-  const shopsPromise = getShops();
-  const [categories, shops] = await Promise.all([categoriesPromise, shopsPromise]);
-  return <Market categories={categories} shopsJSON={JSON.stringify(shops)} />;
+  const categories = await getCategories();
+  return <Market categories={categories} />;
 };
 
 export default Page;
