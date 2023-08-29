@@ -20,9 +20,25 @@ const getCategories = async () => {
   return categories;
 };
 
+const getShops = async () => {
+  let shops: any = [];
+  const querySnapshot = await getDocs(collection(db, 'shops'));
+
+  querySnapshot.forEach((doc: any) => {
+    shops.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+
+  return shops;
+};
+
 const Page = async () => {
-  const categories = await getCategories();
-  return <Market categories={categories} />;
+  const categoriesPromise = getCategories();
+  const shopsPromise = getShops();
+  const [categories, shops] = await Promise.all([categoriesPromise, shopsPromise]);
+  return <Market categories={categories} shopsJSON={JSON.stringify(shops)} />;
 };
 
 export default Page;

@@ -113,7 +113,7 @@ const Expert = async ({ params }: ExpertProps) => {
                       key={idx}
                       variant="outline"
                       size="resp"
-                      className="uppercase border-black"
+                      className="uppercase border-black h-8 px-3"
                     >
                       {item}
                     </Button>
