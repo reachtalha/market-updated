@@ -14,7 +14,7 @@ export default function ShippingInfo({ form }: { form: any }) {
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input className="capitalize" placeholder="Email" {...field} />
+              <Input placeholder="Email" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -58,19 +58,7 @@ function Index({ options }: AccountProps) {
       case 'blogs':
         return <ManageBlogs />;
       case 'wishlist':
-        return (
-          <>
-            {user ? (
-              <div className=" w-full ">
-                <Wishlist />
-              </div>
-            ) : (
-              <div className="h-[50vh] w-full flex items-center justify-center">
-                <Loader />
-              </div>
-            )}
-          </>
-        );
+        return <Wishlist />;
       case 'socials':
         return (
           <>
@@ -118,7 +106,7 @@ function Index({ options }: AccountProps) {
     }
   };
   return (
-    <BoxedContent className="flex flex-col sm:flex-row  border-3 gap-x-5 py-20">
+    <BoxedContent className="flex flex-col sm:flex-row  border-3 gap-x-5 pb-20 pt-28">
       <AccountOption
         selectedOption={category}
         options={

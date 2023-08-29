@@ -8,10 +8,10 @@ import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 type LatestBlogsSectionProps = {
   title: string;
   className?: string;
-  uid: string;
+  uid?: string;
 };
 
-const fetchGetLatestBlogPosts = async (uid: string) => {
+const fetchGetLatestBlogPosts = async (uid?: string) => {
   const q = query(collection(db, 'blog-posts'), where('uid', '==', `${uid}`));
   const querySnapshot = await getDocs(q);
   let result: any = [];

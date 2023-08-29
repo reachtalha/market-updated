@@ -13,11 +13,6 @@ const options = [
     href: '/account?display'
   },
   {
-    name: 'Card Info',
-    slug: 'card',
-    href: '/account?display'
-  },
-  {
     name: 'Wish List',
     slug: 'wishlist',
     href: '/account?display'

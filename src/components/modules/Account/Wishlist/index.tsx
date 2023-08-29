@@ -1,16 +1,13 @@
 import React from 'react';
 
 import { auth, db } from '@/lib/firebase/client';
-import { useRouter } from 'next/navigation';
 
-import { collection, doc, where, query, getDocs, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import useSwr from 'swr';
 
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
-
-type Props = {};
 
 const getWishlistProduct = async () => {
   const userId = auth.currentUser?.uid;
@@ -44,10 +41,10 @@ const getWishlistProduct = async () => {
   return products.filter((product) => product !== null);
 };
 
-const Wishlist = (props: Props) => {
+const Wishlist = () => {
   const { data: products, isLoading, error } = useSwr('wishlist', getWishlistProduct);
-  if (isLoading) return <Loader />;
-  if (error) return <Error />;
+  if (isLoading) return <Loader className="grid place-content-center h-[50vh] w-full" />;
+  if (error) return <Error className="grid place-content-center h-[50vh] w-full" />;
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 mt-4 md:mt-0  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
@@ -68,7 +65,7 @@ const Wishlist = (props: Props) => {
             />
           ))
         ) : (
-          <div className="text-center  flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
+          <div className="text-center  flex items-center justify-center w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
             No products found
           </div>
         )}

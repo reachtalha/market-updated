@@ -48,7 +48,7 @@ const Blogs = async () => {
     );
   }
   return (
-    <BoxedContent className="py-24">
+    <BoxedContent className="pt-28 pb-20">
       <h1 className="text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-center">
         Discover Captivating Blogs
       </h1>

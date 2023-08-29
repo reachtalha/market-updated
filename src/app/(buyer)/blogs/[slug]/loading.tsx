@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Loading = () => {
   return (
-    <BoxedContent className="py-24">
+    <BoxedContent className="pt-28 pb-20">
       <Skeleton className="h-[400px] w-full bg-gray-200" />
       <Skeleton className="mt-4 h-[400px] w-full bg-gray-200" />
     </BoxedContent>
