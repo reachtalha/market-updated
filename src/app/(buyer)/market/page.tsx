@@ -1,7 +1,6 @@
-import Market from '@/components/common/Buyer/Market/Index';
-import React from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import Market from '@/components/common/Buyer/Market/Index';
 
 const getCategories = async () => {
   const querySnapshot = await getDocs(collection(db, 'categories'));
