@@ -6,6 +6,8 @@ import { collection, getDocs } from 'firebase/firestore';
 import BoxedContent from '@/components/common/BoxedContent';
 import BlogCard from '@/components/common/Buyer/Cards/BlogCard';
 
+export const dynamic = 'force-dynamic';
+
 type Post = {
   id: string;
   content: any;

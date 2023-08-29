@@ -19,7 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import EditorJS from '@editorjs/editorjs';
 import { getBase64 } from '@/components/common/functions';
 import UploadImage from '@/utils/handlers/image/UploadImage';
-import { Timestamp, addDoc, collection, setDoc, doc } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, updateDoc, doc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
 
@@ -67,10 +67,10 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
         postedAt: Timestamp.fromDate(new Date())
       };
       const docRef = slug
-        ? await setDoc(doc(db, 'blog-posts', slug), obj)
+        ? await updateDoc(doc(db, 'blog-posts', slug), obj)
         : await addDoc(collection(db, 'blog-posts'), obj);
-      toast.success('Your blog has been published!');
-      router.push(`/blogs/${docRef?.id}`);
+      toast.success(`Your blog has been ${slug ? 'updated' : 'published'}!`);
+      router.push(`/blogs/${docRef?.id ?? slug}`);
     } catch (err) {
       toast.success('Something went wrong. We are unable to publish your blog!');
     } finally {
