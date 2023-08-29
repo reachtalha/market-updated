@@ -47,7 +47,7 @@ function Index({ options }: AccountProps) {
                 />
               </div>
             ) : (
-              <div className="h-[50vh] w-full flex items-center justify-center">
+              <div className="mt-8 h-[50vh] w-full flex items-center justify-center">
                 <Loader />
               </div>
             )}
@@ -106,7 +106,7 @@ function Index({ options }: AccountProps) {
     }
   };
   return (
-    <BoxedContent className="flex flex-col sm:flex-row  border-3 gap-x-5 pb-20 pt-28">
+    <BoxedContent className="flex mt-8 flex-col sm:flex-row  border-3 gap-x-5 py-20">
       <AccountOption
         selectedOption={category}
         options={

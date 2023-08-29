@@ -14,6 +14,7 @@ import { formatCurrency } from '@/utils/formatters';
 import { PinIcon, PinOffIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
+import { useRouter, useSearchParams } from 'next/navigation';
 interface ProductCard {
   id: string;
   image: string | StaticImageData;
@@ -26,9 +27,11 @@ interface ProductCard {
 
 const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: ProductCard) => {
   const role = useRole();
+  const router = useRouter();
   const { user } = useCurrentUser();
   const [loading, setLoading] = useState(false);
   const isPinned = user?.pinnedProducts?.includes(id)
+  const searchParams = useSearchParams();
 
 
   const pinProduct = async () => {
@@ -66,6 +69,15 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
     }
   }
 
+  const onProductTagClick = (e: any) => {
+    e.stopPropagation()
+    router.push(`/products?type=${type}`)
+  }
+
+  const onProductClick = (e: any) => {
+    router.push(`/products/${id}`)
+  }
+
   const handle = () => {
     if (isPinned) {
       unPinProduct()
@@ -89,7 +101,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
 
         }
       </Button>}
-      <Link href={`/products/${id}`} >
+      <button className="w-full" onClick={onProductClick}>
         <div className="relative bg-accent group h-96 w-full drop-shadow-sm">
           <Image
             src={image}
@@ -99,9 +111,9 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, (max-width: 1800px) 50vw"
           />
         </div>
-        <span className="absolute top-3 text-xs uppercase bg-white left-3 py-1.5 px-6 rounded-lg">
+        <button onClick={onProductTagClick} className="border absolute top-3 text-xs uppercase bg-white left-3 py-1.5 px-6 rounded-lg">
           {type}
-        </span>
+        </button>
         <div className="mt-3 flex justify-between items-start">
           <p className="uppercase text-sm tracking-wide">
             <span className="font-alpina italic">{shop} - </span>
@@ -109,7 +121,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
           </p>
           <p className="text-base font-alpina italic font-medium">{formatCurrency(price)}</p>
         </div>
-      </Link>
+      </button>
     </div>
   );
 };

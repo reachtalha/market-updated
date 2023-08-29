@@ -8,6 +8,7 @@ import useSwr from 'swr';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
+import LatestProducts from '@/components/common/Buyer/LatestProducts';
 
 const getWishlistProduct = async () => {
   const userId = auth.currentUser?.uid;
@@ -48,9 +49,9 @@ const Wishlist = () => {
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 mt-4 md:mt-0  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
-        {products && products.length > 0 ? (
-          products.map((_: any, i: number) => (
+      {products && products.length > 0 ? (
+        <div className="grid grid-cols-1 mt-4 md:mt-0  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
+          {products.map((_: any, i: number) => (
             <ProductCard
               key={i + Math.random()}
               id={_.id}
@@ -64,13 +65,16 @@ const Wishlist = () => {
               shop={_.shopName || 'some shop'}
               type={_.type}
             />
-          ))
-        ) : (
-          <div className="text-center  flex items-center justify-center w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 mt-4 md:mt-0 gap-5">
+          <div className="text-center  flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[20vh] text-gray-500">
             No products found
           </div>
-        )}
-      </div>
+          <LatestProducts />
+        </div>
+      )}
     </div>
   );
 };
