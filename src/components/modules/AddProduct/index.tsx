@@ -183,8 +183,6 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
     return <Loader className="h-full w-full grid place-content-center" />;
   }
 
-  console.log(shop, isEdit);
-
   if (!shop && !isEdit)
     return (
       <div className="h-full w-full grid place-content-center text-gray-500">
@@ -202,9 +200,9 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
           )}
 
           <div className="w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] mx-auto mt-5 2xl:mt-16 pb-5">
-            {step === 1 && <BasicDetails setStep={setStep} types={shop.types} />}
-            {step === 2 && <CreateSKU setStep={setStep} />}
-            {step === 3 && <DetailedDescription setStep={setStep} />}
+            {step === 1 && <BasicDetails isEdit={isEdit} setStep={setStep} types={shop.types} />}
+            {step === 2 && <CreateSKU isEdit={isEdit} setStep={setStep} />}
+            {step === 3 && <DetailedDescription isEdit={isEdit} setStep={setStep} />}
             {step === 4 && (
               <AddImages
                 isEdit={isEdit}

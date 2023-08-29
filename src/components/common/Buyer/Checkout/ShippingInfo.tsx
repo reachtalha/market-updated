@@ -135,7 +135,7 @@ export default function ShippingInfo({ form }: { form: any }) {
 
       <FormField
         control={form.control}
-        name="phone"
+        name="Phone"
         render={({ field }) => (
           <FormItem className="mt-5 w-full">
             <FormLabel>Phone</FormLabel>
