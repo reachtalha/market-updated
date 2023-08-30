@@ -54,14 +54,14 @@ export default function Experts({ expertsJSON, categories }: ExpertsProps) {
         <ExpertHeader selectedCategory={category} categories={categories} />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
           {filteredExperts?.map((expert: any, i: number) => (
-            <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
-              <ExpertCard
-                image={expert?.photoURL}
-                name={expert?.name}
-                title={expert?.topics}
-                bio={expert?.bio}
-              />
-            </Link>
+            <ExpertCard
+              key={Math.random() + i + Date.now()}
+              id={expert?.id}
+              image={expert?.photoURL}
+              name={expert?.name}
+              title={expert?.topics}
+              bio={expert?.bio}
+            />
           ))}
         </div>
       </div>

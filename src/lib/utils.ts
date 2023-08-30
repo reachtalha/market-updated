@@ -18,9 +18,7 @@ export function isColoredRoute(route: string) {
   return (
     coloredRoutes.includes(route) ||
     route === '/blogs' ||
-    route.startsWith('/blog') ||
     route.startsWith('/products') ||
-    route.startsWith('/posts') ||
     route.startsWith('/orders')
   );
 }

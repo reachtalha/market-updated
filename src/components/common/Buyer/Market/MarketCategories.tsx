@@ -22,10 +22,14 @@ export default function MarketCategories({ categories, selectedCategory }: Marke
             className="tracking-wide cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
           >
             <Link
-              className={category.slug === selectedCategory ? 'font-medium' : ''}
-              href={`${category.href}=${category.slug}`}
+              className={
+                category.slug === selectedCategory
+                  ? 'font-medium text-neutral-900'
+                  : 'font-normal text-neutral-700'
+              }
+              href={`${category.href}=${encodeURIComponent(category.slug)}`}
             >
-              {category.name}
+              {category.name === 'all' ? 'All Shops' : category.name}
             </Link>
           </li>
         ))}

@@ -30,11 +30,11 @@ export default async function Home() {
         img={heroImg}
       >
         <div className="block h-fit overflow-y-hidden py-1">
-          <h1 className="animate-text text-5xl font-alpina italic font-medium text-center">
-            Organic living, simplied
+          <h1 className="animate-text text-3xl md:text-5xl font-alpina italic font-medium text-center">
+            Organic living, simplified
           </h1>
         </div>
-        <p className="animate-opacity place-self-center text-base w-full md:w-[60%] text-center">
+        <p className="animate-opacity place-self-center px-3 md:px-0 text-base w-full md:w-[60%] text-center">
           Through our thoughtfully chosen range of products, we aim to simplify and inspire the
           journey towards a more mindful and sustainable lifestyle.
         </p>
@@ -53,18 +53,15 @@ export default async function Home() {
           </div>
           <ul className="flex gap-x-4 items-start md:pl-10 overflow-auto no-scrollbar snap-x snap-start">
             {experts.map((expert: any, i: number) => (
-              <Link
-                href={`experts/${expert.id}`}
-                key={Math.random() + i + Date.now()}
-                className="flex-shrink-0 max-w-[300px]"
-              >
+              <li key={Math.random() + i + Date.now()} className="flex-shrink-0 max-w-[300px]">
                 <ExpertCard
+                  id={expert?.id}
                   image={expert?.photoURL}
                   name={expert?.name}
                   title={expert?.topics}
                   bio={expert?.bio}
                 />
-              </Link>
+              </li>
             ))}
           </ul>
         </BoxedContent>

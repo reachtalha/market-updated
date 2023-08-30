@@ -21,7 +21,7 @@ const options = [
     name: 'Order History',
     slug: 'order',
     href: '/account?display'
-  }
+  },
 ];
 
 type Props = {};

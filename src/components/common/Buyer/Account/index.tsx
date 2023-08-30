@@ -112,18 +112,18 @@ function Index({ options }: AccountProps) {
         options={
           role === 'influencer'
             ? [
-                ...options,
-                {
-                  name: 'Socials',
-                  slug: 'socials',
-                  href: '/account?display'
-                },
-                {
-                  name: 'Manage Blogs',
-                  slug: 'blogs',
-                  href: '/account?display'
-                }
-              ]
+              ...options,
+              {
+                name: 'Socials',
+                slug: 'socials',
+                href: '/account?display'
+              },
+              {
+                name: 'Manage Blogs',
+                slug: 'blogs',
+                href: '/account?display'
+              }
+            ]
             : options
         }
       />

@@ -8,6 +8,7 @@ import { formatCurrency } from '@/utils/formatters';
 import QuantityInput from '@/components/common/Buyer/ShoppingCart/QuantityInput';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 export default function CartItems() {
   const { cart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
@@ -18,7 +19,7 @@ export default function CartItems() {
     skuId: item.skuId
   }));
   const handleOnDelete = (item: any) => {
-    deleteFromCart(item.docId, item.selectedVariant.id, item.quantity);
+    deleteFromCart(item.itemId);
   };
   const handleExploreProducts = () => router.push('/products');
 
@@ -29,7 +30,7 @@ export default function CartItems() {
       <Skeleton className="h-[150px]" />
     </div>
   ) : (
-    <>
+    <div className={cn("lg:col-span-2 border-t pt-8", !cart?.items?.length && "lg:col-span-3")}>
       {!cart?.items?.length ? (
         <div className="mt-8 text-center">
           <p className="text-2xl mb-3">Your Cart is empty!</p>
@@ -43,7 +44,7 @@ export default function CartItems() {
           <li className="grid grid-cols-4 w-full pb-8 border-b last:border-0" key={idx}>
             <div className="col-span-2 flex items-center gap-x-3">
               <Image
-                className="border rounded w-full h-36"
+                className="border rounded object-contain w-36 h-36"
                 height={150}
                 width={150}
                 src={item.image}
@@ -72,6 +73,6 @@ export default function CartItems() {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }

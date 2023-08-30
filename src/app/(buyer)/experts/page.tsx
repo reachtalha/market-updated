@@ -31,7 +31,7 @@ const categories = [
     href: '/experts?category'
   },
   {
-    name: 'Fasion Experts',
+    name: 'Fashion Experts',
     slug: 'fashion',
     href: '/experts?category'
   },

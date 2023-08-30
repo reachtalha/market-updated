@@ -88,7 +88,7 @@ export default function Chat() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const returnUrl = searchParams.get('return_url') || "";
+  const returnUrl = searchParams.get('return_url') || '';
 
   if (isLoading) {
     return <Loader />;
@@ -104,13 +104,20 @@ export default function Chat() {
 
   return (
     <section className="selection:h-full overflow-y-auto">
-      <div className="flex items-center gap-x-2">
+      <div className="flex relative h-14  items-center justify-center  mb-3">
         <Button
-          onClick={() => router.push(`/${returnUrl}`)}
-          className="block md:hidden p-1 hover:bg-neutral-100 rounded-full"
+          onClick={() => {
+            router.push(`/${returnUrl}`);
+          }}
+          className=" block left-0 top-[50%] translate-y-[-50%] absolute   rounded-full border bg-white p-2 hover:bg-gray-100"
         >
-          <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
+          <ArrowLeft color={'#000000'} className="h-6 w-6" strokeWidth={1.5} />
         </Button>
+        <div className="px-3 me-5 flex gap-x-1 items-center  focus-within:border-primary overflow-hidden">
+          All Organics
+        </div>
+      </div>
+      <div className="flex  items-center gap-x-2">
         <div className="px-3 flex gap-x-1 items-center w-full rounded-full border-[2px] focus-within:border-primary overflow-hidden">
           <Input
             type="search"

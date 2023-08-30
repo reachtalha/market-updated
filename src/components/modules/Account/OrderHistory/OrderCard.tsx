@@ -27,6 +27,8 @@ function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: 
       setSelectedOrder(id);
     }
   };
+
+  console.log('Hereee');
   return (
     <div
       onClick={handleClick}
