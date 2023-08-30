@@ -22,7 +22,7 @@ const getOrder = async (id: string) => {
       status: data.status || 'processing',
       products: data.items.map((item: any) => {
         return {
-          id: item.uid,
+          id: item.id,
           name: item.name,
           price: item.selectedVariant.price,
           selectedVariant: item.selectedVariant,

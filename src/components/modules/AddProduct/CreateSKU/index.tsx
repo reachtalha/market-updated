@@ -129,12 +129,12 @@ const CreateSKU = ({
               <li
                 key={index}
                 onClick={() => {
-                  if (isEdit && !editMode) return;
+                  if ((isEdit && !editMode) || isEditSku) return;
                   setSKU((prev) => ({ ...prev, color: c }));
                 }}
                 className={`cursor-pointer rounded-full bg-gray-100 px-2 border py-1 ${
                   sku?.color === c ? 'bg-primary text-white border-primary' : ''
-                }`}
+                } ${isEditSku && ' cursor-not-allowed '}`}
               >
                 {c}
               </li>
@@ -150,12 +150,12 @@ const CreateSKU = ({
             <li
               key={index}
               onClick={() => {
-                if (isEdit && !editMode) return;
+                if ((isEdit && !editMode) || isEditSku) return;
                 setSKU((prev) => ({ ...prev, measurement: s }));
               }}
               className={`cursor-pointer rounded-full bg-gray-100 capitalize px-2 border py-1 ${
                 sku?.measurement === s ? 'bg-primary text-white border-primary' : ''
-              }`}
+              } ${isEditSku && ' cursor-not-allowed '} `}
             >
               {s}
             </li>
