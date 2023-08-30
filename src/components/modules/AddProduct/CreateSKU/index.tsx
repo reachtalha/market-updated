@@ -54,6 +54,7 @@ const CreateSKU = ({
 
   const [isColors, setIsColors] = useState<boolean>(false);
 
+  console.log('Is it edit', isEdit);
   useEffect(() => {
     if (isEditSku) setSKU(SKUList.filter((l: any) => l.id === editSkuId)[0]);
   }, [editSkuId]);
@@ -210,7 +211,7 @@ const CreateSKU = ({
                   <span>{l.id}</span>
                   <Pencil
                     size={14}
-                    className={'cursor-pointer me-1 ' + isEdit && !editMode ? 'hidden' : ''}
+                    className={`cursor-pointer me-1 ${isEdit && !editMode && ' hidden'}`}
                     onClick={() => {
                       setIsEditSku(true);
                       setEditSkuId(l.id);
