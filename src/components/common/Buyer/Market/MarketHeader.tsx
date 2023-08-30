@@ -15,13 +15,13 @@ export default function MarketHeader({ selectedCategory = '', categories }: Mark
   return (
     <div className="flex items-center  justify-between">
       <p className="hidden md:block uppercase font-medium tracking-wide text-sm">
-        {selectedCategory}
+        {selectedCategory === 'all' ? 'All Shops' : selectedCategory}
       </p>
       <div className="md:hidden">
         <CategoryDropdown categories={categories} type="shop" />
       </div>
 
-      <SortByDropdown type="shop" />
+      {/* <SortByDropdown type="shop" /> */}
     </div>
   );
 }
