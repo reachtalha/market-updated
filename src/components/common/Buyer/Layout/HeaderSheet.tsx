@@ -14,11 +14,10 @@ import { Button } from '@/components/ui/button';
 
 import { NavLink } from '@/components/common/Buyer/Layout/Header';
 
-
 type HeaderSheetProps = {
-  triggerIcon: ReactNode
-}
-export default function HeaderSheet({ triggerIcon } : HeaderSheetProps) {
+  triggerIcon: ReactNode;
+};
+export default function HeaderSheet({ triggerIcon }: HeaderSheetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const closeSheet = () => setIsOpen(false);
   return (
@@ -69,6 +68,14 @@ export default function HeaderSheet({ triggerIcon } : HeaderSheetProps) {
                   className="inline-block py-2 w-full"
                   href="/experts"
                   title="Experts"
+                />
+              </SheetClose>
+              <SheetClose className="text-left  border-b border-gray-300">
+                <NavLink
+                  onClick={closeSheet}
+                  className="inline-block py-2 w-full"
+                  href="/blogs"
+                  title="Blogs"
                 />
               </SheetClose>
               <SheetClose className="text-left w-full border-b border-gray-300">

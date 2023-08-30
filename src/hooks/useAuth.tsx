@@ -112,9 +112,10 @@ export const AuthProvider = ({ children }: any) => {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+      const userCredentials = (await signInWithEmailAndPassword(auth, email, password)) as any;
       setUser(userCredentials.user);
-      router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
+      if (userCredentials?.role === 'superadmin') router.push(`/super0admin`);
+      else router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {
       if (e.code === 'auth/user-not-found') {
         toast.error('Sorry, your account is not registered. Please check your email');

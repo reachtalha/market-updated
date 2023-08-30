@@ -82,7 +82,7 @@ export default async function Shop({ params }: ShopProps) {
               <h1 className="text-7xl uppercase font-medium mb-2">{shop.name}</h1>
               <p className="text-lg">{shop.tagline}</p>
             </div>
-            <Link className="self-end flex items-center gap-4 text-lg" href="/shops">
+            <Link className="self-end flex items-center gap-4 text-lg" href="/market">
               <span className="uppercase">similar shops</span>
               <CircledArrowRight className="text-transparent" />
             </Link>

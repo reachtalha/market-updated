@@ -23,20 +23,6 @@ import MarketHeader from '@/components/common/Buyer/Market/MarketHeader';
 import { MarketLoader } from '@/components/common/Skeleton/SkeletonLoader';
 import Error from '@/components/common/Error';
 
-const getShops = async () => {
-  let shops: any = [];
-  const querySnapshot = await getDocs(collection(db, 'shops'));
-
-  querySnapshot.forEach((doc: any) => {
-    shops.push({
-      id: doc.id,
-      ...doc.data()
-    });
-  });
-
-  return shops;
-};
-
 type MarketProps = {
   categories: Category[];
 };
@@ -46,7 +32,23 @@ export default function Market({ categories }: MarketProps) {
   const [filteredShops, setFilteredShops] = useState([]);
   const sortShopsBy = useSortingStore((state: any) => state.sortShopsBy);
 
-  const { data: shops, isLoading, error } = useSwr('shops', () => getShops());
+  const {
+    data: shops,
+    isLoading,
+    error
+  } = useSwr('shops', async () => {
+    let shops: any = [];
+    const querySnapshot = await getDocs(collection(db, 'shops'));
+
+    querySnapshot.forEach((doc: any) => {
+      shops.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+
+    return shops;
+  });
 
   useEffect(() => {
     if (shops) {

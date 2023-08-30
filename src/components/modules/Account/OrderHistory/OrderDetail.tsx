@@ -13,17 +13,24 @@ type Props = {
 type OrderDetailProps = {
   image: string | StaticImageData;
   title: string;
-  subtitle: string;
+  unit: string;
+  measurement?: string | number;
   isShipping?: boolean;
   price: number;
   id?: string | number;
 };
-const OrderDetailCard = ({ id, isShipping, title, subtitle, price, image }: OrderDetailProps) => {
+const OrderDetailCard = ({
+  id,
+  isShipping,
+  title,
+  unit,
+  measurement,
+  price,
+  image
+}: OrderDetailProps) => {
   return (
     <div className="flex font-america flex-row justify-between mt-2 w-full items-center">
-      <Link href={`/products/${id}`}
-        className="flex flex-row cursor-pointer  gap-x-2 items-center"
-      >
+      <Link href={`/products/${id}`} className="flex flex-row cursor-pointer  gap-x-2 items-center">
         <Image
           src={image}
           className={`${isShipping ? ' w-20 h-28' : ' w-28 h-24'} object-cover rounded-lg`}
@@ -37,7 +44,7 @@ const OrderDetailCard = ({ id, isShipping, title, subtitle, price, image }: Orde
           </span>
 
           <span className={` ${!isShipping && '  uppercase'}  text-xs text-gray-600 font-medium`}>
-            {subtitle}
+            {unit}: {measurement}
           </span>
         </div>
       </Link>
@@ -50,9 +57,7 @@ const SummaryItem = ({ title, amount }: { title: string; amount: number }) => {
   return (
     <div className="flex flex-row items-center justify-between">
       <span>{title}</span>
-      <span>
-        {formatCurrency(amount)}
-      </span>
+      <span>{formatCurrency(amount)}</span>
     </div>
   );
 };
@@ -65,18 +70,17 @@ const OrderDetail = ({ order }: Props) => {
     return getSubtotal() + order?.shipping.charges;
   };
 
-  console.log(order.products);
-
   return (
     <div className="sticky flex flex-col gap-y-5 top-24 w-full  ">
       <div className="border border-gray-400 rounded-xl flex flex-col p-5">
         <span className="font-medium uppercase">Products</span>
         {order.products.map((p: any, index: number) => (
           <OrderDetailCard
-            key={index}
+            key={p.id}
             id={p.id}
             title={p.name}
-            subtitle={p.unit}
+            unit={p.unit}
+            measurement={p.selectedVaraint.measurement}
             price={p.price}
             image={p.image}
           />
@@ -95,7 +99,7 @@ const OrderDetail = ({ order }: Props) => {
           <span className="uppercase font-medium">Shipping</span>
           <OrderDetailCard
             title={order?.shipping.name || 'Standard'}
-            subtitle={`Delivery within ${order?.shipping.days} days`}
+            unit={`Delivery within ${order?.shipping.days} days`}
             price={order?.shipping.charges}
             image={product1}
             isShipping

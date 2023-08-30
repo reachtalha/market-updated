@@ -9,12 +9,19 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { GearIcon, PinLeftIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
+import { useRef, useState } from 'react';
+import useClickOutside from '@/hooks/useClickOutside';
+
 const UserProfileDropDown = () => {
   const { logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const clickOutside = useClickOutside(ref, () => setOpen(false));
   const currentUser = auth.currentUser as any;
+
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild className="focus:outline-none">
+    <DropdownMenu.Root open={open}>
+      <DropdownMenu.Trigger asChild onClick={() => setOpen(true)} className="focus:outline-none">
         <button className="flex items-center gap-x-1.5 p-1 hover:bg-neutral-300/25  rounded-lg cursor-pointer">
           <Avatar className="h-9 w-9 ">
             <AvatarImage src={currentUser?.photoURL} alt="Avatar" />
@@ -36,10 +43,12 @@ const UserProfileDropDown = () => {
         <DropdownMenu.Content
           className="min-w-[220px] bg-white rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade"
           sideOffset={5}
+          ref={ref}
         >
           <DropdownMenu.Item className="focus:outline-none hover:outline-none">
             <Link
               href="/seller/settings"
+              onClick={() => setOpen(false)}
               className="flex gap-x-1.5 items-center rounded-md px-1.5 py-2  hover:bg-neutral-200"
             >
               <GearIcon className="w-5 h-5" />

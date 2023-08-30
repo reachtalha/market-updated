@@ -69,7 +69,11 @@ export const ExpertLoader = () => {
 
 export const AccountsLoader = () => {
   return (
+<<<<<<< HEAD
     <BoxedContent className="flex flex-col md:flex-row gap-x-5 py-20 mt-8">
+=======
+    <BoxedContent className="flex flex-col md:flex-row gap-x-5 py-28">
+>>>>>>> origin/feature
       <div className="flex flex-row md:flex-col w-full md:w-48 gap-4">
         <div className="w-1/3 md:w-full rounded h-4 bg-gray-200 animate-pulse" />
         <div className="w-1/3 md:w-full rounded h-4 bg-gray-200 animate-pulse" />

@@ -13,6 +13,9 @@ const getOrders = async () => {
   const userId = auth.currentUser?.uid;
   let docSnapshot = await getDocs(query(collection(db, 'shops'), where('uid', '==', userId)));
 
+  if (docSnapshot.docs.length < 1) {
+    return [];
+  }
   const shopId = docSnapshot.docs[0].id;
 
   docSnapshot = await getDocs(collection(db, 'orders'));
@@ -24,7 +27,7 @@ const getOrders = async () => {
         id: doc.id,
         name: doc.data().shippingAddress.firstName,
         email: doc.data().shippingAddress.email,
-        status: doc.data().status ?? "processing",
+        status: doc.data().status ?? 'processing',
         price: formatCurrency(doc.data().total),
         address: doc.data().shippingAddress.address,
         placedAt: doc.data().timeStamp.toDate()

@@ -20,6 +20,7 @@ import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 import AddPinnedContentModal from '@/components/modules/Experts/PinnedContent/AddContent';
 import PinnedContentList from '@/components/modules/Experts/PinnedContent/List';
 import ExpertCoverImage from '@/components/modules/Experts/CoverImage';
+import Link from 'next/link';
 
 const getExpert = async (expertId: string) => {
   const docRef = await getDoc(doc(db, 'users', expertId));
@@ -107,14 +108,16 @@ const Expert = async ({ params }: ExpertProps) => {
               <p className="uppercase">topics</p>
               <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
                 {expert?.topics?.map((item: any, idx: number) => (
-                  <Button
-                    key={idx}
-                    variant="outline"
-                    size="resp"
-                    className="uppercase border-black"
-                  >
-                    {item}
-                  </Button>
+                  <Link href={`/experts?category=${item}`} key={idx}>
+                    <Button
+                      key={idx}
+                      variant="outline"
+                      size="resp"
+                      className="uppercase border-black"
+                    >
+                      {item}
+                    </Button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -142,7 +145,7 @@ const Expert = async ({ params }: ExpertProps) => {
           <div className="border-t-2 border-black" />
         </div>
       </section>
-      <LatestBlogsSection title="Latest blogs" />
+      <LatestBlogsSection uid={params.expertId} title="blogs" />
     </>
   );
 };

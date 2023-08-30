@@ -8,10 +8,10 @@ import Loader from '@/components/common/Loader';
 import AccountOption, { Option } from '@/components/common/Buyer/Account/AccountOptions';
 import BoxedContent from '@/components/common/BoxedContent';
 import Settings from '@/components/modules/Account/Settings';
-import CardInfo from '@/components/modules/Account/CardInfo';
 import OrderHistory from '@/components/modules/Account/OrderHistory';
 import Socials from '@/components/modules/Account/Socials';
 import Wishlist from '@/components/modules/Account/Wishlist';
+import ManageBlogs from '@/components/modules/Blogs/ManageBlogs';
 import { AccountsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 type AccountProps = {
@@ -53,15 +53,21 @@ function Index({ options }: AccountProps) {
             )}
           </>
         );
+<<<<<<< HEAD
       case 'card':
         return (
           <div className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
             <CardInfo />
           </div>
         );
+=======
+>>>>>>> origin/feature
       case 'order':
         return <OrderHistory />;
+      case 'blogs':
+        return <ManageBlogs />;
       case 'wishlist':
+<<<<<<< HEAD
         return (
           <>
             {user ? (
@@ -75,6 +81,9 @@ function Index({ options }: AccountProps) {
             )}
           </>
         );
+=======
+        return <Wishlist />;
+>>>>>>> origin/feature
       case 'socials':
         return (
           <>
@@ -122,7 +131,11 @@ function Index({ options }: AccountProps) {
     }
   };
   return (
+<<<<<<< HEAD
     <BoxedContent className="flex mt-8 flex-col sm:flex-row  border-3 gap-x-5 py-20">
+=======
+    <BoxedContent className="flex flex-col sm:flex-row  border-3 gap-x-5 pb-20 pt-28">
+>>>>>>> origin/feature
       <AccountOption
         selectedOption={category}
         options={
@@ -132,6 +145,11 @@ function Index({ options }: AccountProps) {
                 {
                   name: 'Socials',
                   slug: 'socials',
+                  href: '/account?display'
+                },
+                {
+                  name: 'Manage Blogs',
+                  slug: 'blogs',
                   href: '/account?display'
                 }
               ]

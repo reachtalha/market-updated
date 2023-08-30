@@ -1,17 +1,14 @@
 import React from 'react';
 
 import { auth, db } from '@/lib/firebase/client';
-import { useRouter } from 'next/navigation';
 
-import { collection, doc, where, query, getDocs, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import useSwr from 'swr';
 
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import LatestProducts from '@/components/common/Buyer/LatestProducts';
-
-type Props = {};
 
 const getWishlistProduct = async () => {
   const userId = auth.currentUser?.uid;
@@ -45,10 +42,10 @@ const getWishlistProduct = async () => {
   return products.filter((product) => product !== null);
 };
 
-const Wishlist = (props: Props) => {
+const Wishlist = () => {
   const { data: products, isLoading, error } = useSwr('wishlist', getWishlistProduct);
-  if (isLoading) return <Loader />;
-  if (error) return <Error />;
+  if (isLoading) return <Loader className="grid place-content-center h-[50vh] w-full" />;
+  if (error) return <Error className="grid place-content-center h-[50vh] w-full" />;
   return (
     <div className="w-full">
         {products && products.length > 0 ? (

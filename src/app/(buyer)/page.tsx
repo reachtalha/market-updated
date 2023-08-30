@@ -54,7 +54,12 @@ export default async function Home() {
           <ul className="flex gap-y-4 md:gap-x-4 flex-col md:flex-row items-start md:pl-10 overflow-auto no-scrollbar snap-x snap-start">
             {experts.map((expert: any, i: number) => (
               <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
-                <ExpertCard image={expert?.photoURL} name={expert?.name} title={expert?.topics} />
+                <ExpertCard
+                  image={expert?.photoURL}
+                  name={expert?.name}
+                  title={expert?.topics}
+                  bio={expert?.bio}
+                />
               </Link>
             ))}
           </ul>

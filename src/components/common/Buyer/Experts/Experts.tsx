@@ -27,7 +27,7 @@ export default function Experts({ expertsJSON, categories }: ExpertsProps) {
 
   const [filteredExperts, setFilteredExperts] = useState(experts);
   const sortExpertBy = useSortingStore((state: any) => state.sortExpertBy);
-  
+
   useEffect(() => {
     if (category !== 'all') {
       setFilteredExperts(
@@ -55,7 +55,12 @@ export default function Experts({ expertsJSON, categories }: ExpertsProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
           {filteredExperts?.map((expert: any, i: number) => (
             <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
-              <ExpertCard image={expert?.photoURL} name={expert?.name} title={expert?.topics} />
+              <ExpertCard
+                image={expert?.photoURL}
+                name={expert?.name}
+                title={expert?.topics}
+                bio={expert?.bio}
+              />
             </Link>
           ))}
         </div>

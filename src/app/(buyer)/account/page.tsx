@@ -13,11 +13,6 @@ const options = [
     href: '/account?display'
   },
   {
-    name: 'Card Info',
-    slug: 'card',
-    href: '/account?display'
-  },
-  {
     name: 'Wish List',
     slug: 'wishlist',
     href: '/account?display'
@@ -26,12 +21,7 @@ const options = [
     name: 'Order History',
     slug: 'order',
     href: '/account?display'
-  },
-  {
-    name: 'Write blog',
-    slug: 'experts',
-    href: '/experts/blog/new-post'
-  },
+  }
 ];
 
 type Props = {};
