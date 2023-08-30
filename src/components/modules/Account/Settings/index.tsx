@@ -37,7 +37,7 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
     try {
       if (!isPasswordUpdate) {
         await updateDoc(doc(db, 'users', auth.currentUser?.uid as string), {
-          name: data?.name,
+          name: data?.name?.toLowerCase(),
           email: data.email,
           phone: data.phone,
           address: data.address

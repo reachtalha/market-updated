@@ -16,7 +16,7 @@ export default function ExpertHeader({ selectedCategory = '', categories }: Prod
   return (
     <div className="flex items-center justify-between">
       <p className="hidden md:block uppercase font-medium tracking-wide text-sm">
-        {selectedCategory}
+        {selectedCategory === 'all' ? 'All Experts' : selectedCategory}
       </p>
       <div className="md:hidden">
         <CategoryDropdown categories={categories} type="expert" />

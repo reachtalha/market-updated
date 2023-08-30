@@ -7,7 +7,7 @@ interface IProfileCard {
   id: string;
   image: string | StaticImageData;
   name: string;
-  title: string;
+  title: string[];
   bio: string;
 }
 
@@ -15,7 +15,7 @@ export default function ExpertCard({ id, image, name, title, bio }: IProfileCard
   return (
     <div className="relative min-w-48 h-96 rounded-sm overflow-hidden">
       <Link
-        href={`experts/?category=${!!title ? title[0] : 'all'}`}
+        href={`experts/?category=${title?.length > 0 ? title[0] : 'all'}`}
         className="capitalize z-10 text-sm absolute cursor-pointer top-5 left-5 bg-white p-1 px-3 rounded-lg"
       >
         {title && title[0]} Expert

@@ -34,7 +34,7 @@ export default function ProductCategories({
       <Accordion type="single" collapsible className="border-0">
         <AccordionItem value="item-1" className="border-0">
           <AccordionTrigger className="hover:no-underline uppercase tracking-wide text-sm pt-0">
-            {selectedCategory}
+            Filter By:
           </AccordionTrigger>
           <AccordionContent>
             <ul className="space-y-1 uppercase text-sm hover:text-neutral-400">

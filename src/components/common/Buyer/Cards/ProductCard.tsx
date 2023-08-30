@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -30,23 +30,22 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
   const router = useRouter();
   const { user } = useCurrentUser();
   const [loading, setLoading] = useState(false);
-  const isPinned = user?.pinnedProducts?.includes(id)
+  const isPinned = user?.pinnedProducts?.includes(id);
   const searchParams = useSearchParams();
-
 
   const pinProduct = async () => {
     try {
       setLoading(true);
       if (user.pinnedProducts?.length >= 10) {
-        toast.error("You can pin only up to 10 products");
+        toast.error('You can pin only up to 10 products');
         return;
       }
-      await updateDoc(doc(db, "users", `${auth.currentUser?.uid}`), {
+      await updateDoc(doc(db, 'users', `${auth.currentUser?.uid}`), {
         pinnedProducts: arrayUnion(id)
       });
-      toast.success("Product added to your pinned products!");
+      toast.success('Product added to your pinned products!');
     } catch (error) {
-      toast.error("Unable to add the product to your pinned products. Please try again.");
+      toast.error('Unable to add the product to your pinned products. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -58,64 +57,69 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
       if (user.pinnedProducts?.length === 0) {
         return;
       }
-      await updateDoc(doc(db, "users", `${auth.currentUser?.uid}`), {
+      await updateDoc(doc(db, 'users', `${auth.currentUser?.uid}`), {
         pinnedProducts: arrayRemove(id)
       });
-      toast.success("Product removed from your pinned products!");
+      toast.success('Product removed from your pinned products!');
     } catch (error) {
-      toast.error("Unable to remove the product from your pinned products. Please try again.");
+      toast.error('Unable to remove the product from your pinned products. Please try again.');
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const onProductTagClick = (e: any) => {
-    e.stopPropagation()
-    router.push(`/products?type=${type}`)
-  }
+    e.stopPropagation();
+    router.push(`/products?type=${type}`);
+  };
 
   const onProductClick = (e: any) => {
-    router.push(`/products/${id}`)
-  }
+    router.push(`/products/${id}`);
+  };
 
   const handle = () => {
     if (isPinned) {
-      unPinProduct()
+      unPinProduct();
     } else {
       pinProduct();
     }
-  }
+  };
 
   return (
-    <div className={`h-fit relative ${shrink ? '' : 'flex-shrink-0'}`}>
-      {auth.currentUser && role === "influencer" && <Button
-        disabled={loading}
-        variant="ghost"
-        title="Add Pinned Content"
-        className="rounded-full absolute w-fit h-fit p-1 top-1 right-1 z-10"
-        onClick={handle}
-      >
-        {
-          isPinned ? <PinOffIcon className="w-5 h-5 text-neutral-600" />
-            : <PinIcon className="w-5 h-5 text-neutral-600" />
-
-        }
-      </Button>}
+    <div className={`group h-fit relative ${shrink ? '' : 'flex-shrink-0'}`}>
+      {auth.currentUser && role === 'influencer' && (
+        <Button
+          disabled={loading}
+          variant="ghost"
+          title="Add Pinned Content"
+          className="rounded-full absolute w-fit h-fit p-1 top-1 right-1 z-10"
+          onClick={handle}
+        >
+          {isPinned ? (
+            <PinOffIcon className="w-5 h-5 text-neutral-600" />
+          ) : (
+            <PinIcon className="w-5 h-5 text-neutral-600" />
+          )}
+        </Button>
+      )}
       <button className="w-full" onClick={onProductClick}>
-        <div className="relative bg-accent group h-96 w-full drop-shadow-sm">
+        <div className="relative bg-accent h-96 w-full drop-shadow-sm overflow-hidden">
           <Image
             src={image}
-            className="object-cover"
+            className="object-cover group-hover:scale-105 duration-300 transition-all ease-in-out group-active:scale-100"
             alt={name}
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, (max-width: 1800px) 50vw"
           />
         </div>
-        <button onClick={onProductTagClick} className="border absolute top-3 text-xs uppercase bg-white left-3 py-1.5 px-6 rounded-lg">
+        <button
+          onClick={onProductTagClick}
+          className="border absolute top-3 text-xs uppercase bg-white left-3 py-1.5 px-6 rounded-lg"
+        >
           {type}
         </button>
         <div className="mt-3 flex justify-between items-start">
-          <p className="uppercase text-sm tracking-wide">
+          <p className="uppercase text-left text-sm tracking-wide">
             <span className="font-alpina italic">{shop} - </span>
             {name}
           </p>

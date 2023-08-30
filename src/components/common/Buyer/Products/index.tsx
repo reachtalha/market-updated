@@ -87,8 +87,6 @@ export default function Products({ categories, foryou }: ProductsProps) {
   const category = useCategorySlug();
   const type = useProductTypeSlug();
 
-  console.log({ type });
-
   const [selectedSubCategory, setSelectedSubCategory] = useState(
     category === 'all'
       ? 'All'
