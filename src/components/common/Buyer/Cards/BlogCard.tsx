@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from '@/components/common/FallbackImage';
 import { formatDateOrTime } from '@/utils/formatters';
 
-type PostCardProps = {
+type BlogCardProps = {
   title: string;
   slug: string;
   thumbnailImage: string;
@@ -11,7 +11,7 @@ type PostCardProps = {
     milliseconds: number;
   };
 };
-export default function PostCard({ title, slug, thumbnailImage, postedAt }: PostCardProps) {
+export default function BlogCard({ title, slug, thumbnailImage, postedAt }: BlogCardProps) {
   return (
     <Link href={`/blogs/${slug}`} className="group h-fit w-full relative">
       <div className="relative h-96 w-full drop-shadow-sm rounded overflow-hidden">
