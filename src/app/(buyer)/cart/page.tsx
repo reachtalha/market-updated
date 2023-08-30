@@ -8,12 +8,8 @@ export default function Page() {
       <h1>Shopping Cart</h1>
     </header>
     <div className="grid lg:gap-x-12 lg:grid-cols-3">
-      <div className="lg:col-span-2 border-t pt-8">
-        <CartItems />
-      </div>
-      <div className="w-full lg:grid-cols-1">
-        <OrderSummary />
-      </div>
+      <CartItems />
+      <OrderSummary />
     </div>
   </BoxedContent>
 }

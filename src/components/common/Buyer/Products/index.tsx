@@ -101,7 +101,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
     error,
     isLoading
   } = useSWR(
-    [`products-${category}`, selectedSubCategory, `products-${type}`],
+    [`products-${category}`, `products-${type}`, selectedSubCategory],
     () => getProducts(category, categories, foryou, type),
     {
       revalidateIfStale: false,
