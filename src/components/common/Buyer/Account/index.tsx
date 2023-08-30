@@ -53,37 +53,12 @@ function Index({ options }: AccountProps) {
             )}
           </>
         );
-<<<<<<< HEAD
-      case 'card':
-        return (
-          <div className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
-            <CardInfo />
-          </div>
-        );
-=======
->>>>>>> origin/feature
       case 'order':
         return <OrderHistory />;
       case 'blogs':
         return <ManageBlogs />;
       case 'wishlist':
-<<<<<<< HEAD
-        return (
-          <>
-            {user ? (
-              <div className=" w-full ">
-                <Wishlist />
-              </div>
-            ) : (
-              <div className="mt-8 h-[50vh] w-full flex items-center justify-center">
-                <Loader />
-              </div>
-            )}
-          </>
-        );
-=======
         return <Wishlist />;
->>>>>>> origin/feature
       case 'socials':
         return (
           <>
@@ -131,28 +106,24 @@ function Index({ options }: AccountProps) {
     }
   };
   return (
-<<<<<<< HEAD
     <BoxedContent className="flex mt-8 flex-col sm:flex-row  border-3 gap-x-5 py-20">
-=======
-    <BoxedContent className="flex flex-col sm:flex-row  border-3 gap-x-5 pb-20 pt-28">
->>>>>>> origin/feature
       <AccountOption
         selectedOption={category}
         options={
           role === 'influencer'
             ? [
-                ...options,
-                {
-                  name: 'Socials',
-                  slug: 'socials',
-                  href: '/account?display'
-                },
-                {
-                  name: 'Manage Blogs',
-                  slug: 'blogs',
-                  href: '/account?display'
-                }
-              ]
+              ...options,
+              {
+                name: 'Socials',
+                slug: 'socials',
+                href: '/account?display'
+              },
+              {
+                name: 'Manage Blogs',
+                slug: 'blogs',
+                href: '/account?display'
+              }
+            ]
             : options
         }
       />

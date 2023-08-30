@@ -2,6 +2,7 @@ import { MinusIcon, PlusIcon } from 'lucide-react';
 
 import useCartStore from '@/state/useCartStore';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 type Props = {
   quantity: number;
@@ -9,7 +10,7 @@ type Props = {
 };
 
 export default function QuantityInput({ docId, quantity }: Props) {
-  const { increment, decrement, isCartLoading } = useCartStore((state: any) => state);
+  const { increment, decrement, isQuantityChangeLoading } = useCartStore((state: any) => state);
 
   const incrementQuantity = async () => {
     increment(docId);
@@ -21,16 +22,16 @@ export default function QuantityInput({ docId, quantity }: Props) {
   return (
     <div className="flex items-center rounded-lg border px-2 py-1">
       <Button
-        disabled={isCartLoading}
+        disabled={isQuantityChangeLoading}
         onClick={decrementQuantity}
         className="p-0 h-fit"
         variant="ghost"
       >
         <MinusIcon height={16} width={16} />
       </Button>
-      <p className="border-0 w-10 h-full text-center">{quantity}</p>
+      <p className={cn("border-0 w-10 h-full text-center", isQuantityChangeLoading && "text-neutral-400")}>{quantity}</p>
       <Button
-        disabled={isCartLoading}
+        disabled={isQuantityChangeLoading}
         onClick={incrementQuantity}
         className="p-0 h-fit"
         variant="ghost"
