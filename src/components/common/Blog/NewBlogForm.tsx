@@ -42,6 +42,8 @@ type NewBlogFormProps = {
 export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
   const router = useRouter();
   const [isPublishing, setIsPublishing] = useState(false);
+  const [coverUploading, setCoverUploading] = useState(false);
+  const [thumbnailUploading, setThumbnailUploading] = useState(false);
   const ref = useRef<EditorJS>();
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,7 +52,8 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
       title: blogData?.title || '',
       coverImage: blogData?.coverImage || '',
       thumbnailImage: blogData?.thumbnailImage || ''
-    }
+    },
+    shouldUnregister: false
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -190,7 +193,12 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
                 <FormItem>
                   <FormLabel>Cover Image</FormLabel>
                   <FormControl>
-                    <UploadImageView value={field.value} onUploadSuccess={field.onChange} />
+                    <UploadImageView
+                      isLoading={coverUploading}
+                      setIsLoading={setCoverUploading}
+                      value={field.value}
+                      onUploadSuccess={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -205,7 +213,12 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
               <FormItem>
                 <FormLabel>Thumbnail Image</FormLabel>
                 <FormControl>
-                  <UploadImageView value={field.value} onUploadSuccess={field.onChange} />
+                  <UploadImageView
+                    isLoading={thumbnailUploading}
+                    setIsLoading={setThumbnailUploading}
+                    value={field.value}
+                    onUploadSuccess={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -225,7 +238,7 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
             </p>
           </div>
         </div>
-        <Button type="submit" className="w-56" disabled={isPublishing}>
+        <Button type="submit" className="w-56" disabled={isPublishing || coverUploading}>
           {slug
             ? isPublishing
               ? 'Updating...'

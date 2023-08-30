@@ -14,7 +14,6 @@ type Props = {
 
 const Index = ({ setStep, isEdit = false }: Props) => {
   const { setValue, getValues, register } = useFormContext();
-  const [editMode, setEditMode] = useState(false);
 
   const ref = React.useRef<EditorJS>();
 
@@ -90,15 +89,6 @@ const Index = ({ setStep, isEdit = false }: Props) => {
     <>
       <div className="flex items-center justify-between w-full">
         <Title title="Detailed Description" />
-        {isEdit && (
-          <Pencil
-            className="cursor-pointer"
-            onClick={() => {
-              setEditMode(true);
-            }}
-            size={17}
-          />
-        )}
       </div>
 
       <div className="w-full mt-3 xl:mt-5">
@@ -126,20 +116,18 @@ const Index = ({ setStep, isEdit = false }: Props) => {
           </Button>
         )}
 
-        {(!isEdit || editMode) && (
-          <Button
-            type={isEdit ? 'submit' : 'button'}
-            onClick={async () => {
-              const blocks = await ref.current?.save();
-
-              setValue('detailedDescription', blocks);
-              setStep((prev) => prev + 1);
-            }}
-            className={isEdit ? 'w-full' : 'w-1/2'}
-          >
-            {isEdit ? 'Update' : 'Next'}
-          </Button>
-        )}
+        <Button
+          type={isEdit ? 'submit' : 'button'}
+          onClick={async () => {
+            const blocks = await ref.current?.save();
+            
+            setValue('detailedDescription', blocks);
+            if (!isEdit) setStep((prev) => prev + 1);
+          }}
+          className={isEdit ? 'w-full' : 'w-1/2'}
+        >
+          {isEdit ? 'Update' : 'Next'}
+        </Button>
       </div>
     </>
   );

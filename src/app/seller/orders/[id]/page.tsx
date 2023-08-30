@@ -25,6 +25,7 @@ const getOrder = async (id: string) => {
           id: item.uid,
           name: item.name,
           price: item.selectedVariant.price,
+          selectedVariant: item.selectedVariant,
           unit: item.unit,
           quantity: item.quantity,
           image: item.image
@@ -86,12 +87,13 @@ const page = async ({ params }: Props) => {
           {order.placedAt.toLocaleDateString()}, {order.placedAt.toLocaleTimeString()}
         </span>
         <div
-          className={`capitalize w-28 rounded-3xl   p-2 px-4 flex items-center font-medium justify-center ${order?.status.toLowerCase() === 'delivered'
-            ? 'bg-green-100 text-green-500'
-            : order?.status.toLowerCase() === 'processing'
+          className={`capitalize w-28 rounded-3xl   p-2 px-4 flex items-center font-medium justify-center ${
+            order?.status.toLowerCase() === 'delivered'
+              ? 'bg-green-100 text-green-500'
+              : order?.status.toLowerCase() === 'processing'
               ? 'bg-yellow-100 text-yellow-500'
               : 'bg-red-100 text-red-500'
-            }`}
+          }`}
         >
           <span>{order.status}</span>
         </div>
