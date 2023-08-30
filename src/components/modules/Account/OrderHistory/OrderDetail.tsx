@@ -63,7 +63,6 @@ const SummaryItem = ({ title, amount }: { title: string; amount: number }) => {
 };
 
 const OrderDetail = ({ order }: Props) => {
-  console.log(order);
   const getSubtotal = () => {
     return order.products.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
   };

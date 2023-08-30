@@ -4,21 +4,34 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { db, auth } from '@/lib/firebase/client';
-import { doc, getDocs, collection, writeBatch } from 'firebase/firestore';
+import { doc, getDocs, collection, writeBatch, query, where } from 'firebase/firestore';
 
-import { useSWRConfig } from 'swr';
+import Image from '@/components/common/FallbackImage';
+import useSwr, { useSWRConfig } from 'swr';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { toast } from 'react-hot-toast';
 
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, Info, X } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import Avatar from '@/components/common/Avatar';
+import Loader from '@/components/common/Loader';
 
 type HeaderProps = {
   chatId: string;
   users: any;
+};
+
+const getImages = async (chatId: string) => {
+  const q = query(collection(db, 'chat', chatId, 'messages'), where('type', '==', 'image'));
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) return [];
+  const images = querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() };
+  });
+
+  return images || [];
 };
 
 const Header = ({ chatId, users }: HeaderProps) => {
@@ -26,6 +39,8 @@ const Header = ({ chatId, users }: HeaderProps) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useSWRConfig();
   const { name, photoURL } = users.filter((user: any) => user.uid !== auth.currentUser?.uid)[0];
+  const [showInfo, setShowInfo] = useState(false);
+  const { data, isLoading } = useSwr('user_chat_images', () => getImages(chatId)) as any;
 
   async function handleDelete() {
     try {
@@ -47,6 +62,7 @@ const Header = ({ chatId, users }: HeaderProps) => {
       setLoading(false);
     }
   }
+
   return (
     <header className="relative flex w-full items-center space-x-3 border-b py-2.5 px-3 md:px-0">
       <button
@@ -57,6 +73,65 @@ const Header = ({ chatId, users }: HeaderProps) => {
       </button>
       <Avatar name={name} photoURL={photoURL} />
       <span className="capitalize">{name}</span>
+      <button className="absolute right-8 top-5">
+        <Info
+          className="h-6 w-6 text-gray-500"
+          onClick={() => {
+            setShowInfo(true);
+            mutate('user_chat_images');
+          }}
+          strokeWidth={1.5}
+        />
+      </button>
+
+      <div
+        className={` absolute right-[0] top-0 rounded-lg z-50 bg-white transition-transform duration-500 border min-h-[89vh] w-[25vw] ${
+          showInfo ? 'translate-x-[0]' : 'translate-x-[120%]'
+        }`}
+      >
+        <X
+          onClick={() => setShowInfo(false)}
+          className="h-6 w-6 ms-auto mt-2 me-2 text-gray-500 cursor-pointer "
+          strokeWidth={1.5}
+        />
+        <div className="h-full">
+          <div className="flex flex-col items-center gap-y-3 justify-center mt-5">
+            <div className="h-32 w-32 rounded-full relative">
+              <Image
+                src={photoURL}
+                alt="user"
+                fill
+                className="h-full rounded-full w-full object-cover"
+              />
+            </div>
+            <span className="capitalize text-lg">{name}</span>
+          </div>
+          <div>
+            <div></div>
+            <span className="text-xl ms-5 mt-5 font-medium">Media</span>
+            {isLoading ? (
+              <Loader />
+            ) : data?.length > 0 ? (
+              <div className="flex flex-wrap items-center  justify-start gap-x-2 gap-y-2 p-4 mt-4 max-h-[50vh] overflow-y-scroll ">
+                {data.map((image: any, index: number) => (
+                  <div key={index} className="relative w-[9.6rem] h-[9.6rem]">
+                    <Image
+                      src={image.message}
+                      alt="image"
+                      fill
+                      className="h-32 w-full rounded-md object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <span className="text-center flex items-center justify-center w-full h-60 text-gray-500">
+                No Media
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
       <Popover>
         <PopoverTrigger asChild>
           <button className="absolute right-2 top-5">
