@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }: any) => {
       setLoading(true);
       const userCredentials = (await signInWithEmailAndPassword(auth, email, password)) as any;
       setUser(userCredentials.user);
-      if (userCredentials?.role === 'superadmin') router.push(`/super0admin`);
+      if (userCredentials?.role === 'superadmin') router.push(`/superadmin`);
       else router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {
       if (e.code === 'auth/user-not-found') {

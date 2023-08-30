@@ -16,7 +16,7 @@ import ReactStars from 'react-stars';
 import Image from '@/components/common/FallbackImage';
 
 import { db, auth } from '@/lib/firebase/client';
-import { collection, addDoc, updateDoc, query, where, doc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { mutate } from 'swr';
 import { ArrowLeft } from 'lucide-react';
 

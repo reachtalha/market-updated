@@ -63,6 +63,7 @@ const SummaryItem = ({ title, amount }: { title: string; amount: number }) => {
 };
 
 const OrderDetail = ({ order }: Props) => {
+  console.log(order);
   const getSubtotal = () => {
     return order.products.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
   };
@@ -76,11 +77,11 @@ const OrderDetail = ({ order }: Props) => {
         <span className="font-medium uppercase">Products</span>
         {order.products.map((p: any, index: number) => (
           <OrderDetailCard
-            key={p.id}
+            key={index}
             id={p.id}
             title={p.name}
             unit={p.unit}
-            measurement={p.selectedVaraint.measurement}
+            measurement={p.selectedVariant.measurement}
             price={p.price}
             image={p.image}
           />

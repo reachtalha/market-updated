@@ -44,19 +44,19 @@ const Stepper = ({ step, data, addProduct }: StepperProps) => {
       <hr
         className={`border ms-[-20px] translate-y-[-25px] w-[52%] transition-all duration-500 border-[#414D354D] ${
           step > 1 && 'border-primary'
-        } ${addProduct && 'w-[33%] '}  `}
+        } ${addProduct && 'w-[30%] '}  `}
       />
       <Step currentStep={step} title={data[1].title} step={data[1].step} />
       <hr
         className={`border translate-y-[-25px] w-[48%] transition-all duration-500 bg-[#414D354D] ${
           step > 2 && 'border-[#414D35]'
-        } ${addProduct && 'w-[33%] -me-[19px] '}  `}
+        } ${addProduct && 'w-[30%] -me-[19px] '}  `}
       />
       {addProduct && (
         <>
           <Step currentStep={step} title={data[2].title} step={data[2].step} />
           <hr
-            className={`border translate-y-[-25px] ms-[-19px] w-[40%] transition-all duration-500 bg-[#414D354D] ${
+            className={`border translate-y-[-25px] ms-[-19px] w-[50%] transition-all duration-500 bg-[#414D354D] ${
               step > 2 && 'border-[#414D35]'
             } `}
           />

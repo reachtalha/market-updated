@@ -17,13 +17,11 @@ import useSWR, { mutate } from 'swr';
 
 import FeaturesShops from '../FeaturesShops';
 import useSortingStore from '@/state/useSortingStore';
-import useProductTypeSlug from '@/hooks/useProductTypeSlug';
 
 const getProducts: any = async (
   category: string,
   allCategories: any,
-  foryou?: boolean,
-  type?: string
+  foryou?: boolean
 ): Promise<any> => {
   let products: any = [];
 
@@ -35,11 +33,7 @@ const getProducts: any = async (
       docRef = await getDocs(
         query(collection(db, 'products'), where('type', 'in', list.slice(0, 29)))
       );
-    }else if(type != null){
-      docRef = await getDocs(
-        query(collection(db, 'products'), where('type', '==', `${type.toLowerCase()}`))
-      );
-    }else {
+    } else {
       docRef = await getDocs(query(collection(db, 'products')));
     }
 
@@ -85,9 +79,6 @@ type ProductsProps = {
 };
 export default function Products({ categories, foryou }: ProductsProps) {
   const category = useCategorySlug();
-  const type = useProductTypeSlug();
-
-  console.log({ type })
 
   const [selectedSubCategory, setSelectedSubCategory] = useState(
     category === 'all'
@@ -102,8 +93,14 @@ export default function Products({ categories, foryou }: ProductsProps) {
     data: products,
     error,
     isLoading
-  } = useSWR([`products-${category}`, selectedSubCategory, `products-${type}`], () =>
-    getProducts(category, categories, foryou, type)
+  } = useSWR(
+    [`products-${category}`, selectedSubCategory],
+    () => getProducts(category, categories, foryou),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
   );
 
   useEffect(() => {

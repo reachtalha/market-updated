@@ -72,8 +72,7 @@ export default function SimilarShops({
   if (error) {
     return <Error className="w-full h-96 flex items-center justify-center " />;
   }
-
-  if (shops && shops?.length <= 0)
+  if (shops?.length === 1)
     return (
       <div className="w-full h-96 flex items-center justify-center "> No Similiar Shops Found </div>
     );

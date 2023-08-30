@@ -32,6 +32,7 @@ const fetchGetCart = async () => {
         const selectedVariant = productData?.SKU.find(
           (sku: any) => sku.id === document.data().skuId
         );
+       
         return {
           itemId: document.id,
           docId: docRef.id,

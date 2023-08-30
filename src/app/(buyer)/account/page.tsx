@@ -28,6 +28,7 @@ type Props = {};
 
 const Page = (props: Props) => {
   const router = useRouter();
+
   if (!auth.currentUser) {
     router.replace('/auth/login');
     return (

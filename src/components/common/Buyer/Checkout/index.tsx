@@ -132,6 +132,7 @@ export default function Checkout({ user }: { user: any }) {
         userId: cart?.userId,
         total: cart?.summary?.total
       };
+
       await axios.post('/api/checkout', {
         order,
         photoURL: auth.currentUser?.photoURL,

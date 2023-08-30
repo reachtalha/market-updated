@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import EditorJS from '@editorjs/editorjs';
 
 import { useFormContext } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import Title from '@/components/common/Seller/Shared/Title';
+import { Pencil } from 'lucide-react';
 
 type Props = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  isEdit?: boolean;
 };
 
-const Index = ({ setStep }: Props) => {
+const Index = ({ setStep, isEdit = false }: Props) => {
   const { setValue, getValues, register } = useFormContext();
+  const [editMode, setEditMode] = useState(false);
 
   const ref = React.useRef<EditorJS>();
 
@@ -34,9 +37,9 @@ const Index = ({ setStep }: Props) => {
           ref.current = editor;
         },
 
-        autofocus: true,
         placeholder: 'Type product details here',
         inlineToolbar: true,
+
         data: getValues('detailedDescription') || '',
         tools: {
           header: {
@@ -85,10 +88,22 @@ const Index = ({ setStep }: Props) => {
 
   return (
     <>
-      <Title title="Detailed Description" />
+      <div className="flex items-center justify-between w-full">
+        <Title title="Detailed Description" />
+        {isEdit && (
+          <Pencil
+            className="cursor-pointer"
+            onClick={() => {
+              setEditMode(true);
+            }}
+            size={17}
+          />
+        )}
+      </div>
+
       <div className="w-full mt-3 xl:mt-5">
         <div className=" w-full ">
-          <div id="editor" className=" p-5 bg-white  shadow-sm rounded-lg border" />
+          <div id="editor" className=" p-5 bg-white   shadow-sm rounded-lg border" />
           <p className="text-sm text-gray-500">
             Use <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">Tab</kbd> to open
             the command menu.
@@ -96,30 +111,35 @@ const Index = ({ setStep }: Props) => {
         </div>
       </div>
       <div className="flex gap-x-2 mt-5 xl:mt-8">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={async () => {
-            const blocks = await ref.current?.save();
-            setValue('detailedDescription', blocks);
-            setStep((prev) => prev - 1);
-          }}
-          className="w-1/2"
-        >
-          Back
-        </Button>
-        <Button
-          type="button"
-          onClick={async () => {
-            const blocks = await ref.current?.save();
+        {!isEdit && (
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={async () => {
+              const blocks = await ref.current?.save();
+              setValue('detailedDescription', blocks);
+              setStep((prev) => prev - 1);
+            }}
+            className="w-1/2"
+          >
+            Back
+          </Button>
+        )}
 
-            setValue('detailedDescription', blocks);
-            setStep((prev) => prev + 1);
-          }}
-          className="w-1/2"
-        >
-          Next
-        </Button>
+        {(!isEdit || editMode) && (
+          <Button
+            type={isEdit ? 'submit' : 'button'}
+            onClick={async () => {
+              const blocks = await ref.current?.save();
+
+              setValue('detailedDescription', blocks);
+              setStep((prev) => prev + 1);
+            }}
+            className={isEdit ? 'w-full' : 'w-1/2'}
+          >
+            {isEdit ? 'Update' : 'Next'}
+          </Button>
+        )}
       </div>
     </>
   );
