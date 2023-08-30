@@ -1,15 +1,10 @@
-"use client";
+'use client';
 
 import useSWR from 'swr';
 import { db, auth } from '@/lib/firebase/client';
-import { getDocs, query, collection, where, limit } from "@firebase/firestore";
+import { getDocs, query, collection, where, limit } from '@firebase/firestore';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RecentSales } from '@/components/modules/Seller/Dashboard/RecentSales';
 import Overview from '@/components/modules/Seller/Dashboard/Overview';
 
@@ -20,52 +15,43 @@ import Error from '@/components/common/Error';
 import Products from '@/assets/icons/system/Products';
 import Cart from '@/assets/icons/system/Cart';
 
-
 export default function Home() {
-
   const {
     data: analytics,
     error,
-    isLoading,
-  } = useSWR("dashboard", async () => {
+    isLoading
+  } = useSWR('dashboard', async () => {
     let recentSales: any = [];
     let totalSales = 0;
     let totalProducts = 0;
     let totalOrders = 0;
     const productSnap = await getDocs(
-      query(
-        collection(db, "shops"),
-        where("uid", "==", `${auth.currentUser?.uid}`),
-        limit(1)
-      )
+      query(collection(db, 'shops'), where('uid', '==', `${auth.currentUser?.uid}`), limit(1))
     );
     const shopId = productSnap.docs[0]?.id;
     const orderSnap = await getDocs(
-      query(
-        collection(db, "orders"),
-        where("shops", "array-contains", `${shopId}`)
-      )
+      query(collection(db, 'orders'), where('shops', 'array-contains', `${shopId}`))
     );
 
     totalProducts = productSnap.docs[0]?.data()?.noOfProducts;
     let activeOrders = 0;
     orderSnap.forEach((order) => {
       totalOrders++;
-      if (order.data().status === "processing") activeOrders++;
+      if (order.data().status === 'processing') activeOrders++;
       recentSales.push({
         id: order.id,
         firstName: order.data().shippingAddress.firstName,
         lastName: order.data().shippingAddress.lastName,
-        email: order.data().shippingAddress.email ?? "",
-        photoURL: order.data().photoURL ?? "",
+        email: order.data().shippingAddress.email ?? '',
+        photoURL: order.data().photoURL ?? '',
         amount: order.data().total,
         time: formatDate(order.data().timeStamp.seconds * 1000),
         month: formatMonth(order.data().timeStamp.seconds * 1000),
-        status: order.data().status ?? "Processing",
+        status: order.data().status ?? 'Processing'
       });
       order.data().items.map((item: any) => {
         if (item.shopId === shopId) {
-          totalSales += parseInt(item.selectedVariant.price);
+          totalSales += Number(item.selectedVariant.price) * parseInt(item.quantity);
         }
       });
     });
@@ -74,7 +60,7 @@ export default function Home() {
       totalProducts,
       totalOrders,
       recentSales,
-      activeOrders,
+      activeOrders
     } as any;
   });
   if (isLoading) {
@@ -90,9 +76,7 @@ export default function Home() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Revenue
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -112,9 +96,7 @@ export default function Home() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Products
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Total Products</CardTitle>
             <Products className="w-5 h-5 text-neutral-600" />
           </CardHeader>
           <CardContent>
@@ -132,9 +114,7 @@ export default function Home() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Active Orders
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Active Orders</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
