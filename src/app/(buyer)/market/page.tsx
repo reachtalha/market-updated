@@ -3,7 +3,16 @@ import React from 'react';
 
 import { Category } from '@/components/common/Buyer/Market/MarketCategories';
 
-import { collection, getDocs, where, query } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  where,
+  query,
+  orderBy,
+  CollectionReference,
+  Query,
+  QueryFieldFilterConstraint
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
 type Params = {
@@ -25,37 +34,51 @@ const getCategories = async () => {
   });
   return categories as Category[];
 };
-const getShops = async (category: string) => {
-  let shops: any = [];
 
-  let querySnapshot;
+const getShops = async (category: string, sort: string) => {
+  const sortOptions: any = {
+    name: {
+      name: 'name',
+      by: 'asc'
+    },
+    latest: {
+      name: 'submittedAt',
+      by: 'desc'
+    }
+  };
+
+  const sortBy = sortOptions[sort] || sortOptions['latest'];
+
+  let queryBase: CollectionReference | Query = collection(db, 'shops');
+  let queryCondition: QueryFieldFilterConstraint | any = null;
+
   if (category) {
-    querySnapshot = await getDocs(
-      query(collection(db, 'shops'), where('category', '==', category))
-    );
-  } else {
-    querySnapshot = await getDocs(collection(db, 'shops'));
+    queryCondition = where('category', '==', category);
   }
 
-  querySnapshot.forEach((doc: any) => {
-    shops.push({
-      id: doc.id,
-      ...doc.data()
-    });
-  });
+  const querySnapshot = await getDocs(
+    query(queryBase, queryCondition, orderBy(sortBy.name, sortBy.by))
+  );
+
+  const shops = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  }));
 
   return shops;
 };
+
 const Page = async ({ searchParams }: { searchParams: Params }) => {
-  const { category } = searchParams;
+  const { category, sort } = searchParams;
   const categoriesPromise = getCategories();
-  const shopsPromise = getShops(category as string);
+  const shopsPromise = getShops(category as string, sort as string);
   const [categories, shops] = await Promise.all([categoriesPromise, shopsPromise]);
   return (
     <Market
       categories={categories}
       shopsJSON={JSON.stringify(shops)}
       category={category as string}
+      sortBy={sort as string}
     />
   );
 };

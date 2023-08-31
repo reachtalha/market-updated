@@ -13,15 +13,21 @@ type MarketProps = {
   categories: Category[];
   shopsJSON: any;
   category: string;
+  sortBy: string;
 };
-export default function Market({ categories, shopsJSON, category }: MarketProps) {
+export default function Market({
+  categories,
+  shopsJSON,
+  category,
+  sortBy = 'latest'
+}: MarketProps) {
   const shops = JSON.parse(shopsJSON);
   return (
     <>
       <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <MarketCategories selectedCategory={category} categories={categories} />
         <div className="flex-1 space-y-4">
-          <MarketHeader selectedCategory={category} categories={categories} />
+          <MarketHeader selectedCategory={category} categories={categories} sortBy={sortBy} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {shops.length > 0 ? (
               shops.map((shop: any, i: number) => (
