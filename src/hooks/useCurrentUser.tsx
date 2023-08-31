@@ -1,20 +1,27 @@
 'use client';
 
 import { getDoc, doc } from 'firebase/firestore';
-import useSWR from 'swr';
+import useSWR, { preload } from 'swr';
 import { db, auth } from '@/lib/firebase/client';
+
+const getCurrentUser = async () => {
+  const docRef = await getDoc(doc(db, 'users', `${auth.currentUser?.uid}`));
+  return {
+    is: docRef.id,
+    ...docRef.data()
+  } as any;
+};
+preload('currentUSer', getCurrentUser);
 
 export const useCurrentUser = () => {
   const {
     data: user,
     isLoading,
     error
-  } = useSWR('currentUser', async () => {
-    const docRef = await getDoc(doc(db, 'users', `${auth.currentUser?.uid}`));
-    return {
-      is: docRef.id,
-      ...docRef.data()
-    } as any;
+  } = useSWR('currentUser', getCurrentUser, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
   });
 
   return {
