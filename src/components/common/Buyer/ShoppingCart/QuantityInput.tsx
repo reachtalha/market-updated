@@ -3,21 +3,34 @@ import { MinusIcon, PlusIcon } from 'lucide-react';
 import useCartStore from '@/state/useCartStore';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { auth } from '@/lib/firebase/client';
+import useGuestCartStore from '@/state/useGuestCartStore';
 
 type Props = {
   quantity: number;
   docId: string;
+  productId: string;
+  skuId: string;
 };
 
-export default function QuantityInput({ docId, quantity }: Props) {
+export default function QuantityInput({ docId, productId, skuId, quantity }: Props) {
   const { increment, decrement, isQuantityChangeLoading } = useCartStore((state: any) => state);
+  const { incrementGuestCartItem, decrementGuestCartItem } = useGuestCartStore((state: any) => state);
 
   const incrementQuantity = async () => {
-    increment(docId);
+    if(auth.currentUser){
+      increment(docId);
+    }else {
+      incrementGuestCartItem(productId, skuId);
+    }
   };
 
   const decrementQuantity = async () => {
-    decrement(docId);
+    if(auth.currentUser){
+      decrement(docId);
+    }else {
+      decrementGuestCartItem(productId, skuId);
+    }
   };
   return (
     <div className="flex items-center rounded-lg border px-2 py-1">

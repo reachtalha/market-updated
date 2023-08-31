@@ -5,16 +5,15 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useElements, useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
-import { CancelTokenSource } from 'axios';
 import BoxedContent from '@/components/common/BoxedContent';
 import ShippingInfo from '@/components/common/Buyer/Checkout/ShippingInfo';
 import OrderSummaryCheckout from '@/components/common/Buyer/Checkout/OrderSummaryCheckout';
 import CheckoutForm from '@/components/common/Buyer/Checkout/CheckoutForm';
 import { Form } from '@/components/ui/form';
-import { addDoc, collection, getDoc, doc, updateDoc, Timestamp } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase/client';
+import { auth } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import toast from 'react-hot-toast';
+import useGuestCartStore from '@/state/useGuestCartStore';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:3000';
 
@@ -59,6 +58,8 @@ export default function Checkout({ user }: { user: any }) {
   const stripe = useStripe();
   const elements = useElements();
   const { cart, clearCart } = useCartStore((state: any) => state);
+  const { guestCart, clearGuestCart } = useGuestCartStore((state: any) => state);
+  const cartItems = auth.currentUser ? cart?.items : guestCart.items;
 
   const submitPayment = async () => {
     if (!stripe || !elements) return;
@@ -81,28 +82,29 @@ export default function Checkout({ user }: { user: any }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: user.email,
-      firstName: user.name.split(' ')[0],
-      lastName: user.name.split(' ').length > 1 ? user.name.split(' ')[1] : '',
-      company: '',
-      address: user.address,
+      email: user?.email || "",
+      firstName: auth.currentUser ? user.name.split(' ')[0] : "",
+      lastName: auth.currentUser ? (user.name.split(' ').length > 1 ? user.name.split(' ')[1] : '') : "",
+      company: "",
+      address: user?.address || "",
       apartments: '',
-      city: user.city,
+      city: user?.city || "",
       state: '',
-      phone: user.phone
+      phone: user?.phone || ""
     },
     shouldUnregister: false
   });
   async function onSubmit(values: any) {
     try {
       setIsOrderLoading(true);
-      const shops = cart?.items.map((s: any) => {
+      await submitPayment();
+      const shops = cartItems?.map((s: any) => {
         return s.shopId;
       });
-      const items = cart?.items.map((i: any) => {
+      const items = cartItems?.map((i: any) => {
         return {
           id: i.docId,
-          image: i.image,
+          image: auth.currentUser ? i.image : i.coverImage,
           name: i.name,
           quantity: i.quantity,
           shopId: i.shopId,
@@ -129,18 +131,22 @@ export default function Checkout({ user }: { user: any }) {
         },
         items: items,
         shops: shops,
-        userId: cart?.userId,
-        total: cart?.summary?.total
+        userId: auth.currentUser ? cart?.userId : "guest",
+        total: auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total
       };
 
       await axios.post('/api/checkout', {
         order,
-        photoURL: auth.currentUser?.photoURL,
-        cart
+        photoURL: auth.currentUser?.photoURL || "guest",
+        cart: auth.currentUser ? cart : guestCart
       });
 
-      submitPayment();
-      clearCart();
+
+      if(auth.currentUser){
+        clearCart();
+      }else {
+        clearGuestCart();
+      }
       toast.success('We have received your order!');
     } catch (err) {
       console.log(err);
