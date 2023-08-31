@@ -13,6 +13,7 @@ import { XIcon } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatters';
 import QuantityInput from '@/components/common/Buyer/ShoppingCart/QuantityInput';
 import { Skeleton } from '@/components/ui/skeleton';
+import useGuestCartStore from '@/state/useGuestCartStore';
 
 type CartPopoverProps = {
   trigger: ReactNode;
@@ -20,6 +21,7 @@ type CartPopoverProps = {
 export default function CartPopover({ trigger }: CartPopoverProps) {
   const router = useRouter();
   const { cart, getCart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
+  const { guestCart, deleteFromGuestCart } = useGuestCartStore((state: any) => state);
   const user = auth.currentUser;
 
   const handleExploreProducts = () => router.push('/products');
@@ -31,8 +33,15 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   }, []);
 
   const handleOnDelete = (item: any) => {
-    deleteFromCart(item.itemId);
+    if (user){
+      deleteFromCart(item.itemId);
+    }else {
+      deleteFromGuestCart(item.id, item.selectedVariant.id);
+    }
   };
+
+  const cartItems = user ? cart?.items : guestCart.items;
+  console.log({ cartItems })
 
   return (
     <Popover>
@@ -44,7 +53,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
           ) : (
             <>
               <ul className="flex flex-col gap-y-5">
-                {cart?.items?.map((item: any, idx: number) => (
+                {cartItems?.map((item: any, idx: number) => (
                   <li
                     className="flex flex-wrap justify-between pb-4 border-b last:border-0"
                     key={idx}
@@ -54,7 +63,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                         className="border rounded"
                         height={75}
                         width={75}
-                        src={item.image}
+                        src={item.coverImage}
                         alt={item.name}
                       />
                       <div className="ms-2">
@@ -68,7 +77,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                       </div>
                     </div>
                     <div>
-                      <QuantityInput quantity={item.quantity} docId={item.itemId} />
+                      <QuantityInput quantity={item.quantity} skuId={item?.selectedVariant?.id} productId={item?.id} docId={item.itemId} />
                     </div>
                     <Button
                       onClick={() => handleOnDelete(item)}
@@ -80,7 +89,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                   </li>
                 ))}
               </ul>
-              {!cart?.items?.length ? (
+              {!cartItems.length ? (
                 <div className="text-center">
                   <p>Your Cart is empty!</p>
                   <PopoverClose asChild>
@@ -90,7 +99,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                   </PopoverClose>
                 </div>
               ) : null}
-              {!!cart?.items?.length ? (
+              {!!cartItems.length ? (
                 <>
                   <PopoverClose asChild>
                     <Button onClick={handleViewCheckout} className="w-full">

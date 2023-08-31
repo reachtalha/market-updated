@@ -1,9 +1,6 @@
 import { create } from 'zustand';
 import { db, auth } from '@/lib/firebase/client';
 import {
-  setDoc,
-  arrayRemove,
-  arrayUnion,
   addDoc,
   deleteDoc,
   doc,
@@ -90,7 +87,7 @@ const fetchClearCart = async (cartId: string) => {
   }
 };
 
-const calculateCartSummary = (items: any = []) => {
+export const calculateCartSummary = (items: any = []) => {
   const subTotal = items.reduce((sum: number, item: any) => {
     const itemTotal = item.quantity * item.selectedVariant.price;
     return sum + itemTotal;
