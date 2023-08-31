@@ -91,7 +91,7 @@ export default function Chat() {
   const returnUrl = searchParams.get('return_url') || '';
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader className="w-full h-full flex items-center justify-center" />;
   }
   if (error) {
     return <Error />;
