@@ -1,15 +1,22 @@
 import Experts from '@/components/common/Buyer/Experts/Experts';
-import { getDocs, collection, query, where } from 'firebase/firestore';
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  orderBy,
+  CollectionReference,
+  Query
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+
+type Params = {
+  [key: string]: string | string[] | undefined;
+};
 
 export const dynamic = 'force-dynamic';
 
 const categories = [
-  {
-    name: 'View All Experts',
-    slug: 'all',
-    href: '/experts?category'
-  },
   {
     name: 'Health Experts',
     slug: 'health',
@@ -42,17 +49,60 @@ const categories = [
   }
 ];
 
-const getExperts: any = async (): Promise<any> => {
-  let experts: any = [];
+const getExperts = async (category: string, sort: string) => {
+  const sortOptions: any = {
+    name: {
+      name: 'name',
+      by: 'asc'
+    },
+    category: {
+      name: 'category',
+      by: 'asc'
+    },
+    latest: {
+      name: 'createdAt',
+      by: 'desc'
+    }
+  };
 
-  const docRef = await getDocs(query(collection(db, 'users'), where('role', '==', 'influencer')));
-  experts = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  const sortBy = sortOptions[sort] || sortOptions['latest'];
+
+  const usersCollection = collection(db, 'users');
+  let expertQuery: CollectionReference | Query = query(
+    usersCollection,
+    where('role', '==', 'influencer'),
+    orderBy(sortBy.name, sortBy.by)
+  );
+
+  if (category) {
+    expertQuery = query(
+      usersCollection,
+      where('role', '==', 'influencer'),
+      where('topics', 'array-contains', category),
+      orderBy(sortBy.name, sortBy.by)
+    );
+  }
+
+  const querySnapshot = await getDocs(expertQuery);
+
+  const experts = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  }));
 
   return experts;
 };
 
-export default async function Index() {
-  const experts = await getExperts();
+export default async function Index({ searchParams }: { searchParams: Params }) {
+  const { category, sort } = searchParams;
+  const experts = await getExperts(category as string, sort as string);
 
-  return <Experts expertsJSON={JSON.stringify(experts)} categories={categories} />;
+  return (
+    <Experts
+      expertsJSON={JSON.stringify(experts)}
+      categories={categories}
+      category={category as string}
+      sortBy={sort as string}
+    />
+  );
 }

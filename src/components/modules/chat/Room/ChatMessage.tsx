@@ -33,7 +33,7 @@ function ChatMessage({ chatId, messageId, messageObj, users }: ChatMessageProps)
           <div className="relative rounded-t-3xl rounded-br-3xl">
             <DeleteMessage chatId={chatId} messageId={messageId} type={type} message={message} />
             {type === 'text' ? (
-              <p className="max-w-[350px] mb-1 break-all rounded-t-3xl rounded-bl-3xl bg-blue-500/90 py-2 pl-3 pr-5 text-white shadow 2xl:text-lg">
+              <p className="max-w-[350px] mb-1 break-all rounded-t-3xl rounded-bl-3xl bg-primary py-2 pl-3 pr-5 text-white shadow 2xl:text-lg">
                 {message}
               </p>
             ) : (

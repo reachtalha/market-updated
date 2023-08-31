@@ -100,14 +100,8 @@ export default function Products({ categories, foryou }: ProductsProps) {
     data: products,
     error,
     isLoading
-  } = useSWR(
-    [`products-${category}`, `products-${type}`, selectedSubCategory],
-    () => getProducts(category, categories, foryou, type),
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
+  } = useSWR([`products-${category}`, `products-${type}`, selectedSubCategory], () =>
+    getProducts(category, categories, foryou, type)
   );
 
   useEffect(() => {

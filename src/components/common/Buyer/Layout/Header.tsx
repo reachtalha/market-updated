@@ -7,6 +7,7 @@ import BoxedContent from '@/components/common/BoxedContent';
 import HeaderSheet from '@/components/common/Buyer/Layout/HeaderSheet';
 import useDetectChangeScroll from '@/hooks/useDetectChangeScroll';
 
+import { auth } from '@/lib/firebase/client';
 import { cn, isColoredRoute } from '@/lib/utils';
 import Searchbar from '@/components/common/Searchbar';
 import { useState } from 'react';
@@ -16,12 +17,16 @@ import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import CartPopover from '@/components/common/Buyer/ShoppingCart/CartPopover';
 import useCartStore from '@/state/useCartStore';
 import TopBanner from '@/components/common/Buyer/TopBanner';
+import useGuestCartStore from '@/state/useGuestCartStore';
 
 const Header = () => {
   const [toggleSearchbar, setToggleSearchBar] = useState(false);
   const isScrollChanged = useDetectChangeScroll();
   const pathname = usePathname();
   const { cart } = useCartStore((state: any) => state);
+  const { guestCart } = useGuestCartStore((state: any) => state);
+
+  const cartItemsCount = !auth.currentUser ? guestCart.items.length : (cart?.items?.length || 0)
 
   const onToggleSearchBar = (val: boolean) => setToggleSearchBar(val);
   return (
@@ -90,7 +95,7 @@ const Header = () => {
                 size="icon"
                 variant="link"
               >
-                Cart ({cart?.items?.length || 0})
+                Cart ({cartItemsCount})
               </Button>
             }
           />

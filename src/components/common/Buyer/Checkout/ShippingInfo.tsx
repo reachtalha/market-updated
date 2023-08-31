@@ -118,24 +118,11 @@ export default function ShippingInfo({ form }: { form: any }) {
             </FormItem>
           )}
         />
-        {/*<FormField*/}
-        {/*  control={form.control}*/}
-        {/*  name="lastName"*/}
-        {/*  render={({ field }) => (*/}
-        {/*    <FormItem className="w-full">*/}
-        {/*      <FormLabel>Postal code</FormLabel>*/}
-        {/*      <FormControl>*/}
-        {/*        <Input placeholder="Postal code"  {...field} />*/}
-        {/*      </FormControl>*/}
-        {/*      <FormMessage />*/}
-        {/*    </FormItem>*/}
-        {/*  )}*/}
-        {/*/>*/}
       </div>
 
       <FormField
         control={form.control}
-        name="Phone"
+        name="phone"
         render={({ field }) => (
           <FormItem className="mt-5 w-full">
             <FormLabel>Phone</FormLabel>

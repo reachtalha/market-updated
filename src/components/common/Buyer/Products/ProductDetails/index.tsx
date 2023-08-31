@@ -19,6 +19,7 @@ import SimiliarProducts from '@/components/common/Buyer/SimilarProducts';
 import useCartStore from '@/state/useCartStore';
 import { updateDoc, getDoc, doc, setDoc } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
+import useGuestCartStore from '@/state/useGuestCartStore';
 
 const isInWishlist = async (productId: string) => {
   if (!auth.currentUser) return false;
@@ -57,6 +58,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
   const blocks = product.detailedDescription ? product.detailedDescription.blocks : [];
 
   const { addToCart, isAddToCartLoading } = useCartStore((state: any) => state);
+  const { addToGuestCart } = useGuestCartStore((state: any) => state);
 
   const {
     data: isInWishlistData,
@@ -70,7 +72,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
     if (auth.currentUser) {
       addToCart(product.id, selectedVariant.id);
     } else {
-      toast.error("You're not logged in!");
+      addToGuestCart({ ...product, selectedVariant })
     }
   };
 

@@ -22,7 +22,11 @@ export const useCategories = () => {
     })) as ICategory[];
   };
 
-  const { data, error, isLoading } = useSWR<ICategory[]>('categories', fetcher);
+  const { data, error, isLoading } = useSWR<ICategory[]>('categories', fetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  });
 
   return {
     categories: data,
