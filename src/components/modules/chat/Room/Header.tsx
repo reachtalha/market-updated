@@ -55,7 +55,7 @@ const Header = ({ chatId, users }: HeaderProps) => {
       batch.delete(chatRef);
       await batch.commit();
       mutate('user_chats');
-      router.replace('/chat');
+      window.location.replace('/chat');
     } catch (error) {
       toast.error('Oops! Something went wrong!');
     } finally {
@@ -66,7 +66,7 @@ const Header = ({ chatId, users }: HeaderProps) => {
   return (
     <header className="relative flex w-full items-center space-x-3 border-b py-2.5 px-3 md:px-0">
       <button
-        onClick={() => router.replace('/chat')}
+        onClick={() => router.push('/chat')}
         className="block md:hidden active:bg-gray-100 focus:bg-gray-100 rounded-full p-1"
       >
         <ArrowLeft className="w-5 h-5 text-gray-600" />
@@ -85,7 +85,7 @@ const Header = ({ chatId, users }: HeaderProps) => {
       </button>
 
       <div
-        className={` absolute right-[0] top-0 rounded-lg z-50 bg-white transition-transform duration-500 border min-h-[89vh] w-[25vw] ${
+        className={` absolute right-[0] top-0 rounded-lg z-50 bg-white transition-transform duration-500 border min-h-[89vh] w-screen md:w-[45vw] lg:w-[25vw] ${
           showInfo ? 'translate-x-[0]' : 'translate-x-[120%]'
         }`}
       >
@@ -119,7 +119,7 @@ const Header = ({ chatId, users }: HeaderProps) => {
                       src={image.message}
                       alt="image"
                       fill
-                      className="h-32 w-full rounded-md object-cover"
+                      className="h-32 w-full rounded-md object-cover border"
                     />
                   </div>
                 ))}

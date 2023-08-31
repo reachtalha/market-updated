@@ -7,6 +7,7 @@ import ChatBox from '@/components/modules/chat/Room/ChatBox';
 import Input from '@/components/modules/chat/Room/Input';
 
 import Error from '@/components/common/Error';
+import Redirect from './Redirect';
 
 type Props = {
   chatId: string;
@@ -34,7 +35,7 @@ const getShopData = async (user: any) => {
 const getUsers = async (chatId: string) => {
   const chatDoc = await getDoc(doc(db, 'chat', `${chatId}`));
   if (!chatDoc.exists()) {
-    return <Error />;
+    return false;
   }
   const users = Object.keys(chatDoc.data().users);
   const usersData: any = [];
@@ -64,6 +65,10 @@ const getUsers = async (chatId: string) => {
 };
 const ChatRoom = async ({ chatId }: Props) => {
   const users = await getUsers(chatId);
+
+  if (!users) {
+    return <Redirect />;
+  }
 
   return (
     <>

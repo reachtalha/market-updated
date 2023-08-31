@@ -6,6 +6,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 import { MoreVertical } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { deleteImage } from '@/components/common/functions';
+import DeleteImage from '@/utils/handlers/image/DeleteImage';
 
 type DeleteMessageProps = {
   chatId: string;
@@ -21,7 +23,7 @@ function DeleteMessage({ chatId, messageId, type, message }: DeleteMessageProps)
       setLoading(true);
       await deleteDoc(doc(db, 'chat', `${chatId}`, 'messages', `${messageId}`));
       if (type !== 'text') {
-        //deleteObject(ref(storage, getPathStorageFromUrl(message)));
+        await DeleteImage({ imageUrl: message });
       }
     } catch (error) {
       toast.error('There was an error while deleting the message. Please try again later.');

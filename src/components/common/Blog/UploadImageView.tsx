@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
+import DeleteImage from '@/utils/handlers/image/DeleteImage';
 
 type UploadImageProps = {
   onUploadSuccess: any;
@@ -40,7 +41,9 @@ export default function UploadImageView({
   };
 
   const handleRemoveImage = () => {
+    const imageUrl = url;
     setURL('');
+    DeleteImage({ imageUrl });
   };
   const handleFileSelect = (e: any) => {
     handleImage(e.target.files[0], handleUploadImage);
@@ -63,6 +66,7 @@ export default function UploadImageView({
               />
               <button
                 onClick={handleRemoveImage}
+                type="button"
                 className="m-0 p-2 rounded-md shadow-lg border bg-white"
               >
                 <XIcon height={16} width={16} />

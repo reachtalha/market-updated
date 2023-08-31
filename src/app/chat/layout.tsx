@@ -60,12 +60,12 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
     <section className="relative w-screen border grid h-screen  md:overflow-hidden place-content-center bg-gray-100">
       <div className="overflow-hidden w-screen h-screen  md:mx-auto md:flex gap-2 px-0 md:px-3 py-0 md:flex-row md:gap-5 md:py-10 ">
         <div
-          className={`  h-full  w-1/4 overflow-x-auto rounded-none md:rounded-xl border bg-white p-3 drop-shadow-md  md:overflow-hidden`}
+          className={`  h-full w-full md:w-1/4   rounded-none md:rounded-xl border bg-white p-3 drop-shadow-md  md:overflow-hidden`}
         >
           <Chats />
         </div>
         <section
-          className={`relative w-3/4 pb-2 md:pb-0 flex  h-full  flex-col rounded-none md:rounded-xl border bg-white 2xl:h-[40rem]`}
+          className={`relative w-full md:w-3/4 pb-2 md:pb-0 flex  h-full  flex-col rounded-none md:rounded-xl border bg-white `}
         >
           {children}
         </section>
