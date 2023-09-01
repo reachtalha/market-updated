@@ -21,6 +21,7 @@ type Props = {
 function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: Props) {
   const router = useRouter();
   const handleClick = () => {
+    console.log(window.innerWidth);
     if (window.innerWidth < 756) {
       router.push(`/orders/${id}`);
     } else {

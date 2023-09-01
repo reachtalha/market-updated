@@ -61,6 +61,7 @@ const getOrder = async (id: string) => {
           id: item.id,
           name: item.name,
           price: item.selectedVariant.price,
+          selectedVariant: item.selectedVariant,
           unit: item.unit,
           quantity: item.quantity,
           image: item.image,
