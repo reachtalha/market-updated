@@ -16,21 +16,19 @@ export default function CartItems() {
   const { cart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
   const { guestCart, deleteFromGuestCart } = useGuestCartStore((state: any) => state);
   const router = useRouter();
-  const filteredItems = cart?.items?.map((item: any) => ({
-    productId: item.productId,
-    quantity: item.quantity,
-    skuId: item.skuId
-  }));
+
   const handleOnDelete = (item: any) => {
-    if (auth.currentUser){
+    if (auth.currentUser) {
       deleteFromCart(item.itemId);
-    }else {
+    } else {
       deleteFromGuestCart(item.id, item.selectedVariant.id);
     }
   };
   const handleExploreProducts = () => router.push('/products');
 
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
+
+  console.log(cartItems);
 
   return isCartLoading ? (
     <div className="flex flex-col gap-y-3">
@@ -39,7 +37,7 @@ export default function CartItems() {
       <Skeleton className="h-[150px]" />
     </div>
   ) : (
-    <div className={cn("lg:col-span-2 border-t pt-8", !cartItems.length && "lg:col-span-3")}>
+    <div className={cn('lg:col-span-2 border-t pt-8', !cartItems.length && 'lg:col-span-3')}>
       {!cartItems?.length ? (
         <div className="mt-8 text-center">
           <p className="text-2xl mb-3">Your Cart is empty!</p>
@@ -56,7 +54,7 @@ export default function CartItems() {
                 className="border rounded object-contain w-36 h-36"
                 height={150}
                 width={150}
-                src={item.coverImage}
+                src={item.image}
                 alt={item.name}
               />
               <div className="">
@@ -68,7 +66,12 @@ export default function CartItems() {
               </div>
             </div>
             <div className="col-span-1 flex items-center justify-center">
-              <QuantityInput quantity={item.quantity} productId={item?.id} skuId={item?.selectedVariant?.id} docId={item.itemId} />
+              <QuantityInput
+                quantity={item.quantity}
+                productId={item?.id}
+                skuId={item?.selectedVariant?.id}
+                docId={item.itemId}
+              />
             </div>
             <div className="col-span-1 flex justify-end">
               <Button

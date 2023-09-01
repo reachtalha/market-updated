@@ -24,7 +24,8 @@ import {
   collection,
   getDoc,
   updateDoc,
-  increment
+  increment,
+  collectionGroup
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
@@ -34,6 +35,7 @@ import { useRouter } from 'next/navigation';
 import SortByDropdown from '@/components/common/SortByDropdown';
 import { useEffect, useState } from 'react';
 import DeleteImage from '@/utils/handlers/image/DeleteImage';
+import { promise } from 'zod';
 
 interface DataTableProps<TValue> {
   columns: ColumnDef<Product, TValue>[];
@@ -71,12 +73,22 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
         });
       });
 
-      //delete product from cart
-      // const querySnapShot = query(collection(db, 'cart', 'items'), where('productId', '==', id));
-      // const querySnapshot = await getDocs(querySnapShot);
-      // querySnapshot.forEach(async (d) => {
-      //   await deleteDoc(doc(db, 'cart', 'items', `${d.id}`));
-      // });
+      // delete product from cart
+      const querySnapShot = await getDocs(query(collection(db, 'cart')));
+      Promise.all([
+        querySnapShot.forEach(async (d) => {
+          // Reference to the "items" subcollection of the specific cart
+          const itemsCollectionRef = await getDocs(
+            query(collection(db, 'cart', d.id, 'items'), where('productId', '==', id))
+          );
+
+          Promise.all([
+            itemsCollectionRef.docs.forEach(async (itemDoc) => {
+              await deleteDoc(doc(db, 'cart', d.id, 'items', `${itemDoc.id}`));
+            })
+          ]);
+        })
+      ]);
 
       //delete product
       await deleteDoc(doc(db, 'products', id));

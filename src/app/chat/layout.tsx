@@ -1,14 +1,12 @@
 'use client';
 
 import React from 'react';
-import { redirect, useSearchParams, useRouter } from 'next/navigation';
+import { redirect, useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 import { auth, db } from '@/lib/firebase/client';
 import { getDocs, query, collection, where, limit, addDoc } from 'firebase/firestore';
-import useSwr from 'swr';
 
 import Chats from '@/components/modules/chat/Chat';
-import { ArrowLeft } from 'lucide-react';
 import Loader from '@/components/common/Loader';
 
 const getChat = async (seller: string, router: any, returnUrl: string) => {
@@ -41,11 +39,14 @@ const getChat = async (seller: string, router: any, returnUrl: string) => {
 
 const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const seller = searchParams.get('id');
   const returnUrl = searchParams.get('return_url') || '';
-  let loading = false;
+  const isOnlychat = pathname === '/chat';
 
+  let loading = false;
+  console.log(pathname);
   if (!auth.currentUser) {
     redirect('/auth/login');
   }
@@ -56,16 +57,22 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (loading) return <Loader className="h-screen flex items-center justify-center w-screen" />;
+
   return (
     <section className="relative w-screen border grid h-screen  md:overflow-hidden place-content-center bg-gray-100">
       <div className="overflow-hidden w-screen h-screen  md:mx-auto md:flex gap-2 px-0 md:px-3 py-0 md:flex-row md:gap-5 md:py-10 ">
         <div
-          className={`  h-full w-full md:w-1/4   rounded-none md:rounded-xl border bg-white p-3 drop-shadow-md  md:overflow-hidden`}
+          className={`h-full 
+          ${isOnlychat ? 'block' : 'hidden'}
+          md:block
+           md:w-1/4   rounded-none md:rounded-xl border bg-white p-3 drop-shadow-md  md:overflow-hidden`}
         >
           <Chats />
         </div>
         <section
-          className={`relative w-full md:w-3/4 pb-2 md:pb-0 flex  h-full  flex-col rounded-none md:rounded-xl border bg-white `}
+          className={`relative 
+          ${isOnlychat ? 'hidden' : 'flex'}
+           md:w-3/4 pb-2 md:pb-0 md:flex  h-full  flex-col rounded-none md:rounded-xl border bg-white `}
         >
           {children}
         </section>
