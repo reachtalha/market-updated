@@ -41,13 +41,12 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   };
 
   const cartItems = user ? cart?.items : guestCart.items;
-  console.log({ cartItems })
 
   return (
     <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
       <PopoverContent className=" w-[80vw]  md:w-[600px] p-5" align="end">
-        <ScrollArea className={cn('w-full', cart?.items?.length > 3 ? 'h-[350px]' : 'h-fit')}>
+        <ScrollArea className={cn('w-full', cartItems?.length > 3 ? 'h-[350px]' : 'h-fit')}>
           {isCartLoading ? (
             <Skeleton className="h-[200px]" />
           ) : (
@@ -63,7 +62,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                         className="border rounded"
                         height={75}
                         width={75}
-                        src={item.coverImage}
+                        src={auth.currentUser ? item.image : item.coverImage}
                         alt={item.name}
                       />
                       <div className="ms-2">
@@ -89,7 +88,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                   </li>
                 ))}
               </ul>
-              {!cartItems.length ? (
+              {!cartItems?.length ? (
                 <div className="text-center">
                   <p>Your Cart is empty!</p>
                   <PopoverClose asChild>
@@ -99,7 +98,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                   </PopoverClose>
                 </div>
               ) : null}
-              {!!cartItems.length ? (
+              {!!cartItems?.length ? (
                 <>
                   <PopoverClose asChild>
                     <Button onClick={handleViewCheckout} className="w-full">

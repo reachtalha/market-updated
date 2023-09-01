@@ -8,6 +8,7 @@ import { formatCurrency } from '@/utils/formatters';
 import { Skeleton } from '@/components/ui/skeleton';
 import useGuestCartStore from '@/state/useGuestCartStore';
 import { auth } from '@/lib/firebase/client';
+import QuantityInput from '@/components/common/Buyer/ShoppingCart/QuantityInput';
 
 type OrderSummaryCheckoutProps = { isConfirmButtonLoading?: boolean };
 
@@ -39,20 +40,25 @@ export default function OrderSummaryCheckout({
             className="grid grid-cols-2 w-full pb-8 border-b last:pb-0 last:border-0"
             key={item.id}
           >
-            <div className="col-span-2 flex items-center gap-x-3">
-              <Image
-                className="border rounded"
-                height={150}
-                width={150}
-                src={auth.currentUser ? item.image : item.coverImage}
-                alt={item.name}
-              />
-              <div className="">
-                <h6 className="uppercase font-medium">{item.name}</h6>
-                <p>
-                  {item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}
-                </p>
-                <p className="font-medium">{formatCurrency(item?.selectedVariant?.price)}</p>
+            <div className="col-span-2 justify-between flex items-center gap-x-3">
+              <div className="flex items-center gap-3">
+                <Image
+                  className="border rounded"
+                  height={150}
+                  width={150}
+                  src={auth.currentUser ? item.image : item.coverImage}
+                  alt={item.name}
+                />
+                <div className="">
+                  <h6 className="uppercase font-medium">{item.name}</h6>
+                  <p>
+                    {item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}
+                  </p>
+                  <p className="font-medium">{formatCurrency(item?.selectedVariant?.price)}</p>
+                </div>
+              </div>
+              <div className="col-span-1 flex items-center justify-center">
+                <QuantityInput quantity={item.quantity} productId={item?.id} skuId={item?.selectedVariant?.id} docId={item.itemId} />
               </div>
             </div>
           </li>

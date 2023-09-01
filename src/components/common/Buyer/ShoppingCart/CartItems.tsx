@@ -56,7 +56,7 @@ export default function CartItems() {
                 className="border rounded object-contain w-36 h-36"
                 height={150}
                 width={150}
-                src={item.coverImage}
+                src={auth.currentUser ? item.image : item.coverImage}
                 alt={item.name}
               />
               <div className="">

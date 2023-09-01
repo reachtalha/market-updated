@@ -81,7 +81,7 @@ const OrderDetail = ({ order }: Props) => {
             id={p.id}
             title={p.name}
             unit={p.unit}
-            measurement={p.selectedVariant.measurement}
+            measurement={p?.selectedVariant?.measurement}
             price={p.price}
             image={p.image}
           />
