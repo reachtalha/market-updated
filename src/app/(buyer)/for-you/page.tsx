@@ -1,5 +1,4 @@
 'use client';
-
 import Products from '@/components/common/Buyer/Products';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useCategories } from '@/hooks/useCategories';
