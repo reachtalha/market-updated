@@ -62,7 +62,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                         className="border rounded"
                         height={75}
                         width={75}
-                        src={item.coverImage}
+                        src={item.image}
                         alt={item.name}
                       />
                       <div className="ms-2">
@@ -103,7 +103,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                   </PopoverClose>
                 </div>
               ) : null}
-              {!!cartItems?.length ? (
+              {cartItems?.length ? (
                 <>
                   <PopoverClose asChild>
                     <Button onClick={handleViewCheckout} className="w-full">

@@ -91,7 +91,7 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
           </datalist>
         </div>
       </div>
-      {errors.topics && <span className="text-red-500 text-sm font-semibold">required</span>}
+      {errors.topics && <span className="text-red-500 text-sm font-semibold">Required</span>}
     </div>
   );
 };
