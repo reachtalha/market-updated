@@ -33,9 +33,9 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   }, []);
 
   const handleOnDelete = (item: any) => {
-    if (user) {
+    if (user){
       deleteFromCart(item.itemId);
-    } else {
+    }else {
       deleteFromGuestCart(item.id, item.selectedVariant.id);
     }
   };
@@ -46,7 +46,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
     <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
       <PopoverContent className=" w-[80vw]  md:w-[600px] p-5" align="end">
-        <ScrollArea className={cn('w-full', cart?.items?.length > 3 ? 'h-[350px]' : 'h-fit')}>
+        <ScrollArea className={cn('w-full', cartItems?.length > 3 ? 'h-[350px]' : 'h-fit')}>
           {isCartLoading ? (
             <Skeleton className="h-[200px]" />
           ) : (
@@ -62,7 +62,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                         className="border rounded"
                         height={75}
                         width={75}
-                        src={item.image}
+                        src={auth.currentUser ? item.image : item.coverImage}
                         alt={item.name}
                       />
                       <div className="ms-2">
@@ -76,12 +76,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                       </div>
                     </div>
                     <div>
-                      <QuantityInput
-                        quantity={item.quantity}
-                        skuId={item?.selectedVariant?.id}
-                        productId={item?.id}
-                        docId={item.itemId}
-                      />
+                      <QuantityInput quantity={item.quantity} skuId={item?.selectedVariant?.id} productId={item?.id} docId={item.itemId} />
                     </div>
                     <Button
                       onClick={() => handleOnDelete(item)}
@@ -103,7 +98,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                   </PopoverClose>
                 </div>
               ) : null}
-              {cartItems?.length ? (
+              {!!cartItems?.length ? (
                 <>
                   <PopoverClose asChild>
                     <Button onClick={handleViewCheckout} className="w-full">
