@@ -100,13 +100,13 @@ export default function Products({ categories, foryou }: ProductsProps) {
     data: products,
     error,
     isLoading
-  } = useSWR([`products-${category}`, `products-${type}`, selectedSubCategory], () =>
-    getProducts(category, categories, foryou, type),
+  } = useSWR(
+    [`products-${category}`, `products-${type}`, selectedSubCategory],
+    () => getProducts(category, categories, foryou, type),
     {
       revalidateOnFocus: false,
-      
+      revalidateIfStale: false,
       revalidateOnReconnect: false
-      
     }
   );
 
@@ -145,7 +145,9 @@ export default function Products({ categories, foryou }: ProductsProps) {
   }, [sortProductsBy, products]);
 
   if (isLoading) return <ProductsLoader />;
-  if (error) return <Error className="h-screen w-full grid place-content-center" />;
+  if (error) {
+    return <Error className="h-screen w-full grid place-content-center" />;
+  }
 
   return (
     <>

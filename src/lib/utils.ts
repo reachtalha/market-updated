@@ -13,7 +13,8 @@ export function isColoredRoute(route: string) {
     '/cart',
     '/for-you',
     '/checkout',
-    '/new-registration'
+    '/new-registration',
+    '/order/success',
   ];
   return (
     coloredRoutes.includes(route) ||

@@ -53,55 +53,19 @@ type ItemsType = CartItemType[];
 
 export default function Checkout({ user }: { user: any }) {
   const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState<any>();
+  const [isPaymentInfoCompleted, setIsPaymentInfoCompleted] = useState(false);
   const [isOrderLoading, setIsOrderLoading] = useState(false);
 
   const stripe = useStripe();
   const elements = useElements();
-  const { cart, clearCart } = useCartStore((state: any) => state);
-  const { guestCart, clearGuestCart } = useGuestCartStore((state: any) => state);
+  const { cart } = useCartStore((state: any) => state);
+  const { guestCart } = useGuestCartStore((state: any) => state);
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
 
-  const submitPayment = async () => {
-    if (!stripe || !elements) return;
-    setProcessing(true);
-    const result = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${DOMAIN}/account?display=order`
-      }
-    });
-
-    if (result.error) {
-      setProcessing(false);
-      throw new Error(`Payment failed: ${result.error.message}`);
-    } else {
-      setProcessing(false);
-    }
-  };
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: user?.email || '',
-      firstName: auth.currentUser ? user.name.split(' ')[0] : '',
-      lastName: auth.currentUser
-        ? user.name.split(' ').length > 1
-          ? user.name.split(' ')[1]
-          : ''
-        : '',
-      company: '',
-      address: user?.address || '',
-      apartments: '',
-      city: user?.city || '',
-      state: '',
-      phone: user?.phone || ''
-    },
-    shouldUnregister: false
-  });
-  async function onSubmit(values: any) {
+  const submitOrder = async (values: any) => {
     try {
       setIsOrderLoading(true);
-      await submitPayment();
       const shops = cartItems?.map((s: any) => {
         return s.shopId;
       });
@@ -134,23 +98,16 @@ export default function Checkout({ user }: { user: any }) {
           email: values.email
         },
         items: items,
-        status: 'pending',
         shops: shops,
-        userId: auth.currentUser ? cart?.userId : 'guest',
+        userId: auth.currentUser ? cart?.userId : "guest",
         total: auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total
       };
 
       await axios.post('/api/checkout', {
         order,
-        photoURL: auth.currentUser?.photoURL || 'guest',
+        photoURL: auth.currentUser?.photoURL || "guest",
         cart: auth.currentUser ? cart : guestCart
       });
-
-      if (auth.currentUser) {
-        clearCart();
-      } else {
-        clearGuestCart();
-      }
       toast.success('We have received your order!');
     } catch (err) {
       console.log(err);
@@ -159,17 +116,61 @@ export default function Checkout({ user }: { user: any }) {
     }
   }
 
+  const submitPayment = async (values: any) => {
+    if (!stripe || !elements) return;
+    if(!isPaymentInfoCompleted){
+      toast.error('Fill Payment info!');
+      return;
+    }
+    await submitOrder(values);
+
+    setProcessing(true);
+    const result = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${DOMAIN}/order/success`
+      }
+    });
+
+    if (result.error) {
+      setProcessing(false);
+      setError(result.error);
+      throw new Error(`Payment failed: ${result.error.message}`);
+    } else {
+      setProcessing(false);
+    }
+  };
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: user?.email || "",
+      firstName: auth.currentUser ? user.name.split(' ')[0] : "",
+      lastName: auth.currentUser ? (user.name.split(' ').length > 1 ? user.name.split(' ')[1] : '') : "",
+      company: "",
+      address: user?.address || "",
+      apartments: '',
+      city: user?.city || "",
+      state: '',
+      phone: user?.phone || ""
+    },
+    shouldUnregister: false
+  });
+  async function onSubmit(values: any) {
+    await submitPayment(values);
+  }
+
   const isConfirmButtonLoading = processing || isOrderLoading;
 
   return (
-    <BoxedContent className="flex gap-x-5 py-20">
+    <BoxedContent className="flex gap-x-5 py-20 mt-8">
       <div className="bg-neutral-100 rounded-lg p-6 w-full">
         <Form {...form}>
           <form className="grid lg:grid-cols-2 gap-x-10" onSubmit={form.handleSubmit(onSubmit)}>
             <div>
               <ShippingInfo form={form} />
               <h2 className="mt-12 mb-3 text-xl font-medium">Payment</h2>
-              <CheckoutForm />
+              <CheckoutForm onPaymentInfoCompleted={setIsPaymentInfoCompleted} />
             </div>
             <div>
               <OrderSummaryCheckout isConfirmButtonLoading={isConfirmButtonLoading} />
