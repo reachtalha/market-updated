@@ -29,7 +29,7 @@ export default function Experts({
       <ExpertCategories selectedCategory={category} categories={categories} />
       <div className="flex-1 space-y-4 min-h-screen">
         <ExpertHeader selectedCategory={category} categories={categories} sortBy={sortBy} />
-        {experts?.length > 0 ? (
+        {experts?.length === 0 ? (
           <p className="text-center py-16">No Experts Found</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
