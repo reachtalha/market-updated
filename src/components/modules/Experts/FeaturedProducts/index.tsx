@@ -31,12 +31,9 @@ const featuredProductsBreakpoints = {
 
 const fetchProductDetails = async (productId: string) => {
   const productDoc = await getDoc(doc(db, 'products', productId));
-  if (!productDoc.exists()) {
-    return;
+  if (productDoc.exists()) {
+    return { id: productDoc.id, ...productDoc.data() };
   }
-  const productData = productDoc.data();
-
-  return { id: productDoc.id, ...productData };
 };
 
 export default function FeaturedProducts({
@@ -52,16 +49,15 @@ export default function FeaturedProducts({
     isLoading
   } = useSWR(`${auth.currentUser?.uid}-${isFav ? 'fav' : 'featured'}`, async () => {
     const products = await Promise.all(list.map((id) => fetchProductDetails(id)));
-    return products;
+    const filteredProducts = products.filter((value) => !!value);
+    return filteredProducts;
   });
-  console.log(error);
   if (isLoading) {
     return <Loader className="w-full h-96 flex items-center justify-center " />;
   }
   if (error) {
     return <Error className="w-full h-96 flex items-center justify-center " />;
   }
-
   return (
     <Carousel
       title={`${isFav ? 'Favourite' : 'Featured'} Products`}
