@@ -101,7 +101,13 @@ export default function Products({ categories, foryou }: ProductsProps) {
     error,
     isLoading
   } = useSWR([`products-${category}`, `products-${type}`, selectedSubCategory], () =>
-    getProducts(category, categories, foryou, type)
+    getProducts(category, categories, foryou, type),
+    {
+      revalidateOnFocus: false,
+      
+      revalidateOnReconnect: false
+      
+    }
   );
 
   useEffect(() => {
@@ -114,7 +120,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
 
   useEffect(() => {
     if (selectedSubCategory) {
-      mutate(['products', selectedSubCategory]);
+      mutate([`products-${category}`, `products-${type}`, selectedSubCategory]);
     }
   }, [selectedSubCategory, category]);
 

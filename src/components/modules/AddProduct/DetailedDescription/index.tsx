@@ -93,7 +93,7 @@ const Index = ({ setStep, isEdit = false }: Props) => {
 
       <div className="w-full mt-3 xl:mt-5">
         <div className=" w-full ">
-          <div id="editor" className=" p-5 px-20 bg-white   shadow-sm rounded-lg border" />
+          <div id="editor" className=" p-15 bg-white   shadow-sm rounded-lg border" />
           <p className="text-sm text-gray-500">
             Use <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">Tab</kbd> to open
             the command menu.
