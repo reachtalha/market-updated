@@ -24,12 +24,11 @@ const Influencer = () => {
     formState: { errors }
   } = useFormContext();
 
-
   const [socialMediaList, setSocialMediaList] = useState<SocialMedia[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
 
-  const bio = getValues("bio");
-  const watchBio = watch(["bio"]);
+  const bio = getValues('bio');
+  const watchBio = watch(['bio']);
 
   useEffect(() => {
     const bioError = errors.bio;
@@ -67,6 +66,7 @@ const Influencer = () => {
     setSocialMediaList((prevList) => prevList.filter((_, i) => i !== index));
   };
 
+  console.log(topics);
   return (
     <>
       <h4 className="text-primary font-semibold mb-3 text-2xl">Add Personal Info</h4>
@@ -84,12 +84,10 @@ const Influencer = () => {
             }
           })}
         />
-        <div className="text-sm mb-2">
-          {bio ? bio.length : "0"}/{MAX_CHAR} characters
+        <div className="text-[.8rem] text-gray-400 my-1">
+          {bio ? bio.length : '0'}/{MAX_CHAR} characters
         </div>
-        {errors.bio && errors.bio.message && (
-          <span className="text-sm text-red-500">{errors.bio.message.toString()}</span>
-        )}
+        {errors.bio && <span className="text-sm text-red-500">Bio cannot be empty</span>}
       </div>
       <TopicList maxTopics={4} topicsList={topics} onTopicsChange={handleTopicsChange} />
       <div className="w-full mt-3">

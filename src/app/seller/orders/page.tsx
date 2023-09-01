@@ -27,7 +27,7 @@ const getOrders = async () => {
         id: doc.id,
         name: doc.data().shippingAddress.firstName,
         email: doc.data().shippingAddress.email,
-        status: doc.data().status ?? 'processing',
+        status: doc.data().status ?? 'pending',
         price: formatCurrency(doc.data().total),
         address: doc.data().shippingAddress.address,
         placedAt: doc.data().timeStamp.toDate()

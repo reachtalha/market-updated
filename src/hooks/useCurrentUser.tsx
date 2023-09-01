@@ -6,8 +6,11 @@ import { db, auth } from '@/lib/firebase/client';
 
 const getCurrentUser = async () => {
   const docRef = await getDoc(doc(db, 'users', `${auth.currentUser?.uid}`));
+  if (!docRef.exists()) {
+    return null;
+  }
   return {
-    is: docRef.id,
+    id: docRef.id,
     ...docRef.data()
   } as any;
 };

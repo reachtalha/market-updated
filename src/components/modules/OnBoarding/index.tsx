@@ -42,6 +42,12 @@ const OnBoardingForm = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       setLoading(true);
+
+      if (role === 'influencer' && !data.topics) {
+        toast.error('Please add atleast one topic');
+        return;
+      }
+      return;
       const obj = {
         ...data,
         zipcode: Number(data.zipcode),
@@ -76,11 +82,7 @@ const OnBoardingForm = () => {
   };
 
   const renderButton = (label: string) => (
-    <Button
-      type="submit"
-      disabled={loading}
-      className="mt-3 w-full"
-    >
+    <Button type="submit" disabled={loading} className="mt-3 w-full">
       {loading ? 'Please wait...' : label}
     </Button>
   );
