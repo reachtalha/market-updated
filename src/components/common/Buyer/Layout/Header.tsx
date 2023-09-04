@@ -23,8 +23,8 @@ const Header = () => {
   const [toggleSearchbar, setToggleSearchBar] = useState(false);
   const isScrollChanged = useDetectChangeScroll();
   const pathname = usePathname();
-  const { cart } = useCartStore((state: any) => state);
-  const { guestCart } = useGuestCartStore((state: any) => state);
+  const { cart, showCartPopover, setShowCartPopover } = useCartStore((state: any) => state);
+  const { guestCart, showGuestCartPopover, setShowGuestCartPopover } = useGuestCartStore((state: any) => state);
 
   const cartItemsCount = !auth.currentUser ? guestCart.items.length : (cart?.items?.length || 0)
 
@@ -92,6 +92,7 @@ const Header = () => {
                   'z-2 text-white relative w-fit',
                   (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) && 'text-black'
                 )}
+                onClick={() => auth?.currentUser ? setShowCartPopover(!showCartPopover) : setShowGuestCartPopover(!showGuestCartPopover)}
                 size="icon"
                 variant="link"
               >
@@ -117,7 +118,7 @@ export const NavLink = ({ title, href, className = '', ...props }: NavLinkProps)
   const pathname = usePathname();
   const classNames = cn(
     'relative uppercase duration-300 md:hover:underline transition-opacity cursor-pointer tracking-wide text-xs underline-offset-2',
-    pathname.startsWith(href) ? 'md:underline' : '',
+    pathname.startsWith(href) ? 'font-bold md:font-normal md:underline' : '',
     className
   );
   return (

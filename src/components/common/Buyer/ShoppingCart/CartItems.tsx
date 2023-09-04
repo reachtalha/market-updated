@@ -39,7 +39,7 @@ export default function CartItems() {
       <Skeleton className="h-[150px]" />
     </div>
   ) : (
-    <div className={cn("lg:col-span-2 border-t pt-8", !cartItems.length && "lg:col-span-3")}>
+    <div className={cn("lg:col-span-2 border-t pt-8", !cartItems?.length && "lg:col-span-3")}>
       {!cartItems?.length ? (
         <div className="mt-8 text-center">
           <p className="text-2xl mb-3">Your Cart is empty!</p>

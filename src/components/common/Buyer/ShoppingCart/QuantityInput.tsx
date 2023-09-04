@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function QuantityInput({ docId, productId, skuId, quantity }: Props) {
-  const { increment, decrement, isQuantityChangeLoading } = useCartStore((state: any) => state);
+  const { increment, decrement, isQuantityChangeLoading, updatingDocId } = useCartStore((state: any) => state);
   const { incrementGuestCartItem, decrementGuestCartItem } = useGuestCartStore((state: any) => state);
 
   const incrementQuantity = async () => {
@@ -32,19 +32,22 @@ export default function QuantityInput({ docId, productId, skuId, quantity }: Pro
       decrementGuestCartItem(productId, skuId);
     }
   };
+
+  const disableQuantityInput = isQuantityChangeLoading && docId === updatingDocId;
+
   return (
     <div className="flex items-center rounded-lg border px-2 py-1">
       <Button
-        disabled={isQuantityChangeLoading}
+        disabled={disableQuantityInput}
         onClick={decrementQuantity}
         className="p-0 h-fit"
         variant="ghost"
       >
         <MinusIcon height={16} width={16} />
       </Button>
-      <p className={cn("border-0 w-10 h-full text-center", isQuantityChangeLoading && "text-neutral-400")}>{quantity}</p>
+      <p className={cn("border-0 w-10 h-full text-center", disableQuantityInput && "text-neutral-400")}>{quantity}</p>
       <Button
-        disabled={isQuantityChangeLoading}
+        disabled={disableQuantityInput}
         onClick={incrementQuantity}
         className="p-0 h-fit"
         variant="ghost"

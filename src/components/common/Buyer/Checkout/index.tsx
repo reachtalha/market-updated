@@ -99,7 +99,7 @@ export default function Checkout({ user }: { user: any }) {
         },
         items: items,
         shops: shops,
-        userId: auth.currentUser ? cart?.userId : "guest",
+        userId: auth.currentUser ? auth?.currentUser?.uid : "guest",
         total: auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total
       };
 

@@ -44,7 +44,6 @@ const fetchGetCart = async () => {
     );
 
     return {
-      userId: auth.currentUser?.uid,
       id: auth.currentUser?.uid,
       cart: { ...cart, items: cartItems }
     };
@@ -74,16 +73,17 @@ const fetchAddToCart = async (productId: string, skuId: string) => {
   });
 };
 
-const fetchClearCart = async (cartId: string) => {
-  const cartRef = collection(db, 'cart', `${auth.currentUser?.uid}`, 'items');
-  const parentDocSnapshot = await getDocs(cartRef);
-
-  if (parentDocSnapshot.docs.length > 0) {
-    Promise.all(
-      parentDocSnapshot.docs.map(async (document) => {
-        await fetchDeleteFromCart(document.id, cartId);
-      })
-    );
+const fetchClearCart = async (cartItems: any) => {
+  try {
+    if (cartItems.length > 0) {
+      Promise.all(
+        cartItems.map(async (item: any) => {
+          await fetchDeleteFromCart(item.itemId, auth?.currentUser?.uid || "");
+        })
+      );
+    }
+  }catch(err){
+    console.log(err);
   }
 };
 
@@ -119,22 +119,23 @@ const decrementQuantity = async (docId: string) => {
 
 const useCartStore = create((set, get) => ({
   cart: {
-    userId: '',
     id: '',
     items: [],
     summary: null
   },
   isCartLoading: false,
+  showCartPopover: false,
   isQuantityChangeLoading: false,
+  updatingDocId: "",
   isAddToCartLoading: false,
+  setShowCartPopover: (value: boolean) => set({ showCartPopover: value }),
   setIsAddToCartLoading: (val: boolean) => {
     set({ isAddToCartLoading: val });
   },
   clearCart: async () => {
     set(async (state: any) => {
-      const userId = state?.cart?.userId;
-      await fetchClearCart(state.cart.id);
-      await state.getCart(userId);
+      await fetchClearCart(state.cart.items);
+      await state.getCart();
     });
   },
   addToCart: async (productId: string, skuId: string) => {
@@ -142,16 +143,17 @@ const useCartStore = create((set, get) => ({
       state.setIsAddToCartLoading(true);
       await fetchAddToCart(productId, skuId);
       state.setIsAddToCartLoading(false);
-      await state.getCart(state.cart.userId);
+      await state.getCart();
+      state.setShowCartPopover(true);
     });
   },
   deleteFromCart: async (docId: string) => {
     set(async (state: any) => {
       await fetchDeleteFromCart(docId, state.cart.id);
-      await state.getCart(state.cart.userId, false);
+      await state.getCart(false);
     });
   },
-  getCart: async (userId: string, isCartLoading: boolean = true) => {
+  getCart: async (isCartLoading: boolean = true) => {
     set({ isCartLoading });
     const data = await fetchGetCart();
     set({
@@ -159,14 +161,13 @@ const useCartStore = create((set, get) => ({
       cart:
         {
           summary: calculateCartSummary(data?.cart?.items),
-          userId: data?.userId,
           items: data?.cart?.items,
           id: data?.id
         } || {}
     });
   },
   increment: async (docId: string) => {
-    set({ isQuantityChangeLoading: true });
+    set({ isQuantityChangeLoading: true, updatingDocId: docId });
     await incrementQuantity(docId);
     const data = await fetchGetCart();
     set({
@@ -174,14 +175,13 @@ const useCartStore = create((set, get) => ({
       cart:
         {
           summary: calculateCartSummary(data?.cart?.items),
-          userId: data?.userId,
           items: data?.cart?.items,
           id: data?.id
         } || {}
     });
   },
   decrement: async (docId: string) => {
-    set({ isQuantityChangeLoading: true });
+    set({ isQuantityChangeLoading: true, updatingDocId: docId });
     await decrementQuantity(docId);
     const data = await fetchGetCart();
     set({
@@ -189,7 +189,6 @@ const useCartStore = create((set, get) => ({
       cart:
         {
           summary: calculateCartSummary(data?.cart?.items),
-          userId: data?.userId,
           items: data?.cart?.items,
           id: data?.id
         } || {}
