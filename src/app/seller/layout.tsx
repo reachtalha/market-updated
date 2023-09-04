@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useRouter } from 'next/navigation';
 
@@ -14,19 +14,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const role = useRole();
   const router = useRouter();
 
-  if (role && role !== "seller") {
-    router.replace('/');
-    return <Loader className="bg-white h-screen w-full overflow-hidden grid place-content-center" />
-  }
-
   return (
     <div className={`bg-neutral-900 flex  h-screen overflow-hidden  sm:p-1.5 sm:gap-1.5 `}>
       <aside>
         <Sidebar />
       </aside>
       <section
-        className={`bg-neutral-50  transition-all  duration-1000 overflow-scroll no-scrollbar   text-neutral-900  flex-1 sm:rounded-xl  ${showSidebar && 'tilted-div rounded-xl'
-          }`}
+        className={`bg-neutral-50  transition-all  duration-1000 overflow-scroll no-scrollbar   text-neutral-900  flex-1 sm:rounded-xl  ${
+          showSidebar && 'tilted-div rounded-xl'
+        }`}
       >
         <MobileNavbar />
 

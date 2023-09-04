@@ -31,6 +31,7 @@ const Page = (props: Props) => {
           email: user?.email,
           phone: user?.phone,
           address: user?.address,
+          photoURL: user?.photoURL,
           newPassword: '',
           currentPassword: '',
           confirmPassword: ''

@@ -47,7 +47,6 @@ const OnBoardingForm = () => {
         toast.error('Please add atleast one topic');
         return;
       }
-      return;
       const obj = {
         ...data,
         zipcode: Number(data.zipcode),

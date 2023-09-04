@@ -10,17 +10,20 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function OrderSuccess(){
+  const { clearCart, cart } = useCartStore((state: any) => state);
+  const { clearGuestCart, guestCart } = useGuestCartStore((state: any) => state);
+
   const router = useRouter();
-  const { clearCart } = useCartStore((state: any) => state);
-  const { clearGuestCart } = useGuestCartStore((state: any) => state);
 
   useEffect(() => {
-    if(auth.currentUser){
+    if(auth.currentUser && cart?.items !== null){
       clearCart();
-    }else {
+    }
+
+    if(!auth.currentUser && guestCart?.items !== null) {
       clearGuestCart();
     }
-  }, []);
+  }, [cart.items]);
 
   return (
     <BoxedContent className="flex flex-col items-center justify-center py-24 mt-14">

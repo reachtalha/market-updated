@@ -20,8 +20,8 @@ type CartPopoverProps = {
 };
 export default function CartPopover({ trigger }: CartPopoverProps) {
   const router = useRouter();
-  const { cart, getCart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
-  const { guestCart, deleteFromGuestCart } = useGuestCartStore((state: any) => state);
+  const { cart, getCart, deleteFromCart, isCartLoading, showCartPopover, setShowCartPopover } = useCartStore((state: any) => state);
+  const { guestCart, deleteFromGuestCart, showGuestCartPopover, setShowGuestCartPopover } = useGuestCartStore((state: any) => state);
   const user = auth.currentUser;
 
   const handleExploreProducts = () => router.push('/products');
@@ -43,7 +43,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
   const cartItems = user ? cart?.items : guestCart.items;
 
   return (
-    <Popover>
+    <Popover open={user ? showCartPopover : showGuestCartPopover} onOpenChange={() => user ? setShowCartPopover(!showCartPopover) : setShowGuestCartPopover(!showGuestCartPopover)}>
       <PopoverTrigger>{trigger}</PopoverTrigger>
       <PopoverContent className=" w-[80vw]  md:w-[600px] p-5" align="end">
         <ScrollArea className={cn('w-full', cartItems?.length > 3 ? 'h-[350px]' : 'h-fit')}>
