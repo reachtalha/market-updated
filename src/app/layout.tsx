@@ -97,7 +97,7 @@ const america = localFont({
 
 export const metadata = {
   title: 'All Organics',
-  description: 'Organic living, simplied'
+  description: 'Organic living, simplified'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
