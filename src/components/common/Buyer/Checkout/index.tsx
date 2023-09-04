@@ -99,13 +99,14 @@ export default function Checkout({ user }: { user: any }) {
         },
         items: items,
         shops: shops,
-        userId: auth.currentUser ? cart?.userId : "guest",
+        status: 'complete',
+        userId: auth.currentUser ? cart?.userId : 'guest',
         total: auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total
       };
 
       await axios.post('/api/checkout', {
         order,
-        photoURL: auth.currentUser?.photoURL || "guest",
+        photoURL: auth.currentUser?.photoURL || 'guest',
         cart: auth.currentUser ? cart : guestCart
       });
       toast.success('We have received your order!');
@@ -114,11 +115,11 @@ export default function Checkout({ user }: { user: any }) {
     } finally {
       setIsOrderLoading(false);
     }
-  }
+  };
 
   const submitPayment = async (values: any) => {
     if (!stripe || !elements) return;
-    if(!isPaymentInfoCompleted){
+    if (!isPaymentInfoCompleted) {
       toast.error('Fill Payment info!');
       return;
     }
@@ -144,15 +145,19 @@ export default function Checkout({ user }: { user: any }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: user?.email || "",
-      firstName: auth.currentUser ? user.name.split(' ')[0] : "",
-      lastName: auth.currentUser ? (user.name.split(' ').length > 1 ? user.name.split(' ')[1] : '') : "",
-      company: "",
-      address: user?.address || "",
+      email: user?.email || '',
+      firstName: auth.currentUser ? user.name.split(' ')[0] : '',
+      lastName: auth.currentUser
+        ? user.name.split(' ').length > 1
+          ? user.name.split(' ')[1]
+          : ''
+        : '',
+      company: '',
+      address: user?.address || '',
       apartments: '',
-      city: user?.city || "",
+      city: user?.city || '',
       state: '',
-      phone: user?.phone || ""
+      phone: user?.phone || ''
     },
     shouldUnregister: false
   });

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { auth, db } from '@/lib/firebase/client';
+import { db } from '@/lib/firebase/client';
 import { getDoc, doc } from 'firebase/firestore';
 import useSwr from 'swr';
 import OrderDetail from '@/components/modules/Account/OrderHistory/OrderDetail';

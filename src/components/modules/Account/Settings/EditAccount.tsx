@@ -6,6 +6,10 @@ import Title from '@/components/common/Seller/Shared/Title';
 import { Pencil } from 'lucide-react';
 import { useFormContext } from 'react-hook-form';
 
+import { ImageIcon } from '@radix-ui/react-icons';
+import Image from '@/components/common/FallbackImage';
+import ImageReader from '@/utils/handlers/image/ImageReader';
+
 type Props = {
   loading: boolean;
   isPasswordUpdate: boolean;
@@ -14,12 +18,17 @@ type Props = {
 
 const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [image, setImage] = useState<string>();
 
   const {
     register,
+    getValues,
+    setValue,
     trigger,
     formState: { errors }
   } = useFormContext();
+
+  console.log(getValues('photoURL'));
 
   const handleUpdate = () => {
     if (isEdit) {
@@ -33,6 +42,7 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
     }
   };
 
+  const handleImageChange = ImageReader({ setImage, size: 5 });
   const handleCancel = () => {
     if (isPasswordUpdate) {
       setIsPasswordUpdate(false);
@@ -53,6 +63,44 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
             <Pencil size={window.innerWidth < 468 ? 12 : 15} />
           </div>
         )}
+      </div>
+
+      <div className={`mt-3 w-full ${isPasswordUpdate && ' hidden'} `}>
+        <div className="w-fit mx-auto">
+          <Label
+            htmlFor="o-image"
+            className="relative text-base cursor-pointer overflow-hidden border-2 h-32 w-36 gap-y-2 rounded-md flex flex-col items-center justify-center border-neutral-500 border-dotted"
+          >
+            {getValues('photoURL') || image ? (
+              <>
+                <div className="opacity-0 transition-opacity z-10 h-full w-full flex items-center justify-center duration-300 hover:opacity-100">
+                  <ImageIcon className={`w-8 h-8  text-neutral-500 ${!isEdit && 'hidden'} `} />
+                </div>
+                <Image
+                  src={image || getValues('photoURL')}
+                  fill
+                  alt="image"
+                  style={{ objectFit: 'cover' }}
+                />
+              </>
+            ) : (
+              <>
+                <ImageIcon className="w-10 h-10 text-neutral-500" />
+                <p className={getValues('photoURL') ? 'hidden' : ' text-sm text-center block m-0'}>
+                  Add profile picture
+                </p>
+              </>
+            )}
+            <input
+              disabled={!isEdit}
+              type="file"
+              id="o-image"
+              hidden
+              onChange={handleImageChange}
+            />
+            {image && (setValue('photoURL', image) as any)}
+          </Label>
+        </div>
       </div>
 
       <div className={` ${isPasswordUpdate && ' hidden'} `}>

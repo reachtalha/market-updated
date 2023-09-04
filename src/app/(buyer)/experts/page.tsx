@@ -9,6 +9,7 @@ import {
   Query
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import { cookies } from 'next/headers';
 
 type Params = {
   [key: string]: string | string[] | undefined;

@@ -1,5 +1,4 @@
 'use client';
-
 import { useRole } from '@/hooks/useUserRole';
 import useCategorySlug from '@/hooks/useCategorySlug';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -40,6 +39,7 @@ function Index({ options }: AccountProps) {
                     email: user.email,
                     phone: user.phone,
                     address: user.address,
+                    photoURL: user.photoURL,
                     newPassword: '',
                     currentPassword: '',
                     confirmPassword: ''
@@ -89,6 +89,7 @@ function Index({ options }: AccountProps) {
                     name: user.name,
                     email: user.email,
                     phone: user.phone,
+                    photoURL: user.photoURL,
                     address: user.address,
                     newPassword: '',
                     currentPassword: '',
@@ -112,18 +113,18 @@ function Index({ options }: AccountProps) {
         options={
           role === 'influencer'
             ? [
-              ...options,
-              {
-                name: 'Socials',
-                slug: 'socials',
-                href: '/account?display'
-              },
-              {
-                name: 'Manage Blogs',
-                slug: 'blogs',
-                href: '/account?display'
-              }
-            ]
+                ...options,
+                {
+                  name: 'Socials',
+                  slug: 'socials',
+                  href: '/account?display'
+                },
+                {
+                  name: 'Manage Blogs',
+                  slug: 'blogs',
+                  href: '/account?display'
+                }
+              ]
             : options
         }
       />

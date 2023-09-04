@@ -129,15 +129,13 @@ export default function Products({ categories, foryou }: ProductsProps) {
 
     switch (sortProductsBy) {
       case 'price':
-        setFilteredProducts([...filteredProducts].sort((a: any, b: any) => a.price - b.price));
+        setFilteredProducts([...products].sort((a: any, b: any) => a.price - b.price));
         break;
       case 'name':
-        setFilteredProducts(
-          [...filteredProducts].sort((a: any, b: any) => a.name.localeCompare(b.name))
-        );
+        setFilteredProducts([...products].sort((a: any, b: any) => a.name.localeCompare(b.name)));
         break;
       case 'reviews':
-        setFilteredProducts([...filteredProducts].sort((a: any, b: any) => b.rating - a.rating));
+        setFilteredProducts([...products].sort((a: any, b: any) => b.rating - a.rating));
         break;
       default:
         setFilteredProducts(products);

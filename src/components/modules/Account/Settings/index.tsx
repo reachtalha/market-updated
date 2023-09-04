@@ -9,12 +9,15 @@ import toast from 'react-hot-toast';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import EditAccount from './EditAccount';
 import useAuth from '@/hooks/useAuth';
+import UploadImage from '@/utils/handlers/image/UploadImage';
+import DeleteImage from '@/utils/handlers/image/DeleteImage';
 
 type FormValues = {
   name: string;
   email: string;
   phone: string;
   address: string;
+  photoURL: string;
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
@@ -27,7 +30,6 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
 
   const methods = useForm<FormValues>({
     defaultValues,
-
     shouldUnregister: false
   });
   const { handleSubmit, reset } = methods;
@@ -36,11 +38,22 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
     setLoading(true);
     try {
       if (!isPasswordUpdate) {
+        let photoURL;
+        if (!data.photoURL.includes('firebasestorage.googleapis.com')) {
+          photoURL = await UploadImage({
+            collection: 'products',
+            image: data.photoURL,
+            name: 'profile' + new Date().getTime()
+          });
+          if (defaultValues.photoURL) await DeleteImage({ imageUrl: defaultValues.photoURL });
+        }
+
         await updateDoc(doc(db, 'users', auth.currentUser?.uid as string), {
           name: data?.name?.toLowerCase(),
           email: data.email,
           phone: data.phone,
-          address: data.address
+          address: data.address,
+          photoURL: photoURL ?? data.photoURL
         });
         try {
           await updateCurrentUser(data?.name, data?.email);

@@ -58,9 +58,10 @@ export const AuthProvider = ({ children }: any) => {
 
   useEffect(
     () =>
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user: any) => {
         if (user) {
-          createUser({ uid: user.uid });
+          const idTokenResult = await auth.currentUser?.getIdTokenResult();
+          createUser({ uid: user.uid, role: idTokenResult?.claims?.role });
           setUser(user);
         } else {
           setUser(null);
