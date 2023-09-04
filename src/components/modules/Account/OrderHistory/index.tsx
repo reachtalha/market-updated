@@ -37,7 +37,7 @@ type Order = {
   };
 };
 
-const getOrder = async (id: string) => {
+const getOrder = async () => {
   const userId = auth.currentUser?.uid;
   let orders: Order[] = [];
 
@@ -85,7 +85,6 @@ const getOrder = async (id: string) => {
   });
 
   orders = orders.sort((a: any, b: any) => b.placedAt - a.placedAt);
-
   return orders;
 };
 

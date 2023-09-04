@@ -20,6 +20,7 @@ import useCartStore from '@/state/useCartStore';
 import { updateDoc, getDoc, doc, setDoc } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
 import useGuestCartStore from '@/state/useGuestCartStore';
+import useGlobalStore from '@/state';
 
 const isInWishlist = async (productId: string) => {
   if (!auth.currentUser) return false;

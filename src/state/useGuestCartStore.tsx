@@ -19,12 +19,15 @@ const useGuestCartStore = create(persist((set, get) => ({
     items: [],
     summary: null
   },
+  showGuestCartPopover: false,
+  setShowGuestCartPopover: (value: boolean) => set({ showGuestCartPopover: value }),
   addToGuestCart: (product: any) => {
     set((state: any) => {
       const productWithId = state.guestCart.items.find((item: any) => item.id === product.id);
       const productWithVariant = state.guestCart.items.find((item: any) => item.selectedVariant.id === product.selectedVariant.id);
       if(productWithId && productWithVariant){
         return {
+          showCartGuestPopover: true,
           guestCart:
             {
               summary: calculateCartSummary(state.guestCart.items),
@@ -33,9 +36,10 @@ const useGuestCartStore = create(persist((set, get) => ({
         }
       }else {
         return {
+          showGuestCartPopover: true,
           guestCart:
             {
-              summary: calculateCartSummary(state.guestCart.items),
+              summary: calculateCartSummary([...state.guestCart.items, {...product, quantity: 1 }]),
               items: [...state.guestCart.items, {...product, quantity: 1 }],
             } || {}
         }
@@ -57,7 +61,7 @@ const useGuestCartStore = create(persist((set, get) => ({
     // @ts-ignore
     const guestCart = get().guestCart;
     const items = changeQuantity(guestCart.items, productId, skuId, 1);
-    set({ guestCart: {
+    set({ showGuestCartPopover: true, guestCart: {
       summary: calculateCartSummary(items),
       items
     }});
@@ -66,7 +70,7 @@ const useGuestCartStore = create(persist((set, get) => ({
     // @ts-ignore
     const guestCart = get().guestCart;
     const items = changeQuantity(guestCart.items, productId, skuId, -1);
-    set({ guestCart: {
+    set({ showGuestCartPopover: true, guestCart: {
       summary: calculateCartSummary(items),
       items
     }});
