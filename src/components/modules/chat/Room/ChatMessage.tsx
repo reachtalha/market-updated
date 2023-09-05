@@ -31,9 +31,16 @@ function ChatMessage({ chatId, messageId, messageObj, users }: ChatMessageProps)
       {messageClass === 'sent' ? (
         <li className="group flex justify-end mb-2">
           <div className="relative rounded-t-3xl rounded-br-3xl">
-            <DeleteMessage chatId={chatId} messageId={messageId} type={type} message={message} />
-            {type === 'text' ? (
-              <p className="max-w-[350px] mb-1 break-all rounded-t-3xl rounded-bl-3xl bg-primary py-2 pl-3 pr-5 text-white shadow 2xl:text-lg">
+            {type !== 'deleted' && (
+              <DeleteMessage chatId={chatId} messageId={messageId} type={type} message={message} />
+            )}
+
+            {type === 'text' || type === 'deleted' ? (
+              <p
+                className={`max-w-[350px] mb-1 break-all rounded-t-3xl rounded-bl-3xl bg-primary py-2 pl-3 pr-5 shadow 2xl:text-lg ${
+                  type === 'deleted' ? 'text-gray-200 ' : 'text-white'
+                }`}
+              >
                 {message}
               </p>
             ) : (

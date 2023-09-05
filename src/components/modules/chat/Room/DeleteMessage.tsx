@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { doc, deleteDoc } from 'firebase/firestore';
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib//firebase/client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
@@ -21,7 +21,10 @@ function DeleteMessage({ chatId, messageId, type, message }: DeleteMessageProps)
   async function handleDelete() {
     try {
       setLoading(true);
-      await deleteDoc(doc(db, 'chat', `${chatId}`, 'messages', `${messageId}`));
+      await updateDoc(doc(db, 'chat', `${chatId}`, 'messages', `${messageId}`), {
+        message: 'Message deleted',
+        type: 'deleted'
+      });
       if (type !== 'text') {
         await DeleteImage({ imageUrl: message });
       }

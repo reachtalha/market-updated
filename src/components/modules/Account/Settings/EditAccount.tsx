@@ -69,7 +69,7 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
         <div className="w-fit mx-auto">
           <Label
             htmlFor="o-image"
-            className="relative text-base cursor-pointer overflow-hidden border-2 h-32 w-36 gap-y-2 rounded-md flex flex-col items-center justify-center border-neutral-500 border-dotted"
+            className="relative rounded-full text-base cursor-pointer overflow-hidden h-32 w-32 gap-y-2 border-0 flex flex-col items-center justify-center border-neutral-500 "
           >
             {getValues('photoURL') || image ? (
               <>
@@ -80,7 +80,7 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
                   src={image || getValues('photoURL')}
                   fill
                   alt="image"
-                  style={{ objectFit: 'cover' }}
+                  className="object-cover "
                 />
               </>
             ) : (

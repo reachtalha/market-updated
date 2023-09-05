@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import BoxedContent from '@/components/common/BoxedContent';
 import ProductCategories, { Category } from '@/components/common/Buyer/Products/ProductCategories';
@@ -11,7 +11,7 @@ import { ProductsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import { Button } from '@/components/ui/button';
-import { getDocs, collection, query, where } from 'firebase/firestore';
+import { getDocs, collection, query, where, limit, startAfter, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSWR, { mutate } from 'swr';
 
@@ -22,10 +22,18 @@ import useProductTypeSlug from '@/hooks/useProductTypeSlug';
 const getProducts: any = async (
   category: string,
   allCategories: any,
+  noOfRecords: number,
   foryou?: boolean,
-  type?: string
+  type?: string,
+  lastDoc?: any
 ): Promise<any> => {
   let products: any = [];
+
+  if (!lastDoc) {
+    const docs = await getDocs(query(collection(db, 'products'), orderBy('__name__'), limit(1)));
+
+    lastDoc = docs.docs[0].id;
+  }
 
   if (category === 'all' || category === 'All' || !category) {
     let docRef;
@@ -33,14 +41,33 @@ const getProducts: any = async (
       const list = allCategories.map((cat: any) => cat.subCategories).flat();
 
       docRef = await getDocs(
-        query(collection(db, 'products'), where('type', 'in', list.slice(0, 29)))
+        query(
+          collection(db, 'products'),
+          where('type', 'in', list.slice(0, 29)),
+          orderBy('__name__'),
+          startAfter(lastDoc),
+          limit(noOfRecords)
+        )
       );
     } else if (type != null) {
       docRef = await getDocs(
-        query(collection(db, 'products'), where('type', '==', `${type.toLowerCase()}`))
+        query(
+          collection(db, 'products'),
+          where('type', '==', `${type.toLowerCase()}`),
+          orderBy('__name__'),
+          startAfter(lastDoc),
+          limit(noOfRecords)
+        )
       );
     } else {
-      docRef = await getDocs(query(collection(db, 'products')));
+      docRef = await getDocs(
+        query(
+          collection(db, 'products'),
+          orderBy('__name__'),
+          startAfter(lastDoc),
+          limit(noOfRecords)
+        )
+      );
     }
 
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -49,7 +76,13 @@ const getProducts: any = async (
       category = 'organic clothing & apparel';
     }
     const docRef = await getDocs(
-      query(collection(db, 'products'), where('category', '==', `${category.toLowerCase()}`))
+      query(
+        collection(db, 'products'),
+        where('category', '==', `${category.toLowerCase()}`),
+        orderBy('__name__'),
+        startAfter(lastDoc),
+        limit(noOfRecords)
+      )
     );
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
@@ -93,22 +126,21 @@ export default function Products({ categories, foryou }: ProductsProps) {
       : categories?.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
   );
 
+  const ref = useRef<any>(null);
+  const [products, setProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [productsEnded, setProductsEnded] = useState<boolean>(false);
   const sortProductsBy = useSortingStore((state: any) => state.sortProductsBy);
+  const [loading, setLoading] = useState<any>(null);
 
-  const {
-    data: products,
-    error,
-    isLoading
-  } = useSWR(
+  let { data, error, isLoading } = useSWR(
     [`products-${category}`, `products-${type}`, selectedSubCategory],
-    () => getProducts(category, categories, foryou, type),
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false
-    }
+    () => getProducts(category, categories, 6, foryou, type, false)
   );
+
+  useEffect(() => {
+    if (data) setProducts(data);
+  }, [data]);
 
   useEffect(() => {
     setSelectedSubCategory(
@@ -140,15 +172,36 @@ export default function Products({ categories, foryou }: ProductsProps) {
       default:
         setFilteredProducts(products);
     }
-  }, [sortProductsBy, products]);
+  }, [products, sortProductsBy]);
 
+  const getNewProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await getProducts(
+        category,
+        categories,
+        6,
+        foryou,
+        type,
+        products[products.length - 1]?.id
+      );
+      if (response.length < 6) setProductsEnded(true);
+      setProducts((prev) => [...prev, ...response]);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  console.log(products);
   if (isLoading) return <ProductsLoader />;
   if (error) {
+    console.log(error);
     return <Error className="h-screen w-full grid place-content-center" />;
   }
 
   return (
-    <>
+    <div ref={ref}>
       <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <ProductCategories
           setSelectedSubCategory={setSelectedSubCategory}
@@ -195,8 +248,20 @@ export default function Products({ categories, foryou }: ProductsProps) {
               </div>
             )}
           </div>
+          {filteredProducts.length > 0 && (
+            <div className="w-full  flex items-center justify-center mt-5">
+              {productsEnded ? (
+                <span>Sorry! No more products to show</span>
+              ) : (
+                <Button disabled={loading} onClick={getNewProducts}>
+                  {loading ? 'Loading...' : 'Load More'}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </BoxedContent>
+
       {foryou && (
         <>
           <section className="bg-black py-10 md:py-16">
@@ -219,6 +284,6 @@ export default function Products({ categories, foryou }: ProductsProps) {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
