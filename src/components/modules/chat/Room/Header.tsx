@@ -4,7 +4,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { db, auth } from '@/lib/firebase/client';
-import { doc, getDocs, collection, writeBatch, query, where } from 'firebase/firestore';
+import {
+  doc,
+  getDocs,
+  collection,
+  writeBatch,
+  query,
+  where,
+  updateDoc,
+  getDoc
+} from 'firebase/firestore';
 
 import Image from '@/components/common/FallbackImage';
 import useSwr, { useSWRConfig } from 'swr';
@@ -45,18 +54,31 @@ const Header = ({ chatId, users }: HeaderProps) => {
   async function handleDelete() {
     try {
       setLoading(true);
-      const batch = writeBatch(db);
-      const messagesRef = collection(db, 'chat', `${chatId}`, 'messages');
-      const messagesSnap = await getDocs(messagesRef);
-      messagesSnap.forEach((doc) => {
-        batch.delete(doc.ref);
-      });
-      const chatRef = doc(db, 'chat', `${chatId}`);
-      batch.delete(chatRef);
-      await batch.commit();
+      // const batch = writeBatch(db);
+      // const messagesRef = collection(db, 'chat', `${chatId}`, 'messages');
+      // const messagesSnap = await getDocs(messagesRef);
+      // messagesSnap.forEach((doc) => {
+      //   batch.delete(doc.ref);
+      // });
+      // const chatRef = doc(db, 'chat', `${chatId}`);
+      // batch.delete(chatRef);
+      // await batch.commit();
+      const chat = await getDoc(doc(db, 'chat', `${chatId}`));
+
+      if (chat.data()?.deletedBy) {
+        await updateDoc(doc(db, 'chat', `${chatId}`), {
+          deletedBy: [...chat.data()?.deletedBy, auth.currentUser?.uid]
+        });
+      } else {
+        await updateDoc(doc(db, 'chat', `${chatId}`), {
+          deletedBy: [auth.currentUser?.uid]
+        });
+      }
+
       mutate('user_chats');
       window.location.replace('/chat');
     } catch (error) {
+      console.log(error);
       toast.error('Oops! Something went wrong!');
     } finally {
       setLoading(false);

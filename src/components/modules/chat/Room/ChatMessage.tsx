@@ -69,8 +69,10 @@ function ChatMessage({ chatId, messageId, messageObj, users }: ChatMessageProps)
             <Avvvatars size={40} value={name.toUpperCase()[0]} />
           )}
           <div>
-            {type === 'text' ? (
-              <p className="max-w-[350px] mb-1 break-all rounded-t-3xl rounded-br-3xl bg-slate-100 px-4 py-2 text-gray-700  shadow 2xl:text-lg">
+            {type === 'text' || type === 'deleted' ? (
+              <p
+                className={`max-w-[350px] mb-1 break-all rounded-t-3xl rounded-bl-3xl bg-slate-100 py-2 pl-3 pr-5 shadow 2xl:text-lg text-gray-700`}
+              >
                 {message}
               </p>
             ) : (

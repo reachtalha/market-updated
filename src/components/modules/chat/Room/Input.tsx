@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 
 import { db, auth, storage } from '@/lib/firebase/client';
-import { addDoc, Timestamp, collection } from 'firebase/firestore';
+import { doc, addDoc, Timestamp, collection, getDoc, updateDoc } from 'firebase/firestore';
 import {
   ref,
   uploadBytesResumable,
@@ -23,6 +23,13 @@ const InputBox = ({ chatId }: { chatId: string }) => {
 
   const addMessage = async (message: string, type: string) => {
     try {
+      const chat = await getDoc(doc(db, 'chat', `${chatId}`));
+
+      if (chat.data()?.deletedBy && chat.data()?.deletedBy.length > 0) {
+        await updateDoc(doc(db, 'chat', `${chatId}`), {
+          deletedBy: []
+        });
+      }
       await addDoc(collection(db, 'chat', `${chatId}`, 'messages'), {
         message: message,
         photoURL: auth.currentUser?.photoURL ?? '',
@@ -107,11 +114,7 @@ const InputBox = ({ chatId }: { chatId: string }) => {
             onChange={sendImageMessage}
           />
         </div>
-        <Button
-          type="submit"
-          variant="default"
-          className="rounded-full px-2.5 py-1.5"
-        >
+        <Button type="submit" variant="default" className="rounded-full px-2.5 py-1.5">
           <Send className="h-5 w-5 text-white" strokeWidth={1.5} />
         </Button>
       </div>

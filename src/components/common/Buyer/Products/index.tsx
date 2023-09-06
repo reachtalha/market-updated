@@ -186,14 +186,27 @@ export default function Products({ categories, foryou }: ProductsProps) {
         products[products.length - 1]?.id
       );
       if (response.length < 6) setProductsEnded(true);
-      setProducts((prev) => [...prev, ...response]);
+
+      if (response[response.length - 1]?.id !== products[products.length - 1]?.id)
+        setProducts((prev) => [...prev, ...response]);
     } catch (error) {
     } finally {
       setLoading(false);
     }
   };
 
-  console.log(products);
+  // useEffect(() => {
+  //   window.addEventListener('scroll', () => {
+  //     if (
+  //       window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
+  //       !productsEnded &&
+  //       !loading
+  //     ) {
+  //       getNewProducts();
+  //     }
+  //   });
+  // }, []);
+
   if (isLoading) return <ProductsLoader />;
   if (error) {
     console.log(error);
