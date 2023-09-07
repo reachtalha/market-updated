@@ -1,15 +1,15 @@
-import Experts from '@/components/common/Buyer/Experts/Experts';
+import Experts from '@/components/common/Buyer/Experts/Index';
 import {
   getDocs,
   collection,
   query,
   where,
   orderBy,
+  limit,
   CollectionReference,
   Query
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
-import { cookies } from 'next/headers';
 
 type Params = {
   [key: string]: string | string[] | undefined;
@@ -72,7 +72,8 @@ const getExperts = async (category: string, sort: string) => {
   let expertQuery: CollectionReference | Query = query(
     usersCollection,
     where('role', '==', 'influencer'),
-    orderBy(sortBy.name, sortBy.by)
+    orderBy(sortBy.name, sortBy.by),
+    limit(3)
   );
 
   if (category) {
@@ -80,7 +81,8 @@ const getExperts = async (category: string, sort: string) => {
       usersCollection,
       where('role', '==', 'influencer'),
       where('topics', 'array-contains', category),
-      orderBy(sortBy.name, sortBy.by)
+      orderBy(sortBy.name, sortBy.by),
+      limit(3)
     );
   }
 

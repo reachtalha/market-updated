@@ -18,6 +18,7 @@ import useSWR, { mutate } from 'swr';
 import FeaturesShops from '../FeaturesShops';
 import useSortingStore from '@/state/useSortingStore';
 import useProductTypeSlug from '@/hooks/useProductTypeSlug';
+import { useInView } from 'react-intersection-observer';
 
 const getProducts: any = async (
   category: string,
@@ -119,6 +120,7 @@ type ProductsProps = {
 export default function Products({ categories, foryou }: ProductsProps) {
   const category = useCategorySlug();
   const type = useProductTypeSlug();
+  const { ref, inView } = useInView();
 
   const [selectedSubCategory, setSelectedSubCategory] = useState(
     category === 'all'
@@ -126,7 +128,6 @@ export default function Products({ categories, foryou }: ProductsProps) {
       : categories?.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
   );
 
-  const ref = useRef<any>(null);
   const [products, setProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [productsEnded, setProductsEnded] = useState<boolean>(false);
@@ -195,17 +196,11 @@ export default function Products({ categories, foryou }: ProductsProps) {
     }
   };
 
-  // useEffect(() => {
-  //   window.addEventListener('scroll', () => {
-  //     if (
-  //       window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
-  //       !productsEnded &&
-  //       !loading
-  //     ) {
-  //       getNewProducts();
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (inView) {
+      getNewProducts();
+    }
+  }, [inView]);
 
   if (isLoading) return <ProductsLoader />;
   if (error) {
@@ -214,7 +209,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
   }
 
   return (
-    <div ref={ref}>
+    <div>
       <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <ProductCategories
           setSelectedSubCategory={setSelectedSubCategory}
@@ -256,7 +251,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
                   />
                 ))
             ) : (
-              <div className="text-center flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
+              <div className="text-center flex items-center justify-center  w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
                 No products found {foryou && 'for you'}
               </div>
             )}
@@ -266,9 +261,12 @@ export default function Products({ categories, foryou }: ProductsProps) {
               {productsEnded ? (
                 <span>Sorry! No more products to show</span>
               ) : (
-                <Button disabled={loading} onClick={getNewProducts}>
-                  {loading ? 'Loading...' : 'Load More'}
-                </Button>
+                <div ref={ref}>
+                  <Loader />
+                </div>
+                // <Button disabled={loading} onClick={getNewProducts}>
+                //   {loading ? 'Loading...' : 'Load More'}
+                // </Button>
               )}
             </div>
           )}

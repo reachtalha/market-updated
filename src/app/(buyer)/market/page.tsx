@@ -8,6 +8,8 @@ import {
   getDocs,
   where,
   query,
+  limit,
+  startAfter,
   orderBy,
   CollectionReference,
   Query,
@@ -59,7 +61,7 @@ const getShops = async (category: string, sort: string) => {
   }
 
   const querySnapshot = await getDocs(
-    query(queryBase, queryCondition, orderBy(sortBy.name, sortBy.by))
+    query(queryBase, queryCondition, orderBy(sortBy.name, sortBy.by), limit(4))
   );
 
   const shops = querySnapshot.docs.map((doc) => ({
