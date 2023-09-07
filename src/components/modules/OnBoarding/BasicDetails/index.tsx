@@ -13,7 +13,7 @@ import {
   SelectValue,
   SelectGroup,
   SelectLabel
-} from '@/components/ui/select';
+} from "@/components/ui/select"
 
 import { Country, City } from 'country-state-city';
 
@@ -47,14 +47,14 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
     });
   };
   const handleCountry = (selectedOption: string) => {
-    handleOnChange('country', selectedOption);
-  };
+    handleOnChange("country", selectedOption)
+  }
   const handleCity = (selectedOption: string) => {
-    handleOnChange('city', selectedOption);
-  };
+    handleOnChange("city", selectedOption)
+  }
   const handleCountryCode = (selectedOption: string) => {
-    handleOnChange('countryCode', selectedOption);
-  };
+    handleOnChange("countryCode", selectedOption)
+  }
 
   const nextStep = async () => {
     const isValid = await trigger(['address', 'country', 'zipcode', 'phone', 'city']);
@@ -95,18 +95,13 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
           <Label>Country</Label>
           <Select onValueChange={handleCountry}>
             <SelectTrigger>
-              <SelectValue
-                {...register('country', { required: true })}
-                placeholder="Select country"
-              />
+              <SelectValue {...register('country', { required: true })} placeholder="Select country" />
             </SelectTrigger>
             <SelectContent className="max-h-56">
               <SelectGroup>
                 <SelectLabel>Countries</SelectLabel>
-                {Country.getAllCountries().map((c, index: number) => (
-                  <SelectItem key={index} value={c.isoCode}>
-                    {c.flag}-{c.name}
-                  </SelectItem>
+                {Country.getAllCountries().map((c) => (
+                  <SelectItem key={c.isoCode} value={c.isoCode}>{c.flag}-{c.name}</SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
@@ -121,11 +116,9 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
             </SelectTrigger>
             <SelectContent className="max-h-56">
               <SelectGroup>
-                <SelectLabel className="capitalize">{selectedCountry} Cities</SelectLabel>
-                {City.getCitiesOfCountry(selectedCountry)?.map((c, index) => (
-                  <SelectItem key={index} value={c.name}>
-                    {c.name}
-                  </SelectItem>
+                <SelectLabel className='capitalize'>{selectedCountry} Cities</SelectLabel>
+                {City.getCitiesOfCountry(selectedCountry)?.map((c) => (
+                  <SelectItem key={c.name} value={c.name}>{c.name}</SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
@@ -143,11 +136,10 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
               </SelectTrigger>
               <SelectContent className="max-h-56">
                 <SelectGroup>
-                  <SelectLabel className="capitalize">Country Code</SelectLabel>
-                  {Country.getAllCountries().map((c, index: number) => (
-                    <SelectItem key={index} value={c.phonecode}>
-                      {c.phonecode}
-                    </SelectItem>
+                  <SelectLabel className='capitalize'>Country Code</SelectLabel>
+                  {Country.getAllCountries().map((c) => (
+                    <SelectItem key={c.phonecode + Math.random()} value={c.phonecode}>
+                      {c.phonecode}</SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
@@ -198,11 +190,13 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
           <span className="text-sm text-red-500">Is your address spelled right?</span>
         )}
       </div>
-      {role !== 'seller' && (
-        <Button type="button" onClick={nextStep} className=" mt-3 w-full">
-          Next
-        </Button>
-      )}
+      <Button
+        type="button"
+        onClick={nextStep}
+        className=" mt-3 w-full"
+      >
+        Next
+      </Button>
     </>
   );
 };
