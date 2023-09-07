@@ -18,6 +18,7 @@ import BasicDetails from '@/components/modules/OnBoarding/BasicDetails';
 import Categories from '@/components/modules/OnBoarding/Categories';
 import Influencer from '@/components/modules/OnBoarding/Influencer';
 import UploadImage from '@/utils/handlers/image/UploadImage';
+import SellerPaymentInfo from '@/components/modules/OnBoarding/SellerPaymentInfo';
 
 type FormValues = {
   countryCode: string;
@@ -51,6 +52,7 @@ const OnBoardingForm = () => {
         name: auth.currentUser?.displayName?.toLowerCase(),
         email: auth.currentUser?.email,
         role: role,
+        ...(role === 'seller' && {stripeAccountId: null }),
         createdAt: Timestamp.fromDate(new Date())
       };
       if (data.image) {
@@ -91,6 +93,11 @@ const OnBoardingForm = () => {
         {step === 1 && (
           <>
             <BasicDetails setStep={setStep} role={role} />
+          </>
+        )}
+        {(step === 2 && role === 'seller') && (
+          <>
+            <SellerPaymentInfo />
             {role === 'seller' && renderButton('Finish')}
           </>
         )}

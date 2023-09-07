@@ -190,15 +190,13 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
           <span className="text-sm text-red-500">Is your address spelled right?</span>
         )}
       </div>
-      {role !== 'seller' && (
-        <Button
-          type="button"
-          onClick={nextStep}
-          className=" mt-3 w-full"
-        >
-          Next
-        </Button>
-      )}
+      <Button
+        type="button"
+        onClick={nextStep}
+        className=" mt-3 w-full"
+      >
+        Next
+      </Button>
     </>
   );
 };

@@ -75,7 +75,7 @@ const fetchAddToCart = async (productId: string, skuId: string) => {
 
 const fetchClearCart = async (cartItems: any) => {
   try {
-    if (cartItems.length > 0) {
+    if (cartItems?.length > 0) {
       Promise.all(
         cartItems.map(async (item: any) => {
           await fetchDeleteFromCart(item.itemId, auth?.currentUser?.uid || "");
