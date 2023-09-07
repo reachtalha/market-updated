@@ -7,6 +7,7 @@ import ChatBox from '@/components/modules/chat/Room/ChatBox';
 import Input from '@/components/modules/chat/Room/Input';
 
 import Error from '@/components/common/Error';
+import { cookies } from 'next/headers';
 import Redirect from './Redirect';
 
 type Props = {
@@ -65,7 +66,12 @@ const getUsers = async (chatId: string) => {
 };
 const ChatRoom = async ({ chatId }: Props) => {
   const users = await getUsers(chatId);
+  const cookie = cookies().get('user');
+  const currentUser = cookie ? (JSON.parse(cookie.value) as any) : { uid: '' };
 
+  if (users[0].uid !== currentUser?.uid && users[1].uid !== currentUser?.uid) {
+    return <Redirect />;
+  }
   if (!users) {
     return <Redirect />;
   }

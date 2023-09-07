@@ -37,6 +37,7 @@ const fetchChats = async (): Promise<Chat[]> => {
     const { users } = chatId;
     const otherUser = Object.keys(users).filter((id) => id !== auth.currentUser?.uid);
     const user = (await getUser(otherUser[0])) as User;
+
     chats.push({
       ...user,
       chatId: chatId.chatId,
@@ -52,6 +53,7 @@ const getChats = async (): Promise<{ chatId: string; users: Record<string, boole
   const q = query(ref, where(`users.${auth.currentUser?.uid}`, '==', true));
   const docSnap = await getDocs(q);
   docSnap.forEach((doc) => {
+    if (doc.data().deletedBy && doc.data()?.deletedBy?.includes(auth.currentUser?.uid)) return;
     chats.push({ chatId: doc.id, users: doc.data().users });
   });
   return chats;
@@ -94,6 +96,7 @@ export default function Chat() {
     return <Loader className="w-full h-full flex items-center justify-center" />;
   }
   if (error) {
+    console.log(error);
     return <Error />;
   }
   if (chats?.length === 0) {

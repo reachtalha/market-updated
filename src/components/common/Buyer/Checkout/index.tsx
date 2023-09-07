@@ -66,7 +66,7 @@ export default function Checkout({ user }: { user: any }) {
   const submitOrder = async (values: any) => {
     try {
       setIsOrderLoading(true);
-      const shops = cartItems?.map((s: any) => {
+      const shops = cartItems?.map((s: any) => { 
         return s.shopId;
       });
       const items = cartItems?.map((i: any) => {

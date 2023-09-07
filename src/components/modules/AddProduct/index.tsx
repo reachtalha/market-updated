@@ -17,6 +17,7 @@ import { db, auth } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
 import useGlobalStore from '@/state';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
+import { List, Package2, Image, FileText } from 'lucide-react';
 
 import CreateSKU from './CreateSKU';
 import DetailedDescription from './DetailedDescription';
@@ -31,22 +32,22 @@ const STEPPER_DATA = [
   {
     title: 'Basic Information',
     step: 1,
-    icon: null
+    icon: <List size={16} />
   },
   {
     title: 'Create SKU',
     step: 2,
-    icon: null
+    icon: <Package2 size={16} />
   },
   {
     title: 'Detailed Description',
     step: 3,
-    icon: null
+    icon: <FileText size={16} />
   },
   {
     title: 'Add Image',
     step: 4,
-    icon: null
+    icon: <Image size={16} />
   }
 ];
 
