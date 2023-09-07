@@ -6,8 +6,10 @@ import MarketCategories, { Category } from '@/components/common/Buyer/Market/Mar
 import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
 import FeaturedExperts from '@/components/common/Buyer/FeaturedExperts';
-import ShopCard from '@/components/common/Buyer/Cards/ShopCard';
+
 import MarketHeader from '@/components/common/Buyer/Market/MarketHeader';
+import Markets from './Markets';
+import LoadMore from './LoadMore';
 
 type MarketProps = {
   categories: Category[];
@@ -21,31 +23,15 @@ export default function Market({
   category,
   sortBy = 'latest'
 }: MarketProps) {
-  const shops = JSON.parse(shopsJSON);
+  const markets = JSON.parse(shopsJSON);
   return (
     <>
       <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <MarketCategories selectedCategory={category} categories={categories} />
         <div className="flex-1 space-y-4">
           <MarketHeader selectedCategory={category} categories={categories} sortBy={sortBy} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {shops.length > 0 ? (
-              shops.map((shop: any, i: number) => (
-                <ShopCard
-                  key={i + Math.random()}
-                  id={shop.id}
-                  image={shop.coverImage}
-                  desc={shop.tagline}
-                  shop={shop.name}
-                  type={shop.category}
-                />
-              ))
-            ) : (
-              <div className="flex items-center justify-center w-[80vw] h-96">
-                <h3 className="text-xl text-gray-500">No Shops Found</h3>
-              </div>
-            )}
-          </div>
+
+          <LoadMore markets={markets} />
         </div>
       </BoxedContent>
       <section className="bg-black py-10 md:py-16">

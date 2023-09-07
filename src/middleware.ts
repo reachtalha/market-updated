@@ -29,7 +29,8 @@ export function middleware(request: NextRequest) {
       path.startsWith('/for-you') ||
       path.startsWith('/market') ||
       path.startsWith('/orders') ||
-      path.startsWith('/products'))
+      path.startsWith('/products') ||
+      path === '/')
   ) {
     return NextResponse.redirect(new URL('/seller/dashboard', request.nextUrl));
   }
