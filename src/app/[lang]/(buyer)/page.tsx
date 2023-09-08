@@ -9,6 +9,8 @@ import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
 import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import Link from 'next/link';
 import { db } from '@/lib/firebase/client';
+import { getDictionary } from '@/get-dictionary'
+import { Locale } from '@/i18n-config'
 
 const getExperts: any = async (): Promise<any> => {
   let experts: any = [];
@@ -20,7 +22,19 @@ const getExperts: any = async (): Promise<any> => {
 
   return experts;
 };
-export default async function Home() {
+
+export type LocaleType = {
+  params: {
+    lang: Locale
+  }
+}
+
+export default async function Home(
+  {
+    params: { lang },
+  }: LocaleType
+) {
+  const dictionary = await getDictionary(lang);
   const experts = await getExperts();
 
   return (
@@ -31,24 +45,23 @@ export default async function Home() {
       >
         <div className="block h-fit overflow-y-hidden py-1">
           <h1 className="animate-text text-5xl font-alpina italic font-medium text-center">
-            Organic living, simplied
+            {dictionary.home.hero.title}
           </h1>
         </div>
         <p className="animate-opacity place-self-center text-base w-full md:w-[60%] text-center">
-          Through our thoughtfully chosen range of products, we aim to simplify and inspire the
-          journey towards a more mindful and sustainable lifestyle.
+          {dictionary.home.hero.subtitle}
         </p>
       </Hero>
       <section className="py-16 container">
-        <FeaturedProducts />
+        <FeaturedProducts title={dictionary.home.featuredProducts.heading} />
       </section>
       <section className="space-y-16 py-10">
         <TakeQuizSection />
         <BoxedContent className="space-y-10">
           <div className="text-center space-y-2">
-            <h3 className="text-3xl font-alpina tracking-wider font-medium">Meet Our Experts</h3>
+            <h3 className="text-3xl font-alpina tracking-wider font-medium">{dictionary.home.experts.title}</h3>
             <p className="uppercase text-xs tracking-tight">
-              THEY DO THE TRIAL AND ERROR, SO YOU DON’T HAVE TO.
+              {dictionary.home.experts.subtitle}
             </p>
           </div>
           <ul className="flex gap-x-4 items-start md:pl-10 overflow-auto no-scrollbar snap-x snap-start">

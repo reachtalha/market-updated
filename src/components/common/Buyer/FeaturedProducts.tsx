@@ -53,7 +53,7 @@ const fetchFeaturedProducts = async () => {
   return productsWithShopNames;
 };
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({ title } : { title: string }) {
   const { data: products, error, isLoading } = useSWR('featuredProducts', fetchFeaturedProducts);
 
   if (isLoading) {
@@ -64,7 +64,7 @@ export default function FeaturedProducts() {
   }
 
   return (
-    <Carousel title="Featured Products" breakpoints={featuredProductsBreakpoints}>
+    <Carousel title={title} breakpoints={featuredProductsBreakpoints}>
       {products?.map((_: any, i: number) => (
         <SwiperSlide key={i + Math.random()}>
           <ProductCard

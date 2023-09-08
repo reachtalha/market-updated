@@ -21,6 +21,7 @@
     "@editorjs/quote": "^2.5.0",
     "@editorjs/raw": "^2.4.0",
     "@editorjs/table": "^2.2.2",
+    "@formatjs/intl-localematcher": "^0.4.1",
     "@hookform/resolvers": "^3.1.1",
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
@@ -70,6 +71,7 @@
     "firebase": "^10.1.0",
     "firebase-admin": "^11.9.0",
     "lucide-react": "^0.261.0",
+    "negotiator": "^0.6.3",
     "next": "^13.4.19",
     "nodemailer": "^6.9.4",
     "postcss": "8.4.24",
@@ -101,6 +103,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.9"
+    "@tailwindcss/typography": "^0.5.9",
+    "@types/negotiator": "^0.6.1"
   }
 }

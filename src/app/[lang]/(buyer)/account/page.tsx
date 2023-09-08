@@ -3,7 +3,7 @@
 import React from 'react';
 import { auth } from '@/lib/firebase/client';
 import { useRouter } from 'next/navigation';
-import Index from '@/components/common/Buyer/Account/index';
+import Index from '@/components/common/Buyer/Account';
 import Loader from '@/components/common/Loader';
 
 const options = [

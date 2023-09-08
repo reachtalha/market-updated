@@ -1,4 +1,4 @@
-import Market from '@/components/common/Buyer/Market/Index';
+import Market from '@/components/common/Buyer/Market';
 import React from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';

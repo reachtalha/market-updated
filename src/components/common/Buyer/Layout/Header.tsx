@@ -19,7 +19,7 @@ import useCartStore from '@/state/useCartStore';
 import TopBanner from '@/components/common/Buyer/TopBanner';
 import useGuestCartStore from '@/state/useGuestCartStore';
 
-const Header = () => {
+const Header = ({ dictionary } : { dictionary: any }) => {
   const [toggleSearchbar, setToggleSearchBar] = useState(false);
   const isScrollChanged = useDetectChangeScroll();
   const pathname = usePathname();
@@ -66,11 +66,11 @@ const Header = () => {
           All Organics <span className="text-xs align-bottom">&reg;</span>
         </Link>
         <div className="hidden md:inline-flex gap-x-8 text-inherit">
-          <NavLink href="/for-you" title="For You" />
-          <NavLink href="/products" title="All Products" />
-          <NavLink href="/market" title="Market" />
-          <NavLink href="/experts" title="Experts" />
-          <NavLink href="/blogs" title="Blogs" />
+          <NavLink href="/for-you" title={dictionary.navbar.links.forYou} />
+          <NavLink href="/products" title={dictionary.navbar.links.allProducts} />
+          <NavLink href="/market" title={dictionary.navbar.links.market} />
+          <NavLink href="/experts" title={dictionary.navbar.links.experts} />
+          <NavLink href="/blogs" title={dictionary.navbar.links.blogs} />
         </div>
         <div className="inline-flex gap-x-6 items-center">
           <Button
@@ -84,7 +84,7 @@ const Header = () => {
           >
             <SearchIcon height={18} width={18} />
           </Button>
-          <NavLink className="hidden md:block" href="/account" title="Account" />
+          <NavLink className="hidden md:block" href="/account" title={dictionary.navbar.links.account} />
           <CartPopover
             trigger={
               <Button
@@ -96,7 +96,7 @@ const Header = () => {
                 size="icon"
                 variant="link"
               >
-                Cart ({cartItemsCount})
+                {dictionary.navbar.links.cart} ({cartItemsCount})
               </Button>
             }
           />

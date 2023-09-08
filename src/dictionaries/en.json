@@ -1,0 +1,26 @@
+{
+  "navbar": {
+    "links": {
+      "forYou": "For you",
+      "allProducts": "All Products",
+      "market": "Market",
+      "experts": "Experts",
+      "blogs": "Blogs",
+      "account": "Account",
+      "cart": "Cart"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Organic living, simplied",
+      "subtitle": "Through our thoughtfully chosen range of products, we aim to simplify and inspire the journey towards a more mindful and sustainable lifestyle."
+    },
+    "experts": {
+      "title": "Meet Our Experts",
+      "subtitle": "THEY DO THE TRIAL AND ERROR, SO YOU DON’T HAVE TO."
+    },
+    "featuredProducts": {
+      "heading": "Featured Products"
+    }
+  }
+}

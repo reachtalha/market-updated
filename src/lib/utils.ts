@@ -5,21 +5,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isColoredRoute(route: string) {
+export function isColoredRoute(route: string, locale: string = 'en') {
   const coloredRoutes = [
-    '/experts',
-    '/market',
-    '/account',
-    '/cart',
-    '/for-you',
-    '/checkout',
-    '/new-registration',
-    '/order/success',
+    `/${locale}/experts`,
+    `/${locale}/market`,
+    `/${locale}/account`,
+    `/${locale}/cart`,
+    `/${locale}/for-you`,
+    `/${locale}/checkout`,
+    `/${locale}/new-registration`,
+    `/${locale}/order/success`,
   ];
+
   return (
     coloredRoutes.includes(route) ||
-    route === '/blogs' ||
-    route.startsWith('/products') ||
-    route.startsWith('/orders')
+    route === `/${locale}/blogs` ||
+    route.startsWith(`/${locale}/products`) ||
+    route.startsWith(`/${locale}/orders`)
   );
 }
