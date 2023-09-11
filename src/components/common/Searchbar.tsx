@@ -195,8 +195,8 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
       ref={searchBoxRef}
       tabIndex={0}
       className={cn(
-        'invisible shadow shadow-gray-200 absolute h-0 transition-all ease-in duration-100 w-full bg-white text-black',
-        isOpen && 'visible h-auto pb-5'
+        'invisible shadow shadow-gray-200 absolute transition-opacity ease-in duration-300 opacity-0 w-full bg-white text-black',
+        isOpen && 'visible opacity-100 h-auto pb-5 '
       )}
     >
       <BoxedContent className="mt-16">

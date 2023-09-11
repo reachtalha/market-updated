@@ -117,7 +117,11 @@ const CreateSKU = ({
       <div className="flex items-center justify-between w-full">
         <Title title="Create SKU" />
         {isEdit && (
-          <Pencil className="cursor-pointer" onClick={() => setEditMode(true)} size={17} />
+          <Pencil
+            className="cursor-pointer hover:scale-110 transition-all duration-200"
+            onClick={() => setEditMode(true)}
+            size={17}
+          />
         )}
       </div>
 
@@ -140,7 +144,7 @@ const CreateSKU = ({
               </li>
             ))}
             <AddModal list={colorList} setList={setColorList} />
-          </ul>   
+          </ul>
         </div>
       </div>
       <div className="space-y-2 w-full mt-3 xl:mt-5">
@@ -211,7 +215,9 @@ const CreateSKU = ({
                   <span>{l.id}</span>
                   <Pencil
                     size={14}
-                    className={`cursor-pointer me-1 ${isEdit && !editMode && ' hidden'}`}
+                    className={`cursor-pointer me-1 hover:scale-105 transition-all duration-200 ${
+                      isEdit && !editMode && ' hidden'
+                    }`}
                     onClick={() => {
                       setIsEditSku(true);
                       setEditSkuId(l.id);

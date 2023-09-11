@@ -39,7 +39,6 @@ async function getData(): Promise<Product[]> {
 export default function DemoPage() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState('');
-  const [reRender, setReRender] = useState(false);
   const sortSellerProductsBy = useSortingStore((state: any) => state.sortSellerProductsBy);
   const { data, isLoading, error } = useSwr('sellerProducts', getData);
 
@@ -56,7 +55,6 @@ export default function DemoPage() {
   }, [search]);
 
   useEffect(() => {
-    console.log('We are ');
     if (!data) return;
 
     switch (sortSellerProductsBy) {
@@ -64,7 +62,7 @@ export default function DemoPage() {
         setFilteredProducts(
           [...filteredProducts].sort((a: any, b: any) => a.name.localeCompare(b.name))
         );
-        setReRender(!reRender);
+
         break;
       case 'type':
         setFilteredProducts(
@@ -79,18 +77,11 @@ export default function DemoPage() {
 
         break;
       default:
-        console.log('default');
         setFilteredProducts(data);
     }
   }, [data, sortSellerProductsBy]);
 
-  console.log(filteredProducts);
-  if (isLoading)
-    return (
-      <div className="h-full w-full flex items-center justify-center">
-        <Loader />
-      </div>
-    );
+  if (isLoading) return <Loader className="h-full w-full flex items-center justify-center" />;
   if (error) return <Error />;
 
   return (

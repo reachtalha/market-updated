@@ -29,7 +29,11 @@ const Index = ({ setStep, isEdit = false }: Props) => {
       <div className="flex items-center justify-between w-full ">
         <Title title="Shop Socials" subTitle={'(Optional)'} />
         {isEdit && (
-          <Pencil className="cursor-pointer" onClick={() => setEditMode(true)} size={17} />
+          <Pencil
+            className="cursor-pointer hover:scale-110 transition-all duration-200"
+            onClick={() => setEditMode(true)}
+            size={17}
+          />
         )}
       </div>
 
