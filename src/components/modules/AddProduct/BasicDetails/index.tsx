@@ -54,7 +54,11 @@ const BasicDetails = ({ types, setStep, isEdit = false }: Props) => {
       <div className="flex items-center justify-between w-full">
         <Title title="Basic Details" />
         {isEdit && (
-          <Pencil className="cursor-pointer" onClick={() => setEditMode(true)} size={17} />
+          <Pencil
+            className="cursor-pointer hover:scale-110 transition-all duration-200"
+            onClick={() => setEditMode(true)}
+            size={17}
+          />
         )}
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5 ">

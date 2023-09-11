@@ -1,4 +1,4 @@
-import Market from '@/components/common/Buyer/Market/Index';
+import Market from '@/components/common/Buyer/Market/index';
 import React from 'react';
 
 import { Category } from '@/components/common/Buyer/Market/MarketCategories';

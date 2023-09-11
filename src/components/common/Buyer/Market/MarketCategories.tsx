@@ -15,8 +15,8 @@ export default function MarketCategories({ categories, selectedCategory }: Marke
   return (
     <div className="hidden lg:block w-48 space-y-4">
       <p className="uppercase tracking-wide text-sm">Filter By:</p>
-      <ul className="space-y-1 uppercase text-sm hover:text-neutral-400">
-        <li className="tracking-wide cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4">
+      <ul className="space-y-1 uppercase text-sm  hover:text-neutral-400 transition-all duration-300">
+        <li className="tracking-wide cursor-pointer  hover:text-neutral-900 hover:underline underline-offset-4 transition-all duration-300 ">
           <Link
             className={
               selectedCategory === ''

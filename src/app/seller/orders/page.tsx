@@ -7,6 +7,7 @@ import useSwr from 'swr';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
 import { formatCurrency } from '@/utils/formatters';
+import { useState, useEffect } from 'react';
 
 const getOrders = async () => {
   let orders: any = [];
@@ -39,14 +40,33 @@ const getOrders = async () => {
 };
 
 export default function DemoPage() {
-  const { data: orders, isLoading } = useSwr('sellerOrders', getOrders);
+  const { data, isLoading } = useSwr('sellerOrders', getOrders);
+  const [search, setSearch] = useState('');
+  const [filteredOrders, setFilteredOrders] = useState<any>([]);
+
+  useEffect(() => {
+    if (!data) return;
+    if (search.trim() === '') return setFilteredOrders(data);
+    setFilteredOrders(
+      data.filter(
+        (order: any) =>
+          order.name.toLowerCase().includes(search.toLowerCase()) ||
+          order.status.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search]);
+
+  useEffect(() => {
+    if (!data) return;
+    setFilteredOrders(data);
+  }, [data]);
 
   if (isLoading) return <Loader className="flex items-center justify-center h-full w-full" />;
 
   return (
     <div className="container mx-auto py-20">
       <Title title="Orders" />
-      <DataTable columns={columns} data={orders} />
+      <DataTable search={search} setSearch={setSearch} columns={columns} data={filteredOrders} />
     </div>
   );
 }

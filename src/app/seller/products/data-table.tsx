@@ -175,13 +175,17 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
                   <div className="flex flex-row gap-x-4">
                     <Pencil
                       size={15}
-                      className={loading ? 'pointer-events-none' : 'cursor-pointer'}
+                      className={` hover:-translate-y-[.15rem] transition-transform duration-200 ${
+                        loading ? ' pointer-events-none' : 'cursor-pointer'
+                      }`}
                       onClick={() => handleEdit(row?.original?.id)}
                     />
                     <Trash2
                       size={15}
                       color="#C51605"
-                      className={loading ? 'pointer-events-none' : 'cursor-pointer'}
+                      className={` hover:-translate-y-[.15rem] transition-transform duration-200 ${
+                        loading ? ' pointer-events-none' : 'cursor-pointer'
+                      }`}
                       onClick={() => deleteProduct(row?.original?.id)}
                     />
                   </div>

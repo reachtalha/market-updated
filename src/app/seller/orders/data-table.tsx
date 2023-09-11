@@ -18,9 +18,11 @@ import { Input } from '@/components/ui/input';
 interface DataTableProps<TValue> {
   columns: ColumnDef<Order, TValue>[];
   data: Order[];
+  search: string;
+  setSearch: (value: string) => void;
 }
 
-export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
+export function DataTable<TValue>({ columns, data, search, setSearch }: DataTableProps<TValue>) {
   const router = useRouter();
   const table = useReactTable({
     data,
@@ -31,7 +33,13 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
   return (
     <div className="rounded-md border mt-5">
       <div className="p-5">
-        <Input type="search" placeholder="search" className="w-[20%]" />
+        <Input
+          type="search"
+          placeholder="search"
+          className="w-[20%]"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
       <Table>
         <TableHeader>
@@ -67,7 +75,7 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
                     onClick={() => {
                       router.push(`/seller/orders/${row?.original?.id}`);
                     }}
-                    className="cursor-pointer"
+                    className="cursor-pointer hover:translate-x-[.15rem] transition-transform duration-200"
                   />
                 </TableCell>
               </TableRow>
