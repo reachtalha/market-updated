@@ -1,6 +1,8 @@
 import Experts from '@/components/common/Buyer/Experts/Experts';
 import { getDocs, collection, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import { LocaleType } from '@/app/[lang]/(buyer)/page';
+import { getDictionary } from '@/get-dictionary';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,8 +53,11 @@ const getExperts: any = async (): Promise<any> => {
   return experts;
 };
 
-export default async function Index() {
+export default async function Index({
+                                      params: { lang },
+                                    }: LocaleType) {
   const experts = await getExperts();
+  const dictionary = await getDictionary(lang);
 
-  return <Experts expertsJSON={JSON.stringify(experts)} categories={categories} />;
+  return <Experts dictionary={dictionary} expertsJSON={JSON.stringify(experts)} categories={categories} />;
 }

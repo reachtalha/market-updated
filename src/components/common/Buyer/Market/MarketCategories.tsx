@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import useLocale from '@/hooks/useLocale';
 
 export type Category = {
   name: string;
@@ -12,6 +13,7 @@ type MarketCategoriesProps = {
 };
 
 export default function MarketCategories({ categories, selectedCategory }: MarketCategoriesProps) {
+  const locale = useLocale();
   return (
     <div className="hidden lg:block w-48 space-y-4">
       <p className="uppercase tracking-wide text-sm">View All Shops</p>
@@ -23,7 +25,7 @@ export default function MarketCategories({ categories, selectedCategory }: Marke
           >
             <Link
               className={category.slug === selectedCategory ? 'font-medium' : ''}
-              href={`${category.href}=${category.slug}`}
+              href={`/${locale}${category.href}=${category.slug}`}
             >
               {category.name}
             </Link>

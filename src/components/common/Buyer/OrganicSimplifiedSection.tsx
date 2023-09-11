@@ -20,14 +20,14 @@ const fetchGetLatestBlogPosts = async () => {
   return result;
 };
 
-export default async function OrganicSimplifiedSection() {
+export default async function OrganicSimplifiedSection({ title, tag }: { title: string, tag: string }) {
   const data = await fetchGetLatestBlogPosts();
   return (
     <div className="space-y-6">
       <div className="flex items-center flex-wrap justify-between">
-        <p className="text-lg md:text-3xl">#OrganicSimplified</p>
+        <p className="text-lg md:text-3xl">{title}</p>
 
-        <p className="text-lg md:text-3xl">@allorganicsmarket</p>
+        <p className="text-lg md:text-3xl">{tag}</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-4 md:gap-x-4">
         {data?.map((post: any) => (

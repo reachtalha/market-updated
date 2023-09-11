@@ -8,7 +8,6 @@ import OrganicSimplifiedSection from '../OrganicSimplifiedSection';
 import useCategorySlug from '@/hooks/useCategorySlug';
 import { ProductsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
-import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import { Button } from '@/components/ui/button';
 import { getDocs, collection, query, where } from 'firebase/firestore';
@@ -83,8 +82,9 @@ const getProducts: any = async (
 type ProductsProps = {
   categories: Category[];
   foryou?: boolean;
+  dictionary?: any
 };
-export default function Products({ categories, foryou }: ProductsProps) {
+export default function Products({ dictionary, categories, foryou }: ProductsProps) {
   const category = useCategorySlug();
   const type = useProductTypeSlug();
 
@@ -216,7 +216,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
             </BoxedContent>
           </section>
           <div className="py-16 px-10">
-            <OrganicSimplifiedSection />
+            <OrganicSimplifiedSection title={dictionary.home.bloggingSection.title} tag={dictionary.home.bloggingSection.tag} />
           </div>
         </>
       )}

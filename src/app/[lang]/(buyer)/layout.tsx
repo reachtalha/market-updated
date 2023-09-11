@@ -12,7 +12,7 @@ const Layout = async ({ children, params }: { children: React.ReactNode, params:
       </header>
 
       <main>{children}</main>
-      <Footer />
+      <Footer dictionary={dictionary} />
     </>
   );
 };

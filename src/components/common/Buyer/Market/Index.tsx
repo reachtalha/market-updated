@@ -39,8 +39,9 @@ const getShops = async () => {
 
 type MarketProps = {
   categories: Category[];
+  dictionary?: any;
 };
-export default function Market({ categories }: MarketProps) {
+export default function Market({ categories, dictionary }: MarketProps) {
   const router = useRouter();
   const category = useCategorySlug();
   const [filteredShops, setFilteredShops] = useState([]);
@@ -122,7 +123,7 @@ export default function Market({ categories }: MarketProps) {
       </section>
       <TakeQuizSection />
       <div className="py-16 px-10">
-        <OrganicSimplifiedSection />
+        <OrganicSimplifiedSection title={dictionary.home.bloggingSection.title} tag={dictionary.home.bloggingSection.tag} />
       </div>
     </>
   );

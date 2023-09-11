@@ -10,6 +10,35 @@
       "cart": "Cart"
     }
   },
+  "footer": {
+    "subscription": {
+      "heading": "SIGN UP AND SAVE",
+      "emailPlaceholder": "Enter email address"
+    },
+    "links": {
+      "org": {
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Use",
+        "accessibility": "Accessibility"
+      },
+      "about": {
+        "heading": "About All Organics",
+        "about": "About",
+        "expertsProgram": "Experts Program",
+        "brandsAndShops": "Brands & Shops",
+        "contact": "Contact"
+      },
+      "ordersAndSupport": {
+        "heading": "Orders and Support",
+        "shipping": "Shipping",
+        "return": "Returns and Exchanges",
+        "payment": "Payment"
+      },
+      "locationPreferences": {
+        "heading": "Location Preferences"
+      }
+    }
+  },
   "home": {
     "hero": {
       "title": "Organic living, simplied",
@@ -17,10 +46,18 @@
     },
     "experts": {
       "title": "Meet Our Experts",
-      "subtitle": "THEY DO THE TRIAL AND ERROR, SO YOU DON’T HAVE TO."
+      "subtitle": "THEY DO THE TRIAL AND ERROR, SO YOU DON’T HAVE TO.",
+      "expertCardHeading": "Expert"
     },
     "featuredProducts": {
       "heading": "Featured Products"
+    },
+    "mission": {
+      "text": "All Organics &reg; is on a mission to empower conscious shoppers by offering a curated selection of organic products that promote sustainability, authenticity, and well-being.\n        Through our thoughtfully chosen range of products, we aim to simplify and inspire the journey towards a more mindful and sustainable lifestyle."
+    },
+    "bloggingSection": {
+      "title": "#OrganicSimplified",
+      "tag": "@allorganicsmarket"
     }
   }
 }

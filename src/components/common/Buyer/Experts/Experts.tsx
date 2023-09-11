@@ -20,8 +20,9 @@ type Category = {
 type ExpertsProps = {
   categories: Category[];
   expertsJSON: any;
+  dictionary?: any
 };
-export default function Experts({ expertsJSON, categories }: ExpertsProps) {
+export default function Experts({ dictionary, expertsJSON, categories }: ExpertsProps) {
   const experts = JSON.parse(expertsJSON);
   const category = useCategorySlug();
 
@@ -56,6 +57,7 @@ export default function Experts({ expertsJSON, categories }: ExpertsProps) {
           {filteredExperts?.map((expert: any, i: number) => (
             <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
               <ExpertCard
+                heading={dictionary.home.experts.expertCardHeading}
                 image={expert?.photoURL}
                 name={expert?.name}
                 title={expert?.topics}

@@ -18,6 +18,7 @@ import CartPopover from '@/components/common/Buyer/ShoppingCart/CartPopover';
 import useCartStore from '@/state/useCartStore';
 import TopBanner from '@/components/common/Buyer/TopBanner';
 import useGuestCartStore from '@/state/useGuestCartStore';
+import useLocale from '@/hooks/useLocale';
 
 const Header = ({ dictionary } : { dictionary: any }) => {
   const [toggleSearchbar, setToggleSearchBar] = useState(false);
@@ -116,9 +117,10 @@ interface NavLinkProps extends LinkProps {
 }
 export const NavLink = ({ title, href, className = '', ...props }: NavLinkProps) => {
   const pathname = usePathname();
+  const locale = useLocale();
   const classNames = cn(
     'relative uppercase duration-300 md:hover:underline transition-opacity cursor-pointer tracking-wide text-xs underline-offset-2',
-    pathname.startsWith(href) ? 'font-bold md:font-normal md:underline' : '',
+    pathname.startsWith(`/${locale}${href}`) ? 'font-bold md:font-normal md:underline' : '',
     className
   );
   return (

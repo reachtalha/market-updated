@@ -6,12 +6,13 @@ import CircledArrowRight from '@/assets/icons/system/CircledArrowRight';
 import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
 
-import Testimonials from '@/components/common/Buyer/Testimonials';
 import { getDocs, collection, doc, getDoc, where, query, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import { StaticImageData } from 'next/image';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import SimiliarShops from '@/components/common/Buyer/SimilarShops';
+import { Locale } from '@/i18n-config'
+import { getDictionary } from '@/get-dictionary';
 
 const getProducts = async (shopId: string) => {
   const querySnapshot = await getDocs(
@@ -54,6 +55,7 @@ const getShop = async (shopId: string) => {
 type ShopProps = {
   params: {
     shopId: string;
+    lang: Locale
   };
 };
 
@@ -69,6 +71,8 @@ export default async function Shop({ params }: ShopProps) {
     getShop(params.shopId),
     getProducts(params.shopId)
   ]);
+
+  const dictionary = await getDictionary(params.lang);
 
   return (
     <>
@@ -120,7 +124,7 @@ export default async function Shop({ params }: ShopProps) {
       </BoxedContent>
 
       <BoxedContent className="my-16">
-        <OrganicSimplifiedSection />
+        <OrganicSimplifiedSection title={dictionary.home.bloggingSection.title} tag={dictionary.home.bloggingSection.tag} />
       </BoxedContent>
     </>
   );

@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
+import useLocale from '@/hooks/useLocale';
 
 export type Category = {
   name: string;
@@ -25,6 +26,7 @@ export default function ProductCategories({
   selectedCategory,
   setSelectedSubCategory
 }: ProductCategoriesProps) {
+  const locale = useLocale();
   const subCategory = categories.find(
     (category) => category.name.split('&')[0] === selectedCategory
   );
@@ -45,7 +47,7 @@ export default function ProductCategories({
                 >
                   <Link
                     className={category.slug === selectedCategory ? 'font-medium' : ''}
-                    href={`${category.href}=${category.slug}`}
+                    href={`/${locale}/${category.href}=${category.slug}`}
                   >
                     {category.name}
                   </Link>

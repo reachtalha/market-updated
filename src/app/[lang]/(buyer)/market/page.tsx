@@ -1,7 +1,8 @@
-import Market from '@/components/common/Buyer/Market';
-import React from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import { LocaleType } from '@/app/[lang]/(buyer)/page';
+import { getDictionary } from '@/get-dictionary';
+import Market from '@/components/common/Buyer/Market/Index';
 
 const getCategories = async () => {
   const querySnapshot = await getDocs(collection(db, 'categories'));
@@ -20,9 +21,13 @@ const getCategories = async () => {
   return categories;
 };
 
-const Page = async () => {
+const Page = async ({
+                      params: { lang },
+                    }: LocaleType) => {
+  const dictionary = await getDictionary(lang);
   const categories = await getCategories();
-  return <Market categories={categories} />;
+
+  return <Market dictionary={dictionary} categories={categories} />;
 };
 
 export default Page;

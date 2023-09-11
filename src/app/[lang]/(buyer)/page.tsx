@@ -72,6 +72,7 @@ export default async function Home(
                 className="flex-shrink-0 max-w-[300px]"
               >
                 <ExpertCard
+                  heading={dictionary.home.experts.expertCardHeading}
                   image={expert?.photoURL}
                   name={expert?.name}
                   title={expert?.topics}
@@ -83,10 +84,10 @@ export default async function Home(
         </BoxedContent>
       </section>
       <BoxedContent className="pt-5 md:pt-10">
-        <OurMission />
+        <OurMission text={dictionary.home.mission.text} />
       </BoxedContent>
       <BoxedContent className="py-5 md:py-10">
-        <OrganicSimplifiedSection />
+        <OrganicSimplifiedSection title={dictionary.home.bloggingSection.title} tag={dictionary.home.bloggingSection.tag} />
       </BoxedContent>
     </>
   );

@@ -7,9 +7,10 @@ interface IProfileCard {
   name: string;
   title: string;
   bio: string;
+  heading: string;
 }
 
-export default function ExpertCard({ image, name, title, bio }: IProfileCard) {
+export default function ExpertCard({ heading, image, name, title, bio }: IProfileCard) {
   return (
     <div
       key={Math.random() + Date.now()}
@@ -23,7 +24,7 @@ export default function ExpertCard({ image, name, title, bio }: IProfileCard) {
         alt={name}
       />
       <span className="capitalize text-sm absolute top-5 left-5 bg-white p-1 px-3 rounded-lg">
-        {title && title[0]} Expert
+        {title && title[0]} {heading}
       </span>
       <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/30 to-transparent transition-opacity ease-in duration-300" />
       <div className="z-[2] absolute bottom-4 left-4 text-white w-66">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import useLocale from '@/hooks/useLocale';
 
 export type Category = {
   name: string;
@@ -12,6 +13,7 @@ type ExpertCategoriesProps = {
 };
 
 export default function ExpertCategories({ categories, selectedCategory }: ExpertCategoriesProps) {
+  const locale = useLocale();
   return (
     <div className="hidden md:block w-48 space-y-4">
       <p className="uppercase tracking-wide text-sm">Skin care</p>
@@ -23,7 +25,7 @@ export default function ExpertCategories({ categories, selectedCategory }: Exper
           >
             <Link
               className={category.slug === selectedCategory ? 'font-medium' : ''}
-              href={`${category.href}=${category.slug}`}
+              href={`/${locale}${category.href}=${category.slug}`}
             >
               {category.name}
             </Link>
