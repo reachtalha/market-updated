@@ -54,6 +54,7 @@ const CreateSKU = ({
 
   const [isColors, setIsColors] = useState<boolean>(false);
 
+  console.log('Is it edit', isEdit);
   useEffect(() => {
     if (isEditSku) setSKU(SKUList.filter((l: any) => l.id === editSkuId)[0]);
   }, [editSkuId]);
@@ -128,18 +129,18 @@ const CreateSKU = ({
               <li
                 key={index}
                 onClick={() => {
-                  if (isEdit && !editMode) return;
+                  if ((isEdit && !editMode) || isEditSku) return;
                   setSKU((prev) => ({ ...prev, color: c }));
                 }}
                 className={`cursor-pointer rounded-full bg-gray-100 px-2 border py-1 ${
                   sku?.color === c ? 'bg-primary text-white border-primary' : ''
-                }`}
+                } ${isEditSku && ' cursor-not-allowed '}`}
               >
                 {c}
               </li>
             ))}
             <AddModal list={colorList} setList={setColorList} />
-          </ul>
+          </ul>   
         </div>
       </div>
       <div className="space-y-2 w-full mt-3 xl:mt-5">
@@ -149,12 +150,12 @@ const CreateSKU = ({
             <li
               key={index}
               onClick={() => {
-                if (isEdit && !editMode) return;
+                if ((isEdit && !editMode) || isEditSku) return;
                 setSKU((prev) => ({ ...prev, measurement: s }));
               }}
               className={`cursor-pointer rounded-full bg-gray-100 capitalize px-2 border py-1 ${
                 sku?.measurement === s ? 'bg-primary text-white border-primary' : ''
-              }`}
+              } ${isEditSku && ' cursor-not-allowed '} `}
             >
               {s}
             </li>
@@ -210,7 +211,7 @@ const CreateSKU = ({
                   <span>{l.id}</span>
                   <Pencil
                     size={14}
-                    className={'cursor-pointer me-1 ' + isEdit && !editMode ? 'hidden' : ''}
+                    className={`cursor-pointer me-1 ${isEdit && !editMode && ' hidden'}`}
                     onClick={() => {
                       setIsEditSku(true);
                       setEditSkuId(l.id);

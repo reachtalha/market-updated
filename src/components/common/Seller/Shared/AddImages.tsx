@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
 import Title from '@/components/common/Seller/Shared/Title';
 import { Button } from '@/components/ui/button';
+import DeleteImage from '@/utils/handlers/image/DeleteImage';
 
 const ImageUpload = ({ label, onUpload }: { label: string; onUpload: Function }) => {
   return (
@@ -93,47 +94,60 @@ function AddImages({
               <div className={coverImage ? 'h-24 w-24 relative' : 'hidden'}>
                 <button
                   className="absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1"
-                  onClick={() => {
-                    setCoverImage('');
+                  type="button"
+                  onClick={async () => {
+                    const imageUrl = coverImage;
+                    setCoverImage(null);
+                    await DeleteImage({ imageUrl });
                   }}
                 >
                   <Trash2 className="h-3 w-3 text-red-500" />
                 </button>
-                <Image
-                  title="Cover Image"
-                  src={coverImage || ''}
-                  height={80}
-                  width={70}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              {isShop ? (
-                <div className={logoImage ? 'h-24 w-24 relative' : 'hidden'}>
-                  <button
-                    className="absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1"
-                    onClick={() => {
-                      setLogoImage('');
-                    }}
-                  >
-                    <Trash2 className="h-3 w-3 text-red-500" />
-                  </button>
+                {coverImage && (
                   <Image
-                    title="Logo Image"
-                    src={logoImage || ''}
+                    title="Cover Image"
+                    src={coverImage}
                     height={80}
                     width={70}
                     alt=""
                     className="w-full h-full object-cover"
                   />
+                )}
+              </div>
+              {isShop ? (
+                <div className={logoImage ? 'h-24 w-24 relative' : 'hidden'}>
+                  <button
+                    className="absolute top-1 right-1 z-50 bg-red-200  rounded-full p-1"
+                    type="button"
+                    onClick={async () => {
+                      const imageUrl = logoImage;
+                      setLogoImage(null);
+                      await DeleteImage({ imageUrl });
+                    }}
+                  >
+                    <Trash2 className="h-3 w-3 text-red-500" />
+                  </button>
+                  {logoImage && (
+                    <Image
+                      title="Logo Image"
+                      src={logoImage}
+                      height={80}
+                      width={70}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
               ) : (
                 pictures?.map((pic: any, index: number) => (
                   <div key={index} className="relative h-24 w-24">
                     <button
+                      type="button"
                       className="absolute top-1 right-1 bg-red-200  rounded-full p-1"
-                      onClick={() => {
+                      onClick={async () => {
+                        const imageUrl = pic;
                         deleteImage(pic, setPictures);
+                        await DeleteImage({ imageUrl });
                       }}
                     >
                       <Trash2 className="h-3 w-3 text-red-500" />

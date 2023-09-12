@@ -12,7 +12,7 @@ type LatestBlogsSectionProps = {
 };
 
 const fetchGetLatestBlogPosts = async () => {
-  const querySnapshot = await getDocs(query(collection(db, 'blog-posts'), limit(5)));
+  const querySnapshot = await getDocs(query(collection(db, 'blog-posts'), limit(3)));
   let result: any = [];
   querySnapshot.forEach((doc) => {
     result.push({ ...doc.data(), id: doc.id });
@@ -29,7 +29,8 @@ export default async function OrganicSimplifiedSection({ title, tag }: { title: 
 
         <p className="text-lg md:text-3xl">{tag}</p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-4 md:gap-x-4">
+      {
+        data?.length === 0 ? (<p className="text-center py-14">No Blogs Found</p>):(<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
         {data?.map((post: any) => (
           <BlogCard
             key={post?.id}
@@ -39,7 +40,8 @@ export default async function OrganicSimplifiedSection({ title, tag }: { title: 
             thumbnailImage={post?.thumbnailImage}
           />
         ))}
-      </div>
+      </div>)
+}
     </div>
   );
 }

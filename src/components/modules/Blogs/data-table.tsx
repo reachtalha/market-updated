@@ -12,7 +12,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-
+import { mutate } from 'swr';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import { toast } from 'react-hot-toast';
@@ -36,6 +36,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
     try {
       setLoading(true);
       await deleteDoc(doc(db, 'blog-posts', id));
+      mutate('manage-blogs');
       toast.success('Your Blog has been deleted');
     } catch (error: any) {
       toast.error('An error occurred while processing your request. Please try again later.');

@@ -51,19 +51,7 @@ export default function ShippingInfo({ form }: { form: any }) {
           )}
         />
       </div>
-      <FormField
-        control={form.control}
-        name="company"
-        render={({ field }) => (
-          <FormItem className="mt-5 w-full">
-            <FormLabel>Company</FormLabel>
-            <FormControl>
-              <Input className="capitalize" placeholder="Company" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+
       <FormField
         control={form.control}
         name="address"
@@ -77,19 +65,7 @@ export default function ShippingInfo({ form }: { form: any }) {
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="apartments"
-        render={({ field }) => (
-          <FormItem className="mt-5 w-full">
-            <FormLabel>Apartment, suite, etc.</FormLabel>
-            <FormControl>
-              <Input className="capitalize" placeholder="Apartment, suite, etc." {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+
       <FormField
         control={form.control}
         name="city"

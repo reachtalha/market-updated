@@ -1,8 +1,7 @@
 import { StaticImageData } from 'next/image';
 
 import Image from '@/components/common/FallbackImage';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type Props = {
   id: string;
@@ -13,12 +12,14 @@ type Props = {
 };
 
 const ShopCard = ({ id, image, shop, desc, type }: Props) => {
-  const router = useRouter();
-  const handleRedirect = () => {
-    router.push(`/market/${id}`);
-  };
   return (
-    <div className="group h-fit w-full relative">
+    <div className="group h-fit w-full relative ">
+      <Link
+        href={`market/?category=${type}`}
+        className="capitalize z-10 text-sm absolute cursor-pointer top-5 left-5 bg-white p-1 px-3 rounded-lg"
+      >
+        {type}
+      </Link>
       <div className="relative h-96 w-full drop-shadow-sm">
         <Image
           src={image}
@@ -28,38 +29,21 @@ const ShopCard = ({ id, image, shop, desc, type }: Props) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
-      <div className="transition duration-300 ease-in-out invisible absolute border w-full h-full group-hover:bg-[#171717]/50 z-10 top-0 right-0 group-hover:visible">
-        <div className="w-full h-full grid place-content-center">
-          <span className="text-2xl mb-3 capitalize text-white md:text-4xl font-alpina font-medium">
-            {shop}
-          </span>
-          <Button
-            size="resp"
-            onClick={handleRedirect}
-            className="bg-transparent hover:bg-transparent  border rounded-3xl"
-          >
-            Explore Shop
-          </Button>
-        </div>
-      </div>
-      <span className="group-hover:hidden absolute top-3 text-xs uppercase bg-white left-5 py-1.5 px-6 rounded-lg">
-        {type}
-      </span>
-      <div className="group-hover:hidden bottom-0 w-full  text-white py-5 px-6 flex justify-between items-start absolute">
-        <div className="flex flex-col gap-y-3 w-full">
-          <div className="flex flex-row   justify-between items-center flex-wrap">
-            <span className="text-2xl lg:text-3xl capitalize font-medium">{shop}</span>
-            <Button
-              size="resp"
-              onClick={handleRedirect}
-              className="bg-transparent hover:bg-transparent  border rounded-3xl"
-            >
-              Explore Shop
-            </Button>
+      <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/40 to-transparent transition-opacity ease-in duration-300" />
+      <div className="bottom-0 w-full z-[1] text-white py-5 px-6 flex justify-between items-start absolute">
+        <div className="flex gap-3 w-full">
+          <div className="space-y-1 flex-1">
+            <h5 className="text-2xl lg:text-3xl capitalize font-medium">{shop}</h5>
+            <p className="text-sm line-clamp-3 sm:line-clamp-2 text-neutral-100 md:line-clamp-2 lg:line-clamp-none">
+              {desc}
+            </p>
           </div>
-          <span className="text-sm line-clamp-3 sm:line-clamp-2 md:line-clamp-2 lg:line-clamp-none">
-            {desc}
-          </span>
+          <Link
+            href={`/market/${id}`}
+            className="bg-transparent hover:bg-neutral-50 duration-300 transition-colors px-5 w-fit h-fit py-2.5 flex items-center hover:text-neutral-900 border rounded-full"
+          >
+            Explore
+          </Link>
         </div>
       </div>
     </div>

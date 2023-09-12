@@ -29,7 +29,7 @@ const fetchGetCart = async () => {
         const selectedVariant = productData?.SKU.find(
           (sku: any) => sku.id === document.data().skuId
         );
-       
+
         return {
           itemId: document.id,
           docId: docRef.id,
@@ -89,7 +89,7 @@ const fetchClearCart = async (cartItems: any) => {
 
 export const calculateCartSummary = (items: any = []) => {
   const subTotal = items.reduce((sum: number, item: any) => {
-    const itemTotal = item.quantity * item.selectedVariant.price;
+    const itemTotal = item.quantity * item.selectedVariant?.price;
     return sum + itemTotal;
   }, 0);
   const shipping = 4;

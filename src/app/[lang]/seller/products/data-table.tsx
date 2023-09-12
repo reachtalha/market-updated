@@ -7,22 +7,26 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
-import {
-  ColumnDef,
-  SortingState,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable
-} from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
 import { Product } from './columns';
 
 import { Pencil, Trash2 } from 'lucide-react';
 import ImageWithFallback from '@/components/common/FallbackImage';
 import { Input } from '@/components/ui/input';
-import { deleteDoc, doc } from 'firebase/firestore';
+import {
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  limit,
+  where,
+  collection,
+  getDoc,
+  updateDoc,
+  increment,
+  collectionGroup
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
 import { mutate } from 'swr';
@@ -30,7 +34,8 @@ import { mutate } from 'swr';
 import { useRouter } from 'next/navigation';
 import SortByDropdown from '@/components/common/SortByDropdown';
 import { useEffect, useState } from 'react';
-import useSortingStore from '@/state/useSortingStore';
+import DeleteImage from '@/utils/handlers/image/DeleteImage';
+import { promise } from 'zod';
 
 interface DataTableProps<TValue> {
   columns: ColumnDef<Product, TValue>[];
@@ -46,16 +51,69 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
     getCoreRowModel: getCoreRowModel()
   });
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log('Data Changes');
-  }, [data]);
+  async function deleteProduct(id: string) {
+    try {
+      setLoading(true);
+      //get product details
+      const productRef = doc(db, 'products', id);
+      const productDoc = await getDoc(productRef);
+      const { shopId, moreImages } = productDoc.data() as any;
 
-  const handleDelete = async (id: string) => {
-    await deleteDoc(doc(db, 'products', id));
-    toast.success('Product Successfully Deleted');
-    mutate('sellerProducts');
-  };
+      //delete product from wishlist
+      const wishListQuery = await getDocs(
+        query(collection(db, 'wishlist'), where('productIds', 'array-contains', id))
+      );
+
+      wishListQuery.docs.forEach((d) => {
+        console.log(d.data());
+        updateDoc(doc(db, 'wishlist', `${d.id}`), {
+          productIds: d.data().productIds.filter((i: string) => i !== id)
+        });
+      });
+
+      // delete product from cart
+      const querySnapShot = await getDocs(query(collection(db, 'cart')));
+      Promise.all([
+        querySnapShot.forEach(async (d) => {
+          // Reference to the "items" subcollection of the specific cart
+          const itemsCollectionRef = await getDocs(
+            query(collection(db, 'cart', d.id, 'items'), where('productId', '==', id))
+          );
+
+          Promise.all([
+            itemsCollectionRef.docs.forEach(async (itemDoc) => {
+              await deleteDoc(doc(db, 'cart', d.id, 'items', `${itemDoc.id}`));
+            })
+          ]);
+        })
+      ]);
+
+      //delete product
+      await deleteDoc(doc(db, 'products', id));
+
+      //update shop
+      await updateDoc(doc(db, 'shops', shopId), {
+        noOfProducts: increment(-1)
+      });
+
+      //delete images
+      moreImages.forEach(async (i: string) => {
+        await DeleteImage({ imageUrl: i });
+      });
+
+      await Promise.all([moreImages]);
+
+      toast.success('Product Successfully Deleted');
+      mutate('sellerProducts');
+    } catch (e) {
+      console.log(e);
+      console.log('Error occured');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const handleEdit = async (id: string) => {
     router.push(`/seller/products/edit/${id}`);
@@ -117,14 +175,14 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
                   <div className="flex flex-row gap-x-4">
                     <Pencil
                       size={15}
-                      className="cursor-pointer"
+                      className={loading ? 'pointer-events-none' : 'cursor-pointer'}
                       onClick={() => handleEdit(row?.original?.id)}
                     />
                     <Trash2
                       size={15}
                       color="#C51605"
-                      className="cursor-pointer"
-                      onClick={() => handleDelete(row?.original?.id)}
+                      className={loading ? 'pointer-events-none' : 'cursor-pointer'}
+                      onClick={() => deleteProduct(row?.original?.id)}
                     />
                   </div>
                 </TableCell>
@@ -133,7 +191,7 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                No Products Found.
               </TableCell>
             </TableRow>
           )}

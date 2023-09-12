@@ -1,39 +1,35 @@
 'use client';
 
-import { onSnapshot, doc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { getDoc, doc } from 'firebase/firestore';
+import useSWR, { preload } from 'swr';
 import { db, auth } from '@/lib/firebase/client';
 
+const getCurrentUser = async () => {
+  const docRef = await getDoc(doc(db, 'users', `${auth.currentUser?.uid}`));
+  if (!docRef.exists()) {
+    return null;
+  }
+  return {
+    id: docRef.id,
+    ...docRef.data()
+  } as any;
+};
+preload('currentUSer', getCurrentUser);
+
 export const useCurrentUser = () => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    setLoading(true);
-    const docRef = doc(db, 'users', `${auth.currentUser?.uid}`);
-    const unsubscribe = onSnapshot(
-      docRef,
-      (docSnap) => {
-        if (docSnap.exists()) {
-          setUser({ id: docSnap.id, ...docSnap.data() });
-        } else {
-          setUser(null);
-        }
-        setLoading(false);
-      },
-      (error) => {
-        setUser(null);
-        setLoading(false);
-      }
-    );
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  const {
+    data: user,
+    isLoading,
+    error
+  } = useSWR('currentUser', getCurrentUser, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  });
 
   return {
     user,
-    isLoading: loading
+    isLoading,
+    error
   };
 };

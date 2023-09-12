@@ -19,7 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import EditorJS from '@editorjs/editorjs';
 import { getBase64 } from '@/components/common/functions';
 import UploadImage from '@/utils/handlers/image/UploadImage';
-import { Timestamp, addDoc, collection, setDoc, doc } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, updateDoc, doc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
 
@@ -42,6 +42,8 @@ type NewBlogFormProps = {
 export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
   const router = useRouter();
   const [isPublishing, setIsPublishing] = useState(false);
+  const [coverUploading, setCoverUploading] = useState(false);
+  const [thumbnailUploading, setThumbnailUploading] = useState(false);
   const ref = useRef<EditorJS>();
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,7 +52,8 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
       title: blogData?.title || '',
       coverImage: blogData?.coverImage || '',
       thumbnailImage: blogData?.thumbnailImage || ''
-    }
+    },
+    shouldUnregister: false
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -67,10 +70,10 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
         postedAt: Timestamp.fromDate(new Date())
       };
       const docRef = slug
-        ? await setDoc(doc(db, 'blog-posts', slug), obj)
+        ? await updateDoc(doc(db, 'blog-posts', slug), obj)
         : await addDoc(collection(db, 'blog-posts'), obj);
-      toast.success('Your blog has been published!');
-      router.push(`/blogs/${docRef?.id}`);
+      toast.success(`Your blog has been ${slug ? 'updated' : 'published'}!`);
+      router.push(`/blogs/${docRef?.id ?? slug}`);
     } catch (err) {
       toast.success('Something went wrong. We are unable to publish your blog!');
     } finally {
@@ -190,7 +193,12 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
                 <FormItem>
                   <FormLabel>Cover Image</FormLabel>
                   <FormControl>
-                    <UploadImageView value={field.value} onUploadSuccess={field.onChange} />
+                    <UploadImageView
+                      isLoading={coverUploading}
+                      setIsLoading={setCoverUploading}
+                      value={field.value}
+                      onUploadSuccess={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -205,7 +213,12 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
               <FormItem>
                 <FormLabel>Thumbnail Image</FormLabel>
                 <FormControl>
-                  <UploadImageView value={field.value} onUploadSuccess={field.onChange} />
+                  <UploadImageView
+                    isLoading={thumbnailUploading}
+                    setIsLoading={setThumbnailUploading}
+                    value={field.value}
+                    onUploadSuccess={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -225,7 +238,7 @@ export default function NewBlogForm({ slug, blogData }: NewBlogFormProps) {
             </p>
           </div>
         </div>
-        <Button type="submit" className="w-56" disabled={isPublishing}>
+        <Button type="submit" className="w-56" disabled={isPublishing || coverUploading}>
           {slug
             ? isPublishing
               ? 'Updating...'

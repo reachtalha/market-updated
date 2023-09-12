@@ -73,7 +73,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
     if (auth.currentUser) {
       addToCart(product.id, selectedVariant.id);
     } else {
-      addToGuestCart({ ...product, selectedVariant })
+      addToGuestCart({ ...product, selectedVariant });
     }
   };
 
@@ -174,6 +174,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
             <div className="flex gap-x-2 py-2">
               {product.SKU.map((variant: any, index: number) => {
                 if (variant.measurement !== selectedSize) return;
+                if (!variant.color) return;
                 return (
                   <div
                     key={index}

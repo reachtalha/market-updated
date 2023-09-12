@@ -1,72 +1,32 @@
-'use client';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-
-import ExpertCategories from '@/components/common/Buyer/Experts/ExpertCategories';
-
 import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
-import BoxedContent from '@/components/common/BoxedContent';
-import useCategorySlug from '@/hooks/useCategorySlug';
 
-import ExpertHeader from '@/components/common/Buyer/Experts/ExpertHeader';
-import useSortingStore from '@/state/useSortingStore';
-
-type Category = {
-  name: string;
-  slug: string;
-  href: string;
+type Props = {
+  experts: any;
+  dictionary: any;
 };
 
-type ExpertsProps = {
-  categories: Category[];
-  expertsJSON: any;
-  dictionary?: any
-};
-export default function Experts({ dictionary, expertsJSON, categories }: ExpertsProps) {
-  const experts = JSON.parse(expertsJSON);
-  const category = useCategorySlug();
-
-  const [filteredExperts, setFilteredExperts] = useState(experts);
-  const sortExpertBy = useSortingStore((state: any) => state.sortExpertBy);
-
-  useEffect(() => {
-    if (category !== 'all') {
-      setFilteredExperts(
-        experts.filter((expert: any) =>
-          expert.topics.some((topic: string) => topic.toLowerCase() === category.toLowerCase())
-        )
-      );
-    } else setFilteredExperts(experts);
-  }, [category]);
-
-  useEffect(() => {
-    if (sortExpertBy === '') {
-      setFilteredExperts(experts);
-    } else if (sortExpertBy === 'name') {
-      const filteredExperts = experts.sort((a: any, b: any) => a.name.localeCompare(b.name));
-      setFilteredExperts(filteredExperts);
-    }
-  }, [sortExpertBy]);
-
+const Experts = ({ experts, dictionary }: Props) => {
   return (
-    <BoxedContent className="flex gap-x-5 py-20 mt-8">
-      <ExpertCategories selectedCategory={category} categories={categories} />
-      <div className="flex-1 space-y-4">
-        <ExpertHeader selectedCategory={category} categories={categories} />
+    <>
+      {experts?.length === 0 ? (
+        <p className="text-center py-16">No Experts Found</p>
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
-          {filteredExperts?.map((expert: any, i: number) => (
-            <Link href={`experts/${expert.id}`} key={Math.random() + i + Date.now()}>
-              <ExpertCard
-                heading={dictionary.home.experts.expertCardHeading}
-                image={expert?.photoURL}
-                name={expert?.name}
-                title={expert?.topics}
-                bio={expert?.bio}
-              />
-            </Link>
+          {experts?.map((expert: any, i: number) => (
+            <ExpertCard
+              heading={dictionary.home.experts.expertCardHeading}
+              key={Math.random() + i + Date.now()}
+              id={expert?.id}
+              image={expert?.photoURL}
+              name={expert?.name}
+              title={expert?.topics}
+              bio={expert?.bio}
+            />
           ))}
         </div>
-      </div>
-    </BoxedContent>
+      )}
+    </>
   );
-}
+};
+
+export default Experts;

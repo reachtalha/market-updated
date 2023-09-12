@@ -4,6 +4,8 @@ import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 import Experts from '@/components/common/Buyer/Experts/Experts';
 import { getDocs, collection, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import { LocaleType } from '../../page';
+import { getDictionary } from '@/get-dictionary';
 
 const categories = [
   {
@@ -52,8 +54,9 @@ const getExperts: any = async (): Promise<any> => {
   return experts;
 };
 
-export default async function ExpertsSearch() {
+export default async function ExpertsSearch({ params: { lang }} : LocaleType) {
   const experts = await getExperts();
+  const dictionary = await getDictionary(lang);
 
   return (
     <>
@@ -63,7 +66,7 @@ export default async function ExpertsSearch() {
         </header>
         <FeaturedExperts />
       </BoxedContent>
-      <Experts expertsJSON={experts} categories={categories} />
+      <Experts experts={experts} dictionary={dictionary} />
       <LatestBlogsSection title="#OrganicSimplified" />
     </>
   );

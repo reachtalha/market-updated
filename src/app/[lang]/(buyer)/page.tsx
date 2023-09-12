@@ -7,7 +7,6 @@ import BoxedContent from '@/components/common/BoxedContent';
 import OurMission from '@/components/common/Buyer/OurMission';
 import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
 import { collection, getDocs, query, where, limit } from 'firebase/firestore';
-import Link from 'next/link';
 import { db } from '@/lib/firebase/client';
 import { getDictionary } from '@/get-dictionary'
 import { Locale } from '@/i18n-config'
@@ -66,19 +65,16 @@ export default async function Home(
           </div>
           <ul className="flex gap-x-4 items-start md:pl-10 overflow-auto no-scrollbar snap-x snap-start">
             {experts.map((expert: any, i: number) => (
-              <Link
-                href={`experts/${expert.id}`}
-                key={Math.random() + i + Date.now()}
-                className="flex-shrink-0 max-w-[300px]"
-              >
+              <li key={Math.random() + i + Date.now()} className="flex-shrink-0 max-w-[300px]">
                 <ExpertCard
                   heading={dictionary.home.experts.expertCardHeading}
+                  id={expert?.id}
                   image={expert?.photoURL}
                   name={expert?.name}
                   title={expert?.topics}
                   bio={expert?.bio}
                 />
-              </Link>
+              </li>
             ))}
           </ul>
         </BoxedContent>

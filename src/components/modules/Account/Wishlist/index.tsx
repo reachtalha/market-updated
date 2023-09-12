@@ -46,9 +46,9 @@ const Wishlist = () => {
 
   return (
     <div className="w-full">
-        {products && products.length > 0 ? (
-          <div className="grid grid-cols-1 mt-4 md:mt-0  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {products.map((_: any, i: number) => (
+      {products && products.length > 0 ? (
+        <div className="grid grid-cols-1 mt-4 md:mt-0  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
+          {products.map((_: any, i: number) => (
             <ProductCard
               key={i + Math.random()}
               id={_.id}
@@ -63,15 +63,15 @@ const Wishlist = () => {
               type={_.type}
             />
           ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 mt-4 md:mt-0 gap-5">
+          <div className="text-center  flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[20vh] text-gray-500">
+            No products found
           </div>
-        ) : (
-          <div className="grid grid-cols-1 mt-4 md:mt-0 gap-5">
-            <div className="text-center  flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[20vh] text-gray-500">
-              No products found
-            </div>
-            <LatestProducts />
-          </div>
-        )}
+          <LatestProducts />
+        </div>
+      )}
     </div>
   );
 };

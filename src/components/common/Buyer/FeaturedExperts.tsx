@@ -4,7 +4,6 @@ import { SwiperSlide } from 'swiper/react';
 import Carousel from '@/components/common/Carousel';
 import FeaturedExpertCard, { Expert } from '@/components/common/Buyer/Cards/FeaturedExpertCard';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import Link from 'next/link';
 import { db } from '@/lib/firebase/client';
 import useSwr from 'swr';
 

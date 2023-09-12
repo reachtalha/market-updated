@@ -73,8 +73,8 @@ const Expert = async ({ params }: ExpertProps) => {
   return (
     <>
       <ExpertCoverImage uid={expert?.id} coverImage={expert?.coverImage} />
-      <BoxedContent className=" mt-[-10%] md:mt-[-10%] pb-5  ">
-        <div className="flex flex-col w-[90%] items-center mx-auto relative">
+      <BoxedContent className="pb-5">
+        <div className="-mt-32 flex flex-col w-[90%] items-center mx-auto relative">
           <AddPinnedContentModal uid={params.expertId} pinnedLinks={expert?.pinned} />
           <div className="flex w-full flex-row mb-5 gap-x-4 md:gap-x-8 items-end">
             <div className="w-[150px] z-20 h-[150px] bg-gray-200 ring-2 ring-offset-2 ring-neutral-300 relative md:w-[200px] md:h-[200px] overflow-hidden lg:h-[250px] lg:w-[250px] rounded-full ">
@@ -89,7 +89,7 @@ const Expert = async ({ params }: ExpertProps) => {
               <h1 className="font-alpina capitalize text-3xl md:text-5xl 2xl:text-6xl italic font-medium">
                 {expert?.name}
               </h1>
-              <ul className="flex gap-x-4 gap-y-2  mt-4 flex-wrap">
+              <ul className="flex gap-x-4 gap-y-2  mt-5 flex-wrap">
                 {expert?.socialMediaLinks.map((item: any, idx: number) => (
                   <li key={idx}>
                     <a href={item.link} target="_blank">

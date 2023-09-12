@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import BoxedContent from '@/components/common/BoxedContent';
 import ProductCategories, { Category } from '@/components/common/Buyer/Products/ProductCategories';
@@ -10,21 +10,31 @@ import { ProductsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 import Error from '@/components/common/Error';
 import { Button } from '@/components/ui/button';
-import { getDocs, collection, query, where } from 'firebase/firestore';
+import { getDocs, collection, query, where, limit, startAfter, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSWR, { mutate } from 'swr';
 
 import FeaturesShops from '../FeaturesShops';
 import useSortingStore from '@/state/useSortingStore';
 import useProductTypeSlug from '@/hooks/useProductTypeSlug';
+import { useInView } from 'react-intersection-observer';
+import Loader from '../../Loader';
 
 const getProducts: any = async (
   category: string,
   allCategories: any,
+  noOfRecords: number,
   foryou?: boolean,
-  type?: string
+  type?: string,
+  lastDoc?: any
 ): Promise<any> => {
   let products: any = [];
+
+  if (!lastDoc) {
+    const docs = await getDocs(query(collection(db, 'products'), orderBy('__name__'), limit(1)));
+
+    lastDoc = docs.docs[0].id;
+  }
 
   if (category === 'all' || category === 'All' || !category) {
     let docRef;
@@ -32,15 +42,33 @@ const getProducts: any = async (
       const list = allCategories.map((cat: any) => cat.subCategories).flat();
 
       docRef = await getDocs(
-        query(collection(db, 'products'), where('type', 'in', list.slice(0, 29)))
+        query(
+          collection(db, 'products'),
+          where('type', 'in', list.slice(0, 29)),
+          orderBy('__name__'),
+          startAfter(lastDoc),
+          limit(noOfRecords)
+        )
       );
-    } else if( type!= null) {
+    } else if (type != null) {
       docRef = await getDocs(
-        query(collection(db, 'products'), where('type', '==', `${type.toLowerCase()}`))
+        query(
+          collection(db, 'products'),
+          where('type', '==', `${type.toLowerCase()}`),
+          orderBy('__name__'),
+          startAfter(lastDoc),
+          limit(noOfRecords)
+        )
       );
-    }
-    else {
-      docRef = await getDocs(query(collection(db, 'products')));
+    } else {
+      docRef = await getDocs(
+        query(
+          collection(db, 'products'),
+          orderBy('__name__'),
+          startAfter(lastDoc),
+          limit(noOfRecords)
+        )
+      );
     }
 
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -49,7 +77,13 @@ const getProducts: any = async (
       category = 'organic clothing & apparel';
     }
     const docRef = await getDocs(
-      query(collection(db, 'products'), where('category', '==', `${category.toLowerCase()}`))
+      query(
+        collection(db, 'products'),
+        where('category', '==', `${category.toLowerCase()}`),
+        orderBy('__name__'),
+        startAfter(lastDoc),
+        limit(noOfRecords)
+      )
     );
     products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
@@ -87,6 +121,7 @@ type ProductsProps = {
 export default function Products({ dictionary, categories, foryou }: ProductsProps) {
   const category = useCategorySlug();
   const type = useProductTypeSlug();
+  const { ref, inView } = useInView();
 
   const [selectedSubCategory, setSelectedSubCategory] = useState(
     category === 'all'
@@ -94,22 +129,20 @@ export default function Products({ dictionary, categories, foryou }: ProductsPro
       : categories?.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
   );
 
+  const [products, setProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [productsEnded, setProductsEnded] = useState<boolean>(false);
   const sortProductsBy = useSortingStore((state: any) => state.sortProductsBy);
+  const [loading, setLoading] = useState<any>(null);
 
-  const {
-    data: products,
-    error,
-    isLoading
-  } = useSWR(
+  let { data, error, isLoading } = useSWR(
     [`products-${category}`, `products-${type}`, selectedSubCategory],
-    () => getProducts(category, categories, foryou, type),
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
+    () => getProducts(category, categories, 6, foryou, type, false)
   );
+
+  useEffect(() => {
+    if (data) setProducts(data);
+  }, [data]);
 
   useEffect(() => {
     setSelectedSubCategory(
@@ -121,7 +154,7 @@ export default function Products({ dictionary, categories, foryou }: ProductsPro
 
   useEffect(() => {
     if (selectedSubCategory) {
-      mutate(['products', selectedSubCategory]);
+      mutate([`products-${category}`, `products-${type}`, selectedSubCategory]);
     }
   }, [selectedSubCategory, category]);
 
@@ -130,26 +163,54 @@ export default function Products({ dictionary, categories, foryou }: ProductsPro
 
     switch (sortProductsBy) {
       case 'price':
-        setFilteredProducts([...filteredProducts].sort((a: any, b: any) => a.price - b.price));
+        setFilteredProducts([...products].sort((a: any, b: any) => a.price - b.price));
         break;
       case 'name':
-        setFilteredProducts(
-          [...filteredProducts].sort((a: any, b: any) => a.name.localeCompare(b.name))
-        );
+        setFilteredProducts([...products].sort((a: any, b: any) => a.name.localeCompare(b.name)));
         break;
       case 'reviews':
-        setFilteredProducts([...filteredProducts].sort((a: any, b: any) => b.rating - a.rating));
+        setFilteredProducts([...products].sort((a: any, b: any) => b.rating - a.rating));
         break;
       default:
         setFilteredProducts(products);
     }
-  }, [sortProductsBy, products]);
+  }, [products, sortProductsBy]);
+
+  const getNewProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await getProducts(
+        category,
+        categories,
+        6,
+        foryou,
+        type,
+        products[products.length - 1]?.id
+      );
+      if (response.length < 6) setProductsEnded(true);
+
+      if (response[response.length - 1]?.id !== products[products.length - 1]?.id)
+        setProducts((prev) => [...prev, ...response]);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (inView) {
+      getNewProducts();
+    }
+  }, [inView]);
 
   if (isLoading) return <ProductsLoader />;
-  if (error) return <Error className="h-screen w-full grid place-content-center" />;
+  if (error) {
+    console.log(error);
+    return <Error className="h-screen w-full grid place-content-center" />;
+  }
 
   return (
-    <>
+    <div>
       <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <ProductCategories
           setSelectedSubCategory={setSelectedSubCategory}
@@ -191,13 +252,28 @@ export default function Products({ dictionary, categories, foryou }: ProductsPro
                   />
                 ))
             ) : (
-              <div className="text-center flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
+              <div className="text-center flex items-center justify-center  w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
                 No products found {foryou && 'for you'}
               </div>
             )}
           </div>
+          {filteredProducts.length > 0 && (
+            <div className="w-full  flex items-center justify-center mt-5">
+              {productsEnded ? (
+                <span>Sorry! No more products to show</span>
+              ) : (
+                <div ref={ref}>
+                  <Loader />
+                </div>
+                // <Button disabled={loading} onClick={getNewProducts}>
+                //   {loading ? 'Loading...' : 'Load More'}
+                // </Button>
+              )}
+            </div>
+          )}
         </div>
       </BoxedContent>
+
       {foryou && (
         <>
           <section className="bg-black py-10 md:py-16">
@@ -220,6 +296,6 @@ export default function Products({ dictionary, categories, foryou }: ProductsPro
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }

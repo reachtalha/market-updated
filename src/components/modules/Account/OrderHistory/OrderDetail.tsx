@@ -30,7 +30,10 @@ const OrderDetailCard = ({
 }: OrderDetailProps) => {
   return (
     <div className="flex font-america flex-row justify-between mt-2 w-full items-center">
-      <Link href={`/products/${id}`} className="flex flex-row cursor-pointer  gap-x-2 items-center">
+      <Link
+        href={isShipping ? '' : `/products/${id}`}
+        className={`flex flex-row  gap-x-2 items-center ${!isShipping && 'cursor-pointer'}`}
+      >
         <Image
           src={image}
           className={`${isShipping ? ' w-20 h-28' : ' w-28 h-24'} object-cover rounded-lg`}
@@ -63,7 +66,6 @@ const SummaryItem = ({ title, amount }: { title: string; amount: number }) => {
 };
 
 const OrderDetail = ({ order }: Props) => {
-  console.log(order);
   const getSubtotal = () => {
     return order.products.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
   };

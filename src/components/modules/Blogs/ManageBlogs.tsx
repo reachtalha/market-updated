@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 export const dynamic = 'force-dynamic';
 
 const ManageBlogs = () => {
-  const { data, error, isLoading } = useSwr('new-registered-users', async () => {
+  const { data, error, isLoading } = useSwr('manage-blogs', async () => {
     const querySnapshot = await getDocs(
       query(collection(db, 'blog-posts'), where('uid', '==', `${auth.currentUser?.uid}`))
     );

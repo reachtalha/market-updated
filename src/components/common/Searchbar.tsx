@@ -69,7 +69,7 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
         collection(db, 'products'),
         where('name', '>=', `${searchQuery.toLocaleLowerCase()}`),
         where('name', '<=', `${searchQuery.toLocaleLowerCase()}\uf8ff`),
-        limit(5)
+        limit(3)
       )
     );
     const typeQuery = getDocs(
@@ -77,7 +77,7 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
         collection(db, 'products'),
         where('type', '>=', `${searchQuery.toLocaleLowerCase()}`),
         where('type', '<=', `${searchQuery.toLocaleLowerCase()}\uf8ff`),
-        limit(5)
+        limit(3)
       )
     );
     const shopQuery = getDocs(
@@ -85,14 +85,23 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
         collection(db, 'products'),
         where('shopName', '>=', `${searchQuery.toLocaleLowerCase()}`),
         where('shopName', '<=', `${searchQuery.toLocaleLowerCase()}\uf8ff`),
-        limit(5)
+        limit(3)
+      )
+    );
+    const expertName = getDocs(
+      query(
+        collection(db, 'users'),
+        where('name', '>=', `${searchQuery.toLocaleLowerCase()}`),
+        where('name', '<=', `${searchQuery.toLocaleLowerCase()}\uf8ff`),
+        limit(3)
       )
     );
 
     const [nameQuerySnapshot, typeQuerySnapshot, shopQuerySnapshot] = await Promise.all([
       nameQuery,
       shopQuery,
-      typeQuery
+      typeQuery,
+      expertName
     ]);
     const nameList: any = [];
     nameQuerySnapshot.forEach((r) => {
@@ -135,25 +144,25 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
   };
 
   const renderSearchView = () => {
-    if(loading){
+    if (loading) {
       return (
         <div className="flex flex-col gap-2 w-full">
           <Skeleton className="w-full h-[40px] bg-gray-200" />
           <Skeleton className="w-full h-[40px] bg-gray-200" />
           <Skeleton className="w-full h-[40px] bg-gray-200" />
         </div>
-      )
+      );
     }
 
-    if(searchQuery.length > 0){
-      if(result.length > 0){
-        return  result.map((product: any, index: number) => (
+    if (searchQuery.length > 0) {
+      if (result.length > 0) {
+        return result.map((product: any, index: number) => (
           <div
             onClick={() => handleClick('/products/' + product.id)}
             key={index}
-            className="w-full flex cursor-pointer gap-x-2  flex-row items-center hover:bg-neutral-100 rounded p-1"
+            className="w-full flex cursor-pointer gap-x-2 flex-row items-center hover:bg-neutral-100 rounded p-1"
           >
-            <div className="relative w-20 h-20 rounded">
+            <div className="relative w-12 md:w-14 lg:w-16 2xl:w-20  h-12 md:h-14 lg:h-16 2xl:h-20 rounded">
               <Image
                 src={product.image}
                 className="object-cover drop-shadow-sm"
@@ -162,22 +171,24 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
               />
             </div>
             <div className="flex flex-col items-start">
-              <div className="font-medium capitalize ">{product.name}</div>
-              <div className="text-sm">by <span className="capitalize">{product.shop}</span></div>
+              <div className="font-medium capitalize">{product.name}</div>
+              <div className="text-sm">
+                by <span className="capitalize">{product.shop}</span>
+              </div>
             </div>
           </div>
-        ))
-      }else {
+        ));
+      } else {
         return (
           <div className=" py-6 flex items-center justify-center w-full">
             <span>No result found</span>
           </div>
-        )
+        );
       }
     }
 
     return null;
-  }
+  };
 
   return (
     <div
@@ -200,9 +211,10 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
             />
           </div>
         </form>
-          <div className="flex flex-col ms-7 mt-2 gap-y-2 items-start">
-            {renderSearchView()}
-            {searchQuery.length < 1 && <ul className="flex flex-col gap-y-4 mt-4">
+        <div className="flex flex-col ms-7 mt-2 gap-y-2 items-start max-h-[300px] 2xl:max-h-[500px] overflow-auto">
+          {renderSearchView()}
+          {searchQuery.length < 1 && (
+            <ul className="flex flex-col gap-y-4 mt-4">
               <h3 className="uppercase text-gray-500 mt-4">Quick Links</h3>
               {quickLinks.map((item) => (
                 <li className="" key={item.id}>
@@ -215,8 +227,9 @@ export default function Searchbar({ isOpen, toggleSearchBar }: SearchbarProps) {
                   </button>
                 </li>
               ))}
-            </ul>}
-          </div>
+            </ul>
+          )}
+        </div>
       </BoxedContent>
     </div>
   );

@@ -26,6 +26,36 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const searchParams = request.nextUrl.searchParams;
+  const cookies = request.cookies.get('user') as any;
+
+  const user: any = cookies ? JSON.parse(cookies?.value) : { role: '' };
+
+  //if not logged in but trying to access account
+  if ((pathname.startsWith('/account') || pathname.startsWith('/chat')) && user.role === '') {
+    return NextResponse.redirect(new URL('/auth/login', request.nextUrl));
+  }
+  //If not seller but trying to access seller dashboard
+  if (pathname.startsWith('/seller') && user.role !== 'seller') {
+    return NextResponse.redirect(new URL('/', request.nextUrl));
+  }
+
+  //if seller but trying to access buyer side
+  if (
+    user.role === 'seller' &&
+    (pathname.startsWith('/account') ||
+      pathname.startsWith('/blogs') ||
+      pathname.startsWith('/cart') ||
+      pathname.startsWith('/checkout') ||
+      pathname.startsWith('/auth') ||
+      pathname.startsWith('/new-registration') ||
+      pathname.startsWith('/for-you') ||
+      pathname.startsWith('/market') ||
+      pathname.startsWith('/orders') ||
+      pathname.startsWith('/products') ||
+      pathname === '/')
+  ) {
+    return NextResponse.redirect(new URL('/seller/dashboard', request.nextUrl));
+  }
 
   // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
   // If you have one

@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { createUser, deleteUser } from '@/actions/userCookies';
 
 import {
   signInWithEmailAndPassword,
@@ -57,8 +58,10 @@ export const AuthProvider = ({ children }: any) => {
 
   useEffect(
     () =>
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user: any) => {
         if (user) {
+          const idTokenResult = await auth.currentUser?.getIdTokenResult();
+          createUser({ uid: user.uid, role: idTokenResult?.claims?.role });
           setUser(user);
         } else {
           setUser(null);
@@ -155,6 +158,7 @@ export const AuthProvider = ({ children }: any) => {
   const logout = async () => {
     try {
       await signOut(auth);
+      deleteUser();
       setUser(null);
       router.push('/auth/login');
     } catch (e: any) {
