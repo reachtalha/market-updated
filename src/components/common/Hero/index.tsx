@@ -11,6 +11,7 @@ export default function Hero({ img, children, className }: HeroProps) {
   return (
     <section className={cn('h-screen', className)}>
       <Image src={img} fill className="object-cover object-center -z-10" alt="hero" />
+
       {children}
     </section>
   );

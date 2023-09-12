@@ -7,7 +7,6 @@ import BoxedContent from '@/components/common/BoxedContent';
 import OurMission from '@/components/common/Buyer/OurMission';
 import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
 import { collection, getDocs, query, where, limit } from 'firebase/firestore';
-import Link from 'next/link';
 import { db } from '@/lib/firebase/client';
 
 const getExperts: any = async (): Promise<any> => {

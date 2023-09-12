@@ -8,6 +8,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
 import { formatCurrency } from '@/utils/formatters';
 import { useState, useEffect } from 'react';
+export const RECORDS_PER_PAGE = 6;
 
 const getOrders = async () => {
   let orders: any = [];
@@ -43,30 +44,44 @@ export default function DemoPage() {
   const { data, isLoading } = useSwr('sellerOrders', getOrders);
   const [search, setSearch] = useState('');
   const [filteredOrders, setFilteredOrders] = useState<any>([]);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     if (!data) return;
-    if (search.trim() === '') return setFilteredOrders(data);
+    if (search.trim() === '') return setFilteredOrders(data.slice(0, RECORDS_PER_PAGE));
     setFilteredOrders(
-      data.filter(
-        (order: any) =>
-          order.name.toLowerCase().includes(search.toLowerCase()) ||
-          order.status.toLowerCase().includes(search.toLowerCase())
-      )
+      data
+        .filter(
+          (order: any) =>
+            order.name.toLowerCase().includes(search.toLowerCase()) ||
+            order.status.toLowerCase().includes(search.toLowerCase())
+        )
+        .slice(0, RECORDS_PER_PAGE)
     );
   }, [search]);
 
   useEffect(() => {
     if (!data) return;
-    setFilteredOrders(data);
+    setFilteredOrders(data.slice(0, RECORDS_PER_PAGE));
   }, [data]);
-
+  useEffect(() => {
+    if (!data) return;
+    setFilteredOrders(data.slice(page * RECORDS_PER_PAGE, (page + 1) * RECORDS_PER_PAGE));
+  }, [page]);
   if (isLoading) return <Loader className="flex items-center justify-center h-full w-full" />;
 
   return (
     <div className="container mx-auto py-20">
       <Title title="Orders" />
-      <DataTable search={search} setSearch={setSearch} columns={columns} data={filteredOrders} />
+      <DataTable
+        page={page}
+        setPage={setPage}
+        search={search}
+        setSearch={setSearch}
+        columns={columns}
+        data={filteredOrders}
+        total={filteredOrders.length}
+      />
     </div>
   );
 }
