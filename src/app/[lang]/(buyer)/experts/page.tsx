@@ -53,7 +53,12 @@ const getExperts: any = async (): Promise<any> => {
   return experts;
 };
 
-export default async function Index({
+export const metadata = {
+  title: 'Experts - All Organics',
+  description: 'Experts on Organic living, simplied'
+};
+
+export default async function Page({
                                       params: { lang },
                                     }: LocaleType) {
   const experts = await getExperts();

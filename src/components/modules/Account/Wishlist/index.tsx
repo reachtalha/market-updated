@@ -1,7 +1,4 @@
-import React from 'react';
-
 import { auth, db } from '@/lib/firebase/client';
-
 import { doc, getDoc } from 'firebase/firestore';
 import useSwr from 'swr';
 

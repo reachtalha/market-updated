@@ -59,5 +59,50 @@
       "title": "#OrganicSimplified",
       "tag": "@allorganicsmarket"
     }
+  },
+  "auth": {
+    "common": {
+      "orLabel": "OR",
+      "email": {
+        "label": "Email",
+        "placeholder": "Your email",
+        "error": "Hmm… that email doesn&apos;t look valid"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Your password",
+        "error": "Incorrect password"
+      },
+      "socialAuthGoogleLabel": "Google",
+      "socialAuthFacebookLabel": "Facebook"
+    },
+    "login": {
+      "logoutLabel": "Log Me Out",
+      "forgotPasswordLabel": "Forgot Password?",
+      "loginBtnLabel": "Login",
+      "noMemberLabel": "Not a member yet?",
+      "registerNowLabel": "Register now"
+    },
+    "register": {
+      "yesMember": "Already a Member?",
+      "loginLabel": "Login",
+      "joinAsLabel": "Want to Join as",
+      "joinAsRolesLabel": "Seller/Expert",
+      "accountTerms": "By creating an account, you agree to the Terms of Service.",
+      "heading": "Sign Up",
+      "registerBtnLoadingLabel": "Registering your account",
+      "registerBtnLabel": "Register",
+      "name": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "error": "Your name doesn&apos;t look valid"
+      },
+      "password": {
+        "required": "This field is required",
+        "min": "Password must be at least 8 characters long",
+        "max": "Password cannot exceed 256 characters",
+        "pattern": "Password must contain at least one uppercase letter, one lowercase letter, and one digit"
+      }
+    }
   }
 }

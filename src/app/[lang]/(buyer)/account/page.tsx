@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { auth } from '@/lib/firebase/client';
 import { useRouter } from 'next/navigation';
 import Index from '@/components/common/Buyer/Account';
@@ -23,6 +22,7 @@ const options = [
     href: '/account?display'
   },
 ];
+
 
 type Props = {};
 

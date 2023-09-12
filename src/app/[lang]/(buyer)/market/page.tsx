@@ -21,6 +21,11 @@ const getCategories = async () => {
   return categories;
 };
 
+export const metadata = {
+  title: 'Market - All Organics',
+  description: 'Shops on Organic living, simplied'
+};
+
 const Page = async ({
                       params: { lang },
                     }: LocaleType) => {

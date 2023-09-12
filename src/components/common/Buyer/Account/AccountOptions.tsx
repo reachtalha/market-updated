@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import useAuth from '@/hooks/useAuth';
+import useLocale from '@/hooks/useLocale';
 
 export type Option = {
   name: string;
@@ -13,6 +14,7 @@ type AccountOptionProps = {
 };
 
 export default function AccountOption({ options, selectedOption }: AccountOptionProps) {
+  const locale = useLocale();
   const { logout } = useAuth();
 
   const handleLogout = () => {
@@ -36,7 +38,7 @@ export default function AccountOption({ options, selectedOption }: AccountOption
             ) : (
               <Link
                 className={category.slug === selectedOption ? 'font-medium' : ''}
-                href={`${category.href}=${category.slug}`}
+                href={`/${locale}${category.href}=${category.slug}`}
               >
                 {category.name}
               </Link>

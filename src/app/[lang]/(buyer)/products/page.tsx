@@ -19,6 +19,11 @@ const getCategories = async () => {
   return categories;
 };
 
+export const metadata = {
+  title: 'Products - All Organics',
+  description: 'Products on Organic living, simplied'
+};
+
 export default async function Index() {
   const categories = await getCategories();
   return <Products categories={categories} />;

@@ -15,6 +15,7 @@ import { PinIcon, PinOffIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 import { useRouter, useSearchParams } from 'next/navigation';
+import useLocale from '@/hooks/useLocale';
 interface ProductCard {
   id: string;
   image: string | StaticImageData;
@@ -31,7 +32,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
   const { user } = useCurrentUser();
   const [loading, setLoading] = useState(false);
   const isPinned = user?.pinnedProducts?.includes(id)
-  const searchParams = useSearchParams();
+  const locale = useLocale();
 
 
   const pinProduct = async () => {
@@ -71,7 +72,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
 
   const onProductTagClick = (e: any) => {
     e.stopPropagation()
-    router.push(`/products?type=${type}`)
+    router.push(`/${locale}/products?type=${type}`)
   }
 
   const onProductClick = (e: any) => {

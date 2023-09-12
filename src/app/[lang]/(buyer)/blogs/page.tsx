@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 
 import { db } from '@/lib/firebase/client';
@@ -26,6 +25,11 @@ const getBlogs = async () => {
     list.push({ id: d.id, ...d.data() });
   });
   return list;
+};
+
+export const metadata = {
+  title: 'Blogs - All Organics',
+  description: 'Blogs on Organic living, simplied'
 };
 const Blogs = async () => {
   const blogs = await getBlogs();
