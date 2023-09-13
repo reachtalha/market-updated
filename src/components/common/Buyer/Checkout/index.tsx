@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,6 +14,8 @@ import { auth } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import toast from 'react-hot-toast';
 import useGuestCartStore from '@/state/useGuestCartStore';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import Loader from '@/components/common/Loader';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:3000';
 
@@ -51,7 +53,9 @@ type CartItemType = {
 
 type ItemsType = CartItemType[];
 
-export default function Checkout({ user }: { user: any }) {
+export default function Checkout({ dictionary }: { dictionary: any}) {
+  const { user, isLoading } = useCurrentUser();
+
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<any>();
   const [isPaymentInfoCompleted, setIsPaymentInfoCompleted] = useState(false);
@@ -144,12 +148,16 @@ export default function Checkout({ user }: { user: any }) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    shouldUnregister: false
+  });
+
+  useEffect(() => {
+    form.reset({
       email: user?.email || '',
-      firstName: auth.currentUser ? user.name.split(' ')[0] : '',
+      firstName: auth.currentUser ? user?.name?.split(' ')[0] : '',
       lastName: auth.currentUser
-        ? user.name.split(' ').length > 1
-          ? user.name.split(' ')[1]
+        ? user?.name?.split(' ').length > 1
+          ? user?.name?.split(' ')[1]
           : ''
         : '',
       company: '',
@@ -158,14 +166,15 @@ export default function Checkout({ user }: { user: any }) {
       city: user?.city || '',
       state: '',
       phone: user?.phone || ''
-    },
-    shouldUnregister: false
-  });
+    })
+  }, [user])
+
   async function onSubmit(values: any) {
     await submitPayment(values);
   }
 
   const isConfirmButtonLoading = processing || isOrderLoading;
+  if (isLoading) return <Loader className="w-full h-96 flex items-center justify-center" />;
 
   return (
     <BoxedContent className="flex gap-x-5 py-20 mt-8">
@@ -173,12 +182,12 @@ export default function Checkout({ user }: { user: any }) {
         <Form {...form}>
           <form className="grid lg:grid-cols-2 gap-x-10" onSubmit={form.handleSubmit(onSubmit)}>
             <div>
-              <ShippingInfo form={form} />
-              <h2 className="mt-12 mb-3 text-xl font-medium">Payment</h2>
+              <ShippingInfo dictionary={dictionary.shippingInfoForm} form={form} />
+              <h2 className="mt-12 mb-3 text-xl font-medium">{dictionary.payment.heading}</h2>
               <CheckoutForm onPaymentInfoCompleted={setIsPaymentInfoCompleted} />
             </div>
             <div>
-              <OrderSummaryCheckout isConfirmButtonLoading={isConfirmButtonLoading} />
+              <OrderSummaryCheckout dictionary={dictionary.orderSummary} isConfirmButtonLoading={isConfirmButtonLoading} />
             </div>
           </form>
         </Form>

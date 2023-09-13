@@ -10,6 +10,14 @@ const fetchGetBlogPost = async (blogPostId: string) => {
   const docRef = await getDoc(doc(db, 'blog-posts', blogPostId));
   return docRef.data();
 };
+
+export async function generateMetadata({ params }: { params: any}) {
+  const data = (await fetchGetBlogPost(params.slug)) as any;
+  const title = data?.title.charAt(0).toUpperCase() + data?.title.slice(1);
+  return {
+    title: `${title} - All Organics`,
+  }
+}
 export default async function Post({ params }: { params: { slug: string } }) {
   const data = (await fetchGetBlogPost(params.slug)) as any;
 

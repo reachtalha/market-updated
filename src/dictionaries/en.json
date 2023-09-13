@@ -1,4 +1,9 @@
 {
+  "topBanner": {
+    "text": "Enjoy 10% off your first order.",
+    "exploreProductsLinkText": "Explore Products",
+    "signUpText": "Sign up"
+  },
   "navbar": {
     "links": {
       "forYou": "For you",
@@ -102,6 +107,87 @@
         "min": "Password must be at least 8 characters long",
         "max": "Password cannot exceed 256 characters",
         "pattern": "Password must contain at least one uppercase letter, one lowercase letter, and one digit"
+      }
+    }
+  },
+  "cart": {
+    "cartHeading": "Shopping Cart",
+    "orderSummary": {
+      "heading": "Order Summary",
+      "subTotalLabel": "Subtotal",
+      "shippingLabel": "Shipping estimate",
+      "orderTotalLabel": "Order Total",
+      "checkoutBtnLabel": "Checkout"
+    }
+  },
+  "checkout": {
+    "payment": {
+      "heading": "Payment"
+    },
+    "orderSummary": {
+      "heading": "Order Summary",
+      "subTotalLabel": "Subtotal",
+      "shippingLabel": "Shipping estimate",
+      "orderTotalLabel": "Order Total",
+      "confirmOrderBtnLabel": "Confirm"
+    },
+    "shippingInfoForm": {
+      "contact": {
+        "heading": "Contact",
+        "email": {
+          "label": "Email",
+          "placeholder": "Email",
+          "error": "required"
+        }
+      },
+      "shipping": {
+        "heading": "Shipping Address",
+        "email": {
+          "label": "Email",
+          "placeholder": "Email",
+          "error": "required"
+        },
+        "firstName": {
+          "label": "Email",
+          "placeholder": "Email",
+          "error": "required"
+        },
+        "lastName": {
+          "label": "First name",
+          "placeholder": "First name",
+          "error": "required"
+        },
+        "address": {
+          "label": "Last name",
+          "placeholder": "Last name",
+          "error": "required"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "City",
+          "error": "required"
+        },
+        "stateOrProvince": {
+          "label": "State / Province",
+          "placeholder": "State / Province",
+          "error": "required"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Phone",
+          "error": "required"
+        }
+      }
+    }
+  },
+  "blogs": {
+    "existingBlogsPage": {
+      "heading": "Discover Captivating Blogs",
+      "subHeading": "Explore Insights, Tips, and Stories from Influencers",
+      "notFound": {
+        "heading": "No Blogs Found",
+        "subHeading": "Oops! No blogs yet, but our influencers are hard at work. Don&apos;t miss out on our amazing products! Explore now for lifestyle-enhancing finds.",
+        "exploreProductsBtnLabel": "Explore Products"
       }
     }
   }

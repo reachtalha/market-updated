@@ -32,7 +32,7 @@ const Header = ({ dictionary } : { dictionary: any }) => {
   const onToggleSearchBar = (val: boolean) => setToggleSearchBar(val);
   return (
     <>
-    <TopBanner />
+    <TopBanner dictionary={dictionary.topBanner} />
     <nav
       className={`${
         isScrollChanged || toggleSearchbar

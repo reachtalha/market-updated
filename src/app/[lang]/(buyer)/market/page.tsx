@@ -73,6 +73,10 @@ const getShops = async (category: string, sort: string) => {
 };
 
 
+export const metadata = {
+  title: 'Market - All Organics',
+  description: 'Market on Organic living, simplied'
+};
 
 const Page = async ({ searchParams, params: { lang } }: { searchParams: Params, params: { lang: Locale } }) => {
   const { category, sort } = searchParams;

@@ -10,10 +10,14 @@ import useGuestCartStore from '@/state/useGuestCartStore';
 import { auth } from '@/lib/firebase/client';
 import QuantityInput from '@/components/common/Buyer/ShoppingCart/QuantityInput';
 
-type OrderSummaryCheckoutProps = { isConfirmButtonLoading?: boolean };
+type OrderSummaryCheckoutProps = {
+  isConfirmButtonLoading?: boolean
+  dictionary: any
+};
 
 export default function OrderSummaryCheckout({
-  isConfirmButtonLoading = false
+  isConfirmButtonLoading = false,
+  dictionary
 }: OrderSummaryCheckoutProps) {
   const { cart, isCartLoading } = useCartStore((state: any) => state);
   const { guestCart } = useGuestCartStore((state: any) => state);
@@ -33,7 +37,7 @@ export default function OrderSummaryCheckout({
     <Skeleton className="bg-gray-200 h-[300px]" />
   ) : (
     <div className="bg-white rounded-lg p-6 mt-8 lg:mt-0">
-      <h4 className="font-medium mb-6 text-lg">Order Summary</h4>
+      <h4 className="font-medium mb-6 text-lg">{dictionary.heading}</h4>
       <ul className="flex flex-col gap-y-8">
         {cartItems?.map((item: any) => (
           <li
@@ -67,22 +71,22 @@ export default function OrderSummaryCheckout({
       <Separator className="my-8" />
       <div>
         <div className="flex justify-between border-b pb-3">
-          <p>Subtotal</p>
+          <p>{dictionary.subTotalLabel}</p>
           <p className="font-medium">{cartSummary.subTotal}</p>
         </div>
         <div className="flex justify-between border-b pt-3 pb-3">
-          <p>Shipping estimate</p>
+          <p>{dictionary.shippingLabel}</p>
           <p className="font-medium">{cartSummary.shipping}</p>
         </div>
         <div className="flex justify-between pb-3 pt-3">
-          <p className="font-medium">Order Total</p>
+          <p className="font-medium">{dictionary.orderTotalLabel}</p>
           <p className="font-medium">
             {cartSummary.total}
           </p>
         </div>
       </div>
 
-      <Button className="w-full mt-4">{isConfirmButtonLoading ? 'Loading' : 'Confirm'}</Button>
+      <Button className="w-full mt-4">{isConfirmButtonLoading ? 'Loading' : dictionary.confirmOrderBtnLabel}</Button>
     </div>
   );
 }

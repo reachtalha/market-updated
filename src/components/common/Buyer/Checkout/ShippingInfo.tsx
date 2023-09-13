@@ -3,25 +3,25 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 
-export default function ShippingInfo({ form }: { form: any }) {
+export default function ShippingInfo({ form, dictionary }: { form: any, dictionary: any }) {
   return (
     <section>
-      <h2 className="mb-6 text-xl font-medium">Contact</h2>
+      <h2 className="mb-6 text-xl font-medium">{dictionary.contact.heading}</h2>
       <FormField
         control={form.control}
         name="email"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>{dictionary.contact.email.label}</FormLabel>
             <FormControl>
-              <Input placeholder="Email" {...field} />
+              <Input placeholder={dictionary.contact.email.placeholder} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
       <Separator className="my-8" />
-      <h2 className="mb-6 text-xl font-medium">Shipping Address</h2>
+      <h2 className="mb-6 text-xl font-medium">{dictionary.shipping.heading}</h2>
 
       <div className="flex gap-x-3">
         <FormField
@@ -29,9 +29,9 @@ export default function ShippingInfo({ form }: { form: any }) {
           name="firstName"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>First name</FormLabel>
+              <FormLabel>{dictionary.shipping.firstName.label}</FormLabel>
               <FormControl>
-                <Input className="capitalize" placeholder="First name" {...field} />
+                <Input className="capitalize" placeholder={dictionary.shipping.firstName.placeholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -42,9 +42,9 @@ export default function ShippingInfo({ form }: { form: any }) {
           name="lastName"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>Last name</FormLabel>
+              <FormLabel>{dictionary.shipping.lastName.label}</FormLabel>
               <FormControl>
-                <Input className="capitalize" placeholder="Last name" {...field} />
+                <Input className="capitalize" placeholder={dictionary.shipping.lastName.placeholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -57,9 +57,9 @@ export default function ShippingInfo({ form }: { form: any }) {
         name="address"
         render={({ field }) => (
           <FormItem className="mt-5 w-full">
-            <FormLabel>Address</FormLabel>
+            <FormLabel>{dictionary.shipping.address.label}</FormLabel>
             <FormControl>
-              <Input className="capitalize" placeholder="Address" {...field} />
+              <Input className="capitalize" placeholder={dictionary.shipping.address.placeholder} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -71,9 +71,9 @@ export default function ShippingInfo({ form }: { form: any }) {
         name="city"
         render={({ field }) => (
           <FormItem className="mt-5 w-full">
-            <FormLabel>City</FormLabel>
+            <FormLabel>{dictionary.shipping.city.label}</FormLabel>
             <FormControl>
-              <Input className="capitalize" placeholder="City" {...field} />
+              <Input className="capitalize" placeholder={dictionary.shipping.city.placeholder} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -86,9 +86,9 @@ export default function ShippingInfo({ form }: { form: any }) {
           name="state"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>State / Province</FormLabel>
+              <FormLabel>{dictionary.shipping.stateOrProvince.label}</FormLabel>
               <FormControl>
-                <Input className="capitalize" placeholder="State / Province" {...field} />
+                <Input className="capitalize" placeholder={dictionary.shipping.stateOrProvince.placeholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,9 +101,9 @@ export default function ShippingInfo({ form }: { form: any }) {
         name="phone"
         render={({ field }) => (
           <FormItem className="mt-5 w-full">
-            <FormLabel>Phone</FormLabel>
+            <FormLabel>{dictionary.shipping.phone.label}</FormLabel>
             <FormControl>
-              <Input className="capitalize" placeholder="phone" {...field} />
+              <Input className="capitalize" placeholder={dictionary.shipping.phone.placeholder} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

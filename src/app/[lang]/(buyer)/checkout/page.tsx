@@ -1,15 +1,17 @@
-'use client';
 import Checkout from '@/components/common/Buyer/Checkout';
 import Payment from '@/components/common/Buyer/Checkout/Payment';
-import Loader from '@/components/common/Loader';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
-export default function Page() {
-  const { user, isLoading } = useCurrentUser();
+import { LocaleType } from '@/app/[lang]/(buyer)/page';
+import { getDictionary } from '@/get-dictionary';
 
-  if (isLoading) return <Loader className="w-full h-96 flex items-center justify-center" />;
+export const metadata = {
+  title: 'Checkout - All Organics',
+  description: 'Checkout on Organic living, simplied'
+};
+export default async function Page({ params: { lang }}: LocaleType) {
+  const dictionary = await getDictionary(lang);
   return (
     <Payment>
-      <Checkout user={user} />
+      <Checkout dictionary={dictionary.checkout} />
     </Payment>
   );
 }
