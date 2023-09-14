@@ -12,9 +12,10 @@ import {
 
 interface SocialMediaSelectProps {
   onAddButton: (selectedSocialMedia: string, link: string) => void;
+  isEdit?: boolean;
 }
 
-const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton }) => {
+const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton, isEdit = true }) => {
   const [selectedSocialMedia, setSelectedSocialMedia] = useState('');
   const [link, setLink] = useState('');
   const options = ['Facebook', 'Instagram', 'TikTok', 'Twitter', 'YouTube', 'Website'];
@@ -43,6 +44,7 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton }) =>
         <Select
           value={selectedSocialMedia === '' ? undefined : selectedSocialMedia}
           onValueChange={(c) => handleSocialMediaChange(c)}
+          disabled={!isEdit}
         >
           <SelectTrigger className="w-28 focus:outline-none pl-1">
             <SelectValue placeholder="Select" />
@@ -60,6 +62,7 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton }) =>
           type="text"
           id="link"
           value={link}
+          disabled={!isEdit}
           onChange={handleLinkChange}
           className="focus:outline-none w-full px-1.5 py-1.5 focus-visible:ring-0 focus-visible:ring-offset-0"
           placeholder="Enter social media link"

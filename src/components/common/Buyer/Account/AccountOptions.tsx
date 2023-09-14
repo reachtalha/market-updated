@@ -43,6 +43,9 @@ export default function AccountOption({ options, selectedOption }: AccountOption
             )}
           </li>
         ))}
+        <li className={` cursor-pointer  hover:underline underline-offset-4`}>
+          <Link href={`/chat`}>Chat</Link>
+        </li>
         <li
           onClick={handleLogout}
           className={` cursor-pointer text-red-600 hover:text-red-900 hover:underline underline-offset-4`}

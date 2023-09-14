@@ -45,12 +45,17 @@ const AddPinnedContentModal = ({ uid, pinnedLinks }: { uid: string; pinnedLinks:
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    let newLink = form.link.value;
+    if (newLink.trim().length === 0) {
+      toast.error('Link cannot be empty.');
+      return;
+    }
     if (links.length > 2) {
       toast.error('Oops! You can only pin up to three content links.');
       return;
     }
-    const form = event.target as HTMLFormElement;
-    let newLink = form.link.value;
+
     if (newLink.includes('instagram') && !newLink.includes('embed'))
       newLink = newLink.split('?')[0] + 'embed/';
 

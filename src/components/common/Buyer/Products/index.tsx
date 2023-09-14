@@ -135,7 +135,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
   const [loading, setLoading] = useState<any>(null);
 
   let { data, error, isLoading } = useSWR(
-    [`products-${category}`, `products-${type}`, selectedSubCategory],
+    [`${foryou && 'foryou-'}products-${category}`, `products-${type}`, selectedSubCategory],
     () => getProducts(category, categories, 6, foryou, type, false)
   );
 

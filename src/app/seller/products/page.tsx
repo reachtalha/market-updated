@@ -56,7 +56,8 @@ async function getData(sort: string, lastDoc?: any, isNext?: string): Promise<Pr
           ? docRef.data().name
           : sortBy.name === 'type'
           ? docRef.data().type
-          : new Date(lastDoc.submittedAt.seconds * 1000);
+          : new Date(docRef.data().submittedAt.seconds * 1000);
+
       if (isNext === 'false') {
         q = query(
           queryBase,
