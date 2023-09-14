@@ -7,9 +7,7 @@ export const metadata = {
   description: 'Products curated for you on Organic living, simplied'
 };
 
-export default async function Index({
-    params: { lang },
-  }: LocaleType) {
+export default async function Index({ params: { lang } }: LocaleType) {
   const dictionary = await getDictionary(lang);
   return <ForYou dictionary={dictionary} />;
 }

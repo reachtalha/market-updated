@@ -8,8 +8,8 @@ import OurMission from '@/components/common/Buyer/OurMission';
 import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
 import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
-import { getDictionary } from '@/get-dictionary'
-import { Locale } from '@/i18n-config'
+import { getDictionary } from '@/get-dictionary';
+import { Locale } from '@/i18n-config';
 
 const getExperts: any = async (): Promise<any> => {
   let experts: any = [];
@@ -24,15 +24,11 @@ const getExperts: any = async (): Promise<any> => {
 
 export type LocaleType = {
   params: {
-    lang: Locale
-  }
-}
+    lang: Locale;
+  };
+};
 
-export default async function Home(
-  {
-    params: { lang },
-  }: LocaleType
-) {
+export default async function Home({ params: { lang } }: LocaleType) {
   const dictionary = await getDictionary(lang);
   const experts = await getExperts();
 
@@ -58,10 +54,10 @@ export default async function Home(
         <TakeQuizSection />
         <BoxedContent className="space-y-10">
           <div className="text-center space-y-2">
-            <h3 className="text-3xl font-alpina tracking-wider font-medium">{dictionary.home.experts.title}</h3>
-            <p className="uppercase text-xs tracking-tight">
-              {dictionary.home.experts.subtitle}
-            </p>
+            <h3 className="text-3xl font-alpina tracking-wider font-medium">
+              {dictionary.home.experts.title}
+            </h3>
+            <p className="uppercase text-xs tracking-tight">{dictionary.home.experts.subtitle}</p>
           </div>
           <ul className="flex gap-x-4 items-start md:pl-10 overflow-auto no-scrollbar snap-x snap-start">
             {experts.map((expert: any, i: number) => (
@@ -83,7 +79,10 @@ export default async function Home(
         <OurMission text={dictionary.home.mission.text} />
       </BoxedContent>
       <BoxedContent className="py-5 md:py-10">
-        <OrganicSimplifiedSection title={dictionary.home.bloggingSection.title} tag={dictionary.home.bloggingSection.tag} />
+        <OrganicSimplifiedSection
+          title={dictionary.home.bloggingSection.title}
+          tag={dictionary.home.bloggingSection.tag}
+        />
       </BoxedContent>
     </>
   );

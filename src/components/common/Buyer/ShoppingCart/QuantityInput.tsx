@@ -14,21 +14,25 @@ type Props = {
 };
 
 export default function QuantityInput({ docId, productId, skuId, quantity }: Props) {
-  const { increment, decrement, isQuantityChangeLoading, updatingDocId } = useCartStore((state: any) => state);
-  const { incrementGuestCartItem, decrementGuestCartItem } = useGuestCartStore((state: any) => state);
+  const { increment, decrement, isQuantityChangeLoading, updatingDocId } = useCartStore(
+    (state: any) => state
+  );
+  const { incrementGuestCartItem, decrementGuestCartItem } = useGuestCartStore(
+    (state: any) => state
+  );
 
   const incrementQuantity = async () => {
-    if(auth.currentUser){
+    if (auth.currentUser) {
       increment(docId);
-    }else {
+    } else {
       incrementGuestCartItem(productId, skuId);
     }
   };
 
   const decrementQuantity = async () => {
-    if(auth.currentUser){
+    if (auth.currentUser) {
       decrement(docId);
-    }else {
+    } else {
       decrementGuestCartItem(productId, skuId);
     }
   };
@@ -45,7 +49,14 @@ export default function QuantityInput({ docId, productId, skuId, quantity }: Pro
       >
         <MinusIcon height={16} width={16} />
       </Button>
-      <p className={cn("border-0 w-10 h-full text-center", disableQuantityInput && "text-neutral-400")}>{quantity}</p>
+      <p
+        className={cn(
+          'border-0 w-10 h-full text-center',
+          disableQuantityInput && 'text-neutral-400'
+        )}
+      >
+        {quantity}
+      </p>
       <Button
         disabled={disableQuantityInput}
         onClick={incrementQuantity}

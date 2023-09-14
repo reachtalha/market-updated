@@ -11,7 +11,7 @@ import { db } from '@/lib/firebase/client';
 import { StaticImageData } from 'next/image';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import SimiliarShops from '@/components/common/Buyer/SimilarShops';
-import { Locale } from '@/i18n-config'
+import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 
 const getProducts = async (shopId: string) => {
@@ -55,7 +55,7 @@ const getShop = async (shopId: string) => {
 type ShopProps = {
   params: {
     shopId: string;
-    lang: Locale
+    lang: Locale;
   };
 };
 
@@ -124,7 +124,10 @@ export default async function Shop({ params }: ShopProps) {
       </BoxedContent>
 
       <BoxedContent className="my-16">
-        <OrganicSimplifiedSection title={dictionary.home.bloggingSection.title} tag={dictionary.home.bloggingSection.tag} />
+        <OrganicSimplifiedSection
+          title={dictionary.home.bloggingSection.title}
+          tag={dictionary.home.bloggingSection.tag}
+        />
       </BoxedContent>
     </>
   );

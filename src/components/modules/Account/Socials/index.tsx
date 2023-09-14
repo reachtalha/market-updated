@@ -51,8 +51,8 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
     clearErrors,
     formState: { errors }
   } = methods;
-  const bio = getValues("bio");
-  const watchBio = watch(["bio"]);
+  const bio = getValues('bio');
+  const watchBio = watch(['bio']);
 
   useEffect(() => {
     const bioError = errors.bio;
@@ -70,8 +70,6 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
   useEffect(() => {
     setValue('socialMediaLinks', socialMediaList);
   }, [socialMediaList]);
-
-
 
   const handleTopicsChange = (updatedTopics: string[]) => {
     setTopics(updatedTopics);

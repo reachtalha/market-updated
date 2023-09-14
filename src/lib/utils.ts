@@ -14,7 +14,7 @@ export function isColoredRoute(route: string, locale: string = 'en') {
     `/${locale}/for-you`,
     `/${locale}/checkout`,
     `/${locale}/new-registration`,
-    `/${locale}/order/success`,
+    `/${locale}/order/success`
   ];
 
   return (

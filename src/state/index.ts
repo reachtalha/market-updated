@@ -9,7 +9,7 @@ const useGlobalStore = create((set) => ({
       SKUList: [...state.SKUList, value] // Fix the syntax here, return the new state
     })),
   emptySKUList: () => set({ SKUList: [] }),
-  setInitialSKUList: (value: any) => set({ SKUList: value }),
+  setInitialSKUList: (value: any) => set({ SKUList: value })
 }));
 
 export default useGlobalStore;

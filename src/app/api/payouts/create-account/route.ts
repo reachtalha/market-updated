@@ -16,18 +16,18 @@ export async function POST(req: Request) {
       account = await stripe.accounts.create({
         // country: "US",
         email,
-        type: "express",
+        type: 'express',
         capabilities: {
           transfers: {
-            requested: true,
-          },
+            requested: true
+          }
         },
         settings: {
           payouts: {
             schedule: {
-              interval: "manual",
-            },
-          },
+              interval: 'manual'
+            }
+          }
         },
         individual: {
           email,
@@ -35,21 +35,20 @@ export async function POST(req: Request) {
           first_name: firstName,
           last_name: lastName
         },
-        business_type: "individual",
+        business_type: 'individual',
         business_profile: {
-          url: "",
-        },
+          url: ''
+        }
       });
     }
-
 
     const accountLink = await stripe.accountLinks.create({
       account: account?.id || stripeAccountId,
       refresh_url:
-        "http://localhost:3000/seller/dashboard/payouts?redirected_from=stripe_connect_onboarding",
+        'http://localhost:3000/seller/dashboard/payouts?redirected_from=stripe_connect_onboarding',
       return_url:
-        "http://localhost:3000/seller/dashboard/payouts?redirected_from=stripe_connect_onboarding",
-      type: "account_onboarding",
+        'http://localhost:3000/seller/dashboard/payouts?redirected_from=stripe_connect_onboarding',
+      type: 'account_onboarding'
     });
 
     return NextResponse.json({
@@ -57,6 +56,8 @@ export async function POST(req: Request) {
     });
   } catch (err: any) {
     console.log(err);
-    return NextResponse.json({ message: err?.message || "Something went wrong with creating account!" });
+    return NextResponse.json({
+      message: err?.message || 'Something went wrong with creating account!'
+    });
   }
 }

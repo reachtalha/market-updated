@@ -7,7 +7,7 @@ export const metadata = {
   title: 'Checkout - All Organics',
   description: 'Checkout on Organic living, simplied'
 };
-export default async function Page({ params: { lang }}: LocaleType) {
+export default async function Page({ params: { lang } }: LocaleType) {
   const dictionary = await getDictionary(lang);
   return (
     <Payment>

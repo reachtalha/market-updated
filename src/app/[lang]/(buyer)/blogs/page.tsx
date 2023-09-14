@@ -36,15 +36,19 @@ export const metadata = {
   description: 'Blogs on Organic living, simplied'
 };
 
-const Blogs = async ({ params: { lang }} : LocaleType) => {
+const Blogs = async ({ params: { lang } }: LocaleType) => {
   const dictionary = await getDictionary(lang);
   const blogs = await getBlogs();
 
   if (blogs.length === 0) {
     return (
       <div className="grid px-3 place-content-center text-center w-full h-screen">
-        <h3 className="text-2xl font-semibold">{dictionary.blogs.existingBlogsPage.notFound.heading}</h3>
-        <p className="w-full md:w-[60%] place-self-center mt-4 mb-6">{dictionary.blogs.existingBlogsPage.notFound.subHeading}</p>
+        <h3 className="text-2xl font-semibold">
+          {dictionary.blogs.existingBlogsPage.notFound.heading}
+        </h3>
+        <p className="w-full md:w-[60%] place-self-center mt-4 mb-6">
+          {dictionary.blogs.existingBlogsPage.notFound.subHeading}
+        </p>
         <Link
           href="/products"
           className="place-self-center px-3 py-2.5 border duration-300 dely-75 hover:border-primary transition-colors border-neutral-900 rounded hover:bg-primary/90 hover:text-neutral-50 text-neutral-900"

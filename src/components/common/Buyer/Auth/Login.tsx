@@ -25,7 +25,7 @@ const Login = ({ dictionary }: { dictionary?: any }) => {
     signInWithGoogleAccount,
     signInWithFacebookAccount,
     sessionBasedSignin,
-    loading,
+    loading
   } = useAuth();
 
   const {
@@ -76,7 +76,9 @@ const Login = ({ dictionary }: { dictionary?: any }) => {
                 required: true
               })}
             />
-            {errors.password && <span className="text-sm text-red-500">{dictionary.auth.common.password.error}</span>}
+            {errors.password && (
+              <span className="text-sm text-red-500">{dictionary.auth.common.password.error}</span>
+            )}
           </div>
           <div className="flex justify-between items-center">
             <div>
@@ -89,12 +91,7 @@ const Login = ({ dictionary }: { dictionary?: any }) => {
               {dictionary.auth.login.forgotPasswordLabel}
             </Link>
           </div>
-          <Button
-            type="submit"
-            disabled={loading}
-            variant="default"
-            className="w-full"
-          >
+          <Button type="submit" disabled={loading} variant="default" className="w-full">
             {dictionary.auth.login.loginBtnLabel}
           </Button>
         </form>
@@ -102,30 +99,34 @@ const Login = ({ dictionary }: { dictionary?: any }) => {
           <b>{dictionary.auth.common.orLabel}</b>
         </p>
         <div className="flex justify-center gap-x-3">
-          <Button type="button"
-                  disabled={loading}
-                  onClick={signInWithGoogleAccount} className="w-36 h-fit gap-x-2.5 group flex items-center cursor-pointer p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300">
-            <span
-              className="bg-gray-200  rounded-full border p-2"
-            >
+          <Button
+            type="button"
+            disabled={loading}
+            onClick={signInWithGoogleAccount}
+            className="w-36 h-fit gap-x-2.5 group flex items-center cursor-pointer p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"
+          >
+            <span className="bg-gray-200  rounded-full border p-2">
               <Google className="w-5 2xl:w-8 h-5 2xl:h-8" fill={'#414D35'} />
             </span>
-            <span className="mr-auto text-primary group-hover:text-white">{dictionary.auth.common.socialAuthGoogleLabel}</span>
+            <span className="mr-auto text-primary group-hover:text-white">
+              {dictionary.auth.common.socialAuthGoogleLabel}
+            </span>
           </Button>
-          <Button type="button"
-                  disabled={loading}
-                  onClick={signInWithFacebookAccount}
-                  className="w-36 h-fit group flex items-center cursor-pointer gap-x-2.5 p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"            >
-            <span
-              className=" bg-gray-200  rounded-full border p-2"
-            >
+          <Button
+            type="button"
+            disabled={loading}
+            onClick={signInWithFacebookAccount}
+            className="w-36 h-fit group flex items-center cursor-pointer gap-x-2.5 p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"
+          >
+            <span className=" bg-gray-200  rounded-full border p-2">
               <Facebook className="w-5 2xl:w-8 h-5 2xl:h-8 " fill={'#414D35'} />
             </span>
-            <span className="mr-auto text-primary group-hover:text-white">{dictionary.auth.common.socialAuthFacebookLabel}</span>
+            <span className="mr-auto text-primary group-hover:text-white">
+              {dictionary.auth.common.socialAuthFacebookLabel}
+            </span>
           </Button>
         </div>
         <p className="text-center mt-3">
-
           {dictionary.auth.login.noMemberLabel}{' '}
           <Link href="/auth/register" className="font-semibold underline">
             {dictionary.auth.login.registerNowLabel}

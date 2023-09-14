@@ -103,7 +103,13 @@ export const metadata = {
   description: 'Experts on Organic living, simplied'
 };
 
-export default async function Index({ searchParams, params: { lang } }: { searchParams: Params, params: { lang: Locale} }) {
+export default async function Index({
+  searchParams,
+  params: { lang }
+}: {
+  searchParams: Params;
+  params: { lang: Locale };
+}) {
   const { category, sort } = searchParams;
   const experts = await getExperts(category as string, sort as string);
   const dictionary = await getDictionary(lang);

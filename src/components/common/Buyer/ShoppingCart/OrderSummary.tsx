@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -9,26 +9,29 @@ import { cn } from '@/lib/utils';
 import { auth } from '@/lib/firebase/client';
 import useGuestCartStore from '@/state/useGuestCartStore';
 
-export default function OrderSummary({ dictionary }: { dictionary: any}) {
+export default function OrderSummary({ dictionary }: { dictionary: any }) {
   const { isCartLoading, cart } = useCartStore((state: any) => state);
   const { guestCart } = useGuestCartStore((state: any) => state);
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
 
   if (!cartItems?.length) return null;
 
-  const cartSummary = auth.currentUser ? {
-    subTotal: formatCurrency(cart?.summary?.subTotal ?? 0),
-    shipping: formatCurrency(cart?.summary?.shipping ?? 0),
-    total: formatCurrency(cart?.summary?.total ?? 0),
-  } : {
-    subTotal: formatCurrency(guestCart?.summary?.subTotal ?? 0),
-    shipping: formatCurrency(guestCart?.summary?.shipping ?? 0),
-    total: formatCurrency(guestCart?.summary?.total ?? 0)
-  };
+  const cartSummary = auth.currentUser
+    ? {
+        subTotal: formatCurrency(cart?.summary?.subTotal ?? 0),
+        shipping: formatCurrency(cart?.summary?.shipping ?? 0),
+        total: formatCurrency(cart?.summary?.total ?? 0)
+      }
+    : {
+        subTotal: formatCurrency(guestCart?.summary?.subTotal ?? 0),
+        shipping: formatCurrency(guestCart?.summary?.shipping ?? 0),
+        total: formatCurrency(guestCart?.summary?.total ?? 0)
+      };
 
-
-  return isCartLoading ? <Skeleton className="h-[300px]" /> : (
-    <div className={cn("w-full lg:grid-cols-1", !cartItems?.length && "lg:grid-cols-0")}>
+  return isCartLoading ? (
+    <Skeleton className="h-[300px]" />
+  ) : (
+    <div className={cn('w-full lg:grid-cols-1', !cartItems?.length && 'lg:grid-cols-0')}>
       <div className="bg-neutral-100 rounded-lg p-6">
         <h4 className="font-medium text-lg">{dictionary.heading}</h4>
 
@@ -52,5 +55,5 @@ export default function OrderSummary({ dictionary }: { dictionary: any}) {
         </Link>
       </div>
     </div>
-  )
+  );
 }

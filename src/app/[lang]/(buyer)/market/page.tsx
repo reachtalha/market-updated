@@ -72,19 +72,23 @@ const getShops = async (category: string, sort: string) => {
   return shops;
 };
 
-
 export const metadata = {
   title: 'Market - All Organics',
   description: 'Market on Organic living, simplied'
 };
 
-const Page = async ({ searchParams, params: { lang } }: { searchParams: Params, params: { lang: Locale } }) => {
+const Page = async ({
+  searchParams,
+  params: { lang }
+}: {
+  searchParams: Params;
+  params: { lang: Locale };
+}) => {
   const { category, sort } = searchParams;
   const categoriesPromise = getCategories();
   const shopsPromise = getShops(category as string, sort as string);
   const [categories, shops] = await Promise.all([categoriesPromise, shopsPromise]);
   const dictionary = await getDictionary(lang);
-
 
   return (
     <Market

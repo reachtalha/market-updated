@@ -70,12 +70,7 @@ const ResetPassword = () => {
             placeholder="Your email"
           />
         </div>
-        <Button
-          type="submit"
-          variant="default"
-          disabled={loading}
-          className="w-full"
-        >
+        <Button type="submit" variant="default" disabled={loading} className="w-full">
           {loading ? 'Please wait' : 'Reset Password'}
         </Button>
       </form>

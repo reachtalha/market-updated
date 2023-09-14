@@ -7,10 +7,8 @@ export const metadata = {
   description: 'Continue to Organic living, simplied'
 };
 
-export default async function Page({
-                                     params: { lang },
-                                   }: LocaleType){
+export default async function Page({ params: { lang } }: LocaleType) {
   const dictionary = await getDictionary(lang);
 
-  return <Login dictionary={dictionary} />
+  return <Login dictionary={dictionary} />;
 }

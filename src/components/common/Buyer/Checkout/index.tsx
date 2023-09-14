@@ -53,7 +53,7 @@ type CartItemType = {
 
 type ItemsType = CartItemType[];
 
-export default function Checkout({ dictionary }: { dictionary: any}) {
+export default function Checkout({ dictionary }: { dictionary: any }) {
   const { user, isLoading } = useCurrentUser();
 
   const [processing, setProcessing] = useState(false);
@@ -70,7 +70,7 @@ export default function Checkout({ dictionary }: { dictionary: any}) {
   const submitOrder = async (values: any) => {
     try {
       setIsOrderLoading(true);
-      const shops = cartItems?.map((s: any) => { 
+      const shops = cartItems?.map((s: any) => {
         return s.shopId;
       });
       const items = cartItems?.map((i: any) => {
@@ -104,7 +104,7 @@ export default function Checkout({ dictionary }: { dictionary: any}) {
         items: items,
         shops: shops,
         status: 'complete',
-        userId: auth.currentUser ? auth?.currentUser?.uid : "guest",
+        userId: auth.currentUser ? auth?.currentUser?.uid : 'guest',
         total: auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total
       };
 
@@ -166,8 +166,8 @@ export default function Checkout({ dictionary }: { dictionary: any}) {
       city: user?.city || '',
       state: '',
       phone: user?.phone || ''
-    })
-  }, [user])
+    });
+  }, [user]);
 
   async function onSubmit(values: any) {
     await submitPayment(values);
@@ -187,7 +187,10 @@ export default function Checkout({ dictionary }: { dictionary: any}) {
               <CheckoutForm onPaymentInfoCompleted={setIsPaymentInfoCompleted} />
             </div>
             <div>
-              <OrderSummaryCheckout dictionary={dictionary.orderSummary} isConfirmButtonLoading={isConfirmButtonLoading} />
+              <OrderSummaryCheckout
+                dictionary={dictionary.orderSummary}
+                isConfirmButtonLoading={isConfirmButtonLoading}
+              />
             </div>
           </form>
         </Form>

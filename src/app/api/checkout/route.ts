@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     //   await decreaseQuantity(item.docId, item.skuId, item.quantity);
     // });
     // await Promise.all(updatePromise);
-    
+
     return NextResponse.json({ message: 'Order Recieved' }, { status: 200 });
   } catch (error: any) {
     console.log(error.message);

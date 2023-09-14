@@ -3,7 +3,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 
-export default function ShippingInfo({ form, dictionary }: { form: any, dictionary: any }) {
+export default function ShippingInfo({ form, dictionary }: { form: any; dictionary: any }) {
   return (
     <section>
       <h2 className="mb-6 text-xl font-medium">{dictionary.contact.heading}</h2>
@@ -31,7 +31,11 @@ export default function ShippingInfo({ form, dictionary }: { form: any, dictiona
             <FormItem className="w-full">
               <FormLabel>{dictionary.shipping.firstName.label}</FormLabel>
               <FormControl>
-                <Input className="capitalize" placeholder={dictionary.shipping.firstName.placeholder} {...field} />
+                <Input
+                  className="capitalize"
+                  placeholder={dictionary.shipping.firstName.placeholder}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -44,7 +48,11 @@ export default function ShippingInfo({ form, dictionary }: { form: any, dictiona
             <FormItem className="w-full">
               <FormLabel>{dictionary.shipping.lastName.label}</FormLabel>
               <FormControl>
-                <Input className="capitalize" placeholder={dictionary.shipping.lastName.placeholder} {...field} />
+                <Input
+                  className="capitalize"
+                  placeholder={dictionary.shipping.lastName.placeholder}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -59,7 +67,11 @@ export default function ShippingInfo({ form, dictionary }: { form: any, dictiona
           <FormItem className="mt-5 w-full">
             <FormLabel>{dictionary.shipping.address.label}</FormLabel>
             <FormControl>
-              <Input className="capitalize" placeholder={dictionary.shipping.address.placeholder} {...field} />
+              <Input
+                className="capitalize"
+                placeholder={dictionary.shipping.address.placeholder}
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -73,7 +85,11 @@ export default function ShippingInfo({ form, dictionary }: { form: any, dictiona
           <FormItem className="mt-5 w-full">
             <FormLabel>{dictionary.shipping.city.label}</FormLabel>
             <FormControl>
-              <Input className="capitalize" placeholder={dictionary.shipping.city.placeholder} {...field} />
+              <Input
+                className="capitalize"
+                placeholder={dictionary.shipping.city.placeholder}
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -88,7 +104,11 @@ export default function ShippingInfo({ form, dictionary }: { form: any, dictiona
             <FormItem className="w-full">
               <FormLabel>{dictionary.shipping.stateOrProvince.label}</FormLabel>
               <FormControl>
-                <Input className="capitalize" placeholder={dictionary.shipping.stateOrProvince.placeholder} {...field} />
+                <Input
+                  className="capitalize"
+                  placeholder={dictionary.shipping.stateOrProvince.placeholder}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -103,7 +123,11 @@ export default function ShippingInfo({ form, dictionary }: { form: any, dictiona
           <FormItem className="mt-5 w-full">
             <FormLabel>{dictionary.shipping.phone.label}</FormLabel>
             <FormControl>
-              <Input className="capitalize" placeholder={dictionary.shipping.phone.placeholder} {...field} />
+              <Input
+                className="capitalize"
+                placeholder={dictionary.shipping.phone.placeholder}
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

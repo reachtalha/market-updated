@@ -121,16 +121,12 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
             />
             {errors.password && (
               <ul className=" text-sm text-red-500">
-                {errors.password.type === 'required' && <li>{dictionary.auth.password.required}</li>}
-                {errors.password.type === 'minLength' && (
-                  <li>{dictionary.auth.password.min}</li>
+                {errors.password.type === 'required' && (
+                  <li>{dictionary.auth.password.required}</li>
                 )}
-                {errors.password.type === 'maxLength' && (
-                  <li>{dictionary.auth.password.max}</li>
-                )}
-                {errors.password.type === 'pattern' && (
-                  <li>{dictionary.auth.password.pattern}</li>
-                )}
+                {errors.password.type === 'minLength' && <li>{dictionary.auth.password.min}</li>}
+                {errors.password.type === 'maxLength' && <li>{dictionary.auth.password.max}</li>}
+                {errors.password.type === 'pattern' && <li>{dictionary.auth.password.pattern}</li>}
               </ul>
             )}
           </div>
@@ -138,7 +134,9 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
             {dictionary.auth.register.accountTerms}
           </p>
           <Button type="submit" disabled={loading} variant="default" className="w-full ">
-            {loading ? dictionary.auth.register.registerBtnLoadingLabel : dictionary.auth.register.registerBtnLabel}
+            {loading
+              ? dictionary.auth.register.registerBtnLoadingLabel
+              : dictionary.auth.register.registerBtnLabel}
           </Button>
         </form>
         <p className="my-2 text-primary text-center">
@@ -154,7 +152,9 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
             <span className="bg-gray-200  rounded-full border p-2">
               <Google className="w-5 2xl:w-8 h-5 2xl:h-8" fill={'#414D35'} />
             </span>
-            <span className="mr-auto text-primary group-hover:text-white">{dictionary.auth.common.socialAuthGoogleLabel}</span>
+            <span className="mr-auto text-primary group-hover:text-white">
+              {dictionary.auth.common.socialAuthGoogleLabel}
+            </span>
           </Button>
           <Button
             type="button"
@@ -165,7 +165,9 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
             <span className=" bg-gray-200  rounded-full border p-2">
               <Facebook className="w-5 2xl:w-8 h-5 2xl:h-8 " fill={'#414D35'} />
             </span>
-            <span className="mr-auto text-primary group-hover:text-white">{dictionary.auth.common.socialAuthFacebookLabel}</span>
+            <span className="mr-auto text-primary group-hover:text-white">
+              {dictionary.auth.common.socialAuthFacebookLabel}
+            </span>
           </Button>
         </div>
         <p className="text-center mt-3">

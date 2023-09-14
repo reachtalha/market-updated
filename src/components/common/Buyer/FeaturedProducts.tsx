@@ -5,7 +5,7 @@ import Carousel from '@/components/common/Carousel';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import { collection, getDoc, getDocs, query, doc, limit } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
-import Error from "@/components/common/Error";
+import Error from '@/components/common/Error';
 import { db } from '@/lib/firebase/client';
 import useSWR from 'swr';
 
@@ -27,7 +27,6 @@ const featuredProductsBreakpoints = {
     spaceBetween: 30
   }
 };
-
 
 const fetchProductDetails = async (product: any) => {
   const shopDocRef = doc(db, 'shops', product.shopId);
@@ -53,7 +52,7 @@ const fetchFeaturedProducts = async () => {
   return productsWithShopNames;
 };
 
-export default function FeaturedProducts({ title } : { title: string }) {
+export default function FeaturedProducts({ title }: { title: string }) {
   const { data: products, error, isLoading } = useSWR('featuredProducts', fetchFeaturedProducts);
 
   if (isLoading) {

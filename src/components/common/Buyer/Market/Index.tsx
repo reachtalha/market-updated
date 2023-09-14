@@ -25,7 +25,7 @@ export default function Market({
   category,
   dictionary,
   lang,
-  sortBy = 'latest',
+  sortBy = 'latest'
 }: MarketProps) {
   const markets = JSON.parse(shopsJSON);
   return (
@@ -54,7 +54,10 @@ export default function Market({
       </section>
       <TakeQuizSection />
       <div className="py-16 px-10">
-        <OrganicSimplifiedSection title={dictionary.home.bloggingSection.title} tag={dictionary.home.bloggingSection.tag} />
+        <OrganicSimplifiedSection
+          title={dictionary.home.bloggingSection.title}
+          tag={dictionary.home.bloggingSection.tag}
+        />
       </div>
     </>
   );

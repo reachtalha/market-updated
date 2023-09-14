@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { auth } from '@/lib/firebase/client';
 import BoxedContent from '@/components/common/BoxedContent';
 import useCartStore from '@/state/useCartStore';
@@ -9,18 +9,18 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function OrderSuccess(){
+export default function OrderSuccess() {
   const { clearCart, cart } = useCartStore((state: any) => state);
   const { clearGuestCart, guestCart } = useGuestCartStore((state: any) => state);
 
   const router = useRouter();
 
   useEffect(() => {
-    if(auth.currentUser && cart?.items !== null){
+    if (auth.currentUser && cart?.items !== null) {
       clearCart();
     }
 
-    if(!auth.currentUser && guestCart?.items !== null) {
+    if (!auth.currentUser && guestCart?.items !== null) {
       clearGuestCart();
     }
   }, [cart.items]);
@@ -33,8 +33,12 @@ export default function OrderSuccess(){
         </div>
         <h1 className="text-4xl text-primary">Order Successful</h1>
         <Separator className="my-1" />
-        {auth.currentUser ? <Button onClick={() => router.push('/account?display=order')}>See Orders</Button> : <Button onClick={() => router.push('/products')}>Explore Products</Button>}
+        {auth.currentUser ? (
+          <Button onClick={() => router.push('/account?display=order')}>See Orders</Button>
+        ) : (
+          <Button onClick={() => router.push('/products')}>Explore Products</Button>
+        )}
       </div>
     </BoxedContent>
-  )
+  );
 }

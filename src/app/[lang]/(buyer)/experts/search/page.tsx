@@ -54,7 +54,7 @@ const getExperts: any = async (): Promise<any> => {
   return experts;
 };
 
-export default async function ExpertsSearch({ params: { lang }} : LocaleType) {
+export default async function ExpertsSearch({ params: { lang } }: LocaleType) {
   const experts = await getExperts();
   const dictionary = await getDictionary(lang);
 

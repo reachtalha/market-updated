@@ -31,7 +31,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
   const router = useRouter();
   const { user } = useCurrentUser();
   const [loading, setLoading] = useState(false);
-  const isPinned = user?.pinnedProducts?.includes(id)
+  const isPinned = user?.pinnedProducts?.includes(id);
   const locale = useLocale();
   const searchParams = useSearchParams();
 
@@ -71,9 +71,9 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
   };
 
   const onProductTagClick = (e: any) => {
-    e.stopPropagation()
-    router.push(`/${locale}/products?type=${type}`)
-  }
+    e.stopPropagation();
+    router.push(`/${locale}/products?type=${type}`);
+  };
 
   const onProductClick = (e: any) => {
     router.push(`/products/${id}`);

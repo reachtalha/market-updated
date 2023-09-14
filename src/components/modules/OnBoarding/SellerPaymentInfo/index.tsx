@@ -1,7 +1,3 @@
-export default function SellerPaymentInfo(){
-  return (
-    <div>
-      hello
-    </div>
-  )
+export default function SellerPaymentInfo() {
+  return <div>hello</div>;
 }

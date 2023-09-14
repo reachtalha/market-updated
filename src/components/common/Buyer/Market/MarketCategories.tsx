@@ -13,7 +13,11 @@ type MarketCategoriesProps = {
   locale: string;
 };
 
-export default function MarketCategories({ categories, selectedCategory, locale }: MarketCategoriesProps) {
+export default function MarketCategories({
+  categories,
+  selectedCategory,
+  locale
+}: MarketCategoriesProps) {
   return (
     <div className="hidden lg:block w-48 space-y-4">
       <p className="uppercase tracking-wide text-sm">Filter By:</p>

@@ -78,11 +78,11 @@ const fetchClearCart = async (cartItems: any) => {
     if (cartItems?.length > 0) {
       Promise.all(
         cartItems.map(async (item: any) => {
-          await fetchDeleteFromCart(item.itemId, auth?.currentUser?.uid || "");
+          await fetchDeleteFromCart(item.itemId, auth?.currentUser?.uid || '');
         })
       );
     }
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
 };
@@ -126,7 +126,7 @@ const useCartStore = create((set, get) => ({
   isCartLoading: false,
   showCartPopover: false,
   isQuantityChangeLoading: false,
-  updatingDocId: "",
+  updatingDocId: '',
   isAddToCartLoading: false,
   setShowCartPopover: (value: boolean) => set({ showCartPopover: value }),
   setIsAddToCartLoading: (val: boolean) => {

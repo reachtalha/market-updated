@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation';
 import { db } from '@/lib/firebase/client';
 import { doc, getDoc } from '@firebase/firestore';
 
@@ -11,18 +11,17 @@ async function getOnboardingInfo(id: string) {
 }
 
 const OnBoarding = async ({
-  searchParams,
+  searchParams
 }: {
   searchParams?: { [key: string]: string | undefined };
 }) => {
-
   const { id } = searchParams!;
   if (!id) {
     redirect('/');
   }
   const isOnboarded = await getOnboardingInfo(id);
-  if (isOnboarded === "seller") {
-    redirect('/seller/dashboard')
+  if (isOnboarded === 'seller') {
+    redirect('/seller/dashboard');
   } else if (isOnboarded) {
     redirect('/');
   }

@@ -11,8 +11,8 @@ import { auth } from '@/lib/firebase/client';
 import QuantityInput from '@/components/common/Buyer/ShoppingCart/QuantityInput';
 
 type OrderSummaryCheckoutProps = {
-  isConfirmButtonLoading?: boolean
-  dictionary: any
+  isConfirmButtonLoading?: boolean;
+  dictionary: any;
 };
 
 export default function OrderSummaryCheckout({
@@ -23,15 +23,17 @@ export default function OrderSummaryCheckout({
   const { guestCart } = useGuestCartStore((state: any) => state);
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
 
-  const cartSummary = auth.currentUser ? {
-    subTotal: formatCurrency(cart?.summary?.subTotal ?? 0),
-    shipping: formatCurrency(cart?.summary?.shipping ?? 0),
-    total: formatCurrency(cart?.summary?.total ?? 0),
-  } : {
-    subTotal: formatCurrency(guestCart?.summary?.subTotal ?? 0),
-    shipping: formatCurrency(guestCart?.summary?.shipping ?? 0),
-    total: formatCurrency(guestCart?.summary?.total ?? 0)
-  };
+  const cartSummary = auth.currentUser
+    ? {
+        subTotal: formatCurrency(cart?.summary?.subTotal ?? 0),
+        shipping: formatCurrency(cart?.summary?.shipping ?? 0),
+        total: formatCurrency(cart?.summary?.total ?? 0)
+      }
+    : {
+        subTotal: formatCurrency(guestCart?.summary?.subTotal ?? 0),
+        shipping: formatCurrency(guestCart?.summary?.shipping ?? 0),
+        total: formatCurrency(guestCart?.summary?.total ?? 0)
+      };
 
   return isCartLoading ? (
     <Skeleton className="bg-gray-200 h-[300px]" />
@@ -62,7 +64,12 @@ export default function OrderSummaryCheckout({
                 </div>
               </div>
               <div className="col-span-1 flex items-center justify-center">
-                <QuantityInput quantity={item.quantity} productId={item?.id} skuId={item?.selectedVariant?.id} docId={item.itemId} />
+                <QuantityInput
+                  quantity={item.quantity}
+                  productId={item?.id}
+                  skuId={item?.selectedVariant?.id}
+                  docId={item.itemId}
+                />
               </div>
             </div>
           </li>
@@ -80,13 +87,13 @@ export default function OrderSummaryCheckout({
         </div>
         <div className="flex justify-between pb-3 pt-3">
           <p className="font-medium">{dictionary.orderTotalLabel}</p>
-          <p className="font-medium">
-            {cartSummary.total}
-          </p>
+          <p className="font-medium">{cartSummary.total}</p>
         </div>
       </div>
 
-      <Button className="w-full mt-4">{isConfirmButtonLoading ? 'Loading' : dictionary.confirmOrderBtnLabel}</Button>
+      <Button className="w-full mt-4">
+        {isConfirmButtonLoading ? 'Loading' : dictionary.confirmOrderBtnLabel}
+      </Button>
     </div>
   );
 }

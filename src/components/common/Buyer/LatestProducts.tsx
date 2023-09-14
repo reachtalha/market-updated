@@ -5,7 +5,7 @@ import Carousel from '@/components/common/Carousel';
 import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import { collection, getDoc, getDocs, query, doc, limit, orderBy } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
-import Error from "@/components/common/Error";
+import Error from '@/components/common/Error';
 import { db } from '@/lib/firebase/client';
 import useSWR from 'swr';
 
@@ -28,7 +28,6 @@ const latestProductsBreakpoints = {
   }
 };
 
-
 const fetchProductDetails = async (product: any) => {
   const shopDocRef = doc(db, 'shops', product.shopId);
   const shopDocSnap = await getDoc(shopDocRef);
@@ -41,7 +40,7 @@ const fetchProductDetails = async (product: any) => {
 
 const fetchLatestProducts = async () => {
   const productsCollectionRef = collection(db, 'products');
-  const productQuery = query(productsCollectionRef, limit(6), orderBy("submittedAt", "desc"));
+  const productQuery = query(productsCollectionRef, limit(6), orderBy('submittedAt', 'desc'));
   const productQuerySnapshot = await getDocs(productQuery);
 
   const products: any = [];
@@ -64,7 +63,11 @@ export default function LatestProducts() {
   }
 
   return (
-    <Carousel navigationClassName="border-t-0" title="Latest Products" breakpoints={latestProductsBreakpoints}>
+    <Carousel
+      navigationClassName="border-t-0"
+      title="Latest Products"
+      breakpoints={latestProductsBreakpoints}
+    >
       {products?.map((_: any, i: number) => (
         <SwiperSlide key={i + Math.random()}>
           <ProductCard

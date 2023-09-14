@@ -1,4 +1,4 @@
-import React from 'react';  
+import React from 'react';
 import Index from '@/components/common/Buyer/Account/index';
 
 const options = [
@@ -18,7 +18,6 @@ const options = [
     href: '/account?display'
   }
 ];
-
 
 type Props = {};
 

@@ -20,7 +20,13 @@ const fetchGetLatestBlogPosts = async () => {
   return result;
 };
 
-export default async function OrganicSimplifiedSection({ title, tag }: { title: string, tag: string }) {
+export default async function OrganicSimplifiedSection({
+  title,
+  tag
+}: {
+  title: string;
+  tag: string;
+}) {
   const data = await fetchGetLatestBlogPosts();
   return (
     <div className="space-y-6">
@@ -29,19 +35,21 @@ export default async function OrganicSimplifiedSection({ title, tag }: { title: 
 
         <p className="text-lg md:text-3xl">{tag}</p>
       </div>
-      {
-        data?.length === 0 ? (<p className="text-center py-14">No Blogs Found</p>):(<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
-        {data?.map((post: any) => (
-          <BlogCard
-            key={post?.id}
-            title={post.title}
-            slug={post?.id}
-            postedAt={post?.postedAt}
-            thumbnailImage={post?.thumbnailImage}
-          />
-        ))}
-      </div>)
-}
+      {data?.length === 0 ? (
+        <p className="text-center py-14">No Blogs Found</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
+          {data?.map((post: any) => (
+            <BlogCard
+              key={post?.id}
+              title={post.title}
+              slug={post?.id}
+              postedAt={post?.postedAt}
+              thumbnailImage={post?.thumbnailImage}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

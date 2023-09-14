@@ -7,10 +7,7 @@ export const metadata = {
   description: 'Register on Organic living, simplied'
 };
 
-export default async function Page({
-                                     params: { lang },
-                                   }: LocaleType){
-
+export default async function Page({ params: { lang } }: LocaleType) {
   const dictionary = await getDictionary(lang);
-  return <Register dictionary={dictionary} />
+  return <Register dictionary={dictionary} />;
 }

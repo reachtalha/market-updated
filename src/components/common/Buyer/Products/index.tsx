@@ -116,7 +116,7 @@ const getProducts: any = async (
 type ProductsProps = {
   categories: Category[];
   foryou?: boolean;
-  dictionary?: any
+  dictionary?: any;
 };
 export default function Products({ dictionary, categories, foryou }: ProductsProps) {
   const category = useCategorySlug();
@@ -292,7 +292,10 @@ export default function Products({ dictionary, categories, foryou }: ProductsPro
             </BoxedContent>
           </section>
           <div className="py-16 px-10">
-            <OrganicSimplifiedSection title={dictionary.home.bloggingSection.title} tag={dictionary.home.bloggingSection.tag} />
+            <OrganicSimplifiedSection
+              title={dictionary.home.bloggingSection.title}
+              tag={dictionary.home.bloggingSection.tag}
+            />
           </div>
         </>
       )}

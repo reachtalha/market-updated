@@ -140,7 +140,7 @@ const CreateSKU = ({
               </li>
             ))}
             <AddModal list={colorList} setList={setColorList} />
-          </ul>   
+          </ul>
         </div>
       </div>
       <div className="space-y-2 w-full mt-3 xl:mt-5">

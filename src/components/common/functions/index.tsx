@@ -148,11 +148,11 @@ export const deleteImage = (file: any, setList: any) => {
 };
 
 export function getBase64(file: any) {
-  const reader = new FileReader()
-  return new Promise(resolve => {
+  const reader = new FileReader();
+  return new Promise((resolve) => {
     reader.onload = (ev: any) => {
-      resolve(ev.target.result)
-    }
-    reader.readAsDataURL(file)
-  })
+      resolve(ev.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
 }

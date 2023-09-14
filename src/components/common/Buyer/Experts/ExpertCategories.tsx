@@ -13,7 +13,11 @@ type ExpertCategoriesProps = {
   locale: string;
 };
 
-export default function ExpertCategories({ locale, categories, selectedCategory }: ExpertCategoriesProps) {
+export default function ExpertCategories({
+  locale,
+  categories,
+  selectedCategory
+}: ExpertCategoriesProps) {
   return (
     <div className="hidden md:block w-48 space-y-4">
       <p className="uppercase tracking-wide text-sm">Filter By:</p>
