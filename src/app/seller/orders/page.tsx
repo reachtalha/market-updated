@@ -8,7 +8,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
 import { formatCurrency } from '@/utils/formatters';
 import { useState, useEffect } from 'react';
-export const RECORDS_PER_PAGE = 6;
+import { RECORDS_PER_PAGE } from './constants';
 
 const getOrders = async () => {
   let orders: any = [];

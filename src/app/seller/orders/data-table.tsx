@@ -20,7 +20,7 @@ import { Order } from './columns';
 import { MoveRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { RECORDS_PER_PAGE } from './page';
+import { RECORDS_PER_PAGE } from './constants';
 
 interface DataTableProps<TValue> {
   columns: ColumnDef<Order, TValue>[];
