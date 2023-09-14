@@ -12,20 +12,22 @@ import Products from '@/assets/icons/system/Products';
 import NavLink from './NavLink';
 import useGlobalStore from '@/state';
 import { CreditCardIcon, XSquare } from 'lucide-react';
+import useLocale from '@/hooks/useLocale';
 
 const Sidebar = () => {
+  const locale = useLocale();
   const { showSidebar, setShowSidebar } = useGlobalStore((state: any) => state);
 
   const pathname = window.location.href;
 
   const list = [
     {
-      href: '/seller/dashboard',
+      href: `/${locale}/seller/dashboard`,
       icon: <Dashboard className="w-6 h-6 text-current" />,
       title: 'Dashboard'
     },
     {
-      href: '/seller/shop',
+      href: `/${locale}/seller/shop`,
       icon: <Shop className="w-6 h-6 text-current" />,
       title: 'Shop'
     },
@@ -35,30 +37,30 @@ const Sidebar = () => {
       title: 'Products',
       subItems: [
         {
-          href: '/seller/products/',
+          href: `/${locale}/seller/products/`,
           icon: <Products className="w-6 h-6 text-current" />,
           title: 'All Products'
         },
 
         {
-          href: '/seller/products/add',
+          href: `/${locale}/seller/products/add`,
           icon: <Products className="w-6 h-6 text-current" />,
           title: 'Add Products'
         }
       ]
     },
     {
-      href: '/seller/orders',
+      href: `/${locale}/seller/orders`,
       icon: <Cart className="w-6 h-6 text-current" />,
       title: 'Orders'
     },
     {
-      href: '/chat?return_url=seller/dashboard',
+      href: `/${locale}/chat?return_url=seller/dashboard`,
       icon: <Chat className="w-6 h-6 text-current" />,
       title: 'Chat'
     },
     {
-      href: '/seller/payouts',
+      href: `${locale}/seller/payouts`,
       icon: (
         <svg
           className="w-6 h-6 text-current"

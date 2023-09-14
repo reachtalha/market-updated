@@ -1,28 +1,30 @@
-import React from 'react';
 import Index from '@/components/common/Buyer/Account/index';
-
-const options = [
-  {
-    name: 'Profile Settings',
-    slug: 'settings',
-    href: '/account?display'
-  },
-  {
-    name: 'Wish List',
-    slug: 'wishlist',
-    href: '/account?display'
-  },
-  {
-    name: 'Order History',
-    slug: 'order',
-    href: '/account?display'
-  }
-];
+import { LocaleType } from '@/app/[lang]/(buyer)/page';
+import { getDictionary } from '@/get-dictionary';
 
 type Props = {};
 
-const Page = (props: Props) => {
-  return <Index options={options} />;
+const Page = async ({ params: { lang }}: LocaleType) => {
+  const dictionary = await getDictionary(lang);
+  const options = [
+    {
+      name: dictionary.account.sectionHeadings.profile,
+      slug: 'settings',
+      href: '/account?display'
+    },
+    {
+      name: dictionary.account.sectionHeadings.wishList,
+      slug: 'wishlist',
+      href: '/account?display'
+    },
+    {
+      name: dictionary.account.sectionHeadings.orderHistory,
+      slug: 'order',
+      href: '/account?display'
+    }
+  ];
+
+  return <Index dictionary={dictionary} options={options} />;
 };
 
 export default Page;

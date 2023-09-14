@@ -21,6 +21,8 @@ import AddPinnedContentModal from '@/components/modules/Experts/PinnedContent/Ad
 import PinnedContentList from '@/components/modules/Experts/PinnedContent/List';
 import ExpertCoverImage from '@/components/modules/Experts/CoverImage';
 import Link from 'next/link';
+import { Locale } from '@/i18n-config';
+import { getDictionary } from '@/get-dictionary';
 
 const getExpert = async (expertId: string) => {
   const docRef = await getDoc(doc(db, 'users', expertId));
@@ -42,10 +44,12 @@ const getfavProducts = async (expertId: string) => {
 type ExpertProps = {
   params: {
     expertId: string;
+    lang: Locale
   };
 };
 
 const Expert = async ({ params }: ExpertProps) => {
+  const dictionary = await getDictionary(params.lang);
   const [favProducts, expert] = await Promise.all([
     getfavProducts(params.expertId),
     getExpert(params.expertId)
@@ -101,11 +105,11 @@ const Expert = async ({ params }: ExpertProps) => {
             </div>
           </div>
           <div className="w-full  flex flex-col">
-            <p className="uppercase mt-7 lg:mt-10">biography</p>
+            <p className="uppercase mt-7 lg:mt-10">{dictionary.expertDetails.biographyLabel}</p>
             <p className="md:text-2xl lg:text-3xl mt-2">{expert?.bio}</p>
 
             <div className="mt-8 lg:mt-10">
-              <p className="uppercase">topics</p>
+              <p className="uppercase">{dictionary.expertDetails.topicsLabel}</p>
               <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
                 {expert?.topics?.map((item: any, idx: number) => (
                   <Link href={`/experts?category=${item}`} key={idx}>
@@ -145,7 +149,7 @@ const Expert = async ({ params }: ExpertProps) => {
           <div className="border-t-2 border-black" />
         </div>
       </section>
-      <LatestBlogsSection uid={params.expertId} title="blogs" />
+      <LatestBlogsSection uid={params.expertId} title={dictionary.expertDetails.blogTitle} />
     </>
   );
 };

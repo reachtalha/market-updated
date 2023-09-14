@@ -6,6 +6,8 @@ import TakeQuizSection from '@/components/common/Buyer/TakeQuizSection';
 import LatestBlogsSection from '@/components/common/Buyer/LatestBlogsSection';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import { LocaleType } from '@/app/[lang]/(buyer)/page';
+import { getDictionary } from '@/get-dictionary';
 
 const getCategories = async () => {
   const querySnapshot = await getDocs(collection(db, 'categories'));
@@ -24,8 +26,10 @@ const getCategories = async () => {
   return categories;
 };
 
-export default async function SearchProducts() {
+export default async function SearchProducts({ params: { lang } } : LocaleType) {
   const categories = await getCategories();
+  const dictionary = await getDictionary(lang);
+
   return (
     <>
       <Products categories={categories} />
@@ -41,7 +45,7 @@ export default async function SearchProducts() {
               Explore Expert Categories
             </Button>
           </header>
-          <FeaturedExperts />
+          <FeaturedExperts dictionary={dictionary} />
         </BoxedContent>
       </section>
       <TakeQuizSection className="bg-[#F7F6F2] text-black" buttonClassName="border-black" />

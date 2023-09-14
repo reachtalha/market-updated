@@ -39,7 +39,7 @@ const getWishlistProduct = async () => {
   return products.filter((product) => product !== null);
 };
 
-const Wishlist = () => {
+const Wishlist = ({ dictionary } : { dictionary: any }) => {
   const { data: products, isLoading, error } = useSwr('wishlist', getWishlistProduct);
   if (isLoading) return <Loader className="grid place-content-center h-[50vh] w-full" />;
   if (error) return <Error className="grid place-content-center h-[50vh] w-full" />;
@@ -67,7 +67,7 @@ const Wishlist = () => {
       ) : (
         <div className="grid grid-cols-1 mt-4 md:mt-0 gap-5">
           <div className="text-center  flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[20vh] text-gray-500">
-            No products found
+            {dictionary.noProductsFoundLabel}
           </div>
           <LatestProducts />
         </div>

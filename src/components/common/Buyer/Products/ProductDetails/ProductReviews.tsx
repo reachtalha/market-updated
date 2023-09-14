@@ -37,11 +37,13 @@ const getReviews = async (productId: string) => {
 export default function ProductReviews({
   productId,
   averageReviews,
-  setAverageReviews
+  setAverageReviews,
+  dictionary
 }: {
   productId: string;
   averageReviews: number;
   setAverageReviews: (value: number) => void;
+  dictionary: any
 }) {
   const [sort, setSort] = useState('highest');
   const [showReviews, setShowReviews] = useState(4);
@@ -67,9 +69,9 @@ export default function ProductReviews({
   if (reviews?.length === 0) {
     return (
       <div className="bg-neutral-100 rounded-lg px-3 py-6 md:py-12 mb-5">
-        <p className="text-center text-lg 2xl:text-xl font-semibold">No reviews as of yet</p>
+        <p className="text-center text-lg 2xl:text-xl font-semibold">{dictionary.productDetails.reviews.noReviewsLabel}</p>
         <p className="text-center text-sm 2xl:text-base">
-          Be the first to leave a review and share your experience!
+          {dictionary.productDetails.reviews.leaveReviewLabel}
         </p>
       </div>
     );
@@ -80,7 +82,7 @@ export default function ProductReviews({
         <div className="flex flex-col items-center md:items-start md:justify-center w-full md:w-fit">
           <h6 className="flex gap-2 items-center mb-1">
             {averageReviews < 0 ? (
-              <span className="font-medium">No reviews yet</span>
+              <span className="font-medium">{dictionary.productDetails.reviews.noReviewsLabel}</span>
             ) : (
               <>
                 <span className="font-medium">{averageReviews.toFixed(2)}</span>
@@ -88,7 +90,7 @@ export default function ProductReviews({
               </>
             )}
           </h6>
-          <p className="text-sm">AVERAGE RATING</p>
+          <p className="text-sm">{dictionary.productDetails.reviews.averageRatingLabel}</p>
         </div>
       </header>
 
@@ -126,7 +128,7 @@ export default function ProductReviews({
             variant="outline"
             className="border-neutral-900 px-14 text-neutral-900"
           >
-            show more
+            {dictionary.productDetails.reviews.showMoreBtnLabel}
           </Button>
         </div>
       )}

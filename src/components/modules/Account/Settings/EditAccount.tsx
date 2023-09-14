@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -14,9 +13,10 @@ type Props = {
   loading: boolean;
   isPasswordUpdate: boolean;
   setIsPasswordUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  dictionary: any;
 };
 
-const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) => {
+const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate, dictionary }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [image, setImage] = useState<string>();
 
@@ -27,8 +27,6 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
     trigger,
     formState: { errors }
   } = useFormContext();
-
-  console.log(getValues('photoURL'));
 
   const handleUpdate = () => {
     if (isEdit) {
@@ -59,7 +57,7 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
             onClick={() => setIsEdit(true)}
             className="flex gap-x-2 flex-row items-center cursor-pointer "
           >
-            <span className="text-sm sm:text-base">Edit</span>
+            <span className="text-sm sm:text-base">{dictionary.editBtnLabel}</span>
             <Pencil size={window.innerWidth < 468 ? 12 : 15} />
           </div>
         )}
@@ -87,7 +85,7 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
               <>
                 <ImageIcon className="w-10 h-10 text-neutral-500" />
                 <p className={getValues('photoURL') ? 'hidden' : ' text-sm text-center block m-0'}>
-                  Add profile picture
+                  {dictionary.addProfileLabel}
                 </p>
               </>
             )}
@@ -105,85 +103,89 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
 
       <div className={` ${isPasswordUpdate && ' hidden'} `}>
         <div className="space-y-1 w-full mt-3">
-          <Label>Name</Label>
+          <Label>{dictionary.name.label}</Label>
           <Input
             className="w-full placeholder:text-sm capitalize"
             type="text"
+            placeholder={dictionary.name.placeholder}
             {...register('name')}
             disabled={!isEdit}
           />
-          {errors.name && <span className="text-sm text-red-500">Name doesn`t look valid</span>}
+          {errors.name && <span className="text-sm text-red-500">{dictionary.name.error}</span>}
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label>Email</Label>
+          <Label>{dictionary.email.label}</Label>
           <Input
             className="w-full placeholder:text-sm"
+            placeholder={dictionary.email.placeholder}
             type="email"
             {...register('email')}
             disabled={!isEdit}
           />
-          {errors.name && <span className="text-sm text-red-500">Email doesn`t look valid</span>}
+          {errors.name && <span className="text-sm text-red-500">{dictionary.email.error}</span>}
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label>Phone</Label>
+          <Label>{dictionary.phone.label}</Label>
           <Input
             className="w-full placeholder:text-sm"
+            placeholder={dictionary.phone.placeholder}
             type="text"
             {...register('phone')}
             disabled={!isEdit}
           />
-          {errors.name && <span className="text-sm text-red-500">phone doesn`t look valid</span>}
+          {errors.name && <span className="text-sm text-red-500">{dictionary.phone.error}</span>}
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label>Address</Label>
+          <Label>{dictionary.address.label}</Label>
           <Input
             className="w-full placeholder:text-sm"
+            placeholder={dictionary.address.placeholder}
             type="text"
             {...register('address')}
             disabled={!isEdit}
           />
 
-          {errors.name && <span className="text-sm text-red-500">Address doesn`t look valid</span>}
+          {errors.name && <span className="text-sm text-red-500">{dictionary.address.error}</span>}
         </div>
       </div>
 
       <div className={` ${!isPasswordUpdate && ' hidden'} `}>
         <div className="space-y-1 w-full mt-3">
           <Label className=" font-medium text-sm md:text-base  text-gray-600">
-            Current Password
+            <Label>{dictionary.currentPassword.label}</Label>
           </Label>
           <Input
             className="w-full placeholder:text-sm"
+            placeholder={dictionary.currentPassword.placeholder}
             type="password"
             {...register('currentPassword')}
-            placeholder="Enter Current Password"
           />
 
-          {errors.name && <span className="text-sm text-red-500">Password doesn`t look valid</span>}
+          {errors.name && <span className="text-sm text-red-500">{dictionary.currentPassword.error}</span>}
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label>New Password</Label>
+          <Label>{dictionary.newPassword.label}</Label>
           <Input
             className="w-full placeholder:text-sm"
+            placeholder={dictionary.newPassword.placeholder}
             type="password"
             {...register('newPassword')}
-            placeholder="Enter New Password"
           />
 
-          {errors.name && <span className="text-sm text-red-500">Password doesn`t look valid</span>}
+          {errors.name && <span className="text-sm text-red-500">{dictionary.newPassword.error}</span>}
         </div>
 
         <div className="space-y-1 w-full mt-3">
-          <Label>Confirm Password</Label>
+          <Label>{dictionary.confirmPassword.label}</Label>
           <Input
             className="w-full placeholder:text-sm"
+            placeholder={dictionary.confirmPassword.placeholder}
             type="password"
             {...register('confirmPassword')}
-            placeholder="Confirm Password"
           />
         </div>
       </div>
@@ -191,7 +193,7 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
       <div className="flex gap-x-2 mt-4">
         {(isEdit || isPasswordUpdate) && (
           <Button onClick={handleCancel} type="button" variant="outline" className="w-full">
-            Cancel
+            {dictionary.cancelBtnLabel}
           </Button>
         )}
 
@@ -202,7 +204,7 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate }: Props) 
           className="w-full"
           disabled={loading}
         >
-          Update {isEdit ? 'Profile' : 'Password'}
+          {dictionary.updateBtnLabel} {isEdit ? dictionary.updateProfileLabel : dictionary.updatePasswordLabel}
         </Button>
       </div>
     </div>

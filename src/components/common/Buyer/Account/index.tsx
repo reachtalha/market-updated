@@ -15,9 +15,10 @@ import { AccountsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 type AccountProps = {
   options: Option[];
+  dictionary: any
 };
 
-function Index({ options }: AccountProps) {
+function Index({ options, dictionary }: AccountProps) {
   const category = useCategorySlug();
   const role = useRole();
   const { user, isLoading } = useCurrentUser();
@@ -34,6 +35,7 @@ function Index({ options }: AccountProps) {
             {user ? (
               <div className=" w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
                 <Settings
+                  dictionary={dictionary.account.profile}
                   defaultValues={{
                     name: user.name,
                     email: user.email,
@@ -54,11 +56,11 @@ function Index({ options }: AccountProps) {
           </>
         );
       case 'order':
-        return <OrderHistory />;
+        return <OrderHistory dictionary={dictionary.account.orderHistory} />;
       case 'blogs':
         return <ManageBlogs />;
       case 'wishlist':
-        return <Wishlist />;
+        return <Wishlist dictionary={dictionary.account.wishList} />;
       case 'socials':
         return (
           <>
@@ -85,6 +87,7 @@ function Index({ options }: AccountProps) {
             {user ? (
               <div className=" w-full sm:w-4/5 md:w-3/5 lg:w-2/5 m-auto">
                 <Settings
+                  dictionary={dictionary.account.profile}
                   defaultValues={{
                     name: user.name,
                     email: user.email,

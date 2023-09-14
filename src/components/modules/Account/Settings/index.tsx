@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
@@ -23,7 +23,7 @@ type FormValues = {
   confirmPassword: string;
 };
 
-const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
+const Index = ({ defaultValues, dictionary }: { defaultValues: FormValues, dictionary: any }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPasswordUpdate, setIsPasswordUpdate] = useState<boolean>(false);
   const { updatePassword, updateCurrentUser } = useAuth();
@@ -88,6 +88,7 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
       <FormProvider {...methods}>
         <form id="edit-account-form" onSubmit={handleSubmit(onSubmit)} className="">
           <EditAccount
+            dictionary={dictionary}
             isPasswordUpdate={isPasswordUpdate}
             setIsPasswordUpdate={setIsPasswordUpdate}
             loading={loading}

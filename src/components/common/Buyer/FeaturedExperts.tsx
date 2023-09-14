@@ -25,7 +25,7 @@ const getExperts: any = async (): Promise<any> => {
   return experts;
 };
 
-export default function FeaturedExperts() {
+export default function FeaturedExperts({ dictionary } : { dictionary: any }) {
   const { data: experts, isLoading } = useSwr('featuresExperts', getExperts);
   if (isLoading) return <Loader className="w-full flex items-center justify-center" />;
 
@@ -33,7 +33,7 @@ export default function FeaturedExperts() {
     <Carousel showNavigation={false} breakpoints={featuredExpertsBreakpoints}>
       {experts.map((expert: Expert, i: number) => (
         <SwiperSlide key={i + Math.random()}>
-          <FeaturedExpertCard expert={expert} />
+          <FeaturedExpertCard dictionary={dictionary} expert={expert} />
         </SwiperSlide>
       ))}
     </Carousel>

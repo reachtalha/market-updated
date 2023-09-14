@@ -46,7 +46,7 @@ const getSelectedVariant = (product: any) =>
     ? product.SKU[0]
     : product.SKU.sort((a: any, b: any) => a.price - b.price)[0];
 
-export default function Product({ productJSON }: { productJSON: any }) {
+export default function Product({ productJSON, dictionary }: { productJSON: any, dictionary: any }) {
   const product = JSON.parse(productJSON);
   const uniqueSizes = getUniqueSizes(product);
 
@@ -139,10 +139,10 @@ export default function Product({ productJSON }: { productJSON: any }) {
           <p className="font-medium">{product.description}</p>
 
           <div className="flex border-t-2 border-black pt-4 justify-between items-center mt-6">
-            <p className="uppercase">reviews</p>
+            <p className="uppercase">{dictionary.productDetails.reviewsLabel}</p>
             <div className="flex items-center gap-2">
               {averageReviews < 0 ? (
-                <span className="font-medium">No reviews yet</span>
+                <span className="font-medium">{dictionary.productDetails.noReviewsLabel}</span>
               ) : (
                 <>
                   <ReactStars value={averageReviews} edit={false} color2="#000000" />
@@ -152,7 +152,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
             </div>
           </div>
           <div className="flex flex-col mt-3">
-            <span className="text-sm">Choose Size:</span>
+            <span className="text-sm">{dictionary.productDetails.chooseSizeLabel}</span>
             <div className="flex gap-x-2 py-2">
               {uniqueSizes.map((size: any, index: number) => (
                 <div
@@ -170,7 +170,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
             </div>
           </div>
           <div className="flex flex-col my-1">
-            <span className="text-sm">Choose Color:</span>
+            <span className="text-sm">{dictionary.productDetails.chooseColorLabel}</span>
             <div className="flex gap-x-2 py-2">
               {product.SKU.map((variant: any, index: number) => {
                 if (variant.measurement !== selectedSize) return;
@@ -193,7 +193,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
             </div>
           </div>
 
-          <span className="">Price</span>
+          <span className="">{dictionary.productDetails.priceLabel}</span>
           <p className="font-medium text-2xl mb-3">{selectedVariant.price}$</p>
 
           <Button
@@ -212,13 +212,13 @@ export default function Product({ productJSON }: { productJSON: any }) {
             onClick={isInWishlistData ? handleRemoveFromWishlist : handleAddToWishlist}
             className="w-full mt-2 bg-transparent hover:tracking-wider hover:bg-transparent hover:text-primary transition-all duration-500 text-primary border-primary border-2 uppercase"
           >
-            {isInWishlistData ? 'Remove from' : 'Save in'} Wishlist
+            {isInWishlistData ? dictionary.productDetails.removeFromWishlistLabel : dictionary.productDetails.addToWishlistLabel}
           </Button>
           <Link
             href={`/chat/?id=${product?.uid}&return_url=products/${product.id}`}
             className="text-xs flex justify-center cursor-pointer underline mt-3"
           >
-            Chat with Seller
+            {dictionary.productDetails.chatWithSellerLabel}
           </Link>
         </div>
       </div>
@@ -231,6 +231,7 @@ export default function Product({ productJSON }: { productJSON: any }) {
       </div>
 
       <ProductReviews
+        dictionary={dictionary}
         averageReviews={averageReviews}
         setAverageReviews={setAverageReviews}
         productId={product.id}

@@ -64,7 +64,7 @@ export default async function ExpertsSearch({ params: { lang } }: LocaleType) {
         <header className="flex justify-between items-center mb-3">
           <h5 className="uppercase">Featured Experts</h5>
         </header>
-        <FeaturedExperts />
+        <FeaturedExperts dictionary={dictionary} />
       </BoxedContent>
       <Experts experts={experts} dictionary={dictionary} />
       <LatestBlogsSection title="#OrganicSimplified" />

@@ -4,7 +4,6 @@ import useGlobalStore from '@/state';
 
 import Sidebar from '@/components/common/Seller/Sidebar';
 import MobileNavbar from '@/components/common/Seller/Navbar/MobileNavbar';
-import Loader from '@/components/common/Loader';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { showSidebar } = useGlobalStore() as any;

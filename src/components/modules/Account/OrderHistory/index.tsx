@@ -88,7 +88,7 @@ const getOrder = async () => {
   return orders;
 };
 
-const Index = (props: Props) => {
+const Index = ({ dictionary } : { dictionary: any }) => {
   const {
     data: orders,
     error,
@@ -113,12 +113,13 @@ const Index = (props: Props) => {
   return (
     <section className="py-10 sm:py-0  w-full flex">
       <div className="px-1 sm:px-5 gap-y-3 w-full md:w-2/5 flex flex-col ">
-        <span className="text-primary text-sm sm:text-base font-medium uppercase">My Orders</span>
+        <span className="text-primary text-sm sm:text-base font-medium uppercase">{dictionary.myOrdersLabel}</span>
         {orders?.length === 0 && (
-          <p className="text-sm 3xl:text-base text-neutral-700 py-[5%]">No Orders found</p>
+          <p className="text-sm 3xl:text-base text-neutral-700 py-[5%]">{dictionary.noOrdersFoundLabel}</p>
         )}
         {orders?.map((order, index) => (
           <OrderCard
+            dictionary={dictionary.orderCard}
             {...order}
             selectedOrder={selectedOrder}
             setSelectedOrder={setSelectedOrder}
@@ -130,7 +131,7 @@ const Index = (props: Props) => {
         <div className="hidden  sm:relative  sm:flex flex-col gap-3 md:w-3/5">
           <div className="flex flex-row items-center justify-between">
             <span className="text-primary text-sm sm:text-base font-medium uppercase">
-              Order Details
+              {dictionary.orderDetailsLabel}
             </span>
 
             <LeaveReviewModal
@@ -139,13 +140,13 @@ const Index = (props: Props) => {
                   variant="outline"
                   className="w-full mt-3 md:mt-0 flex items-end border-neutral-900 px-10 text-neutral-900"
                 >
-                  review
+                  {dictionary.reviewBtnLabel}
                 </Button>
               }
               order={orders?.filter((order) => order.id === selectedOrder)[0]}
             />
           </div>
-          <OrderDetail order={orders?.filter((order) => order.id === selectedOrder)[0]} />
+          <OrderDetail dictionary={dictionary.orderDetails} order={orders?.filter((order) => order.id === selectedOrder)[0]} />
         </div>
       )}
     </section>

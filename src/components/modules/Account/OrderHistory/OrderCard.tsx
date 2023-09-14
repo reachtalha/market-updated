@@ -16,9 +16,10 @@ type Props = {
   placedAt: Date;
   selectedOrder: string;
   setSelectedOrder: React.Dispatch<React.SetStateAction<string>>;
+  dictionary: any
 };
 
-function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: Props) {
+function OrderCard({ dictionary, id, products, placedAt, setSelectedOrder, selectedOrder }: Props) {
   const router = useRouter();
   const handleClick = () => {
     console.log(window.innerWidth);
@@ -37,11 +38,11 @@ function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: 
       }`}
     >
       <span>
-        <span className="font-medium">Order ID:</span> {id}
+        <span className="font-medium">{dictionary.orderIdLabel}</span> {id}
       </span>
       <hr className="border-b-[1px] border-neutral-100" />
       <span className="text-sm">
-        <h6 className="font-medium text-base">Products:</h6>
+        <h6 className="font-medium text-base">{dictionary.productsLabel}</h6>
         <ul className="space-y-1 mt-1">
           {products.map((product) => (
             <li key={product.id} className="flex capitalize gap-x-2 items-center">
@@ -60,7 +61,7 @@ function OrderCard({ id, products, placedAt, setSelectedOrder, selectedOrder }: 
       </span>
       <hr className="border-b-[1px] border-neutral-100" />
       <span>
-        <span className="font-medium">Date Placed:</span> {placedAt.toDateString()}
+        <span className="font-medium">{dictionary.datePlacedLabel}</span> {placedAt.toDateString()}
       </span>
     </div>
   );

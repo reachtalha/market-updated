@@ -41,15 +41,15 @@ export default function Market({
       <section className="bg-black py-10 md:py-16">
         <BoxedContent>
           <header className="text-sm flex-wrap gap-y-4 md:text-lg text-white flex justify-between items-center mb-10">
-            <h5 className="uppercase">Our Featured And Latest Experts</h5>
+            <h5 className="uppercase">{dictionary.market.featuredExperts.heading}</h5>
             <Link
               href="/experts"
               className="border-2 uppercase duration-200 text-sm 2xl:text-base transition-colors ease-in w-fit bg-transparent hover:bg-neutral-50 hover:text-neutral-900 text-neutral-50 rounded-full px-6 py-2"
             >
-              Explore Expert Categories
+              {dictionary.market.featuredExperts.exploreExpertCategoriesBtnLabel}
             </Link>
           </header>
-          <FeaturedExperts />
+          <FeaturedExperts dictionary={dictionary}  />
         </BoxedContent>
       </section>
       <TakeQuizSection />

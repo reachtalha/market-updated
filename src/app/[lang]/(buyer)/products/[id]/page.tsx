@@ -5,6 +5,8 @@ import Product from '@/components/common/Buyer/Products/ProductDetails';
 import { notFound } from 'next/navigation';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import { Locale } from '@/i18n-config';
+import { getDictionary } from '@/get-dictionary';
 
 type Product = {
   id: string;
@@ -27,18 +29,22 @@ const getProduct = async (id: string) => {
   return product;
 };
 
-type props = { params: { id: string } };
+type props = { params: { id: string, lang: Locale } };
 export default async function Page({ params }: props) {
   const { id } = params;
   const product = await getProduct(id);
+  const dictionary = await getDictionary(params.lang);
 
   if (!product) return notFound();
 
   return (
     <BoxedContent className="py-20 mt-8">
-      <Product productJSON={JSON.stringify(product)} />
+      <Product dictionary={dictionary} productJSON={JSON.stringify(product)} />
       <div className="py-5 md:py-10">
-        <OrganicSimplifiedSection />
+        <OrganicSimplifiedSection
+          title={dictionary.productDetails.bloggingSection.title}
+          tag={dictionary.productDetails.bloggingSection.tag}
+        />
       </div>
     </BoxedContent>
   );

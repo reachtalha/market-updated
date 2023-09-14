@@ -1,12 +1,14 @@
-import React from 'react';
 import OrderDetail from '@/components/modules/Account/OrderHistory/OrderDetail';
 import CustomerCard from './CustomerCard';
 import { db } from '@/lib/firebase/client';
 import { doc, getDoc } from 'firebase/firestore';
+import { Locale } from '@/i18n-config';
+import { getDictionary } from '@/get-dictionary';
 
 type Props = {
   params: {
     id: string;
+    lang: Locale
   };
 };
 
@@ -75,6 +77,7 @@ type Order = {
 
 const page = async ({ params }: Props) => {
   const order: Order = (await getOrder(params.id)) as Order;
+  const dictionary = await getDictionary(params.lang);
 
   return (
     <div className="container w-[95%] flex flex-col m-auto lg:w-full font-american px-1 md:px-5 py-10 md:py-20">
@@ -101,7 +104,7 @@ const page = async ({ params }: Props) => {
       <div className=" flex flex-col h-full md:flex-row gap-y-10 md:gap-x-5 ">
         <div className="w-full lg:w-3/5">
           <div>
-            <OrderDetail order={order} />
+            <OrderDetail dictionary={dictionary.account.orderHistory.orderDetails} order={order} />
           </div>
         </div>
         <div className="flex flex-col w-full items-start gap-y-2 md:w-2/5 ">

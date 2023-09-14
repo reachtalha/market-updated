@@ -65,6 +65,40 @@
       "tag": "@allorganicsmarket"
     }
   },
+  "productDetails": {
+    "bloggingSection": {
+      "title": "#OrganicSimplified",
+      "tag": "@allorganicsmarket"
+    },
+    "reviews": {
+      "noReviewsFound": "No reviews as of yet",
+      "leaveReviewLabel": "Be the first to leave a review and share your experience!",
+      "averageRatingLabel": "AVERAGE RATING",
+      "reviewsLabel": "reviews",
+      "showMoreBtnLabel": "show more"
+    },
+    "reviewsLabel": "reviews",
+    "noReviewsLabel": "No reviews yet",
+    "chooseSizeLabel": "Choose Size:",
+    "chooseColorLabel": "Choose Color:",
+    "priceLabel": "Price",
+    "removeFromWishlistLabel": "Remove from Wishlist",
+    "addToWishlistLabel": "Save in Wishlist",
+    "chatWithSellerLabel": "Chat with Seller"
+  },
+  "expertDetails": {
+    "biographyLabel": "biography",
+    "topicsLabel": "topics",
+    "blogTitle": "Blog"
+  },
+  "market": {
+    "featuredExperts": {
+      "heading": "Our Featured And Latest Experts",
+      "exploreExpertCategoriesBtnLabel": "Explore Expert Categories",
+      "exploreExpertBtnLabel": "Explore",
+      "expertLabel": "Expert"
+    }
+  },
   "auth": {
     "common": {
       "orLabel": "OR",
@@ -188,6 +222,77 @@
         "heading": "No Blogs Found",
         "subHeading": "Oops! No blogs yet, but our influencers are hard at work. Don&apos;t miss out on our amazing products! Explore now for lifestyle-enhancing finds.",
         "exploreProductsBtnLabel": "Explore Products"
+      }
+    }
+  },
+  "account": {
+    "sectionHeadings": {
+      "profile": "Profile Settings",
+      "wishList": "Wish List",
+      "orderHistory": "Order History"
+    },
+    "wishList": {
+      "noProductsFoundLabel": "No products found"
+    },
+    "orderHistory": {
+      "myOrdersLabel": "My Orders",
+      "noOrdersFoundLabel": "No Orders found",
+      "orderDetailsLabel": "Order Details",
+      "reviewBtnLabel": "Review",
+      "orderDetails": {
+        "productsLabel": "PRODUCTS",
+        "summaryLabel": "Summary",
+        "subTotalLabel": "Subtotal",
+        "shippingLabel": "Shipping",
+        "orderTotalLabel": "Order Total"
+      },
+      "orderCard": {
+        "orderIdLabel": "Order ID:",
+        "productsLabel": "Products:",
+        "datePlacedLabel": "Date Placed:"
+      }
+    },
+    "profile": {
+      "editBtnLabel": "Edit",
+      "addProfileLabel": "Add profile picture",
+      "cancelBtnLabel": "Cancel",
+      "updateBtnLabel": "Update",
+      "updatePasswordLabel": "Password",
+      "updateProfileLabel": "Profile",
+      "currentPassword": {
+        "label": "Current Password",
+        "placeholder": "Enter Current Password",
+        "error": "required"
+      },
+      "newPassword": {
+        "label": "New Password",
+        "placeholder": "Enter New Password",
+        "error": "required"
+      },
+      "confirmPassword": {
+        "label": "Confirm Password",
+        "placeholder": "Enter Confirm Password",
+        "error": "required"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Email",
+        "error": "required"
+      },
+      "name": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "error": "Your name doesn&apos;t look valid"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Phone",
+        "error": "Phone doesn`t look valid"
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "Address",
+        "error": "Address doesn`t look valid"
       }
     }
   }

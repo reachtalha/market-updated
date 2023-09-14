@@ -8,6 +8,7 @@ import product1 from '@/assets/images/product1.webp';
 
 type Props = {
   order: any;
+  dictionary: any;
 };
 
 type OrderDetailProps = {
@@ -65,7 +66,7 @@ const SummaryItem = ({ title, amount }: { title: string; amount: number }) => {
   );
 };
 
-const OrderDetail = ({ order }: Props) => {
+const OrderDetail = ({ order, dictionary }: Props) => {
   const getSubtotal = () => {
     return order.products.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
   };
@@ -76,7 +77,7 @@ const OrderDetail = ({ order }: Props) => {
   return (
     <div className="sticky flex flex-col gap-y-5 top-24 w-full  ">
       <div className="border border-gray-400 rounded-xl flex flex-col p-5">
-        <span className="font-medium uppercase">Products</span>
+        <span className="font-medium uppercase">{dictionary.productsLabel}</span>
         {order.products.map((p: any, index: number) => (
           <OrderDetailCard
             key={index}
@@ -91,15 +92,15 @@ const OrderDetail = ({ order }: Props) => {
       </div>
       <div className="flex flex-col lg:flex-row gap-y-5 md:gap-x-5">
         <div className="border rounded-xl p-5 w-full gap-y-2 flex flex-col border-gray-400">
-          <span className="font-medium uppercase">Summary</span>
+          <span className="font-medium uppercase">{dictionary.summaryLabel}</span>
 
-          <SummaryItem title="Subtotal" amount={getSubtotal().toFixed(2)} />
-          <SummaryItem title="Shipping" amount={order?.shipping.charges} />
+          <SummaryItem title={dictionary.subTotalLabel} amount={getSubtotal().toFixed(2)} />
+          <SummaryItem title={dictionary.shippingLabel} amount={order?.shipping.charges} />
           <hr />
-          <SummaryItem title="Total" amount={getTotal().toFixed(2)} />
+          <SummaryItem title={dictionary.totalLabel} amount={getTotal().toFixed(2)} />
         </div>
         <div className="border border-gray-400 w-full rounded-xl p-5">
-          <span className="uppercase font-medium">Shipping</span>
+          <span className="uppercase font-medium">{dictionary.shippingLabel}</span>
           <OrderDetailCard
             title={order?.shipping.name || 'Standard'}
             unit={`Delivery within ${order?.shipping.days} days`}

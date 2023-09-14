@@ -14,6 +14,7 @@ import { Order } from './columns';
 import { MoveRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
+import useLocale from '@/hooks/useLocale';
 
 interface DataTableProps<TValue> {
   columns: ColumnDef<Order, TValue>[];
@@ -21,6 +22,7 @@ interface DataTableProps<TValue> {
 }
 
 export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
+  const locale = useLocale();
   const router = useRouter();
   const table = useReactTable({
     data,
@@ -65,7 +67,7 @@ export function DataTable<TValue>({ columns, data }: DataTableProps<TValue>) {
                   <MoveRight
                     size={15}
                     onClick={() => {
-                      router.push(`/seller/orders/${row?.original?.id}`);
+                      router.push(`/${locale}/seller/orders/${row?.original?.id}`);
                     }}
                     className="cursor-pointer"
                   />
