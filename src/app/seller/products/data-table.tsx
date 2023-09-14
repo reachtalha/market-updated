@@ -31,12 +31,10 @@ import { db } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
 import { mutate } from 'swr';
 import DropDown from './DropDown';
-import { useRouter, useSearchParams } from 'next/navigation';
-import SortByDropdown from '@/components/common/SortByDropdown';
-import { useState } from 'react';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import DeleteImage from '@/utils/handlers/image/DeleteImage';
-
-import { RECORDS_PER_PAGE } from './page';
+import { RECORDS_PER_PAGE } from './constants';
 interface DataTableProps<TValue> {
   columns: ColumnDef<Product, TValue>[];
   data: Product[];
@@ -65,8 +63,19 @@ DataTableProps<TValue>) {
   const params = useSearchParams();
   const sort = params.get('sort') || 'latest';
   const lastDoc = params.get('lastDoc') || null;
+  const paramsQuery = params.get('query') || null;
+  let page: any = params.get('page') || 0;
+  const isNext = params.get('isNext');
   const [loading, setLoading] = useState(false);
-  const queryParams: any = [];
+  const [dataEnded, setDataEnded] = useState(false);
+
+  useEffect(() => {
+    if (!data || data.length < RECORDS_PER_PAGE) {
+      setDataEnded(true);
+    } else {
+      setDataEnded(false);
+    }
+  }, [data]);
 
   async function deleteProduct(id: string) {
     try {
@@ -121,7 +130,7 @@ DataTableProps<TValue>) {
       await Promise.all([moreImages]);
 
       toast.success('Product Successfully Deleted');
-      mutate('sellerProducts');
+      router.refresh();
     } catch (e) {
       console.log(e);
       console.log('Error occured');
@@ -133,16 +142,19 @@ DataTableProps<TValue>) {
   const handleEdit = async (id: string) => {
     router.push(`/seller/products/edit/${id}`);
   };
+  const handleSearch = (e: any) => {
+    if (e.key === 'Enter') {
+      const query = e.target?.value;
+      router.replace(
+        `/seller/products?sort=${sort}&lastDoc=${lastDoc}&page=${page}&isNext=${isNext}&query=${query}`
+      );
+    }
+  };
   return (
     <>
       <div className="rounded-md border mt-5">
         <div className="p-5 flex justify-between items-center">
-          <Input
-            type="search"
-            onInput={(e: any) => console.log(e.target?.value)}
-            placeholder="search"
-            className="w-[20%]"
-          />
+          <Input type="search" onKeyDown={handleSearch} placeholder="search" className="w-[20%]" />
           <DropDown sortBy={sort} />
         </div>
         <Table>
@@ -219,13 +231,15 @@ DataTableProps<TValue>) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
-          disabled={!lastDoc || lastDoc === 'null'}
+          disabled={!lastDoc || lastDoc === 'null' || parseInt(page) === 0}
           variant="outline"
           size="sm"
           onClick={() => {
             const lastDoc: any = data[data.length - 1];
-
-            router.replace(`/seller/products?sort=${sort}&lastDoc=${lastDoc.id}&isNext=false`);
+            page = parseInt(page) - 1;
+            router.replace(
+              `/seller/products?sort=${sort}&lastDoc=${lastDoc.id}&page=${page}&isNext=false&query=${paramsQuery}`
+            );
           }}
         >
           Previous
@@ -233,9 +247,13 @@ DataTableProps<TValue>) {
         <Button
           variant="outline"
           size="sm"
+          disabled={dataEnded}
           onClick={() => {
             const lastDoc = data[data.length - 1];
-            router.replace(`/seller/products?sort=${sort}&lastDoc=${lastDoc.id}`);
+            page = parseInt(page) + 1;
+            router.replace(
+              `/seller/products?sort=${sort}&page=${page}&lastDoc=${lastDoc.id}&query=${paramsQuery}`
+            );
           }}
         >
           Next

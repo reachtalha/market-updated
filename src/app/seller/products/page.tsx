@@ -12,18 +12,13 @@ import {
   CollectionReference,
   Query,
   QueryFieldFilterConstraint,
-  endBefore
+  endBefore,
+  getDoc
 } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase/client';
+import { db } from '@/lib/firebase/client';
 import Title from '@/components/common/Seller/Shared/Title';
-import useSwr from 'swr';
-import Loader from '@/components/common/Loader';
-import Error from '@/components/common/Error';
-import { useState, useEffect } from 'react';
-import useSortingStore from '@/state/useSortingStore';
 import { cookies } from 'next/headers';
-
-export const RECORDS_PER_PAGE = 2;
+import { RECORDS_PER_PAGE } from './constants';
 
 async function getData(sort: string, lastDoc?: any, isNext?: string): Promise<Product[]> {
   const sortOptions: any = {
@@ -44,7 +39,6 @@ async function getData(sort: string, lastDoc?: any, isNext?: string): Promise<Pr
   const sortBy = sortOptions[sort] || sortOptions['latest'];
 
   const user = JSON.parse(cookies().get('user')?.value as string);
-  console.log(user.uid, sortBy);
   let queryBase: CollectionReference | Query = collection(db, 'products');
   let queryCondition: QueryFieldFilterConstraint | any = where('uid', '==', user.uid);
   let q = query(
@@ -55,22 +49,31 @@ async function getData(sort: string, lastDoc?: any, isNext?: string): Promise<Pr
   );
 
   if (lastDoc) {
-    if (isNext === 'true') {
-      q = query(
-        queryBase,
-        queryCondition,
-        orderBy(sortBy.name, sortBy.order),
-        startAfter(lastDoc.name),
-        limit(RECORDS_PER_PAGE)
-      );
-    } else {
-      q = query(
-        queryBase,
-        queryCondition,
-        orderBy(sortBy.name, sortBy.order),
-        endBefore(lastDoc.name),
-        limit(RECORDS_PER_PAGE)
-      );
+    const docRef = await getDoc(doc(db, 'products', lastDoc));
+    if (docRef.exists()) {
+      const paginationCondition =
+        sortBy.name === 'name'
+          ? docRef.data().name
+          : sortBy.name === 'type'
+          ? docRef.data().type
+          : new Date(lastDoc.submittedAt.seconds * 1000);
+      if (isNext === 'false') {
+        q = query(
+          queryBase,
+          queryCondition,
+          orderBy(sortBy.name, sortBy.order),
+          endBefore(paginationCondition),
+          limit(RECORDS_PER_PAGE)
+        );
+      } else {
+        q = query(
+          queryBase,
+          queryCondition,
+          orderBy(sortBy.name, sortBy.order),
+          startAfter(paginationCondition),
+          limit(RECORDS_PER_PAGE)
+        );
+      }
     }
   }
 

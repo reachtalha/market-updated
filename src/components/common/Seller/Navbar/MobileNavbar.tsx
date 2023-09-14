@@ -1,12 +1,16 @@
 'use client';
 import React from 'react';
 import { PanelLeftOpen } from 'lucide-react';
+import { useRouter, usePathname } from 'next/navigation';
 import useGlobalStore from '@/state';
 
 type Props = {};
 
 const MobileNavbar = (props: Props) => {
   const { showSidebar, setShowSidebar } = useGlobalStore((state: any) => state);
+  const pathname = usePathname();
+  const router = useRouter();
+  console.log(pathname);
   return (
     <div className="sm:hidden h-14 w-full border-b px-2 flex flex-row items-center justify-center">
       {!showSidebar && (
