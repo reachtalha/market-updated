@@ -11,7 +11,20 @@ import { ProductsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 import { Button } from '@/components/ui/button';
-import { getDocs, collection, query, where, limit, startAfter, orderBy } from 'firebase/firestore';
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  limit,
+  startAfter,
+  orderBy,
+  CollectionReference,
+  Query,
+  QueryFieldFilterConstraint,
+  updateDoc,
+  doc
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSWR, { mutate } from 'swr';
 
@@ -19,97 +32,52 @@ import FeaturesShops from '../FeaturesShops';
 import useSortingStore from '@/state/useSortingStore';
 import useProductTypeSlug from '@/hooks/useProductTypeSlug';
 import { useInView } from 'react-intersection-observer';
+import { useSearchParams } from 'next/navigation';
 
+const RECORDS_PER_PAGE = 6;
 const getProducts: any = async (
   category: string,
-  allCategories: any,
-  noOfRecords: number,
-  foryou?: boolean,
   type?: string,
-  lastDoc?: any
+  lastDoc?: any,
+  rating?: string
 ): Promise<any> => {
   let products: any = [];
+  let queries: any = [];
+  let queryBase: CollectionReference | Query = collection(db, 'products');
+  if (category?.trim() === 'organic clothing') {
+    category = 'organic clothing & apparel';
+  }
+
+  if (rating) {
+    queries.push(where('rating', '>=', parseInt(rating)));
+  }
+  if (category && category?.toLowerCase() !== 'all') {
+    queries.push(where('category', '==', `${category.toLowerCase()}`));
+  }
+  if (type != null) {
+    queries.push(where('type', '==', `${type.toLowerCase()}`));
+  }
+  let orderByCondition = orderBy('__name__');
+  let startAfterCondition = startAfter(lastDoc);
 
   if (!lastDoc) {
-    const docs = await getDocs(query(collection(db, 'products'), orderBy('__name__'), limit(1)));
-
+    const docs = await getDocs(query(queryBase, orderByCondition, limit(1)));
     lastDoc = docs.docs[0].id;
   }
 
-  if (category === 'all' || category === 'All' || !category) {
-    let docRef;
-    if (foryou) {
-      const list = allCategories.map((cat: any) => cat.subCategories).flat();
+  const docRef = await getDocs(
+    query(
+      queryBase,
+      ...queries,
+      orderBy('rating'),
+      orderByCondition,
+      startAfterCondition,
+      limit(RECORDS_PER_PAGE)
+    )
+  );
 
-      docRef = await getDocs(
-        query(
-          collection(db, 'products'),
-          where('type', 'in', list.slice(0, 29)),
-          orderBy('__name__'),
-          startAfter(lastDoc),
-          limit(noOfRecords)
-        )
-      );
-    } else if (type != null) {
-      docRef = await getDocs(
-        query(
-          collection(db, 'products'),
-          where('type', '==', `${type.toLowerCase()}`),
-          orderBy('__name__'),
-          startAfter(lastDoc),
-          limit(noOfRecords)
-        )
-      );
-    } else {
-      docRef = await getDocs(
-        query(
-          collection(db, 'products'),
-          orderBy('__name__'),
-          startAfter(lastDoc),
-          limit(noOfRecords)
-        )
-      );
-    }
+  products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-    products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  } else {
-    if (category.trim() === 'organic clothing') {
-      category = 'organic clothing & apparel';
-    }
-    const docRef = await getDocs(
-      query(
-        collection(db, 'products'),
-        where('category', '==', `${category.toLowerCase()}`),
-        orderBy('__name__'),
-        startAfter(lastDoc),
-        limit(noOfRecords)
-      )
-    );
-    products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  }
-
-  const _products = products.map(async (product: any) => {
-    product.price =
-      product.SKU?.length === 1
-        ? product.SKU[0].price
-        : product.SKU.sort((a: any, b: any) => a.price - b.price)[0].price;
-
-    const reviewDocs = await getDocs(
-      query(collection(db, 'reviews'), where('productId', '==', product.id))
-    );
-
-    const reviews = reviewDocs.docs.map((doc) => doc.data());
-    let rating = 4;
-    if (reviews.length > 0) {
-      rating =
-        reviews?.reduce((acc: number, review: any) => acc + review.rating, 0) / reviews?.length;
-    }
-
-    product.rating = rating;
-    return product;
-  });
-
-  products = await Promise.all(_products);
   return products;
 };
 
@@ -117,10 +85,12 @@ type ProductsProps = {
   categories: Category[];
   foryou?: boolean;
 };
-export default function Products({ categories, foryou }: ProductsProps) {
+export default function Products({ categories }: ProductsProps) {
   const category = useCategorySlug();
   const type = useProductTypeSlug();
   const { ref, inView } = useInView();
+  const params = useSearchParams();
+  const rating = params.get('rating');
 
   const [selectedSubCategory, setSelectedSubCategory] = useState(
     category === 'all'
@@ -135,8 +105,8 @@ export default function Products({ categories, foryou }: ProductsProps) {
   const [loading, setLoading] = useState<any>(null);
 
   let { data, error, isLoading } = useSWR(
-    [`${foryou && 'foryou-'}products-${category}`, `products-${type}`, selectedSubCategory],
-    () => getProducts(category, categories, 6, foryou, type, false)
+    [`products-${category}`, `products-${type}`, selectedSubCategory],
+    () => getProducts(category, type, false, rating)
   );
 
   useEffect(() => {
@@ -178,14 +148,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
   const getNewProducts = async () => {
     setLoading(true);
     try {
-      const response = await getProducts(
-        category,
-        categories,
-        6,
-        foryou,
-        type,
-        products[products.length - 1]?.id
-      );
+      const response = await getProducts(category, type, products[products.length - 1]?.id);
       if (response.length < 6) setProductsEnded(true);
 
       if (response[response.length - 1]?.id !== products[products.length - 1]?.id)
@@ -252,7 +215,7 @@ export default function Products({ categories, foryou }: ProductsProps) {
                 ))
             ) : (
               <div className="text-center flex items-center justify-center  w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
-                No products found {foryou && 'for you'}
+                No products found
               </div>
             )}
           </div>
@@ -264,37 +227,11 @@ export default function Products({ categories, foryou }: ProductsProps) {
                 <div ref={ref}>
                   <Loader />
                 </div>
-                // <Button disabled={loading} onClick={getNewProducts}>
-                //   {loading ? 'Loading...' : 'Load More'}
-                // </Button>
               )}
             </div>
           )}
         </div>
       </BoxedContent>
-
-      {foryou && (
-        <>
-          <section className="bg-black py-10 md:py-16">
-            <BoxedContent>
-              <header className="text-sm flex-wrap gap-y-4 md:text-lg text-white flex justify-between items-center mb-10">
-                <h5 className="uppercase">Shops</h5>
-                <Button
-                  variant="outline"
-                  size="resp"
-                  className="border-2 uppercase w-fit bg-transparent text-white rounded-3xl"
-                >
-                  Explore Shop Categories
-                </Button>
-              </header>
-              <FeaturesShops />
-            </BoxedContent>
-          </section>
-          <div className="py-16 px-10">
-            <OrganicSimplifiedSection />
-          </div>
-        </>
-      )}
     </div>
   );
 }

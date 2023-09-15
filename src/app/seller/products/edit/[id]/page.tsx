@@ -30,7 +30,9 @@ const Page = async (props: Props) => {
         SKU: product.SKU,
         coverImage: product.coverImage,
         moreImages: product.moreImages,
-        gender: product.gender
+        gender: product.gender,
+        rating: product.rating,
+  
       }}
       isEdit={true}
     />

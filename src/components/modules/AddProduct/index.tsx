@@ -63,6 +63,8 @@ type FormValues = {
   price: string;
   quantity: string;
   unit: string;
+  rating: number;
+  SKU: any[];
 };
 
 type props = {
@@ -141,7 +143,11 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
           type: data.type?.toLocaleLowerCase(),
           updatedAt: Timestamp.fromDate(new Date()),
           coverImage: coverImageURL || defaultValues.coverImage,
-          moreImages: otherImagesURL
+          moreImages: otherImagesURL,
+          price:
+            data.SKU.length === 1
+              ? data.SKU[0].price
+              : data.SKU.sort((a: any, b: any) => a.price - b.price)[0].price
         };
 
         await updateDoc(doc(db, 'products', `${defaultValues.id}`), obj);
@@ -158,8 +164,13 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
           coverImage: coverImageURL,
           moreImages: otherImagesURL,
           shopName: shop.name,
+          price:
+            data.SKU.length === 1
+              ? data.SKU[0].price
+              : data.SKU.sort((a: any, b: any) => a.price - b.price)[0].price,
           category: shop.category,
-          status: 'listed'
+          status: 'listed',
+          rating: 0
         };
 
         await addDoc(collection(db, 'products'), obj);

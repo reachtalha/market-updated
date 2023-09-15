@@ -43,8 +43,10 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
       await updateDoc(doc(db, 'users', `${auth.currentUser?.uid}`), {
         pinnedProducts: arrayUnion(id)
       });
+      user.pinnedProdcuts.push(id);
       toast.success('Product added to your pinned products!');
     } catch (error) {
+      
       toast.error('Unable to add the product to your pinned products. Please try again.');
     } finally {
       setLoading(false);
@@ -60,6 +62,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
       await updateDoc(doc(db, 'users', `${auth.currentUser?.uid}`), {
         pinnedProducts: arrayRemove(id)
       });
+      user.pinnedProdcuts.pop(id);
       toast.success('Product removed from your pinned products!');
     } catch (error) {
       toast.error('Unable to remove the product from your pinned products. Please try again.');
