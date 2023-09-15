@@ -14,7 +14,7 @@ type Props = {
   email?: string;
 };
 
-export function RecentSales({ sales }: { sales: Props[] }) {
+export function RecentSales({ sales, recentSalesTitle }: { sales: Props[], recentSalesTitle: string }) {
   function getMonthData(month: string) {
     let thisMonth = 0;
     sales.forEach((e: any) => {
@@ -26,7 +26,7 @@ export function RecentSales({ sales }: { sales: Props[] }) {
   return (
     <Card className="col-span-3">
       <CardHeader>
-        <CardTitle>Recent Sales</CardTitle>
+        <CardTitle>{recentSalesTitle}</CardTitle>
         <CardDescription>
           You made {thisMonthSales} {thisMonthSales > 1 ? 'sales' : 'sale'} this month.
         </CardDescription>

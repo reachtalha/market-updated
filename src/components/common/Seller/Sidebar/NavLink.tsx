@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 interface NavLinkProps {
   icon: React.ReactNode;
   href: string;
-  pathname: string;
   title: string;
   subItems: NavLinkProps[];
 }
@@ -15,12 +14,12 @@ interface NavLinkProps {
 interface SubNavLink {
   href: string;
   index: number;
-  pathname: string;
   totalItems: number;
   title: string;
 }
 
-const SubNavLink = ({ href, index, pathname, totalItems, title }: SubNavLink) => {
+const SubNavLink = ({ href, index, totalItems, title }: SubNavLink) => {
+  const { pathname } = window.location;
   return (
     <Link
       href={href}
@@ -40,8 +39,9 @@ const SubNavLink = ({ href, index, pathname, totalItems, title }: SubNavLink) =>
   );
 };
 
-const NavLink = ({ icon, href, pathname, title, subItems }: NavLinkProps) => {
+const NavLink = ({ icon, href, title, subItems }: NavLinkProps) => {
   const [displaySubItems, setDisplaySubItems] = useState(false);
+  const { pathname } = window.location;
 
   return (
     <>
@@ -67,7 +67,6 @@ const NavLink = ({ icon, href, pathname, title, subItems }: NavLinkProps) => {
             title={item.title}
             index={index}
             totalItems={subItems.length - 1}
-            pathname={item.pathname}
             href={item.href}
             key={index}
           />

@@ -15,7 +15,7 @@ type Props = {
   status: string;
 };
 
-export default function Overview({ sales }: { sales: Props[] }) {
+export default function Overview({ sales, overviewTitle }: { sales: Props[], overviewTitle: string }) {
   function getMonthData(month: string) {
     let thisMonth = 0;
     sales.forEach((e: any) => {
@@ -38,7 +38,7 @@ export default function Overview({ sales }: { sales: Props[] }) {
   return (
     <Card className="col-span-4">
       <CardHeader>
-        <CardTitle>Overview</CardTitle>
+        <CardTitle>{overviewTitle}</CardTitle>
       </CardHeader>
       <CardContent className="pl-2">
         <ResponsiveContainer width="100%" height={350}>

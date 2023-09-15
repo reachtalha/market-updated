@@ -24,9 +24,7 @@ type Product = {
 const getProduct = async (id: string) => {
   const docRef = await getDoc(doc(db, 'products', id));
   if (!docRef.exists()) return null;
-
-  let product: Product = { id: docRef.id, ...docRef.data() } as Product;
-  return product;
+  return { id: docRef.id, ...docRef.data() } as Product;
 };
 
 type props = { params: { id: string, lang: Locale } };

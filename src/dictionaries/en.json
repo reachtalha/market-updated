@@ -295,5 +295,26 @@
         "error": "Address doesn`t look valid"
       }
     }
+  },
+  "seller": {
+    "main": {
+      "greetingLabel": "Greeting",
+      "totalRevenueLabel": "Total Revenue",
+      "totalProductsLabel": "Total Products",
+      "totalOrdersLabel": "Total Orders",
+      "activeOrdersLabel": "Active Orders",
+      "overviewTitle": "Overview",
+      "recentSalesTitle": "Recent Sales"
+    },
+    "sidebar": {
+      "dashboardLabel": "Dashboard",
+      "shopLabel": "Shop",
+      "productsLabel": "Products",
+      "allProductsLabel": "All Products",
+      "addProductLabel": "Add Product",
+      "ordersLabel": "Orders",
+      "chatLabel": "Chat",
+      "payoutsLabel": "Payouts"
+    }
   }
 }

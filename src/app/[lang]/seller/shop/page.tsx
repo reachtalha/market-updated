@@ -18,6 +18,8 @@ const getShopData: any = async (): Promise<any> => {
 
 const Page = (props: Props) => {
   const { data: shop, error: shopError, isLoading: shopIsLoading } = useSWR('shop', getShopData);
+  // const shop = await getShopData();
+  console.log({ shop })
 
   if (shopIsLoading)
     return (

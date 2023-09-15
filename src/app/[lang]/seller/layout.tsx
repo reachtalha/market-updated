@@ -1,27 +1,19 @@
-'use client';
-
-import useGlobalStore from '@/state';
-
+import { ReactNode } from 'react';
 import Sidebar from '@/components/common/Seller/Sidebar';
-import MobileNavbar from '@/components/common/Seller/Navbar/MobileNavbar';
+import SellerLayout from '@/components/common/Seller/SellerLayout';
+import { Locale } from '@/i18n-config';
+import { getDictionary } from '@/get-dictionary';
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { showSidebar } = useGlobalStore() as any;
-
+const Layout = async ({ children, params: { lang } }: { children: ReactNode, params: { lang: Locale} }) => {
+  const dictionary = await getDictionary(lang);
   return (
     <div className={`bg-neutral-900 flex  h-screen overflow-hidden  sm:p-1.5 sm:gap-1.5 `}>
       <aside>
-        <Sidebar />
+        <Sidebar dictionary={dictionary} />
       </aside>
-      <section
-        className={`bg-neutral-50  transition-all  duration-1000 overflow-scroll no-scrollbar   text-neutral-900  flex-1 sm:rounded-xl  ${
-          showSidebar && 'tilted-div rounded-xl'
-        }`}
-      >
-        <MobileNavbar />
-
+      <SellerLayout>
         {children}
-      </section>
+      </SellerLayout>
     </div>
   );
 };

@@ -1,9 +1,6 @@
-import React from 'react';
-
+"use client"
 import Link from 'next/link';
-
 import UserProfileDropDown from './UserProfileDropDown';
-
 import Dashboard from '@/assets/icons/system/Dashboard';
 import Cart from '@/assets/icons/system/Cart';
 import Chat from '@/assets/icons/system/Message';
@@ -11,53 +8,51 @@ import Shop from '@/assets/icons/system/Shop';
 import Products from '@/assets/icons/system/Products';
 import NavLink from './NavLink';
 import useGlobalStore from '@/state';
-import { CreditCardIcon, XSquare } from 'lucide-react';
+import { XSquare } from 'lucide-react';
 import useLocale from '@/hooks/useLocale';
 
-const Sidebar = () => {
+const Sidebar = ({ dictionary } : { dictionary: any }) => {
   const locale = useLocale();
   const { showSidebar, setShowSidebar } = useGlobalStore((state: any) => state);
-
-  const pathname = window.location.href;
 
   const list = [
     {
       href: `/${locale}/seller/dashboard`,
       icon: <Dashboard className="w-6 h-6 text-current" />,
-      title: 'Dashboard'
+      title: dictionary.seller.sidebar.dashboardLabel
     },
     {
       href: `/${locale}/seller/shop`,
       icon: <Shop className="w-6 h-6 text-current" />,
-      title: 'Shop'
+      title: dictionary.seller.sidebar.shopLabel
     },
     {
       href: '',
       icon: <Products className="w-6 h-6 text-current" />,
-      title: 'Products',
+      title: dictionary.seller.sidebar.productsLabel,
       subItems: [
         {
           href: `/${locale}/seller/products/`,
           icon: <Products className="w-6 h-6 text-current" />,
-          title: 'All Products'
+          title: dictionary.seller.sidebar.allProductsLabel
         },
 
         {
           href: `/${locale}/seller/products/add`,
           icon: <Products className="w-6 h-6 text-current" />,
-          title: 'Add Products'
+          title: dictionary.seller.sidebar.addProductLabel
         }
       ]
     },
     {
       href: `/${locale}/seller/orders`,
       icon: <Cart className="w-6 h-6 text-current" />,
-      title: 'Orders'
+      title: dictionary.seller.sidebar.ordersLabel
     },
     {
       href: `/${locale}/chat?return_url=seller/dashboard`,
       icon: <Chat className="w-6 h-6 text-current" />,
-      title: 'Chat'
+      title: dictionary.seller.sidebar.chatLabel
     },
     {
       href: `${locale}/seller/payouts`,
@@ -73,7 +68,7 @@ const Sidebar = () => {
           ></path>
         </svg>
       ),
-      title: 'Payouts'
+      title: dictionary.seller.sidebar.payoutsLabel
     }
   ];
   return (
@@ -96,7 +91,6 @@ const Sidebar = () => {
             key={l.href}
             icon={l.icon}
             href={l.href}
-            pathname={pathname}
             title={l.title}
             subItems={l.subItems ? (l.subItems as any) : []}
           />
