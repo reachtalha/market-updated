@@ -95,7 +95,7 @@ export default function ProductReviews({
       </header>
 
       <div className="mt-10 flex items-center justify-between pb-3 border-b border-neutral-900/15">
-        <p>{reviews?.length} reviews</p>
+        <p>{reviews?.length} {dictionary.productDetails.reviews.reviewsLabel}</p>
         <SortByRating sort={sort} setSort={setSort} />
       </div>
       <ul className="">

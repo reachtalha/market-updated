@@ -66,6 +66,10 @@
     }
   },
   "productDetails": {
+    "sizeLabel": "Size",
+    "soldOutBtnLabel": "Sold Out",
+    "loadingBtnLabel": "loading...",
+    "addToCartBtnLabel": "Add to cart",
     "bloggingSection": {
       "title": "#OrganicSimplified",
       "tag": "@allorganicsmarket"
@@ -297,6 +301,138 @@
     }
   },
   "seller": {
+    "products": {
+      "heading": "Products"
+    },
+    "newProduct": {
+      "noShopLabel": "Please Create A Shop First",
+      "stepper": {
+        "basicInfoLabel": "Basic Information",
+        "createSkuLabel": "Create SKU",
+        "detailedDescriptionLabel": "Detailed Description",
+        "addImageLabel": "Add Image"
+      },
+      "basicDetails": {
+        "productName": {
+          "label": "Product Name",
+          "placeholder": "Your Product Name",
+          "error": "Product Name doesn`t look valid"
+        },
+        "productType": {
+          "label": "Product Types",
+          "placeholder": "Select Product Type",
+          "error": "Please select product type"
+        },
+        "gender": {
+          "label": "Gender",
+          "placeholder": "",
+          "error": ""
+        },
+        "unit": {
+          "label": "Select Unit",
+          "placeholder": "",
+          "error": ""
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter your product description",
+          "error": "Description doesn`t look valid"
+        }
+      },
+      "createSku": {
+        "heading": "Create SKU",
+        "color": {
+          "label": "Color"
+        },
+        "measurement": {
+          "label": "Select Measurements"
+        },
+        "price": {
+          "label": "Product Price",
+          "placeholder": "Product Price"
+        },
+        "quantity": {
+          "label": "Quantity",
+          "placeholder": "Quantity"
+        },
+        "skuPriceLabel": "Price",
+        "skuQuantityLabel": "Quantity",
+        "skuMeasurementLabel": "Measurement",
+        "skuColorLabel": "Color",
+        "skuPriceError": "Price cannot be less than 1",
+        "skuQuantityError": "Quantity cannot be less than 1",
+        "skuAllFieldsError": "Please fill out all required fields!"
+      }
+    },
+    "shop": {
+      "stepper": {
+        "shopInfoLabel": "Shop Information",
+        "shopSocialsLabel": "Shop Socials",
+        "addImagesLabel": "Add Images"
+      },
+      "shopInfoForm": {
+        "heading": "Shop Details",
+        "name": {
+          "label": "Shop Name",
+          "placeholder": "Enter Shop Name",
+          "error": "Shop Name doesn`t look valid"
+        },
+        "tagline": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "category": {
+          "label": "Shop Category",
+          "placeholder": "Select shop category",
+          "error": "Please select Shop Category"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Your email",
+          "error": "Hmm… that email doesn&apos;t look valid"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Phone",
+          "error": "Phone doesn`t look valid"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Address",
+          "error": "Address doesn`t look valid"
+        }
+      },
+      "socialsForm": {
+        "heading": "Shop Socials",
+        "fb": {
+          "label": "Facebook URL",
+          "placeholder": "Enter Facebook URL",
+          "error": "URL doesn`t look valid"
+        },
+        "insta": {
+          "label": "Instagram URL",
+          "placeholder": "Enter Instagram URL",
+          "error": "URL doesn`t look valid"
+        },
+        "twitter": {
+          "label": "Twitter URL",
+          "placeholder": "Enter Twitter URL",
+          "error": "URL doesn`t look valid"
+        },
+        "website": {
+          "label": "Website URL",
+          "placeholder": "Enter Website URL",
+          "error": "URL doesn`t look valid"
+        }
+      },
+      "imagesForm": {
+        "heading": "Add Images",
+        "fileSupportedLabel": "Files Supported:",
+        "maximumSizeLabel": " Maximum Size",
+        "imagePreviewLabel": "Image Preview"
+      }
+    },
     "main": {
       "greetingLabel": "Greeting",
       "totalRevenueLabel": "Total Revenue",

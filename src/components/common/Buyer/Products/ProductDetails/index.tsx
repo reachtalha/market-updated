@@ -134,7 +134,7 @@ export default function Product({ productJSON, dictionary }: { productJSON: any,
           </h1>
 
           <span className="block font-sm text-sm mt-1 capitalize mb-3">
-            Size: {selectedVariant.measurement} {product.unit === 'size' ? '' : product.unit}
+            {dictionary.productDetails.sizeLabel}: {selectedVariant.measurement} {product.unit === 'size' ? '' : product.unit}
           </span>
           <p className="font-medium">{product.description}</p>
 
@@ -202,10 +202,10 @@ export default function Product({ productJSON, dictionary }: { productJSON: any,
             className={`w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500`}
           >
             {selectedVariant.quantity <= 0
-              ? 'Sold Out'
+              ? dictionary.productDetails.soldOutBtnLabel
               : isAddToCartLoading
-              ? 'loading...'
-              : 'Add to cart'}
+              ? dictionary.productDetails.loadingBtnLabel
+              : dictionary.productDetails.addToCartBtnLabel}
           </Button>
           <Button
             disabled={loading || isLoading}

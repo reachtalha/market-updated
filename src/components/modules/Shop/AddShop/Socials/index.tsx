@@ -10,9 +10,10 @@ import { Pencil } from 'lucide-react';
 type Props = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isEdit?: boolean;
+  dictionary: any;
 };
 
-const Index = ({ setStep, isEdit = false }: Props) => {
+const Index = ({ dictionary, setStep, isEdit = false }: Props) => {
   const {
     register,
     trigger,
@@ -27,55 +28,55 @@ const Index = ({ setStep, isEdit = false }: Props) => {
   return (
     <>
       <div className="flex items-center justify-between w-full ">
-        <Title title="Shop Socials" subTitle={'(Optional)'} />
+        <Title title={dictionary.seller.shop.socialsForm.heading} subTitle={'(Optional)'} />
         {isEdit && (
           <Pencil className="cursor-pointer" onClick={() => setEditMode(true)} size={17} />
         )}
       </div>
 
       <div className="space-y-1 w-full mt-3 xl:mt-5">
-        <Label>Facebook URL</Label>
+        <Label>{dictionary.seller.shop.socialsForm.fb.label}</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
-          placeholder="Enter Facebook URL"
+          placeholder={dictionary.seller.shop.socialsForm.fb.placeholder}
           {...register('fbUrl')}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
+        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.socialsForm.fb.error}</span>}
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5">
-        <Label>Instagram URL</Label>
+        <Label>{dictionary.seller.shop.socialsForm.insta.label}</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
-          placeholder="Enter Instagram URL"
+          placeholder={dictionary.seller.shop.socialsForm.insta.placeholder}
           {...register('instaUrl')}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
+        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.socialsForm.insta.error}</span>}
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5">
-        <Label>Twitter URL</Label>
+        <Label>{dictionary.seller.shop.socialsForm.twitter.label}</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
-          placeholder="Enter Twitter URL"
+          placeholder={dictionary.seller.shop.socialsForm.twitter.placeholder}
           {...register('twitterUrl')}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
+        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.socialsForm.twitter.error}</span>}
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5">
-        <Label>Website URL</Label>
+        <Label>{dictionary.seller.shop.socialsForm.website.label}</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
-          placeholder="Enter Website URL"
+          placeholder={dictionary.seller.shop.socialsForm.website.placeholder}
           {...register('websiteUrl')}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">URL doesn`t look valid</span>}
+        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.socialsForm.website.error}</span>}
       </div>
       <div className="flex gap-x-2 mt-5 xl:mt-8">
         {!isEdit && (

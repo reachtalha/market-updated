@@ -1,50 +1,13 @@
-'use client';
-import React from 'react';
-import AddShop from '@/components/modules/Shop/AddShop';
-import { getDocs, collection, where, query } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase/client';
-import useSWR from 'swr';
-import Loader from '@/components/common/Loader';
+import { LocaleType } from '@/app/[lang]/(buyer)/page';
+import Shop from '@/components/modules/Shop';
+import { getDictionary } from '@/get-dictionary';
 
-type Props = {};
-
-const getShopData: any = async (): Promise<any> => {
-  const docRef = await getDocs(
-    query(collection(db, 'shops'), where('uid', '==', `${auth.currentUser?.uid}`))
-  );
-
-  return { id: docRef?.docs[0]?.id, ...docRef?.docs[0]?.data() };
+export const metadata = {
+  title: 'Shop - Seller Central - All Organics',
+  description: 'Seller Shop'
 };
 
-const Page = (props: Props) => {
-  const { data: shop, error: shopError, isLoading: shopIsLoading } = useSWR('shop', getShopData);
-  // const shop = await getShopData();
-  console.log({ shop })
-
-  if (shopIsLoading)
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <Loader />
-      </div>
-    );
-
-  const defaultValues = {
-    id: shop?.id || '',
-    name: shop?.name || '',
-    tagline: shop?.tagline || '',
-    category: shop?.category || '',
-    email: shop?.email || '',
-    phone: shop?.phone || '',
-    address: shop?.shopAddress || '',
-    fbUrl: shop?.facebookURL || '',
-    instaUrl: shop?.instaURL || '',
-    twitterUrl: shop?.twitterURL || '',
-    websiteUrl: shop?.websiteURL || '',
-    coverImage: shop?.coverImage || '',
-    logoImage: shop?.logo || ''
-  };
-
-  return <AddShop defaultValues={defaultValues} />;
-};
-
-export default Page;
+export default async function Page({ params: { lang }}: LocaleType){
+  const dictionary = await getDictionary(lang);
+  return <Shop dictionary={dictionary} />
+}

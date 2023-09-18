@@ -28,28 +28,7 @@ import UploadImage from '@/utils/handlers/image/UploadImage';
 import Loader from '@/components/common/Loader';
 import EditNavbar from '@/components/common/Seller/Shared/EditNavbar';
 
-const STEPPER_DATA = [
-  {
-    title: 'Basic Information',
-    step: 1,
-    icon: <List size={16} />
-  },
-  {
-    title: 'Create SKU',
-    step: 2,
-    icon: <Package2 size={16} />
-  },
-  {
-    title: 'Detailed Description',
-    step: 3,
-    icon: <FileText size={16} />
-  },
-  {
-    title: 'Add Image',
-    step: 4,
-    icon: <Image size={16} />
-  }
-];
+
 
 type FormValues = {
   coverImage: string;
@@ -68,9 +47,10 @@ type FormValues = {
 type props = {
   defaultValues?: any;
   isEdit?: boolean;
+  dictionary: any;
 };
 
-const AddProduct = ({ defaultValues, isEdit }: props) => {
+const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
   const {
     data: shop,
     error,
@@ -99,6 +79,29 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
   const { emptySKUList, setInitialSKUList } = useGlobalStore() as any;
   const methods = useForm<FormValues>({ defaultValues, shouldUnregister: false });
   const { handleSubmit, reset } = methods;
+
+  const STEPPER_DATA = [
+    {
+      title: dictionary.seller.newProduct.stepper.basicInfoLabel,
+      step: 1,
+      icon: <List size={16} />
+    },
+    {
+      title: dictionary.seller.newProduct.stepper.createSkuLabel,
+      step: 2,
+      icon: <Package2 size={16} />
+    },
+    {
+      title: dictionary.seller.newProduct.stepper.detailedDescriptionLabel,
+      step: 3,
+      icon: <FileText size={16} />
+    },
+    {
+      title: dictionary.seller.newProduct.stepper.addImageLabel,
+      step: 4,
+      icon: <Image size={16} />
+    }
+  ];
 
   useEffect(() => {
     if (isEdit) {
@@ -187,7 +190,7 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
   if (!shop && !isEdit)
     return (
       <div className="h-full w-full grid place-content-center text-gray-500">
-        Please Create A Shop First
+        {dictionary.seller.newProduct.noShopLabel}
       </div>
     );
   return (
@@ -201,11 +204,12 @@ const AddProduct = ({ defaultValues, isEdit }: props) => {
           )}
 
           <div className="w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] mx-auto mt-5 2xl:mt-16 pb-5">
-            {step === 1 && <BasicDetails isEdit={isEdit} setStep={setStep} types={shop.types} />}
-            {step === 2 && <CreateSKU isEdit={isEdit} setStep={setStep} />}
+            {step === 1 && <BasicDetails dictionary={dictionary} isEdit={isEdit} setStep={setStep} types={shop.types} />}
+            {step === 2 && <CreateSKU dictionary={dictionary} isEdit={isEdit} setStep={setStep} />}
             {step === 3 && <DetailedDescription isEdit={isEdit} setStep={setStep} />}
             {step === 4 && (
               <AddImages
+                dictionary={dictionary}
                 isEdit={isEdit}
                 images={{
                   coverImage: defaultValues?.coverImage || '',

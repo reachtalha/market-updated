@@ -32,10 +32,12 @@ const initialSKUState = {
 
 const CreateSKU = ({
   setStep,
-  isEdit = false
+  isEdit = false,
+  dictionary,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isEdit?: boolean;
+  dictionary: any;
 }) => {
   const { setValue, getValues } = useFormContext();
   const [editMode, setEditMode] = useState(false);
@@ -54,7 +56,6 @@ const CreateSKU = ({
 
   const [isColors, setIsColors] = useState<boolean>(false);
 
-  console.log('Is it edit', isEdit);
   useEffect(() => {
     if (isEditSku) setSKU(SKUList.filter((l: any) => l.id === editSkuId)[0]);
   }, [editSkuId]);
@@ -69,17 +70,17 @@ const CreateSKU = ({
 
   function createSKU() {
     if (sku.price < 1) {
-      toast.error('Price cannot be less than 1');
+      toast.error(dictionary.seller.newProduct.createSku.skuPriceError);
       return;
     }
 
     if (sku.quantity < 1) {
-      toast.error('Quantity cannot be less than 1');
+      toast.error(dictionary.seller.newProduct.createSku.skuQuantityError);
       return;
     }
 
     if (!sku.price || !sku.quantity || (isColors && !sku.color) || !sku.measurement) {
-      toast.error('Please fill out all required fields!');
+      toast.error(dictionary.seller.newProduct.createSku.skuAllFieldsError);
       return;
     }
 
@@ -115,14 +116,14 @@ const CreateSKU = ({
   return (
     <>
       <div className="flex items-center justify-between w-full">
-        <Title title="Create SKU" />
+        <Title title={dictionary.seller.newProduct.createSku.heading} />
         {isEdit && (
           <Pencil className="cursor-pointer" onClick={() => setEditMode(true)} size={17} />
         )}
       </div>
 
       <div className="w-full  mt-3 xl:mt-5">
-        <Label>Color</Label>
+        <Label>{dictionary.seller.newProduct.createSku.color.label}</Label>
         <div className="flex flex-wrap items-center justify-between gap-3 w-full">
           <ul className="flex flex-wrap gap-2 capitalize">
             {colorList.map((c, index) => (
@@ -144,7 +145,7 @@ const CreateSKU = ({
         </div>
       </div>
       <div className="space-y-2 w-full mt-3 xl:mt-5">
-        <Label>Select Measurements</Label>
+        <Label>{dictionary.seller.newProduct.createSku.measurement.label}</Label>
         <ul className="flex flex-wrap  items-center  gap-2">
           {sizeList?.map((s, index) => (
             <li
@@ -167,26 +168,26 @@ const CreateSKU = ({
 
       <div className="flex gap-x-2 mt-3 flex-col items-start">
         <div className="space-y-1 w-full ">
-          <Label>Product Price</Label>
+          <Label>{dictionary.seller.newProduct.createSku.price.label}</Label>
           <Input
             onChange={(e: any) => setSKU((prev) => ({ ...prev, price: parseInt(e.target.value) }))}
             className="w-full placeholder:text-sm"
             type="number"
             inputMode="numeric"
-            placeholder="Product Price"
+            placeholder={dictionary.seller.newProduct.createSku.price.placeholder}
             value={sku.price}
             disabled={isEdit && !editMode}
           />
         </div>
         <div className="space-y-1 flex flex-row items-end gap-x-5 justify-between mt-3 xl:mt-5 w-full">
           <div className="flex-1 space-y-1">
-            <Label>Quantity</Label>
+            <Label>{dictionary.seller.newProduct.createSku.quantity.label}</Label>
             <Input
               onChange={(e) => setSKU((prev) => ({ ...prev, quantity: parseInt(e.target.value) }))}
               className="w-full placeholder:text-sm"
               type="number"
               inputMode="numeric"
-              placeholder="Quantity"
+              placeholder={dictionary.seller.newProduct.createSku.quantity.placeholder}
               value={sku.quantity}
               disabled={isEdit && !editMode}
             />
@@ -221,11 +222,11 @@ const CreateSKU = ({
               </AccordionTrigger>
               <AccordionContent>
                 <ul>
-                  <li>Price: {formatCurrency(l.price)}</li>
-                  <li>Quantity: {l.quantity}</li>
-                  <li>Measurement: {l.measurement}</li>
+                  <li>{dictionary.seller.newProduct.createSku.skuPriceLabel}: {formatCurrency(l.price)}</li>
+                  <li>{dictionary.seller.newProduct.createSku.skuQuantityLabel}: {l.quantity}</li>
+                  <li>{dictionary.seller.newProduct.createSku.skuMeasurementLabel}: {l.measurement}</li>
                   <li className={l.color ? 'inline-block capitalize' : 'hidden'}>
-                    Color: {l.color}
+                    {dictionary.seller.newProduct.createSku.skuColorLabel}: {l.color}
                   </li>
                 </ul>
               </AccordionContent>

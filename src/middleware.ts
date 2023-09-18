@@ -27,8 +27,6 @@ export function middleware(request: NextRequest) {
 
   const user: any = cookies ? JSON.parse(cookies?.value) : { role: '' };
 
-  console.log({ user })
-
   //if not logged in but trying to access account
   if ((pathname.startsWith('/account') || pathname.startsWith('/chat')) && user.role === '') {
     return NextResponse.redirect(new URL('/auth/login', request.nextUrl));
@@ -69,9 +67,12 @@ export function middleware(request: NextRequest) {
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
 
+  console.log({ pathnameIsMissingLocale })
+
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
     const locale = getLocale(request);
+    console.log({ locale })
 
     // e.g. incoming request is /products
     // The new URL is now /en/products

@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import BoxedContent from '@/components/common/BoxedContent';
 import Link from 'next/link';
+import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 const DISCOUNT = 10;
 
@@ -74,7 +75,8 @@ const Footer = ({ dictionary }: { dictionary: any }) => {
             </h6>
             <ul className="space-y-1 text-sm">
               <li className="hover:underline cursor-pointer">Shipping: United States</li>
-              <li className="hover:underline cursor-pointer">Language: English</li>
+              {/*<li className="hover:underline cursor-pointer">Language: English</li>*/}
+              <LocaleSwitcher />
             </ul>
           </div>
         </div>

@@ -1,0 +1,456 @@
+{
+  "topBanner": {
+    "text": "",
+    "exploreProductsLinkText": "",
+    "signUpText": ""
+  },
+  "navbar": {
+    "links": {
+      "forYou": "",
+      "allProducts": "",
+      "market": "",
+      "experts": "",
+      "blogs": "",
+      "account": "",
+      "cart": ""
+    }
+  },
+  "footer": {
+    "subscription": {
+      "heading": "",
+      "emailPlaceholder": ""
+    },
+    "links": {
+      "org": {
+        "privacy": "",
+        "terms": "",
+        "accessibility": ""
+      },
+      "about": {
+        "heading": "",
+        "about": "",
+        "expertsProgram": "",
+        "brandsAndShops": "",
+        "contact": ""
+      },
+      "ordersAndSupport": {
+        "heading": "",
+        "shipping": "",
+        "return": "",
+        "payment": ""
+      },
+      "locationPreferences": {
+        "heading": ""
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "",
+      "subtitle": ""
+    },
+    "experts": {
+      "title": "",
+      "subtitle": "",
+      "expertCardHeading": ""
+    },
+    "featuredProducts": {
+      "heading": ""
+    },
+    "mission": {
+      "text": ""
+    },
+    "bloggingSection": {
+      "title": "",
+      "tag": ""
+    }
+  },
+  "productDetails": {
+    "sizeLabel": "",
+    "soldOutBtnLabel": "",
+    "loadingBtnLabel": "",
+    "addToCartBtnLabel": "",
+    "bloggingSection": {
+      "title": "",
+      "tag": ""
+    },
+    "reviews": {
+      "noReviewsFound": "",
+      "leaveReviewLabel": "",
+      "averageRatingLabel": "",
+      "reviewsLabel": "",
+      "showMoreBtnLabel": ""
+    },
+    "reviewsLabel": "",
+    "noReviewsLabel": "",
+    "chooseSizeLabel": "",
+    "chooseColorLabel": "",
+    "priceLabel": "",
+    "removeFromWishlistLabel": "",
+    "addToWishlistLabel": "",
+    "chatWithSellerLabel": ""
+  },
+  "expertDetails": {
+    "biographyLabel": "",
+    "topicsLabel": "",
+    "blogTitle": ""
+  },
+  "market": {
+    "featuredExperts": {
+      "heading": "",
+      "exploreExpertCategoriesBtnLabel": "",
+      "exploreExpertBtnLabel": "",
+      "expertLabel": ""
+    }
+  },
+  "auth": {
+    "common": {
+      "orLabel": "",
+      "email": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "password": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "socialAuthGoogleLabel": "",
+      "socialAuthFacebookLabel": ""
+    },
+    "login": {
+      "logoutLabel": "",
+      "forgotPasswordLabel": "",
+      "loginBtnLabel": "",
+      "noMemberLabel": "",
+      "registerNowLabel": ""
+    },
+    "register": {
+      "yesMember": "",
+      "loginLabel": "",
+      "joinAsLabel": "",
+      "joinAsRolesLabel": "",
+      "accountTerms": "",
+      "heading": "",
+      "registerBtnLoadingLabel": "",
+      "registerBtnLabel": "",
+      "name": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "password": {
+        "required": "",
+        "min": "",
+        "max": "",
+        "pattern": ""
+      }
+    }
+  },
+  "cart": {
+    "cartHeading": "",
+    "orderSummary": {
+      "heading": "",
+      "subTotalLabel": "",
+      "shippingLabel": "",
+      "orderTotalLabel": "",
+      "checkoutBtnLabel": ""
+    }
+  },
+  "checkout": {
+    "payment": {
+      "heading": ""
+    },
+    "orderSummary": {
+      "heading": "",
+      "subTotalLabel": "",
+      "shippingLabel": "",
+      "orderTotalLabel": "",
+      "confirmOrderBtnLabel": ""
+    },
+    "shippingInfoForm": {
+      "contact": {
+        "heading": "",
+        "email": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        }
+      },
+      "shipping": {
+        "heading": "",
+        "email": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "firstName": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "lastName": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "address": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "city": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "stateOrProvince": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "phone": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        }
+      }
+    }
+  },
+  "blogs": {
+    "existingBlogsPage": {
+      "heading": "",
+      "subHeading": "",
+      "notFound": {
+        "heading": "",
+        "subHeading": "",
+        "exploreProductsBtnLabel": ""
+      }
+    }
+  },
+  "account": {
+    "sectionHeadings": {
+      "profile": "",
+      "wishList": "",
+      "orderHistory": ""
+    },
+    "wishList": {
+      "noProductsFoundLabel": ""
+    },
+    "orderHistory": {
+      "myOrdersLabel": "",
+      "noOrdersFoundLabel": "",
+      "orderDetailsLabel": "",
+      "reviewBtnLabel": "",
+      "orderDetails": {
+        "productsLabel": "",
+        "summaryLabel": "",
+        "subTotalLabel": "",
+        "shippingLabel": "",
+        "orderTotalLabel": ""
+      },
+      "orderCard": {
+        "orderIdLabel": "",
+        "productsLabel": "",
+        "datePlacedLabel": ""
+      }
+    },
+    "profile": {
+      "editBtnLabel": "",
+      "addProfileLabel": "",
+      "cancelBtnLabel": "",
+      "updateBtnLabel": "",
+      "updatePasswordLabel": "",
+      "updateProfileLabel": "",
+      "currentPassword": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "newPassword": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "confirmPassword": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "email": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "name": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "phone": {
+        "label": "",
+        "placeholder": "",
+        "error": ""
+      },
+      "address": {
+        "label": "",
+        "placeholder": "Address",
+        "error": ""
+      }
+    }
+  },
+  "seller": {
+    "products": {
+      "heading": ""
+    },
+    "newProduct": {
+      "noShopLabel": "",
+      "stepper": {
+        "basicInfoLabel": "",
+        "createSkuLabel": "",
+        "detailedDescriptionLabel": "",
+        "addImageLabel": ""
+      },
+      "basicDetails": {
+        "productName": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "productType": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "gender": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "unit": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "description": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        }
+      },
+      "createSku": {
+        "heading": "",
+        "color": {
+          "label": ""
+        },
+        "measurement": {
+          "label": ""
+        },
+        "price": {
+          "label": "",
+          "placeholder": ""
+        },
+        "quantity": {
+          "label": "",
+          "placeholder": ""
+        },
+        "skuPriceLabel": "",
+        "skuQuantityLabel": "",
+        "skuMeasurementLabel": "",
+        "skuColorLabel": "",
+        "skuPriceError": "",
+        "skuQuantityError": "",
+        "skuAllFieldsError": ""
+      }
+    },
+    "shop": {
+      "stepper": {
+        "shopInfoLabel": "",
+        "shopSocialsLabel": "",
+        "addImagesLabel": ""
+      },
+      "shopInfoForm": {
+        "heading": "",
+        "name": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "tagline": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "category": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "email": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "phone": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "address": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        }
+      },
+      "socialsForm": {
+        "heading": "",
+        "fb": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "insta": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "twitter": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        },
+        "website": {
+          "label": "",
+          "placeholder": "",
+          "error": ""
+        }
+      },
+      "imagesForm": {
+        "heading": "",
+        "fileSupportedLabel": "",
+        "maximumSizeLabel": "",
+        "imagePreviewLabel": ""
+      }
+    },
+    "main": {
+      "greetingLabel": "",
+      "totalRevenueLabel": "",
+      "totalProductsLabel": "",
+      "totalOrdersLabel": "",
+      "activeOrdersLabel": "",
+      "overviewTitle": "",
+      "recentSalesTitle": ""
+    },
+    "sidebar": {
+      "dashboardLabel": "",
+      "shopLabel": "",
+      "productsLabel": "",
+      "allProductsLabel": "",
+      "addProductLabel": "",
+      "ordersLabel": "",
+      "chatLabel": "",
+      "payoutsLabel": ""
+    }
+  }
+}

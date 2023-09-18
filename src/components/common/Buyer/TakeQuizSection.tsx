@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { twMerge } from 'tailwind-merge';
 
 type TakeQuizSection = {

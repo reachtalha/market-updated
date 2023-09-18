@@ -26,8 +26,9 @@ type Props = {
   types: String[];
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isEdit?: boolean;
+  dictionary: any;
 };
-const BasicDetails = ({ types, setStep, isEdit = false }: Props) => {
+const BasicDetails = ({ types, setStep, isEdit = false, dictionary }: Props) => {
   const {
     register,
     trigger,
@@ -58,27 +59,27 @@ const BasicDetails = ({ types, setStep, isEdit = false }: Props) => {
         )}
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5 ">
-        <Label>Product Name</Label>
+        <Label>{dictionary.seller.newProduct.basicDetails.productName.label}</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
-          placeholder="Your Product Name"
+          placeholder={dictionary.seller.newProduct.basicDetails.productName.placeholder}
           {...register('name', { required: true })}
           disabled={isEdit && !editMode}
         />
         {errors.name && (
-          <span className="text-sm text-red-500">Product Name doesn`t look valid</span>
+          <span className="text-sm text-red-500">{dictionary.seller.newProduct.basicDetails.productName.error}</span>
         )}
       </div>
       <div className="space-y-1 mt-3 xl:mt-5  w-full">
-        <Label>Product Types</Label>
+        <Label>{dictionary.seller.newProduct.basicDetails.productType.label}</Label>
         <Select
           defaultValue={getValues('type') !== '' ? getValues('type') : undefined}
           onValueChange={handleOnChange}
           disabled={isEdit && !editMode}
         >
           <SelectTrigger className="w-full bg-white capitalize ">
-            <SelectValue placeholder="Select Product Type" />
+            <SelectValue placeholder={dictionary.seller.newProduct.basicDetails.productType.placeholder} />
           </SelectTrigger>
           <SelectContent>
             {types?.map((c: any, index: number) => (
@@ -89,10 +90,10 @@ const BasicDetails = ({ types, setStep, isEdit = false }: Props) => {
           </SelectContent>
         </Select>
 
-        {errors.type && <span className="text-sm text-red-500">Please select product type</span>}
+        {errors.type && <span className="text-sm text-red-500">{dictionary.seller.newProduct.basicDetails.productType.error}</span>}
       </div>
       <div className="w-full mt-3 xl:mt-5 ">
-        <Label>Gender</Label>
+        <Label>{dictionary.seller.newProduct.basicDetails.gender.label}</Label>
         <div className="flex flex-wrap gap-3 w-full">
           {['Male', 'Female', 'Unisex'].map((s, index) => (
             <div className="flex items-center gap-x-2 mt-1" key={index}>
@@ -116,7 +117,7 @@ const BasicDetails = ({ types, setStep, isEdit = false }: Props) => {
         </div>
       </div>
       <div className="w-full mt-3 xl:mt-5 ">
-        <Label className="font-medium text-base text-gray-600">Select Unit</Label>
+        <Label>{dictionary.seller.newProduct.basicDetails.unit.label}</Label>
         <div className="flex flex-wrap gap-3 w-full">
           {UNITS.map((s, index) => (
             <div className="flex items-center gap-x-2 mt-1" key={index}>
@@ -137,17 +138,17 @@ const BasicDetails = ({ types, setStep, isEdit = false }: Props) => {
         </div>
       </div>
       <div className="space-y-1 mt-3 xl:mt-5  w-full">
-        <Label>Description</Label>
+        <Label>{dictionary.seller.newProduct.basicDetails.description.label}</Label>
         <textarea
           rows={4}
           className="resize-none w-full placeholder:text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 overflow-y-auto px-3 py-2 text-sm ring-offset-white border rounded-md"
-          placeholder="Enter your product description"
+          placeholder={dictionary.seller.newProduct.basicDetails.description.placeholder}
           maxLength={280}
           {...register('description', { required: true })}
           disabled={isEdit && !editMode}
         ></textarea>
         {errors.description && (
-          <span className="text-sm text-red-500">Description doesn`t look valid</span>
+          <span className="text-sm text-red-500">{dictionary.seller.newProduct.basicDetails.description.error}</span>
         )}
       </div>
 

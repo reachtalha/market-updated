@@ -20,23 +20,7 @@ import { List, Link, Image } from 'lucide-react';
 import EditNavbar from '@/components/common/Seller/Shared/EditNavbar';
 import UploadImage from '@/utils/handlers/image/UploadImage';
 
-const STEPPER_DATA = [
-  {
-    title: 'Shop Information',
-    step: 1,
-    icon: <List size={16} />
-  },
-  {
-    title: 'Shop Socials',
-    step: 2,
-    icon: <Link size={16} />
-  },
-  {
-    title: 'Add Images',
-    step: 3,
-    icon: <Image size={16} />
-  }
-];
+
 
 type FormValues = {
   id: string;
@@ -61,7 +45,7 @@ const getTypeData = async (category: string) => {
   return types;
 };
 
-const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
+const AddShop = ({ defaultValues, dictionary }: { defaultValues: FormValues, dictionary: any }) => {
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(defaultValues.id !== '');
@@ -157,6 +141,24 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
       setLoading(false);
     }
   };
+
+  const STEPPER_DATA = [
+    {
+      title: dictionary.seller.shop.stepper.shopInfoLabel,
+      step: 1,
+      icon: <List size={16} />
+    },
+    {
+      title: dictionary.seller.shop.stepper.shopSocialsLabel,
+      step: 2,
+      icon: <Link size={16} />
+    },
+    {
+      title: dictionary.seller.shop.stepper.addImagesLabel,
+      step: 3,
+      icon: <Image size={16} />
+    }
+  ];
   return (
     <section className={` h-full ${!isEdit ? 'py-10' : 'pb-10'}  `}>
       <FormProvider {...methods}>
@@ -169,11 +171,12 @@ const AddShop = ({ defaultValues }: { defaultValues: FormValues }) => {
 
           <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] m-auto mt-5 2xl:mt-16">
             {step === 1 && (
-              <ShopInformation setStep={setStep} isEdit={isEdit} types={types as string[]} />
+              <ShopInformation dictionary={dictionary} setStep={setStep} isEdit={isEdit} types={types as string[]} />
             )}
-            {step === 2 && <Socials setStep={setStep} isEdit={isEdit} />}
+            {step === 2 && <Socials dictionary={dictionary} setStep={setStep} isEdit={isEdit} />}
             {step === 3 && (
               <AddImages
+                dictionary={dictionary}
                 setStep={setStep}
                 images={{
                   coverImage: defaultValues.coverImage,

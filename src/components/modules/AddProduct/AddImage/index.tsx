@@ -6,10 +6,11 @@ type Props = {
   loading?: boolean;
   isEdit?: boolean;
   images?: any;
+  dictionary: any
 };
 
-const Index = ({ setStep, loading, isEdit, images }: Props) => {
-  return <AddImages isEdit={isEdit} images={images} setStep={setStep} loading={loading} />;
+const Index = ({ dictionary, setStep, loading, isEdit, images }: Props) => {
+  return <AddImages dictionary={dictionary} isEdit={isEdit} images={images} setStep={setStep} loading={loading} />;
 };
 
 export default Index;

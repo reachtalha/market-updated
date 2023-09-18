@@ -36,6 +36,7 @@ import SortByDropdown from '@/components/common/SortByDropdown';
 import { useEffect, useState } from 'react';
 import DeleteImage from '@/utils/handlers/image/DeleteImage';
 import { promise } from 'zod';
+import useLocale from '@/hooks/useLocale';
 
 interface DataTableProps<TValue> {
   columns: ColumnDef<Product, TValue>[];
@@ -52,6 +53,7 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
   });
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const locale = useLocale();
 
   async function deleteProduct(id: string) {
     try {
@@ -116,7 +118,7 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
   }
 
   const handleEdit = async (id: string) => {
-    router.push(`/seller/products/edit/${id}`);
+    router.push(`/${locale}/seller/products/edit/${id}`);
   };
   return (
     <div className="rounded-md border mt-5">

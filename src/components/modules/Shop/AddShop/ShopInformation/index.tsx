@@ -19,9 +19,10 @@ type Props = {
   types: String[];
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isEdit?: boolean;
+  dictionary: any;
 };
 
-const Index = ({ setStep, types, isEdit = false }: Props) => {
+const Index = ({ dictionary, setStep, types, isEdit = false }: Props) => {
   const {
     register,
     trigger,
@@ -46,42 +47,42 @@ const Index = ({ setStep, types, isEdit = false }: Props) => {
   return (
     <>
       <div className="flex items-center justify-between w-full ">
-        <Title title="Shop Details" />
+        <Title title={dictionary.seller.shop.shopInfoForm.heading} />
         {isEdit && (
           <Pencil className="cursor-pointer" onClick={() => setEditMode(true)} size={17} />
         )}
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5">
-        <Label>Shop Name</Label>
+        <Label>{dictionary.seller.shop.shopInfoForm.name.label}</Label>
         <Input
           className="w-full placeholder:text-sm capitalize"
           type="text"
-          placeholder="Enter Shop Name"
+          placeholder={dictionary.seller.shop.shopInfoForm.name.placeholder}
           {...register('name', { required: true })}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">Shop Name doesn`t look valid</span>}
+        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.name.error}</span>}
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5">
-        <Label>Tagline</Label>
+        <Label>{dictionary.seller.shop.shopInfoForm.tagline.label}</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
-          placeholder="Enter tagline"
+          placeholder={dictionary.seller.shop.shopInfoForm.tagline.placeholder}
           {...register('tagline', { required: true })}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">Tagline doesn`t look valid</span>}
+        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.tagline.error}</span>}
       </div>
       <div className="space-y-1 mt-3 xl:mt-5 w-full">
-        <Label>Shop Category</Label>
+        <Label>{dictionary.seller.shop.shopInfoForm.tagline.category}</Label>
         <Select
           defaultValue={getValues('category') !== '' ? getValues('category') : undefined}
           onValueChange={handleChangeValue}
           disabled={isEdit && !editMode}
         >
           <SelectTrigger className="w-full bg-white capitalize">
-            <SelectValue placeholder="Select shop category" />
+            <SelectValue placeholder={dictionary.seller.shop.shopInfoForm.category.placeholder} />
           </SelectTrigger>
           <SelectContent>
             {types?.map((c: any, index: number) => (
@@ -92,45 +93,45 @@ const Index = ({ setStep, types, isEdit = false }: Props) => {
           </SelectContent>
         </Select>
 
-        {errors.type && <span className="text-sm text-red-500">Please select Shop Category</span>}
+        {errors.type && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.category.error}</span>}
       </div>
 
       <div className="flex space-x-2 flex-row">
         <div className="space-y-1 w-full mt-3 xl:mt-5">
-          <Label>Email</Label>
+          <Label>{dictionary.seller.shop.shopInfoForm.email.label}</Label>
           <Input
             className="w-full placeholder:text-sm"
             type="text"
-            placeholder="Enter Email"
+            placeholder={dictionary.seller.shop.shopInfoForm.email.placeholder}
             {...register('email', { required: true })}
             disabled={isEdit && !editMode}
           />
-          {errors.name && <span className="text-sm text-red-500">Email doesn`t look valid</span>}
+          {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.email.error}</span>}
         </div>
         <div className="space-y-1 w-full mt-3 xl:mt-5">
-          <Label>Phone</Label>
+          <Label>{dictionary.seller.shop.shopInfoForm.phone.label}</Label>
           <Input
             className="w-full placeholder:text-sm"
             type="text"
-            placeholder="Enter Phone Number"
+            placeholder={dictionary.seller.shop.shopInfoForm.phone.placeholder}
             {...register('phone', { required: true })}
             disabled={isEdit && !editMode}
           />
           {errors.name && (
-            <span className="text-sm text-red-500">Phone Number doesn`t look valid</span>
+            <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.phone.error}</span>
           )}
         </div>
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5">
-        <Label>Address</Label>
+        <Label>{dictionary.seller.shop.shopInfoForm.address.label}</Label>
         <Input
           className="w-full placeholder:text-sm"
           type="text"
-          placeholder="Enter Shop Address"
+          placeholder={dictionary.seller.shop.shopInfoForm.address.placeholder}
           {...register('address', { required: true })}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">Address doesn`t look valid</span>}
+        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.address.error}</span>}
       </div>
 
       {(!isEdit || editMode) && (
