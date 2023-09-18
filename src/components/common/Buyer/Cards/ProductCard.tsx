@@ -29,9 +29,9 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
   const role = useRole();
   const router = useRouter();
   const { user } = useCurrentUser();
+  const [isPinned, setIsPinned] = useState(user?.pinnedProducts?.includes(id));
+
   const [loading, setLoading] = useState(false);
-  const isPinned = user?.pinnedProducts?.includes(id);
-  const searchParams = useSearchParams();
 
   const pinProduct = async () => {
     try {
@@ -43,10 +43,11 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
       await updateDoc(doc(db, 'users', `${auth.currentUser?.uid}`), {
         pinnedProducts: arrayUnion(id)
       });
-      user.pinnedProdcuts.push(id);
+
+      setIsPinned(true);
       toast.success('Product added to your pinned products!');
     } catch (error) {
-      
+      console.log(error);
       toast.error('Unable to add the product to your pinned products. Please try again.');
     } finally {
       setLoading(false);
@@ -62,7 +63,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
       await updateDoc(doc(db, 'users', `${auth.currentUser?.uid}`), {
         pinnedProducts: arrayRemove(id)
       });
-      user.pinnedProdcuts.pop(id);
+      setIsPinned(false);
       toast.success('Product removed from your pinned products!');
     } catch (error) {
       toast.error('Unable to remove the product from your pinned products. Please try again.');

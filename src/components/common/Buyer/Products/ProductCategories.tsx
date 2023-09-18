@@ -6,9 +6,9 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 import ReactStars from 'react-stars';
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { useParams, usePathname, useSearchParams } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export type Category = {
   name: string;
@@ -24,7 +24,61 @@ type ProductCategoriesProps = {
   setSelectedSubCategory?: (subCategory: string) => void;
 };
 
+const PriceFilter = () => {
+  const router = useRouter();
+  const path = usePathname();
+  const [price, setPrice] = useState({ min: 0, max: 100 });
+  const params = useSearchParams();
+  const rating = params.get('rating') || '';
+  const category = params.get('category') || '';
+  const subCategory = params.get('subCategory') || '';
+
+  const handleClick = () => {
+    router.replace(
+      `${path}?${'min=' + price.min}${'&max=' + price.max}${'&category=' + category}${
+        '&subCategory=' + subCategory
+      }&rating=${rating}`
+    );
+  };
+  return (
+    <div className="flex flex-col mb-2">
+      <span className="font-medium text-lg">Price</span>
+      <div className="flex items-center space-x-2 px-3">
+        <Input
+          onChange={(e) => {
+            if (e.target.value === '' || parseInt(e.target.value) < 0) return;
+
+            setPrice({ ...price, min: parseInt(e.target.value) });
+          }}
+          value={price.min}
+          min={0}
+          type="number"
+          placeholder="min"
+        />
+
+        <span>-</span>
+        <Input
+          type="number"
+          onChange={(e) => {
+            if (e.target.value === '') return;
+            setPrice({ ...price, max: parseInt(e.target.value) });
+          }}
+          value={price.max}
+          placeholder="max"
+        />
+      </div>
+      <button
+        onClick={handleClick}
+        className="bg-primary text-white w-3/4 m-auto  mt-2 px-2 py-1 rounded"
+      >
+        Go
+      </button>
+    </div>
+  );
+};
+
 const ReviewFilter = ({ value }: { value: number }) => {
+  const router = useRouter();
   const path = usePathname();
   const params = useSearchParams();
   const min = params.get('min') || '';
@@ -32,16 +86,26 @@ const ReviewFilter = ({ value }: { value: number }) => {
   const category = params.get('category') || '';
   const subCategory = params.get('subCategory') || '';
 
+  const handleChange = (rating: number) => {
+    router.replace(
+      `${path}?${'min=' + min}${'&max=' + max}${'&category=' + category}${
+        '&subCategory=' + subCategory
+      }&rating=${rating}`
+    );
+  };
+
   return (
-    <div className="flex space-x-2 flex-row items-end">
-      <Link
-        href={`${path}?${'min=' + min}${'&max=' + max}${'&category=' + category}${
-          '&subCategory=' + subCategory
-        }&rating=${value}`}
-      >
-        <ReactStars value={value} size={15} edit={false} color2={'#000000'} />
+    <div className="mb-2">
+      <span className="font-medium text-lg">Reviews</span>
+      <div className="flex space-x-2 flex-row items-end">
+        <ReactStars
+          onChange={(rating) => handleChange(rating)}
+          value={value}
+          size={15}
+          color2={'#000000'}
+        />
         <span className="text-xs">Or Above</span>
-      </Link>
+      </div>
     </div>
   );
 };
@@ -64,23 +128,9 @@ export default function ProductCategories({
           </AccordionTrigger>
           <AccordionContent>
             <div className="flex flex-col">
-              <div className="flex flex-col">
-                <span className="font-medium text-lg">Price</span>
-                <div className="flex items-center space-x-2 px-3">
-                  <Input min={0} type="number" placeholder="min" />
-                  <span>-</span>
-                  <Input type="number" placeholder="max" />
-                </div>
-              </div>
-              <div>
-                <span className="font-medium text-lg">Reviews</span>
-                <ReviewFilter value={5} />
-                <ReviewFilter value={4} />
-                <ReviewFilter value={3} />
-                <ReviewFilter value={2} />
-                <ReviewFilter value={1} />
-              </div>
-              <span className="font-medium text-lg">Categories</span>
+              <PriceFilter />
+              <ReviewFilter value={5} />
+              <span className="font-medium text-lg mb-2">Categories</span>
               <ul className="space-y-1 uppercase text-sm hover:text-neutral-400">
                 {categories.map((category, idx) => (
                   <li

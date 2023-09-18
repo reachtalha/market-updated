@@ -39,17 +39,26 @@ const getProducts: any = async (
   category: string,
   type?: string,
   lastDoc?: any,
-  rating?: string
+  rating?: string,
+  price?: any
 ): Promise<any> => {
   let products: any = [];
   let queries: any = [];
+  let orderby: any = [];
   let queryBase: CollectionReference | Query = collection(db, 'products');
   if (category?.trim() === 'organic clothing') {
     category = 'organic clothing & apparel';
   }
 
+  // if (price?.min) {
+  //   queries.push(where('price', '>=', parseInt(price.min)));
+  //   queries.push(where('price', '<=', parseInt(price.max)));
+  //   orderby.push(orderBy('pricing'));
+  // }
+
   if (rating) {
     queries.push(where('rating', '>=', parseInt(rating)));
+    orderby.push(orderBy('rating'));
   }
   if (category && category?.toLowerCase() !== 'all') {
     queries.push(where('category', '==', `${category.toLowerCase()}`));
@@ -57,21 +66,21 @@ const getProducts: any = async (
   if (type != null) {
     queries.push(where('type', '==', `${type.toLowerCase()}`));
   }
-  let orderByCondition = orderBy('__name__');
-  let startAfterCondition = startAfter(lastDoc);
+  orderby.push(orderBy('__name__'));
 
   if (!lastDoc) {
-    const docs = await getDocs(query(queryBase, orderByCondition, limit(1)));
-    lastDoc = docs.docs[0].id;
+    const docs = await getDocs(query(queryBase, ...orderby, limit(1)));
+
+    lastDoc = docs.docs[0]?.data();
+    console.log('Here');
   }
 
   const docRef = await getDocs(
     query(
       queryBase,
       ...queries,
-      orderBy('rating'),
-      orderByCondition,
-      startAfterCondition,
+      ...orderby,
+      startAfter(rating ? lastDoc.rating : lastDoc.id),
       limit(RECORDS_PER_PAGE)
     )
   );
@@ -91,6 +100,8 @@ export default function Products({ categories }: ProductsProps) {
   const { ref, inView } = useInView();
   const params = useSearchParams();
   const rating = params.get('rating');
+  const min = params.get('min');
+  const max = params.get('max');
 
   const [selectedSubCategory, setSelectedSubCategory] = useState(
     category === 'all'
@@ -106,7 +117,7 @@ export default function Products({ categories }: ProductsProps) {
 
   let { data, error, isLoading } = useSWR(
     [`products-${category}`, `products-${type}`, selectedSubCategory],
-    () => getProducts(category, type, false, rating)
+    () => getProducts(category, type, false, rating, { min, max })
   );
 
   useEffect(() => {
@@ -148,7 +159,10 @@ export default function Products({ categories }: ProductsProps) {
   const getNewProducts = async () => {
     setLoading(true);
     try {
-      const response = await getProducts(category, type, products[products.length - 1]?.id);
+      const response = await getProducts(category, type, products[products.length - 1], rating, {
+        min,
+        max
+      });
       if (response.length < 6) setProductsEnded(true);
 
       if (response[response.length - 1]?.id !== products[products.length - 1]?.id)

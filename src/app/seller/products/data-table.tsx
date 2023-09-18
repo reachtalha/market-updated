@@ -19,41 +19,26 @@ import {
   doc,
   getDocs,
   query,
-  limit,
   where,
   collection,
   getDoc,
   updateDoc,
-  increment,
-  collectionGroup
+  increment
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
-import { mutate } from 'swr';
 import DropDown from './DropDown';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import DeleteImage from '@/utils/handlers/image/DeleteImage';
 import { RECORDS_PER_PAGE } from './constants';
 interface DataTableProps<TValue> {
   columns: ColumnDef<Product, TValue>[];
   data: Product[];
-  // search: string;
-  // page: number;
-  // total: number;
-  // setSearch: (value: string) => void;
-  // setPage: Function;
+  totalRecords: number;
 }
 
-export function DataTable<TValue>({
-  columns,
-  data
-}: // search,
-// setSearch,
-// page,
-// setPage,
-// total
-DataTableProps<TValue>) {
+export function DataTable<TValue>({ columns, data, totalRecords }: DataTableProps<TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -247,7 +232,7 @@ DataTableProps<TValue>) {
         <Button
           variant="outline"
           size="sm"
-          disabled={dataEnded}
+          disabled={dataEnded || (page + 1) * RECORDS_PER_PAGE >= totalRecords}
           onClick={() => {
             const lastDoc = data[data.length - 1];
             page = parseInt(page) + 1;

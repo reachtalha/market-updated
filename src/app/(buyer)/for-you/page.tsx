@@ -1,11 +1,11 @@
-import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import BoxedContent from '@/components/common/BoxedContent';
 import OrganicSimplifiedSection from '@/components/common/Buyer/OrganicSimplifiedSection';
 import FeaturesShops from '@/components/common/Buyer/FeaturesShops';
 import { Button } from '@/components/ui/button';
-import { doc, getDoc, getDocs, collection, query, where } from 'firebase/firestore';
+import { doc, getDoc, getDocs, collection, query, where, limit, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import { cookies } from 'next/headers';
+import ForYou from '@/components/common/Buyer/For-you';
 const getCategories = async () => {
   const user = JSON.parse(cookies().get('user')?.value as string);
 
@@ -21,7 +21,12 @@ const getCategories = async () => {
 };
 const getProducts = async (categories: any) => {
   const productsRef = await getDocs(
-    query(collection(db, 'products'), where('category', 'in', categories))
+    query(
+      collection(db, 'products'),
+      where('category', 'in', categories),
+      orderBy('__name__'),
+      limit(6)
+    )
   );
 
   if (productsRef.empty) return [];
@@ -40,25 +45,8 @@ export default async function Index() {
 
   return (
     <>
-      <div className="gap-x-5 p-20 mt-8 grid grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
-        {products.length > 0 ? (
-          products.map((_: any, i: number) => (
-            <ProductCard
-              key={i + Math.random()}
-              id={_.id}
-              image={_.coverImage}
-              name={_.name}
-              price={_.price}
-              shop={_.shopName || 'some shop'}
-              type={_.type}
-            />
-          ))
-        ) : (
-          <div className="text-center flex items-center justify-center  w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
-            No products found for you
-          </div>
-        )}
-      </div>
+      <ForYou products={JSON.stringify(products)} categories={JSON.stringify(categories)} />
+
       <section className="bg-black py-10 md:py-16">
         <BoxedContent>
           <header className="text-sm flex-wrap gap-y-4 md:text-lg text-white flex justify-between items-center mb-10">

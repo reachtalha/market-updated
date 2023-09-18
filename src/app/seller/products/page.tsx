@@ -13,7 +13,8 @@ import {
   Query,
   QueryFieldFilterConstraint,
   endBefore,
-  getDoc
+  getDoc,
+  getCountFromServer
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import Title from '@/components/common/Seller/Shared/Title';
@@ -108,6 +109,22 @@ async function getData(sort: string, lastDoc?: any, isNext?: string): Promise<Pr
   }
 }
 
+const getTotalRecords = async () => {
+  const user = JSON.parse(cookies().get('user')?.value as string);
+
+  try {
+    const querySnapshot = await getCountFromServer(
+      query(collection(db, 'products'), where('uid', '==', user.uid))
+    );
+    const totalRecords = querySnapshot.data().count; // This gives you the count of documents
+
+    return totalRecords;
+  } catch (error) {
+    console.error('Error getting documents: ', error);
+    return 0; // Handle the error gracefully
+  }
+};
+
 type Params = {
   [key: string]: string | string[] | undefined;
 };
@@ -115,11 +132,12 @@ type Params = {
 export default async function Products({ searchParams }: { searchParams: Params }) {
   const { sort, lastDoc, isNext } = searchParams;
   const products = await getData(sort as string, lastDoc, isNext as string);
+  const totalRecords = await getTotalRecords();
 
   return (
     <div className="container mx-auto py-20">
       <Title title="Products" />
-      <DataTable columns={columns} data={products} />
+      <DataTable columns={columns} data={products} totalRecords={totalRecords} />
     </div>
   );
 }
