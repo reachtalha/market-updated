@@ -22,6 +22,7 @@ import toast from 'react-hot-toast';
 
 const convertToEmbedUrl = (url: string) => {
   const videoId = extractVideoId(url);
+  console.log();
   if (videoId) {
     return `https://www.youtube.com/embed/${videoId}`;
   }
@@ -29,8 +30,13 @@ const convertToEmbedUrl = (url: string) => {
 };
 
 const extractVideoId = (url: string) => {
-  const regex =
-    /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|u\/\w\/|embed\/|watch\?.+&v=|v\/|e\/|watch\?.+v=|u\/\w\/|v\/|e\/)([^#\&\?]*).*/;
+  let regex: any = '';
+  if (url.includes('youtu.be')) {
+    regex =
+      /(?:\?v=|\/embed\/|\/watch\?v=|youtu\.be\/|\/v\/|\/e\/|\/u\/\w+\/|embed\/|v=|^)([a-zA-Z0-9_-]{11})/;
+  } else
+    regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|u\/\w\/|embed\/|watch\?.+&v=|v\/|e\/|watch\?.+v=|u\/\w\/|v\/|e\/)([^#\&\?]*).*/;
   const match = url.match(regex);
   return match && match[1] ? match[1] : null;
 };
@@ -59,8 +65,16 @@ const AddPinnedContentModal = ({ uid, pinnedLinks }: { uid: string; pinnedLinks:
     if (newLink.includes('instagram') && !newLink.includes('embed'))
       newLink = newLink.split('?')[0] + 'embed/';
 
-    if (newLink.includes('youtube') && !newLink.includes('embed')) {
+    if ((newLink.includes('youtube') || newLink.includes('youtu')) && !newLink.includes('embed')) {
       newLink = convertToEmbedUrl(newLink);
+    }
+    if (
+      (newLink.includes('facebook') || newLink.includes('fb')) &&
+      !newLink.includes('https://www.facebook.com/plugins')
+    ) {
+      newLink = `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(
+        newLink
+      )}&width=500`;
     }
     setLinks((prev) => [...prev, newLink]);
     form.reset();
