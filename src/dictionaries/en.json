@@ -149,6 +149,10 @@
     }
   },
   "cart": {
+    "cartEmptyLabel": "Your Cart is empty!",
+    "exploreProductsLabel": "Explore Products",
+    "checkoutBtnLabel": "Checkout",
+    "viewCartLabel": "View cart",
     "cartHeading": "Shopping Cart",
     "orderSummary": {
       "heading": "Order Summary",

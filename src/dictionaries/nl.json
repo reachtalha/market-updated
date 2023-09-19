@@ -1,381 +1,385 @@
 {
   "topBanner": {
-    "text": "",
-    "exploreProductsLinkText": "",
-    "signUpText": ""
+    "text": "Geniet van 10% korting op uw eerste bestelling.",
+    "exploreProductsLinkText": "Ontdek producten",
+    "signUpText": "Aanmelden"
   },
   "navbar": {
     "links": {
-      "forYou": "",
-      "allProducts": "",
-      "market": "",
-      "experts": "",
-      "blogs": "",
-      "account": "",
-      "cart": ""
+      "forYou": "Voor jou",
+      "allProducts": "Alle producten",
+      "market": "Markt",
+      "experts": "Experts",
+      "blogs": "Blogs",
+      "account": "Rekening",
+      "cart": "Winkelwagen"
     }
   },
   "footer": {
     "subscription": {
-      "heading": "",
-      "emailPlaceholder": ""
+      "heading": "AANMELDEN EN OPSLAAN",
+      "emailPlaceholder": "Vul email adres in"
     },
     "links": {
       "org": {
-        "privacy": "",
-        "terms": "",
-        "accessibility": ""
+        "privacy": "Privacybeleid",
+        "terms": "Gebruiksvoorwaarden",
+        "accessibility": "Toegankelijkheid"
       },
       "about": {
-        "heading": "",
-        "about": "",
-        "expertsProgram": "",
-        "brandsAndShops": "",
-        "contact": ""
+        "heading": "Over alle organische stoffen",
+        "about": "Over",
+        "expertsProgram": "Expertprogramma",
+        "brandsAndShops": "Merken",
+        "contact": "Contact"
       },
       "ordersAndSupport": {
-        "heading": "",
-        "shipping": "",
-        "return": "",
-        "payment": ""
+        "heading": "Bestellingen en ondersteuning",
+        "shipping": "Verzenden",
+        "return": "Retouren en ruilen",
+        "payment": "Betaling"
       },
       "locationPreferences": {
-        "heading": ""
+        "heading": "Locatievoorkeuren"
       }
     }
   },
   "home": {
     "hero": {
-      "title": "",
-      "subtitle": ""
+      "title": "Biologisch leven, eenvoudig",
+      "subtitle": "Met ons zorgvuldig gekozen productassortiment willen we de reis naar een meer bewuste en duurzame levensstijl vereenvoudigen en inspireren."
     },
     "experts": {
-      "title": "",
-      "subtitle": "",
-      "expertCardHeading": ""
+      "title": "Ontmoet onze experts",
+      "subtitle": "ZE DOEN DE PROBEER- EN FOUTEN, DUS DAT IS NIET NODIG.",
+      "expertCardHeading": "Deskundige"
     },
     "featuredProducts": {
-      "heading": ""
+      "heading": "Uitgelichte producten"
     },
     "mission": {
-      "text": ""
+      "text": "Alle organische stoffen"
     },
     "bloggingSection": {
       "title": "",
-      "tag": ""
+      "tag": "@allorganicsmarkt"
     }
   },
   "productDetails": {
-    "sizeLabel": "",
-    "soldOutBtnLabel": "",
-    "loadingBtnLabel": "",
-    "addToCartBtnLabel": "",
+    "sizeLabel": "Maat",
+    "soldOutBtnLabel": "Uitverkocht",
+    "loadingBtnLabel": "bezig met laden...",
+    "addToCartBtnLabel": "Voeg toe aan winkelkar",
     "bloggingSection": {
       "title": "",
-      "tag": ""
+      "tag": "@allorganicsmarkt"
     },
     "reviews": {
-      "noReviewsFound": "",
-      "leaveReviewLabel": "",
-      "averageRatingLabel": "",
-      "reviewsLabel": "",
-      "showMoreBtnLabel": ""
+      "noReviewsFound": "Er zijn nog geen beoordelingen",
+      "leaveReviewLabel": "Laat als eerste een recensie achter en deel uw ervaring!",
+      "averageRatingLabel": "GEMIDDELDE SCORE",
+      "reviewsLabel": "beoordelingen",
+      "showMoreBtnLabel": "laat meer zien"
     },
-    "reviewsLabel": "",
-    "noReviewsLabel": "",
-    "chooseSizeLabel": "",
-    "chooseColorLabel": "",
-    "priceLabel": "",
-    "removeFromWishlistLabel": "",
-    "addToWishlistLabel": "",
-    "chatWithSellerLabel": ""
+    "reviewsLabel": "beoordelingen",
+    "noReviewsLabel": "Nog geen beoordelingen",
+    "chooseSizeLabel": "Kies de maat:",
+    "chooseColorLabel": "Kies een kleur:",
+    "priceLabel": "Prijs",
+    "removeFromWishlistLabel": "Verwijderen uit verlanglijst",
+    "addToWishlistLabel": "Bewaar in verlanglijst",
+    "chatWithSellerLabel": "Chat met de verkoper"
   },
   "expertDetails": {
-    "biographyLabel": "",
-    "topicsLabel": "",
-    "blogTitle": ""
+    "biographyLabel": "biografie",
+    "topicsLabel": "onderwerpen",
+    "blogTitle": "Bloggen"
   },
   "market": {
     "featuredExperts": {
-      "heading": "",
-      "exploreExpertCategoriesBtnLabel": "",
-      "exploreExpertBtnLabel": "",
-      "expertLabel": ""
+      "heading": "Onze aanbevolen en nieuwste experts",
+      "exploreExpertCategoriesBtnLabel": "Ontdek expertcategorieën",
+      "exploreExpertBtnLabel": "Ontdekken",
+      "expertLabel": "Deskundige"
     }
   },
   "auth": {
     "common": {
-      "orLabel": "",
+      "orLabel": "OF",
       "email": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "E-mail",
+        "placeholder": "Jouw email",
+        "error": "Hmm... die e-mail doet dat niet"
       },
       "password": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "Wachtwoord",
+        "placeholder": "Je wachtwoord",
+        "error": "Incorrect wachtwoord"
       },
-      "socialAuthGoogleLabel": "",
-      "socialAuthFacebookLabel": ""
+      "socialAuthGoogleLabel": "Googlen",
+      "socialAuthFacebookLabel": "Facebook"
     },
     "login": {
-      "logoutLabel": "",
-      "forgotPasswordLabel": "",
-      "loginBtnLabel": "",
-      "noMemberLabel": "",
-      "registerNowLabel": ""
+      "logoutLabel": "Log me uit",
+      "forgotPasswordLabel": "Wachtwoord vergeten?",
+      "loginBtnLabel": "Log in",
+      "noMemberLabel": "Ben je nog geen lid?",
+      "registerNowLabel": "Registreer nu"
     },
     "register": {
-      "yesMember": "",
-      "loginLabel": "",
-      "joinAsLabel": "",
-      "joinAsRolesLabel": "",
-      "accountTerms": "",
-      "heading": "",
-      "registerBtnLoadingLabel": "",
-      "registerBtnLabel": "",
+      "yesMember": "Al lid?",
+      "loginLabel": "Log in",
+      "joinAsLabel": "Wil je meedoen als",
+      "joinAsRolesLabel": "Verkoper/deskundige",
+      "accountTerms": "Door een account aan te maken, gaat u akkoord met de Servicevoorwaarden.",
+      "heading": "Aanmelden",
+      "registerBtnLoadingLabel": "Uw account registreren",
+      "registerBtnLabel": "Register",
       "name": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "Naam",
+        "placeholder": "Uw naam",
+        "error": "Je naam niet"
       },
       "password": {
-        "required": "",
-        "min": "",
-        "max": "",
-        "pattern": ""
+        "required": "dit veld is verplicht",
+        "min": "Wachtwoord moet minimaal 8 tekens lang zijn",
+        "max": "Wachtwoord mag niet langer zijn dan 256 tekens",
+        "pattern": "Het wachtwoord moet minimaal één hoofdletter, één kleine letter en één cijfer bevatten"
       }
     }
   },
   "cart": {
-    "cartHeading": "",
+    "cartEmptyLabel": "Uw winkelwagen is leeg!",
+    "exploreProductsLabel": "Ontdek producten",
+    "checkoutBtnLabel": "Uitchecken",
+    "viewCartLabel": "Bekijk winkelwagen",
+    "cartHeading": "Winkelmand",
     "orderSummary": {
-      "heading": "",
-      "subTotalLabel": "",
-      "shippingLabel": "",
-      "orderTotalLabel": "",
-      "checkoutBtnLabel": ""
+      "heading": "overzicht van de bestelling",
+      "subTotalLabel": "Subtotaal",
+      "shippingLabel": "Verzending schatting",
+      "orderTotalLabel": "totale bestelling",
+      "checkoutBtnLabel": "Uitchecken"
     }
   },
   "checkout": {
     "payment": {
-      "heading": ""
+      "heading": "Betaling"
     },
     "orderSummary": {
-      "heading": "",
-      "subTotalLabel": "",
-      "shippingLabel": "",
-      "orderTotalLabel": "",
-      "confirmOrderBtnLabel": ""
+      "heading": "overzicht van de bestelling",
+      "subTotalLabel": "Subtotaal",
+      "shippingLabel": "Verzending schatting",
+      "orderTotalLabel": "totale bestelling",
+      "confirmOrderBtnLabel": "Bevestigen"
     },
     "shippingInfoForm": {
       "contact": {
-        "heading": "",
+        "heading": "Contact",
         "email": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "E-mail",
+          "placeholder": "E-mail",
+          "error": "vereist"
         }
       },
       "shipping": {
-        "heading": "",
+        "heading": "Verzendingsadres",
         "email": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "E-mail",
+          "placeholder": "E-mail",
+          "error": "vereist"
         },
         "firstName": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "E-mail",
+          "placeholder": "E-mail",
+          "error": "vereist"
         },
         "lastName": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Voornaam",
+          "placeholder": "Voornaam",
+          "error": "vereist"
         },
         "address": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Achternaam",
+          "placeholder": "Achternaam",
+          "error": "vereist"
         },
         "city": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Stad",
+          "placeholder": "Stad",
+          "error": "vereist"
         },
         "stateOrProvince": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Staat / Provincie",
+          "placeholder": "Staat / Provincie",
+          "error": "vereist"
         },
         "phone": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Telefoon",
+          "placeholder": "Telefoon",
+          "error": "vereist"
         }
       }
     }
   },
   "blogs": {
     "existingBlogsPage": {
-      "heading": "",
-      "subHeading": "",
+      "heading": "Ontdek boeiende blogs",
+      "subHeading": "Ontdek inzichten, tips en verhalen van influencers",
       "notFound": {
-        "heading": "",
-        "subHeading": "",
-        "exploreProductsBtnLabel": ""
+        "heading": "Geen blogs gevonden",
+        "subHeading": "Oeps! ",
+        "exploreProductsBtnLabel": "Ontdek producten"
       }
     }
   },
   "account": {
     "sectionHeadings": {
-      "profile": "",
-      "wishList": "",
-      "orderHistory": ""
+      "profile": "Profielinstellingen",
+      "wishList": "Verlanglijst",
+      "orderHistory": "Bestelgeschiedenis"
     },
     "wishList": {
-      "noProductsFoundLabel": ""
+      "noProductsFoundLabel": "Geen producten gevonden"
     },
     "orderHistory": {
-      "myOrdersLabel": "",
-      "noOrdersFoundLabel": "",
-      "orderDetailsLabel": "",
-      "reviewBtnLabel": "",
+      "myOrdersLabel": "mijn bestellingen",
+      "noOrdersFoundLabel": "Geen bestellingen gevonden",
+      "orderDetailsLabel": "Bestel Details",
+      "reviewBtnLabel": "Beoordeling",
       "orderDetails": {
-        "productsLabel": "",
-        "summaryLabel": "",
-        "subTotalLabel": "",
-        "shippingLabel": "",
-        "orderTotalLabel": ""
+        "productsLabel": "PRODUCTEN",
+        "summaryLabel": "Samenvatting",
+        "subTotalLabel": "Subtotaal",
+        "shippingLabel": "Verzenden",
+        "orderTotalLabel": "totale bestelling"
       },
       "orderCard": {
-        "orderIdLabel": "",
-        "productsLabel": "",
-        "datePlacedLabel": ""
+        "orderIdLabel": "Order ID:",
+        "productsLabel": "Producten:",
+        "datePlacedLabel": "Datum geplaatst:"
       }
     },
     "profile": {
-      "editBtnLabel": "",
-      "addProfileLabel": "",
-      "cancelBtnLabel": "",
-      "updateBtnLabel": "",
-      "updatePasswordLabel": "",
-      "updateProfileLabel": "",
+      "editBtnLabel": "Bewerking",
+      "addProfileLabel": "Profielfoto toevoegen",
+      "cancelBtnLabel": "Annuleren",
+      "updateBtnLabel": "Update",
+      "updatePasswordLabel": "Wachtwoord",
+      "updateProfileLabel": "Profiel",
       "currentPassword": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "huidig ​​wachtwoord",
+        "placeholder": "Vul huidig ​​wachtwoord in",
+        "error": "vereist"
       },
       "newPassword": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "nieuw paswoord",
+        "placeholder": "Voer een nieuw wachtwoord in",
+        "error": "vereist"
       },
       "confirmPassword": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "bevestig wachtwoord",
+        "placeholder": "Voer het wachtwoord in",
+        "error": "vereist"
       },
       "email": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "E-mail",
+        "placeholder": "E-mail",
+        "error": "vereist"
       },
       "name": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "Naam",
+        "placeholder": "Uw naam",
+        "error": "Je naam niet"
       },
       "phone": {
-        "label": "",
-        "placeholder": "",
-        "error": ""
+        "label": "Telefoon",
+        "placeholder": "Telefoon",
+        "error": "Telefoon lijkt niet geldig"
       },
       "address": {
-        "label": "",
-        "placeholder": "Address",
-        "error": ""
+        "label": "Adres",
+        "placeholder": "Adres",
+        "error": "Adres lijkt niet geldig"
       }
     }
   },
   "seller": {
     "products": {
-      "heading": ""
+      "heading": "Producten"
     },
     "newProduct": {
-      "noShopLabel": "",
+      "noShopLabel": "Maak eerst een winkel aan",
       "stepper": {
-        "basicInfoLabel": "",
-        "createSkuLabel": "",
-        "detailedDescriptionLabel": "",
-        "addImageLabel": ""
+        "basicInfoLabel": "Basis informatie",
+        "createSkuLabel": "SKU maken",
+        "detailedDescriptionLabel": "gedetailleerde beschrijving",
+        "addImageLabel": "Voeg afbeelding toe"
       },
       "basicDetails": {
         "productName": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "productnaam",
+          "placeholder": "Uw productnaam",
+          "error": "Productnaam lijkt niet geldig"
         },
         "productType": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Producttypen",
+          "placeholder": "Selecteer Producttype",
+          "error": "Selecteer het producttype"
         },
         "gender": {
-          "label": "",
+          "label": "Geslacht",
           "placeholder": "",
           "error": ""
         },
         "unit": {
-          "label": "",
+          "label": "Selecteer Eenheid",
           "placeholder": "",
           "error": ""
         },
         "description": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Beschrijving",
+          "placeholder": "Voer uw productbeschrijving in",
+          "error": "Beschrijving lijkt niet geldig"
         }
       },
       "createSku": {
-        "heading": "",
+        "heading": "SKU maken",
         "color": {
-          "label": ""
+          "label": "Kleur"
         },
         "measurement": {
-          "label": ""
+          "label": "Selecteer Metingen"
         },
         "price": {
-          "label": "",
-          "placeholder": ""
+          "label": "Product prijs",
+          "placeholder": "Product prijs"
         },
         "quantity": {
-          "label": "",
-          "placeholder": ""
+          "label": "Hoeveelheid",
+          "placeholder": "Hoeveelheid"
         },
-        "skuPriceLabel": "",
-        "skuQuantityLabel": "",
-        "skuMeasurementLabel": "",
-        "skuColorLabel": "",
-        "skuPriceError": "",
-        "skuQuantityError": "",
-        "skuAllFieldsError": ""
+        "skuPriceLabel": "Prijs",
+        "skuQuantityLabel": "Hoeveelheid",
+        "skuMeasurementLabel": "Meting",
+        "skuColorLabel": "Kleur",
+        "skuPriceError": "Prijs kan niet lager zijn dan 1",
+        "skuQuantityError": "Aantal kan niet kleiner zijn dan 1",
+        "skuAllFieldsError": "Vul alle verplichte velden in!"
       }
     },
     "shop": {
       "stepper": {
-        "shopInfoLabel": "",
-        "shopSocialsLabel": "",
-        "addImagesLabel": ""
+        "shopInfoLabel": "Winkelinformatie",
+        "shopSocialsLabel": "Winkel sociale media",
+        "addImagesLabel": "Afbeeldingen toevoegen"
       },
       "shopInfoForm": {
-        "heading": "",
+        "heading": "Winkeldetails",
         "name": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Winkel naam",
+          "placeholder": "Voer winkelnaam in",
+          "error": "Winkelnaam lijkt niet geldig"
         },
         "tagline": {
           "label": "",
@@ -383,74 +387,74 @@
           "error": ""
         },
         "category": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Winkelcategorie",
+          "placeholder": "Selecteer winkelcategorie",
+          "error": "Selecteer winkelcategorie"
         },
         "email": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "E-mail",
+          "placeholder": "Jouw email",
+          "error": "Hmm... die e-mail doet dat niet"
         },
         "phone": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Telefoon",
+          "placeholder": "Telefoon",
+          "error": "Telefoon lijkt niet geldig"
         },
         "address": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Adres",
+          "placeholder": "Adres",
+          "error": "Adres lijkt niet geldig"
         }
       },
       "socialsForm": {
-        "heading": "",
+        "heading": "Winkel sociale media",
         "fb": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Facebook URL",
+          "placeholder": "Voer de Facebook-URL in",
+          "error": "URL ziet er niet geldig uit"
         },
         "insta": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Instagram-URL",
+          "placeholder": "Voer de Instagram-URL in",
+          "error": "URL ziet er niet geldig uit"
         },
         "twitter": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Twitter-URL",
+          "placeholder": "Voer de Twitter-URL in",
+          "error": "URL ziet er niet geldig uit"
         },
         "website": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
+          "label": "Website URL",
+          "placeholder": "Voer de website-URL in",
+          "error": "URL ziet er niet geldig uit"
         }
       },
       "imagesForm": {
-        "heading": "",
-        "fileSupportedLabel": "",
-        "maximumSizeLabel": "",
-        "imagePreviewLabel": ""
+        "heading": "Afbeeldingen toevoegen",
+        "fileSupportedLabel": "Ondersteunde bestanden:",
+        "maximumSizeLabel": " Maximumgrootte",
+        "imagePreviewLabel": "Afbeeldingsvoorbeeld"
       }
     },
     "main": {
-      "greetingLabel": "",
-      "totalRevenueLabel": "",
-      "totalProductsLabel": "",
-      "totalOrdersLabel": "",
-      "activeOrdersLabel": "",
-      "overviewTitle": "",
-      "recentSalesTitle": ""
+      "greetingLabel": "Groet",
+      "totalRevenueLabel": "De totale omzet",
+      "totalProductsLabel": "Totaal producten",
+      "totalOrdersLabel": "Totaal aantal bestellingen",
+      "activeOrdersLabel": "Actieve bestellingen",
+      "overviewTitle": "Overzicht",
+      "recentSalesTitle": "Recente verkopen"
     },
     "sidebar": {
-      "dashboardLabel": "",
-      "shopLabel": "",
-      "productsLabel": "",
-      "allProductsLabel": "",
-      "addProductLabel": "",
-      "ordersLabel": "",
-      "chatLabel": "",
-      "payoutsLabel": ""
+      "dashboardLabel": "Dashboard",
+      "shopLabel": "Winkel",
+      "productsLabel": "Producten",
+      "allProductsLabel": "Alle producten",
+      "addProductLabel": "Product toevoegen",
+      "ordersLabel": "Bestellingen",
+      "chatLabel": "Chatten",
+      "payoutsLabel": "Uitbetalingen"
     }
   }
 }
