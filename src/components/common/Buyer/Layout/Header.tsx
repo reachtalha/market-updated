@@ -94,6 +94,7 @@ const Header = ({ dictionary }: { dictionary: any }) => {
               title={dictionary.navbar.links.account}
             />
             <CartPopover
+              dictionary={dictionary}
               trigger={
                 <Button
                   className={cn(

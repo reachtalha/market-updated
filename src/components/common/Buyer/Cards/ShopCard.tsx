@@ -2,6 +2,7 @@ import { StaticImageData } from 'next/image';
 
 import Image from '@/components/common/FallbackImage';
 import Link from 'next/link';
+import useLocale from '@/hooks/useLocale';
 
 type Props = {
   id: string;
@@ -12,10 +13,11 @@ type Props = {
 };
 
 const ShopCard = ({ id, image, shop, desc, type }: Props) => {
+  const locale = useLocale();
   return (
     <div className="group h-fit w-full relative ">
       <Link
-        href={`market/?category=${type}`}
+        href={`/${locale}/market/?category=${type}`}
         className="capitalize z-10 text-sm absolute cursor-pointer top-5 left-5 bg-white p-1 px-3 rounded-lg"
       >
         {type}
@@ -39,7 +41,7 @@ const ShopCard = ({ id, image, shop, desc, type }: Props) => {
             </p>
           </div>
           <Link
-            href={`/market/${id}`}
+            href={`/${locale}/market/${id}`}
             className="bg-transparent hover:bg-neutral-50 duration-300 transition-colors px-5 w-fit h-fit py-2.5 flex items-center hover:text-neutral-900 border rounded-full"
           >
             Explore

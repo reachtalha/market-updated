@@ -66,7 +66,7 @@ export default async function ExpertsSearch({ params: { lang } }: LocaleType) {
         </header>
         <FeaturedExperts dictionary={dictionary} />
       </BoxedContent>
-      <Experts experts={experts} dictionary={dictionary} />
+      <Experts locale={lang} experts={experts} dictionary={dictionary} />
       <LatestBlogsSection title="#OrganicSimplified" />
     </>
   );

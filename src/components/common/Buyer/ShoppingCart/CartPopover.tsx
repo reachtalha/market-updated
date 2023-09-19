@@ -14,11 +14,14 @@ import { formatCurrency } from '@/utils/formatters';
 import QuantityInput from '@/components/common/Buyer/ShoppingCart/QuantityInput';
 import { Skeleton } from '@/components/ui/skeleton';
 import useGuestCartStore from '@/state/useGuestCartStore';
+import useLocale from '@/hooks/useLocale';
 
 type CartPopoverProps = {
   trigger: ReactNode;
+  dictionary: any;
 };
-export default function CartPopover({ trigger }: CartPopoverProps) {
+export default function CartPopover({ dictionary, trigger }: CartPopoverProps) {
+  const locale = useLocale();
   const router = useRouter();
   const { cart, getCart, deleteFromCart, isCartLoading, showCartPopover, setShowCartPopover } =
     useCartStore((state: any) => state);
@@ -26,9 +29,9 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
     useGuestCartStore((state: any) => state);
   const user = auth.currentUser;
 
-  const handleExploreProducts = () => router.push('/products');
-  const handleViewCart = () => router.push('/cart');
-  const handleViewCheckout = () => router.push('/checkout');
+  const handleExploreProducts = () => router.push(`/${locale}/products`);
+  const handleViewCart = () => router.push(`/${locale}/cart`);
+  const handleViewCheckout = () => router.push(`${locale}/checkout`);
 
   useEffect(() => {
     if (user) getCart(user.uid);
@@ -102,10 +105,10 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
               </ul>
               {!cartItems?.length ? (
                 <div className="text-center">
-                  <p>Your Cart is empty!</p>
+                  <p>{dictionary.cart.cartEmptyLabel}</p>
                   <PopoverClose asChild>
                     <Button onClick={handleExploreProducts} className="w-full mt-3">
-                      Explore Products
+                      {dictionary.cart.exploreProductsLabel}
                     </Button>
                   </PopoverClose>
                 </div>
@@ -114,7 +117,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                 <>
                   <PopoverClose asChild>
                     <Button onClick={handleViewCheckout} className="w-full">
-                      Checkout
+                      {dictionary.cart.checkoutBtnLabel}
                     </Button>
                   </PopoverClose>
                   <div className="text-center">
@@ -124,7 +127,7 @@ export default function CartPopover({ trigger }: CartPopoverProps) {
                         className="text-[14px] underline"
                         onClick={handleViewCart}
                       >
-                        View cart
+                        {dictionary.cart.viewCartLabel}
                       </Button>
                     </PopoverClose>
                   </div>

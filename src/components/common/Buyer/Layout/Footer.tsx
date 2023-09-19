@@ -5,7 +5,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 const DISCOUNT = 10;
 
-const Footer = ({ dictionary }: { dictionary: any }) => {
+const Footer = ({ dictionary, locale }: { dictionary: any, locale: string }) => {
   return (
     <footer className="">
       <BoxedContent className="flex flex-col lg:flex-row  w-full mx-auto my-12">
@@ -46,7 +46,7 @@ const Footer = ({ dictionary }: { dictionary: any }) => {
                 {dictionary.footer.links.about.expertsProgram}
               </li>
               <li className="hover:underline cursor-pointer">
-                <Link href="/market">{dictionary.footer.links.about.brandsAndShops}</Link>
+                <Link href={`${locale}/market`}>{dictionary.footer.links.about.brandsAndShops}</Link>
               </li>
               <li className="hover:underline cursor-pointer">
                 {dictionary.footer.links.about.contact}
