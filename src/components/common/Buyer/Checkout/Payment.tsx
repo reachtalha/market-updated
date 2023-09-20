@@ -9,9 +9,7 @@ import useCartStore from '@/state/useCartStore';
 import BoxedContent from '../../BoxedContent';
 import useGuestCartStore from '@/state/useGuestCartStore';
 
-const stripePromise = loadStripe(
-  'pk_test_51IxrvoH0toQxYCC9i27HVt4NJLtJdQ2e1bUfMR1YeXoxG2yHbFkMhmrQGd1wCCHwpYSZBFJ2lOV9G9mvCngDLUUI00gdddAJAF'
-);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
 
 const fetchCreatePaymentIntent = (price: number) => {
   return axios.post('/api/payment/createPayment', {

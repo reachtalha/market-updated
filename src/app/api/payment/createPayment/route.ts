@@ -4,7 +4,7 @@ import { Stripe } from 'stripe';
 export async function POST(req: Request) {
   const { price } = await req.json();
   const stripe = new Stripe(
-    'sk_test_51IxrvoH0toQxYCC9kJtPm4ecd86lkuPzKqVqrpGx6j0HQLT1GZSWIABH1RngDpOWDyPQxE3x1xlbuVAynTF4kmJo00cv9maPAy',
+    process.env.STRIPE_SECRET || "",
     {
       apiVersion: '2022-11-15'
     }

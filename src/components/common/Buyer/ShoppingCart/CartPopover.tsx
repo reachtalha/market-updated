@@ -31,7 +31,7 @@ export default function CartPopover({ dictionary, trigger }: CartPopoverProps) {
 
   const handleExploreProducts = () => router.push(`/${locale}/products`);
   const handleViewCart = () => router.push(`/${locale}/cart`);
-  const handleViewCheckout = () => router.push(`${locale}/checkout`);
+  const handleViewCheckout = () => router.push(`/${locale}/checkout`);
 
   useEffect(() => {
     if (user) getCart(user.uid);
