@@ -62,19 +62,26 @@ const AddPinnedContentModal = ({ uid, pinnedLinks }: { uid: string; pinnedLinks:
       return;
     }
 
-    if (newLink.includes('instagram') && !newLink.includes('embed'))
+    if (newLink.includes('instagram') && !newLink.includes('embed')) {
       newLink = newLink.split('?')[0] + 'embed/';
-
-    if ((newLink.includes('youtube') || newLink.includes('youtu')) && !newLink.includes('embed')) {
+    } else if (
+      (newLink.includes('youtube') || newLink.includes('youtu')) &&
+      !newLink.includes('embed')
+    ) {
       newLink = convertToEmbedUrl(newLink);
-    }
-    if (
+    } else if (
       (newLink.includes('facebook') || newLink.includes('fb')) &&
       !newLink.includes('https://www.facebook.com/plugins')
     ) {
       newLink = `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(
         newLink
       )}&width=500`;
+    } else if (newLink.includes('tiktok') && !newLink.includes('embed')) {
+      const regex = /(@[a-zA-z0-9]*|.*)(\/.*\/|trending.?shareId=)([\d]*)/;
+      const match = newLink.match(regex);
+      newLink = `https://www.tiktok.com/embed/v2/${match[3]}?lang=en&height=300`;
+    } else if (newLink.includes('twitter') && !newLink.includes('embed')) {
+      newLink = `https://twitframe.com/show?url=${newLink}`;
     }
     setLinks((prev) => [...prev, newLink]);
     form.reset();
@@ -122,7 +129,7 @@ const AddPinnedContentModal = ({ uid, pinnedLinks }: { uid: string; pinnedLinks:
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex  gap-x-2 items-center">
-          <Input name="link" type="text" placeholder="Add embedded link" />
+          <Input name="link" type="text" placeholder="Paste the Link of the Post" />
           <Button variant="default" className="w-fit h-fit p-2">
             <PlusIcon />
           </Button>

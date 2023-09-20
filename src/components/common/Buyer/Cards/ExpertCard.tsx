@@ -9,55 +9,45 @@ interface IProfileCard {
   name: string;
   title: string[];
   bio: string;
-  featured?: boolean;
 }
 
-export default function ExpertCard({
-  id,
-  image,
-  name,
-  title,
-  bio,
-  featured = false
-}: IProfileCard) {
+export default function ExpertCard({ id, image, name, title, bio }: IProfileCard) {
   return (
-    <div
-      className={`relative
-      ${featured ? 'w-full h-full' : 'min-w-48 h-96'}
-        hover:scale-[1.03] transition-all duration-300  rounded-sm overflow-hidden`}
-    >
-      <Link
-        href={`experts/?category=${title?.length > 0 ? title[0] : 'all'}`}
-        className={`capitalize z-10  absolute  cursor-pointer ${
-          featured ? 'top-8 left-8 text-lg' : 'top-4 left-4 text-sm'
-        } bg-white p-1 px-3 rounded-lg`}
-      >
-        {title && title[0]} Expert
-      </Link>
-      <Link href={`experts/${id}`} className="cursor-pointer">
-        <Image
-          src={image}
-          height={550}
-          width={450}
-          className={`${featured ? 'w-full' : 'max-w-96 '} h-full object-cover`}
-          alt={name}
-        />
-        <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/30 to-transparent transition-opacity ease-in duration-300" />
-        <div
-          className={`z-[2] absolute ${
-            featured ? 'bottom-8 left-8' : 'bottom-4 left-4'
-          } text-white`}
+    <>
+      <div className="group h-fit w-full relative ">
+        <Link
+          href={`experts/?category=${title?.length > 0 ? title[0] : 'all'}`}
+          className="capitalize z-10 text-sm absolute cursor-pointer top-5 left-5 bg-white p-1 px-3 rounded-lg"
         >
-          <h3
-            className={`${
-              featured ? 'text-3xl' : ' text-2xl'
-            } capitalize tracking-wide truncate font-alpina font-semibold`}
-          >
-            {name}
-          </h3>
-          <p className="capitalize w-[25ch] truncate">{bio}</p>
+          {title && title[0]} Expert
+        </Link>
+        <div className="relative h-96 w-full drop-shadow-sm">
+          <Image
+            src={image}
+            height={550}
+            width={450}
+            className={' max-w-96 h-full object-cover'}
+            alt={name}
+          />
         </div>
-      </Link>
-    </div>
+        <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/40 to-transparent transition-opacity ease-in duration-300" />
+        <div className="bottom-0 w-full z-[1] text-white py-5 px-6 flex justify-between items-start absolute">
+          <div className="flex gap-3 items-center w-full">
+            <div className="space-y-1 flex-1">
+              <h5 className="text-2xl lg:text-3xl capitalize font-medium"> {name}</h5>
+              <p className="text-sm line-clamp-3 sm:line-clamp-2 text-neutral-100 md:line-clamp-2 lg:line-clamp-none">
+                {bio.length > 50 ? bio.slice(0, 50) + '...' : bio}
+              </p>
+            </div>
+            <Link
+              href={`experts/${id}`}
+              className="bg-transparent hover:bg-neutral-50 duration-300 transition-colors px-5 w-fit h-fit py-2.5 flex items-center hover:text-neutral-900 border rounded-full"
+            >
+              Explore
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
