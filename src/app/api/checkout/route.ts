@@ -28,11 +28,11 @@ export async function POST(req: Request) {
     });
 
     // TODO: update without using docId for guest checkouts
-    // const updatePromise = cart.items.map(async (item: any) => {
-    //   await decreaseQuantity(item.docId, item.skuId, item.quantity);
-    // });
-    // await Promise.all(updatePromise);
-    
+    const updatePromise = cart.items.map(async (item: any) => {
+      await decreaseQuantity(item.docId, item.skuId, item.quantity);
+    });
+    await Promise.all(updatePromise);
+
     return NextResponse.json({ message: 'Order Recieved' }, { status: 200 });
   } catch (error: any) {
     console.log(error.message);

@@ -14,14 +14,15 @@ interface IProfileCard {
 export default function ExpertCard({ id, image, name, title, bio }: IProfileCard) {
   return (
     <>
-      <div className="group h-fit w-full relative ">
+      <div className="group h-fit w-full relative hover:scale-105 transition-all duration-300 ease-in-out ">
         <Link
           href={`experts/?category=${title?.length > 0 ? title[0] : 'all'}`}
           className="capitalize z-10 text-sm absolute cursor-pointer top-5 left-5 bg-white p-1 px-3 rounded-lg"
         >
           {title && title[0]} Expert
         </Link>
-        <div className="relative h-96 w-full drop-shadow-sm">
+        <span className="  absolute  inset-0 z-[1] bg-gradient-to-t from-black/40 to-transparent transition-opacity ease-in duration-300" />
+        <div className="relative h-96 w-full   drop-shadow-sm">
           <Image
             src={image}
             height={550}
@@ -30,12 +31,11 @@ export default function ExpertCard({ id, image, name, title, bio }: IProfileCard
             alt={name}
           />
         </div>
-        <span className="absolute inset-0 z-[1] bg-gradient-to-t from-black/40 to-transparent transition-opacity ease-in duration-300" />
         <div className="bottom-0 w-full z-[1] text-white py-5 px-6 flex justify-between items-start absolute">
           <div className="flex gap-3 items-center w-full">
             <div className="space-y-1 flex-1">
               <h5 className="text-2xl lg:text-3xl capitalize font-medium"> {name}</h5>
-              <p className="text-sm line-clamp-3 sm:line-clamp-2 text-neutral-100 md:line-clamp-2 lg:line-clamp-none">
+              <p className="text-sm  line-clamp-3 sm:line-clamp-2 text-neutral-100 md:line-clamp-2 lg:line-clamp-none">
                 {bio.length > 50 ? bio.slice(0, 50) + '...' : bio}
               </p>
             </div>

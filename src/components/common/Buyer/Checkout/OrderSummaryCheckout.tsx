@@ -19,15 +19,17 @@ export default function OrderSummaryCheckout({
   const { guestCart } = useGuestCartStore((state: any) => state);
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
 
-  const cartSummary = auth.currentUser ? {
-    subTotal: formatCurrency(cart?.summary?.subTotal ?? 0),
-    shipping: formatCurrency(cart?.summary?.shipping ?? 0),
-    total: formatCurrency(cart?.summary?.total ?? 0),
-  } : {
-    subTotal: formatCurrency(guestCart?.summary?.subTotal ?? 0),
-    shipping: formatCurrency(guestCart?.summary?.shipping ?? 0),
-    total: formatCurrency(guestCart?.summary?.total ?? 0)
-  };
+  const cartSummary = auth.currentUser
+    ? {
+        subTotal: formatCurrency(cart?.summary?.subTotal ?? 0),
+        shipping: formatCurrency(cart?.summary?.shipping ?? 0),
+        total: formatCurrency(cart?.summary?.total ?? 0)
+      }
+    : {
+        subTotal: formatCurrency(guestCart?.summary?.subTotal ?? 0),
+        shipping: formatCurrency(guestCart?.summary?.shipping ?? 0),
+        total: formatCurrency(guestCart?.summary?.total ?? 0)
+      };
 
   return isCartLoading ? (
     <Skeleton className="bg-gray-200 h-[300px]" />
@@ -55,10 +57,8 @@ export default function OrderSummaryCheckout({
                     {item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}
                   </p>
                   <p className="font-medium">{formatCurrency(item?.selectedVariant?.price)}</p>
+                  <p className="text-sm font-medium text-gray-500">Quantity: {item.quantity}</p>
                 </div>
-              </div>
-              <div className="col-span-1 flex items-center justify-center">
-                <QuantityInput quantity={item.quantity} productId={item?.id} skuId={item?.selectedVariant?.id} docId={item.itemId} />
               </div>
             </div>
           </li>
@@ -76,13 +76,13 @@ export default function OrderSummaryCheckout({
         </div>
         <div className="flex justify-between pb-3 pt-3">
           <p className="font-medium">Order Total</p>
-          <p className="font-medium">
-            {cartSummary.total}
-          </p>
+          <p className="font-medium">{cartSummary.total}</p>
         </div>
       </div>
 
-      <Button className="w-full mt-4">{isConfirmButtonLoading ? 'Loading' : 'Confirm'}</Button>
+      <Button type="submit" className="w-full mt-4">
+        {isConfirmButtonLoading ? 'Loading' : 'Confirm'}
+      </Button>
     </div>
   );
 }

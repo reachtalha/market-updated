@@ -72,7 +72,7 @@ const getProducts: any = async (
     const docs = await getDocs(query(queryBase, ...orderby, limit(1)));
 
     lastDoc = docs.docs[0]?.data();
-    console.log('Here');
+    products.push({ id: docs.docs[0]?.id, ...lastDoc });
   }
 
   const docRef = await getDocs(
@@ -85,9 +85,9 @@ const getProducts: any = async (
     )
   );
 
-  products = docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  products = [...products, ...docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }))];
 
-  return products;
+  return [...products];
 };
 
 type ProductsProps = {

@@ -9,7 +9,10 @@ export function middleware(request: NextRequest) {
   const user: any = cookies ? JSON.parse(cookies?.value) : { role: '' };
 
   //if not logged in but trying to access account
-  if ((path.startsWith('/account') || path.startsWith('/chat')) && user.role === '') {
+  if (
+    (path.startsWith('/account') || path.startsWith('/chat') || path.startsWith('/for-you')) &&
+    user.role === ''
+  ) {
     return NextResponse.redirect(new URL('/auth/login', request.nextUrl));
   }
   //If not seller but trying to access seller dashboard

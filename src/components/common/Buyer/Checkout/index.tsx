@@ -23,9 +23,7 @@ const formSchema = z.object({
   }),
   firstName: z.string().min(1, { message: 'required' }),
   lastName: z.string().min(1, { message: 'required' }),
-  company: z.string().min(1, { message: 'required' }),
   address: z.string().min(1, { message: 'required' }),
-  apartments: z.string().min(1, { message: 'required' }),
   city: z.string().min(1, { message: 'required' }),
   state: z.string().min(1, { message: 'required' }),
   phone: z.string().min(1, { message: 'required' })
@@ -37,8 +35,7 @@ type ShippingAddressType = {
   lastName: string;
   phone: string;
   country: string;
-  company: string;
-  apartment: string;
+
   city: string;
   address: string;
 };
@@ -64,9 +61,10 @@ export default function Checkout({ user }: { user: any }) {
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
 
   const submitOrder = async (values: any) => {
+    console.log('here');
     try {
       setIsOrderLoading(true);
-      const shops = cartItems?.map((s: any) => { 
+      const shops = cartItems?.map((s: any) => {
         return s.shopId;
       });
       const items = cartItems?.map((i: any) => {
@@ -91,8 +89,6 @@ export default function Checkout({ user }: { user: any }) {
           lastName: values.lastName,
           phone: values.phone,
           country: values.country || 'Pakistan',
-          company: values.company,
-          apartment: values.apartments || '',
           city: values.city,
           address: values.address,
           email: values.email
@@ -100,7 +96,7 @@ export default function Checkout({ user }: { user: any }) {
         items: items,
         shops: shops,
         status: 'complete',
-        userId: auth.currentUser ? auth?.currentUser?.uid : "guest",
+        userId: auth.currentUser ? auth?.currentUser?.uid : 'guest',
         total: auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total
       };
 
@@ -148,13 +144,13 @@ export default function Checkout({ user }: { user: any }) {
       email: user?.email || '',
       firstName: auth.currentUser ? user.name.split(' ')[0] : '',
       lastName: auth.currentUser
-        ? user.name.split(' ').length > 1
-          ? user.name.split(' ')[1]
+        ? user?.name.split(' ').length > 1
+          ? user?.name.split(' ')[1]
           : ''
         : '',
-      company: '',
+
       address: user?.address || '',
-      apartments: '',
+
       city: user?.city || '',
       state: '',
       phone: user?.phone || ''
@@ -162,6 +158,7 @@ export default function Checkout({ user }: { user: any }) {
     shouldUnregister: false
   });
   async function onSubmit(values: any) {
+    console.log('here');
     await submitPayment(values);
   }
 

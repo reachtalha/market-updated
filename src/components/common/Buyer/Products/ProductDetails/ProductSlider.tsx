@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { FacebookShareButton, TwitterShareButton } from 'react-share';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export default function ProductSlider({ images }: { images: string[] }) {
   return (
@@ -25,7 +26,9 @@ export default function ProductSlider({ images }: { images: string[] }) {
           <PopoverContent className="w-56">
             <div className="flex flex-col items-center justify-center">
               <a
-                href={`https://web.whatsapp.com/send?text=Check out this amazing product on All Organics ${window.location.href}`}
+                href={`${
+                  window.innerWidth < 420 ? 'whatsapp://' : 'https://web.whatsapp.com/'
+                }send?text=Check out this amazing product on All Organics ${window.location.href}`}
                 data-action="share/whatsapp/share"
                 target="_blank"
                 className="hover:bg-slate-200 w-full p-2 flex items-center justify-center rounded-lg"
@@ -42,15 +45,14 @@ export default function ProductSlider({ images }: { images: string[] }) {
                   Share On Twitter
                 </TwitterShareButton>
               </span>
-              <span
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  toast.success('Link Copied');
-                }}
-                className="hover:bg-slate-200 w-full p-2 cursor-pointer flex items-center justify-center rounded-lg"
+              <CopyToClipboard
+                onCopy={() => toast.success('Link Copied')}
+                text={window.location.href}
               >
-                Copy Link
-              </span>
+                <span className="hover:bg-slate-200 w-full p-2 cursor-pointer flex items-center justify-center rounded-lg">
+                  Copy Link
+                </span>
+              </CopyToClipboard>
             </div>
           </PopoverContent>
         </Popover>
