@@ -3,10 +3,9 @@ import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
 type Props = {
   experts: any;
   dictionary: any;
-  locale: string;
 };
 
-const Experts = ({ locale, experts, dictionary }: Props) => {
+const Experts = ({ experts, dictionary }: Props) => {
   return (
     <>
       {experts?.length === 0 ? (
@@ -15,7 +14,6 @@ const Experts = ({ locale, experts, dictionary }: Props) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
           {experts?.map((expert: any, i: number) => (
             <ExpertCard
-              locale={locale}
               heading={dictionary.home.experts.expertCardHeading}
               key={Math.random() + i + Date.now()}
               id={expert?.id}
