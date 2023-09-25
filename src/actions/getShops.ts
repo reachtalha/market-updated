@@ -26,29 +26,32 @@ export const getShops = async (category: string, sort: string, lastDoc: any) => 
 
   const sortBy = sortOptions[sort] || sortOptions['latest'];
 
-  let queryBase: CollectionReference | Query = collection(db, 'shops');
-  let queryCondition: QueryFieldFilterConstraint | any = null;
+  try {
+    let queryBase: CollectionReference | Query = collection(db, 'shops');
+    let queryCondition: QueryFieldFilterConstraint | any = null;
 
-  if (category) {
-    queryCondition = where('category', '==', category);
+    if (category) {
+      queryCondition = where('category', '==', category);
+    }
+
+    const querySnapshot = await getDocs(
+      query(
+        queryBase,
+        queryCondition,
+        orderBy(sortBy.name, sortBy.by),
+        startAfter(
+          sortBy.name === 'name' ? lastDoc.name : new Date(lastDoc.submittedAt.seconds * 1000)
+        ),
+        limit(4)
+      )
+    );
+
+    const shops = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return shops;
+  } catch (error) {
+    return error;
   }
-
-  const querySnapshot = await getDocs(
-    query(
-      queryBase,
-      queryCondition,
-      orderBy(sortBy.name, sortBy.by),
-      startAfter(
-        sortBy.name === 'name' ? lastDoc.name : new Date(lastDoc.submittedAt.seconds * 1000)
-      ),
-      limit(4)
-    )
-  );
-
-  const shops = querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data()
-  }));
-
-  return shops;
 };

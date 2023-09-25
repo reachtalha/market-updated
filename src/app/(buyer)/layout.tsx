@@ -1,3 +1,4 @@
+import React from 'react';
 import Header from '@/components/common/Buyer/Layout/Header';
 import Footer from '@/components/common/Buyer/Layout/Footer';
 import { Locale } from '@/i18n-config';

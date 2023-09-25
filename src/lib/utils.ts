@@ -16,11 +16,10 @@ export function isColoredRoute(route: string, locale: string = 'en') {
     `/${locale}/new-registration`,
     `/${locale}/order/success`
   ];
-
   return (
     coloredRoutes.includes(route) ||
-    route === `/${locale}/blogs` ||
-    route.startsWith(`/${locale}/products`) ||
-    route.startsWith(`/${locale}/orders`)
+    route === '/blogs' ||
+    route.startsWith('/products') ||
+    route.startsWith('/orders')
   );
 }

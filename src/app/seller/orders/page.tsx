@@ -7,6 +7,8 @@ import useSwr from 'swr';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import Loader from '@/components/common/Loader';
 import { formatCurrency } from '@/utils/formatters';
+import { useState, useEffect } from 'react';
+import { RECORDS_PER_PAGE } from './constants';
 
 const getOrders = async () => {
   let orders: any = [];
@@ -39,14 +41,47 @@ const getOrders = async () => {
 };
 
 export default function DemoPage() {
-  const { data: orders, isLoading } = useSwr('sellerOrders', getOrders);
+  const { data, isLoading } = useSwr('sellerOrders', getOrders);
+  const [search, setSearch] = useState('');
+  const [filteredOrders, setFilteredOrders] = useState<any>([]);
+  const [page, setPage] = useState(0);
 
+  useEffect(() => {
+    if (!data) return;
+    if (search.trim() === '') return setFilteredOrders(data.slice(0, RECORDS_PER_PAGE));
+    setFilteredOrders(
+      data
+        .filter(
+          (order: any) =>
+            order.name.toLowerCase().includes(search.toLowerCase()) ||
+            order.status.toLowerCase().includes(search.toLowerCase())
+        )
+        .slice(0, RECORDS_PER_PAGE)
+    );
+  }, [search]);
+
+  useEffect(() => {
+    if (!data) return;
+    setFilteredOrders(data.slice(0, RECORDS_PER_PAGE));
+  }, [data]);
+  useEffect(() => {
+    if (!data) return;
+    setFilteredOrders(data.slice(page * RECORDS_PER_PAGE, (page + 1) * RECORDS_PER_PAGE));
+  }, [page]);
   if (isLoading) return <Loader className="flex items-center justify-center h-full w-full" />;
 
   return (
     <div className="container mx-auto py-20">
       <Title title="Orders" />
-      <DataTable columns={columns} data={orders} />
+      <DataTable
+        page={page}
+        setPage={setPage}
+        search={search}
+        setSearch={setSearch}
+        columns={columns}
+        data={filteredOrders}
+        total={filteredOrders.length}
+      />
     </div>
   );
 }

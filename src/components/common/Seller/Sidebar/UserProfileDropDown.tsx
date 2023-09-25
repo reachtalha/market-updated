@@ -34,7 +34,9 @@ const UserProfileDropDown = () => {
             <h6 className="font-semibold text-left capitalize truncate">
               {currentUser?.displayName}
             </h6>
-            <p className="text-sm text-left text-neutral-300  truncate">{currentUser?.email}</p>
+            <p className="text-sm text-left text-neutral-300 w-[95%]  truncate">
+              {currentUser?.email}
+            </p>
           </div>
         </button>
       </DropdownMenu.Trigger>

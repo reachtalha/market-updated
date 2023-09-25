@@ -54,7 +54,15 @@ const useGuestCartStore = create(
                     ...state.guestCart.items,
                     { ...product, quantity: 1 }
                   ]),
-                  items: [...state.guestCart.items, { ...product, quantity: 1 }]
+                  items: [
+                    ...state.guestCart.items,
+                    {
+                      ...product,
+                      quantity: 1,
+                      skuId: product.selectedVariant.id,
+                      docId: product.id
+                    }
+                  ]
                 } || {}
             };
           }
@@ -73,7 +81,7 @@ const useGuestCartStore = create(
           }
         });
       },
-      getGuestCart: (userId: string, isCartLoading: boolean = true) => {},
+      getGuestCart: (userId: string, isCartLoading: boolean = true) => { },
       incrementGuestCartItem: (productId: string, skuId: string) => {
         // @ts-ignore
         const guestCart = get().guestCart;

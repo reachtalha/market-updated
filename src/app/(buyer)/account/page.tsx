@@ -4,7 +4,7 @@ import { getDictionary } from '@/get-dictionary';
 
 type Props = {};
 
-const Page = async ({ params: { lang }}: LocaleType) => {
+const Page = async ({ params: { lang } }: LocaleType) => {
   const dictionary = await getDictionary(lang);
   const options = [
     {

@@ -17,7 +17,11 @@ const edjsParser = edjsHTML();
 import SimiliarProducts from '@/components/common/Buyer/SimilarProducts';
 
 import useCartStore from '@/state/useCartStore';
-import { updateDoc, getDoc, doc, setDoc } from 'firebase/firestore';
+import { updateDoc, getDoc, doc, setDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { useRole } from '@/hooks/useUserRole';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+
+import { PinIcon, PinOffIcon } from 'lucide-react';
 import Loader from '@/components/common/Loader';
 import useGuestCartStore from '@/state/useGuestCartStore';
 import useGlobalStore from '@/state';
@@ -48,13 +52,17 @@ const getSelectedVariant = (product: any) =>
 
 export default function Product({ productJSON, dictionary }: { productJSON: any, dictionary: any }) {
   const product = JSON.parse(productJSON);
+  const role = useRole();
+  const { user } = useCurrentUser();
+
   const uniqueSizes = getUniqueSizes(product);
 
   const [loading, setLoading] = useState(false);
+  const [averageReviews, setAverageReviews] = useState(5);
   const [selectedSize, setSelectedSize] = useState(uniqueSizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.SKU[0].id);
-  const [averageReviews, setAverageReviews] = useState(5);
   const [selectedVariant, setSelectedVariant] = useState(getSelectedVariant(product));
+  const [isPinned, setIsPinned] = useState(user?.pinnedProducts?.includes(product.id));
 
   const blocks = product.detailedDescription ? product.detailedDescription.blocks : [];
 
@@ -66,6 +74,54 @@ export default function Product({ productJSON, dictionary }: { productJSON: any,
     isLoading,
     error
   } = useSwr('isInWishlist', () => isInWishlist(product.id));
+
+  const pinProduct = async () => {
+    try {
+      setLoading(true);
+      if (user.pinnedProducts?.length >= 10) {
+        toast.error('You can pin only up to 10 products');
+        return;
+      }
+      await updateDoc(doc(db, 'users', `${auth.currentUser?.uid}`), {
+        pinnedProducts: arrayUnion(product.id)
+      });
+
+      setIsPinned(true);
+      toast.success('Product added to your pinned products!');
+    } catch (error) {
+      console.log(error);
+      toast.error('Unable to add the product to your pinned products. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const unPinProduct = async () => {
+    try {
+      setLoading(true);
+      if (user.pinnedProducts?.length === 0) {
+        return;
+      }
+      await updateDoc(doc(db, 'users', `${auth.currentUser?.uid}`), {
+        pinnedProducts: arrayRemove(product.id)
+      });
+
+      setIsPinned(false);
+      toast.success('Product removed from your pinned products!');
+    } catch (error) {
+      toast.error('Unable to remove the product from your pinned products. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handle = () => {
+    if (isPinned) {
+      unPinProduct();
+    } else {
+      pinProduct();
+    }
+  };
 
   if (error) return toast.error(error.message);
 
@@ -127,11 +183,28 @@ export default function Product({ productJSON, dictionary }: { productJSON: any,
           <ProductSlider images={[product.coverImage, ...product.moreImages]} />
         </div>
         <div className="w-full md:col-span-1">
-          <h1 className="font-medium border-b-2 pb-2 border-black uppercase">
-            {product.name}
-            <br />
-            <span className="font-light text-xs  ">by {product.shopName || 'Some Shop'}</span>
-          </h1>
+          <div className="flex items-center justify-between  border-b-2  border-primary">
+            <h1 className="font-medium pb-2 uppercase">
+              {product.name}
+              <br />
+              <span className="font-light text-xs  ">by {product.shopName || 'Some Shop'}</span>
+            </h1>
+            {auth.currentUser && role === 'influencer' && (
+              <Button
+                disabled={loading}
+                variant="ghost"
+                title="Add Pinned Content"
+                className="rounded-full  w-fit h-fit p-1 self-start  z-10"
+                onClick={handle}
+              >
+                {isPinned ? (
+                  <PinOffIcon className="w-5 h-5 text-neutral-600" />
+                ) : (
+                  <PinIcon className="w-5 h-5 text-neutral-600" />
+                )}
+              </Button>
+            )}
+          </div>
 
           <span className="block font-sm text-sm mt-1 capitalize mb-3">
             {dictionary.productDetails.sizeLabel}: {selectedVariant.measurement} {product.unit === 'size' ? '' : product.unit}
@@ -157,9 +230,8 @@ export default function Product({ productJSON, dictionary }: { productJSON: any,
               {uniqueSizes.map((size: any, index: number) => (
                 <div
                   key={index}
-                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                    size === selectedSize && ' bg-primary text-white'
-                  } `}
+                  className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${size === selectedSize && ' bg-primary text-white'
+                    } `}
                   onClick={() => {
                     setSelectedSize(size);
                   }}
@@ -178,9 +250,8 @@ export default function Product({ productJSON, dictionary }: { productJSON: any,
                 return (
                   <div
                     key={index}
-                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${
-                      variant.id === selectedColor && ' bg-primary text-white'
-                    } `}
+                    className={`text-sm cursor-pointer transition-colors duration-300 text-gray-500 border px-3 rounded-lg py-1 capitalize ${variant.id === selectedColor && ' bg-primary text-white'
+                      } `}
                     onClick={() => {
                       setSelectedColor(variant.id);
                       setSelectedVariant(variant);
@@ -204,8 +275,8 @@ export default function Product({ productJSON, dictionary }: { productJSON: any,
             {selectedVariant.quantity <= 0
               ? dictionary.productDetails.soldOutBtnLabel
               : isAddToCartLoading
-              ? dictionary.productDetails.loadingBtnLabel
-              : dictionary.productDetails.addToCartBtnLabel}
+                ? dictionary.productDetails.loadingBtnLabel
+                : dictionary.productDetails.addToCartBtnLabel}
           </Button>
           <Button
             disabled={loading || isLoading}

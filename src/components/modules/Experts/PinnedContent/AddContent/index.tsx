@@ -22,6 +22,7 @@ import toast from 'react-hot-toast';
 
 const convertToEmbedUrl = (url: string) => {
   const videoId = extractVideoId(url);
+  console.log();
   if (videoId) {
     return `https://www.youtube.com/embed/${videoId}`;
   }
@@ -29,8 +30,13 @@ const convertToEmbedUrl = (url: string) => {
 };
 
 const extractVideoId = (url: string) => {
-  const regex =
-    /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|u\/\w\/|embed\/|watch\?.+&v=|v\/|e\/|watch\?.+v=|u\/\w\/|v\/|e\/)([^#\&\?]*).*/;
+  let regex: any = '';
+  if (url.includes('youtu.be')) {
+    regex =
+      /(?:\?v=|\/embed\/|\/watch\?v=|youtu\.be\/|\/v\/|\/e\/|\/u\/\w+\/|embed\/|v=|^)([a-zA-Z0-9_-]{11})/;
+  } else
+    regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|u\/\w\/|embed\/|watch\?.+&v=|v\/|e\/|watch\?.+v=|u\/\w\/|v\/|e\/)([^#\&\?]*).*/;
   const match = url.match(regex);
   return match && match[1] ? match[1] : null;
 };
@@ -45,17 +51,37 @@ const AddPinnedContentModal = ({ uid, pinnedLinks }: { uid: string; pinnedLinks:
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    let newLink = form.link.value;
+    if (newLink.trim().length === 0) {
+      toast.error('Link cannot be empty.');
+      return;
+    }
     if (links.length > 2) {
       toast.error('Oops! You can only pin up to three content links.');
       return;
     }
-    const form = event.target as HTMLFormElement;
-    let newLink = form.link.value;
-    if (newLink.includes('instagram') && !newLink.includes('embed'))
-      newLink = newLink.split('?')[0] + 'embed/';
 
-    if (newLink.includes('youtube') && !newLink.includes('embed')) {
+    if (newLink.includes('instagram') && !newLink.includes('embed')) {
+      newLink = newLink.split('?')[0] + 'embed/';
+    } else if (
+      (newLink.includes('youtube') || newLink.includes('youtu')) &&
+      !newLink.includes('embed')
+    ) {
       newLink = convertToEmbedUrl(newLink);
+    } else if (
+      (newLink.includes('facebook') || newLink.includes('fb')) &&
+      !newLink.includes('https://www.facebook.com/plugins')
+    ) {
+      newLink = `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(
+        newLink
+      )}&width=500`;
+    } else if (newLink.includes('tiktok') && !newLink.includes('embed')) {
+      const regex = /(@[a-zA-z0-9]*|.*)(\/.*\/|trending.?shareId=)([\d]*)/;
+      const match = newLink.match(regex);
+      newLink = `https://www.tiktok.com/embed/v2/${match[3]}?lang=en&height=300`;
+    } else if (newLink.includes('twitter') && !newLink.includes('embed')) {
+      newLink = `https://twitframe.com/show?url=${newLink}`;
     }
     setLinks((prev) => [...prev, newLink]);
     form.reset();
@@ -103,7 +129,7 @@ const AddPinnedContentModal = ({ uid, pinnedLinks }: { uid: string; pinnedLinks:
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex  gap-x-2 items-center">
-          <Input name="link" type="text" placeholder="Add embedded link" />
+          <Input name="link" type="text" placeholder="Paste the Link of the Post" />
           <Button variant="default" className="w-fit h-fit p-2">
             <PlusIcon />
           </Button>

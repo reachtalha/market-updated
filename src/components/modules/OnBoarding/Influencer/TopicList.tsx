@@ -8,11 +8,17 @@ interface TopicListProps {
   maxTopics: number;
   topicsList: string[];
   onTopicsChange: (topics: string[]) => void;
+  isEdit?: boolean;
 }
 
 const topics = ['Health', 'Skincare', 'Supplements', 'Food', 'Fashion'];
 
-const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsChange }) => {
+const TopicList: React.FC<TopicListProps> = ({
+  maxTopics,
+  topicsList,
+  onTopicsChange,
+  isEdit = true
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     formState: { errors }
@@ -67,8 +73,11 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
           >
             {topic}
             <button
+              disabled={!isEdit}
               onClick={() => removeTopic(topic)}
-              className="hover:bg-neutral-200 rounded-full p-0.5"
+              className={`${
+                isEdit ? 'hover:bg-neutral-200 ' : 'cursor-not-allowed'
+              } rounded-full p-0.5`}
             >
               <Cross1Icon className="w-4 h-4" />
             </button>
@@ -80,6 +89,7 @@ const TopicList: React.FC<TopicListProps> = ({ maxTopics, topicsList, onTopicsCh
             type="text"
             list="topicsList"
             ref={inputRef}
+            disabled={!isEdit}
             placeholder="Add Topics"
             onKeyDown={handleInputKeyDown}
             className="w-full bg-none px-2 py-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"

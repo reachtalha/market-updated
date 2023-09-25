@@ -36,13 +36,11 @@ const Header = ({ dictionary }: { dictionary: any }) => {
     <>
       <TopBanner dictionary={dictionary.topBanner} />
       <nav
-        className={`${
-          isScrollChanged || toggleSearchbar
+        className={`${isScrollChanged || toggleSearchbar
             ? 'bg-neutral-50 text-black duration-300 transition-colors ease-in'
-            : `${
-                isColoredRoute(pathname) ? 'text-black' : 'text-white'
-              } bg-none duration-300 transition-colors ease-out`
-        } justify-between`}
+            : `${isColoredRoute(pathname) ? 'text-black' : 'text-white'
+            } bg-none duration-300 transition-colors ease-out`
+          } justify-between`}
       >
         <Searchbar isOpen={toggleSearchbar} toggleSearchBar={onToggleSearchBar} />
         <BoxedContent className="flex py-4 justify-between items-center">
@@ -56,7 +54,7 @@ const Header = ({ dictionary }: { dictionary: any }) => {
                     className={cn(
                       `text-white z-2 relative`,
                       (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) &&
-                        'text-black'
+                      'text-black'
                     )}
                   />
                 }

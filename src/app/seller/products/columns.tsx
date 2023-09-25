@@ -14,23 +14,7 @@ export type Product = {
 
 export const columns: ColumnDef<Product>[] = [
   {
-    id: 'select',
-    header: ({ table }: { table: any }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }: { row: any }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
+    id: 'select'
   },
   {
     accessorKey: 'name',

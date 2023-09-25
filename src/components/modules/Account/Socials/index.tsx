@@ -17,6 +17,7 @@ import TopicList from '@/components/modules/OnBoarding/Influencer/TopicList';
 import { Button } from '@/components/ui/button';
 import Title from '@/components/common/Seller/Shared/Title';
 import { Textarea } from '@/components/ui/textarea';
+import { Pencil } from 'lucide-react';
 
 type FormValues = {
   bio: string;
@@ -33,6 +34,7 @@ const MAX_CHAR = 150;
 const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
   const { mutate } = useSWRConfig();
   const [loading, setLoading] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [socialMediaList, setSocialMediaList] = useState<SocialMedia[]>(
     defaultValues.socialMediaLinks
   );
@@ -99,6 +101,7 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
         socialMediaLinks: data.socialMediaLinks
       });
       mutate('currentUser');
+      setIsEdit(false);
     } catch (e) {
       toast.error('Error while updating account');
     } finally {
@@ -109,7 +112,16 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
     <section className={` py-10`}>
       <FormProvider {...methods}>
         <form id="edit-socials-form" onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-          <Title title="Socials" />
+          <div className="flex items-center">
+            <Title title="Socials" />
+            {!isEdit && (
+              <Pencil
+                className="ms-auto cursor-pointer"
+                size={18}
+                onClick={() => setIsEdit(true)}
+              />
+            )}
+          </div>
           <div className="w-full space-y-1">
             <Label>Your Bio</Label>
             <Textarea
@@ -123,6 +135,7 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
                   message: `Max length should be ${MAX_CHAR} characters`
                 }
               })}
+              disabled={!isEdit}
             />
             <div className="text-sm">
               {bio.length}/{MAX_CHAR} characters
@@ -131,12 +144,21 @@ const Index = ({ defaultValues }: { defaultValues: FormValues }) => {
               <span className="text-sm text-red-500">{errors.bio.message}</span>
             )}
           </div>
-          <TopicList maxTopics={4} topicsList={topics} onTopicsChange={handleTopicsChange} />
+          <TopicList
+            isEdit={isEdit}
+            maxTopics={4}
+            topicsList={topics}
+            onTopicsChange={handleTopicsChange}
+          />
           <div className="w-full mt-3">
-            <SocialMediaSelect onAddButton={handleAddButton} />
-            <SocialMediaList items={socialMediaList} onDeleteSocialLink={deleteSocialLink} />
+            <SocialMediaSelect isEdit={isEdit} onAddButton={handleAddButton} />
+            <SocialMediaList
+              isEdit={isEdit}
+              items={socialMediaList}
+              onDeleteSocialLink={deleteSocialLink}
+            />
           </div>
-          <Button disabled={loading} className="w-full mt-4">
+          <Button disabled={loading || !isEdit} className="w-full mt-4">
             {loading ? 'Updating...' : 'Update'}
           </Button>
         </form>

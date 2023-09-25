@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import Index from '@/components/modules/Account/Settings';
+import Index from '@/components/modules/Account/Settings/index';
 import { auth, db } from '@/lib/firebase/client';
 import { doc, getDoc } from 'firebase/firestore';
 import useSwr from 'swr';

@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Loader from '@/components/common/Loader';
-import { useInView } from 'react-intersection-observer';
 import { getShops } from '@/actions/getShops';
 import { useSearchParams } from 'next/navigation';
+import { useInView } from 'react-intersection-observer';
 import Markets from './Markets';
 type Props = {
   markets: any;
@@ -11,23 +11,41 @@ type Props = {
 
 const LoadMore = ({ markets }: Props) => {
   const { ref, inView } = useInView();
+
   const searchParams = useSearchParams();
   const [shops, setShops] = useState(markets);
   const [responseEnded, setResponseEnded] = useState(false);
+
+  let lastDoc = markets[markets.length - 1];
   const category = searchParams.get('category') || '';
   const sort = searchParams.get('sort') || '';
 
   const loadMoreShops = async () => {
-    const response = await getShops(category, sort, shops[shops.length - 1]);
-    if (response.length < 4) setResponseEnded(true);
-    setShops((prev: any) => [...prev, ...response]);
+    try {
+      console.log(responseEnded);
+      const response: any = await getShops(category, sort, lastDoc);
+      if (response.length > 0) {
+        lastDoc = response[response.length - 1];
+        setShops((prev: any) => [...prev, ...response]);
+      }
+      if (response.length < 4) setResponseEnded(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    setShops(markets);
+    lastDoc = markets[markets.length - 1];
+    setResponseEnded(false);
+  }, [markets]);
 
   useEffect(() => {
     if (inView) {
       loadMoreShops();
     }
   }, [inView]);
+
   return (
     <div>
       <Markets markets={shops} />

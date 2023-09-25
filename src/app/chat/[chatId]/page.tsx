@@ -1,7 +1,7 @@
 import React from 'react';
 import Error from '@/components/common/Error';
 
-import Index from '@/components/modules/chat';
+import Index from '@/components/modules/chat/index';
 
 type Props = {
   params: {
