@@ -25,7 +25,6 @@ export function middleware(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const cookies = request.cookies.get('user');
 
-  console.log({ cookies })
   const user: any = cookies ? JSON.parse(cookies?.value) : { role: '' };
 
   //if not logged in but trying to access account

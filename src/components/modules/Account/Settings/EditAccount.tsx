@@ -8,6 +8,7 @@ import { useFormContext } from 'react-hook-form';
 import { ImageIcon } from '@radix-ui/react-icons';
 import Image from '@/components/common/FallbackImage';
 import ImageReader from '@/utils/handlers/image/ImageReader';
+import { useState } from 'react';
 
 type Props = {
   loading: boolean;
