@@ -92,9 +92,8 @@ const getProducts: any = async (
 
 type ProductsProps = {
   categories: Category[];
-  dictionary: any;
 };
-export default function Products({ categories, dictionary }: ProductsProps) {
+export default function Products({ categories }: ProductsProps) {
   const category = useCategorySlug();
   const type = useProductTypeSlug();
   const { ref, inView } = useInView();

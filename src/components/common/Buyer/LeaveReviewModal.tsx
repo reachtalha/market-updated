@@ -16,7 +16,16 @@ import ReactStars from 'react-stars';
 import Image from '@/components/common/FallbackImage';
 
 import { db, auth } from '@/lib/firebase/client';
-import { collection, addDoc, updateDoc, doc, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  getDoc,
+  getDocs,
+  where,
+  query
+} from 'firebase/firestore';
 import { mutate } from 'swr';
 import { ArrowLeft } from 'lucide-react';
 
@@ -39,6 +48,16 @@ const addReview = async (
     timeStamp: new Date(),
     userId: auth.currentUser?.uid
   });
+  const reviewDocs = await getDocs(
+    query(collection(db, 'reviews'), where('productId', '==', productId))
+  );
+
+  const reviews = reviewDocs.docs.map((doc) => doc.data());
+  if (reviews.length > 0) {
+    rating =
+      reviews?.reduce((acc: number, review: any) => acc + review.rating, 0) / reviews?.length;
+  }
+  await updateDoc(doc(db, 'products', productId), { rating });
 };
 
 const updateOrder = async (orderId: string, productId: string) => {

@@ -28,8 +28,6 @@ import UploadImage from '@/utils/handlers/image/UploadImage';
 import Loader from '@/components/common/Loader';
 import EditNavbar from '@/components/common/Seller/Shared/EditNavbar';
 
-
-
 type FormValues = {
   coverImage: string;
   moreImages: string[];
@@ -42,6 +40,7 @@ type FormValues = {
   price: string;
   quantity: string;
   unit: string;
+  SKU: any[];
 };
 
 type props = {
@@ -144,7 +143,11 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
           type: data.type?.toLocaleLowerCase(),
           updatedAt: Timestamp.fromDate(new Date()),
           coverImage: coverImageURL || defaultValues.coverImage,
-          moreImages: otherImagesURL
+          moreImages: otherImagesURL,
+          price:
+            data.SKU.length === 1
+              ? data.SKU[0].price
+              : data.SKU.sort((a: any, b: any) => a.price - b.price)[0].price
         };
 
         await updateDoc(doc(db, 'products', `${defaultValues.id}`), obj);
@@ -161,8 +164,13 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
           coverImage: coverImageURL,
           moreImages: otherImagesURL,
           shopName: shop.name,
+          price:
+            data.SKU.length === 1
+              ? data.SKU[0].price
+              : data.SKU.sort((a: any, b: any) => a.price - b.price)[0].price,
           category: shop.category,
-          status: 'listed'
+          status: 'listed',
+          rating: 0
         };
 
         await addDoc(collection(db, 'products'), obj);
@@ -204,7 +212,14 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
           )}
 
           <div className="w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] mx-auto mt-5 2xl:mt-16 pb-5">
-            {step === 1 && <BasicDetails dictionary={dictionary} isEdit={isEdit} setStep={setStep} types={shop.types} />}
+            {step === 1 && (
+              <BasicDetails
+                dictionary={dictionary}
+                isEdit={isEdit}
+                setStep={setStep}
+                types={shop.types}
+              />
+            )}
             {step === 2 && <CreateSKU dictionary={dictionary} isEdit={isEdit} setStep={setStep} />}
             {step === 3 && <DetailedDescription isEdit={isEdit} setStep={setStep} />}
             {step === 4 && (

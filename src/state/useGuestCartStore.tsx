@@ -54,7 +54,15 @@ const useGuestCartStore = create(
                     ...state.guestCart.items,
                     { ...product, quantity: 1 }
                   ]),
-                  items: [...state.guestCart.items, { ...product, quantity: 1 }]
+                  items: [
+                    ...state.guestCart.items,
+                    {
+                      ...product,
+                      quantity: 1,
+                      skuId: product.selectedVariant.id,
+                      docId: product.id
+                    }
+                  ]
                 } || {}
             };
           }
