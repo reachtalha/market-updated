@@ -21,6 +21,7 @@ import useGuestCartStore from '@/state/useGuestCartStore';
 import useLocale from '@/hooks/useLocale';
 
 const Header = ({ dictionary }: { dictionary: any }) => {
+  const locale = useLocale();
   const [toggleSearchbar, setToggleSearchBar] = useState(false);
   const isScrollChanged = useDetectChangeScroll();
   const pathname = usePathname();
@@ -40,7 +41,7 @@ const Header = ({ dictionary }: { dictionary: any }) => {
           isScrollChanged || toggleSearchbar
             ? 'bg-neutral-50 text-black duration-300 transition-colors ease-in'
             : `${
-                isColoredRoute(pathname) ? 'text-black' : 'text-white'
+                isColoredRoute(pathname, locale) ? 'text-black' : 'text-white'
               } bg-none duration-300 transition-colors ease-out`
         } justify-between`}
       >
@@ -55,7 +56,7 @@ const Header = ({ dictionary }: { dictionary: any }) => {
                     width={30}
                     className={cn(
                       `text-white z-2 relative`,
-                      (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) &&
+                      (isScrollChanged || isColoredRoute(pathname, locale) || toggleSearchbar) &&
                         'text-black'
                     )}
                   />
@@ -83,7 +84,7 @@ const Header = ({ dictionary }: { dictionary: any }) => {
               variant="link"
               className={cn(
                 'z-2 text-white relative',
-                (toggleSearchbar || isColoredRoute(pathname) || isScrollChanged) && 'text-black'
+                (toggleSearchbar || isColoredRoute(pathname, locale) || isScrollChanged) && 'text-black'
               )}
             >
               <SearchIcon height={18} width={18} />
@@ -99,7 +100,7 @@ const Header = ({ dictionary }: { dictionary: any }) => {
                 <Button
                   className={cn(
                     'z-2 text-white relative w-fit',
-                    (isScrollChanged || isColoredRoute(pathname) || toggleSearchbar) && 'text-black'
+                    (isScrollChanged || isColoredRoute(pathname, locale) || toggleSearchbar) && 'text-black'
                   )}
                   onClick={() =>
                     auth?.currentUser
@@ -136,7 +137,7 @@ export const NavLink = ({ title, href, className = '', ...props }: NavLinkProps)
     className
   );
   return (
-    <Link href={href} className={classNames} {...props}>
+    <Link href={`/${locale}${href}`} className={classNames} {...props}>
       {title}
     </Link>
   );

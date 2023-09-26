@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }: any) => {
       onAuthStateChanged(auth, async (user: any) => {
         if (user) {
           const idTokenResult = await auth.currentUser?.getIdTokenResult();
+          console.log({ idTokenResult })
           createUser({ uid: user.uid, role: idTokenResult?.claims?.role });
           setUser(user);
         } else {

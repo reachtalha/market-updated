@@ -39,3 +39,5 @@ export default function FeaturedExpertCard({ expert, dictionary }: ExpertCardPro
     </div>
   );
 }
+
+

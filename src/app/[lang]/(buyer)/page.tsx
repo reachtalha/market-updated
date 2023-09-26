@@ -63,7 +63,7 @@ export default async function Home({ params: { lang } }: LocaleType) {
             {experts.map((expert: any, i: number) => (
               <li key={Math.random() + i + Date.now()} className="flex-shrink-0 max-w-[300px]">
                 <ExpertCard
-                  heading={dictionary.home.experts.expertCardHeading}
+                  dictionary={dictionary}
                   id={expert?.id}
                   image={expert?.photoURL}
                   name={expert?.name}

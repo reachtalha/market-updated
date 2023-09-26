@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isColoredRoute(route: string, locale: string = 'en') {
+export function isColoredRoute(route: string, locale: string) {
   const coloredRoutes = [
     `/${locale}/experts`,
     `/${locale}/market`,

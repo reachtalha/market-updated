@@ -27,7 +27,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
-import DropDown from './Sort';
+import DropDown from './DropDown';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import DeleteImage from '@/utils/handlers/image/DeleteImage';

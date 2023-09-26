@@ -50,7 +50,7 @@ export default async function Index({ params: { lang } }: LocaleType) {
   const categories = await getCategories();
   const products = await getProducts(categories);
   const dictionary = await getDictionary(lang);
-  console.log(dictionary);
+
   return (
     <>
       <ForYou products={JSON.stringify(products)} categories={JSON.stringify(categories)} />
@@ -71,7 +71,10 @@ export default async function Index({ params: { lang } }: LocaleType) {
         </BoxedContent>
       </section>
       <div className="py-16 px-10">
-        {/* <OrganicSimplifiedSection title = {dictiona} tag  /> */}
+        <OrganicSimplifiedSection
+          title={dictionary.home.bloggingSection.title}
+          tag={dictionary.home.bloggingSection.tag}
+        />
       </div>
     </>
   );

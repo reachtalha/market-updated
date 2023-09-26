@@ -15,8 +15,7 @@ const Experts = ({ locale, experts, dictionary }: Props) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
           {experts?.map((expert: any, i: number) => (
             <ExpertCard
-              locale={locale}
-              heading={dictionary.home.experts.expertCardHeading}
+              dictionary={dictionary}
               key={Math.random() + i + Date.now()}
               id={expert?.id}
               image={expert?.photoURL}
