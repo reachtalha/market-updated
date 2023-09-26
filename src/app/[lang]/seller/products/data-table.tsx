@@ -10,7 +10,7 @@ import {
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
 import { Product } from './columns';
-
+import { Button } from '@/components/ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
 import ImageWithFallback from '@/components/common/FallbackImage';
 import { Input } from '@/components/ui/input';
@@ -19,41 +19,48 @@ import {
   doc,
   getDocs,
   query,
-  limit,
   where,
   collection,
   getDoc,
   updateDoc,
-  increment,
-  collectionGroup
+  increment
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
-import { mutate } from 'swr';
-
-import { useRouter } from 'next/navigation';
-import SortByDropdown from '@/components/common/SortByDropdown';
+import DropDown from './Sort';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import DeleteImage from '@/utils/handlers/image/DeleteImage';
-import { promise } from 'zod';
-import useLocale from '@/hooks/useLocale';
-
+import { RECORDS_PER_PAGE } from './constants';
 interface DataTableProps<TValue> {
   columns: ColumnDef<Product, TValue>[];
   data: Product[];
-  search: string;
-  setSearch: (value: string) => void;
+  totalRecords: number;
 }
 
-export function DataTable<TValue>({ columns, data, search, setSearch }: DataTableProps<TValue>) {
+export function DataTable<TValue>({ columns, data, totalRecords }: DataTableProps<TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel()
   });
   const router = useRouter();
+  const params = useSearchParams();
+  const sort = params.get('sort') || 'latest';
+  const lastDoc = params.get('lastDoc') || null;
+  const paramsQuery = params.get('query') || null;
+  let page: any = params.get('page') || 0;
+  const isNext = params.get('isNext');
   const [loading, setLoading] = useState(false);
-  const locale = useLocale();
+  const [dataEnded, setDataEnded] = useState(false);
+
+  useEffect(() => {
+    if (!data || data.length < RECORDS_PER_PAGE) {
+      setDataEnded(true);
+    } else {
+      setDataEnded(false);
+    }
+  }, [data]);
 
   async function deleteProduct(id: string) {
     try {
@@ -108,7 +115,7 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
       await Promise.all([moreImages]);
 
       toast.success('Product Successfully Deleted');
-      mutate('sellerProducts');
+      router.refresh();
     } catch (e) {
       console.log(e);
       console.log('Error occured');
@@ -118,87 +125,125 @@ export function DataTable<TValue>({ columns, data, search, setSearch }: DataTabl
   }
 
   const handleEdit = async (id: string) => {
-    router.push(`/${locale}/seller/products/edit/${id}`);
+    router.push(`/seller/products/edit/${id}`);
+  };
+  const handleSearch = (e: any) => {
+    if (e.key === 'Enter') {
+      const query = e.target?.value;
+      router.replace(
+        `/seller/products?sort=${sort}&lastDoc=${lastDoc}&page=${page}&isNext=${isNext}&query=${query}`
+      );
+    }
   };
   return (
-    <div className="rounded-md border mt-5">
-      <div className="p-5 flex justify-between items-center">
-        <Input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          type="search"
-          placeholder="search"
-          className="w-[20%]"
-        />
-        <SortByDropdown type="seller-product" />
-      </div>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup: any, index: number) => (
-            <TableRow key={index}>
-              <TableHead>#</TableHead>
-              {headerGroup.headers.map((header: any, index: number) => {
-                return (
-                  <TableHead key={index}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                );
-              })}
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row: any, index: number) => (
-              <TableRow key={index} data-state={row.getIsSelected() && 'selected'}>
-                <TableCell>{row.index + 1}</TableCell>
-                {row.getVisibleCells().map((cell: any, index: number) => {
+    <>
+      <div className="rounded-md border mt-5">
+        <div className="p-5 flex justify-between items-center">
+          <Input type="search" onKeyDown={handleSearch} placeholder="search" className="w-[20%]" />
+          <DropDown sortBy={sort} />
+        </div>
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup: any, index: number) => (
+              <TableRow key={index}>
+                <TableHead>#</TableHead>
+                {headerGroup.headers.map((header: any, index: number) => {
                   return (
-                    <TableCell key={index} className="capitalize">
-                      <div className="flex flex-row gap-x-4 items-center">
-                        {cell.column.columnDef.header === 'Name' && (
-                          <ImageWithFallback
-                            src={cell.row.original.cover}
-                            alt={cell.row.original.name}
-                            width={20}
-                            height={20}
-                            className="w-10 h-10 rounded object-cover"
-                          />
-                        )}
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </div>
-                    </TableCell>
+                    <TableHead key={index}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
                   );
                 })}
-                <TableCell key={index}>
-                  <div className="flex flex-row gap-x-4">
-                    <Pencil
-                      size={15}
-                      className={loading ? 'pointer-events-none' : 'cursor-pointer'}
-                      onClick={() => handleEdit(row?.original?.id)}
-                    />
-                    <Trash2
-                      size={15}
-                      color="#C51605"
-                      className={loading ? 'pointer-events-none' : 'cursor-pointer'}
-                      onClick={() => deleteProduct(row?.original?.id)}
-                    />
-                  </div>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row: any, index: number) => (
+                <TableRow key={index} data-state={row.getIsSelected() && 'selected'}>
+                  <TableCell>{row.index + 1}</TableCell>
+                  {row.getVisibleCells().map((cell: any, index: number) => {
+                    return (
+                      <TableCell key={index} className="capitalize">
+                        <div className="flex flex-row gap-x-4 items-center">
+                          {cell.column.columnDef.header === 'Name' && (
+                            <ImageWithFallback
+                              src={cell.row.original.cover}
+                              alt={cell.row.original.name}
+                              width={20}
+                              height={20}
+                              className="w-10 h-10 rounded object-cover"
+                            />
+                          )}
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </div>
+                      </TableCell>
+                    );
+                  })}
+                  <TableCell key={index}>
+                    <div className="flex flex-row gap-x-4">
+                      <Pencil
+                        size={15}
+                        className={` hover:-translate-y-[.15rem] transition-transform duration-200 ${
+                          loading ? ' pointer-events-none' : 'cursor-pointer'
+                        }`}
+                        onClick={() => handleEdit(row?.original?.id)}
+                      />
+                      <Trash2
+                        size={15}
+                        color="#C51605"
+                        className={` hover:-translate-y-[.15rem] transition-transform duration-200 ${
+                          loading ? ' pointer-events-none' : 'cursor-pointer'
+                        }`}
+                        onClick={() => deleteProduct(row?.original?.id)}
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No Products Found.
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No Products Found.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          disabled={!lastDoc || lastDoc === 'null' || parseInt(page) === 0}
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            const lastDoc: any = data[data.length - 1];
+            page = parseInt(page) - 1;
+            router.replace(
+              `/seller/products?sort=${sort}&lastDoc=${lastDoc.id}&page=${page}&isNext=false&query=${paramsQuery}`
+            );
+          }}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={dataEnded || (page + 1) * RECORDS_PER_PAGE >= totalRecords}
+          onClick={() => {
+            const lastDoc = data[data.length - 1];
+            page = parseInt(page) + 1;
+            router.replace(
+              `/seller/products?sort=${sort}&page=${page}&lastDoc=${lastDoc.id}&query=${paramsQuery}`
+            );
+          }}
+        >
+          Next
+        </Button>
+      </div>
+    </>
   );
 }

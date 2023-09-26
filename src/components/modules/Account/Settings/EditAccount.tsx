@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -164,7 +165,9 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate, dictionar
             {...register('currentPassword')}
           />
 
-          {errors.name && <span className="text-sm text-red-500">{dictionary.currentPassword.error}</span>}
+          {errors.name && (
+            <span className="text-sm text-red-500">{dictionary.currentPassword.error}</span>
+          )}
         </div>
 
         <div className="space-y-1 w-full mt-3">
@@ -176,7 +179,9 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate, dictionar
             {...register('newPassword')}
           />
 
-          {errors.name && <span className="text-sm text-red-500">{dictionary.newPassword.error}</span>}
+          {errors.name && (
+            <span className="text-sm text-red-500">{dictionary.newPassword.error}</span>
+          )}
         </div>
 
         <div className="space-y-1 w-full mt-3">
@@ -204,7 +209,8 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate, dictionar
           className="w-full"
           disabled={loading}
         >
-          {dictionary.updateBtnLabel} {isEdit ? dictionary.updateProfileLabel : dictionary.updatePasswordLabel}
+          {dictionary.updateBtnLabel}{' '}
+          {isEdit ? dictionary.updateProfileLabel : dictionary.updatePasswordLabel}
         </Button>
       </div>
     </div>

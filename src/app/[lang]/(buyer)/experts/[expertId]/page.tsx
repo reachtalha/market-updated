@@ -44,7 +44,7 @@ const getfavProducts = async (expertId: string) => {
 type ExpertProps = {
   params: {
     expertId: string;
-    lang: Locale
+    lang: Locale;
   };
 };
 
@@ -111,18 +111,25 @@ const Expert = async ({ params }: ExpertProps) => {
             <div className="mt-8 lg:mt-10">
               <p className="uppercase">{dictionary.expertDetails.topicsLabel}</p>
               <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
-                {expert?.topics?.map((item: any, idx: number) => (
-                  <Link href={`/experts?category=${item}`} key={idx}>
-                    <Button
-                      key={idx}
-                      variant="outline"
-                      size="resp"
-                      className="uppercase border-black h-8 px-3"
-                    >
-                      {item}
-                    </Button>
-                  </Link>
-                ))}
+                {expert?.topics.length > 0 && (
+                  <div className="mt-8 lg:mt-10">
+                    <p className="uppercase">topics</p>
+                    <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
+                      {expert?.topics?.map((item: any, idx: number) => (
+                        <Link href={`/experts?category=${item}`} key={idx}>
+                          <Button
+                            key={idx}
+                            variant="outline"
+                            size="resp"
+                            className="uppercase border-black h-8 px-3"
+                          >
+                            {item}
+                          </Button>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

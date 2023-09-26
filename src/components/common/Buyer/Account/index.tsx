@@ -15,7 +15,7 @@ import { AccountsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 type AccountProps = {
   options: Option[];
-  dictionary: any
+  dictionary: any;
 };
 
 function Index({ options, dictionary }: AccountProps) {
