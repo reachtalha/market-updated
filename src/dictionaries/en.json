@@ -65,6 +65,10 @@
       "tag": "@allorganicsmarket"
     }
   },
+  "forYou": {
+    "shopsLabel": "Shops" ,
+    "exploreShopsLabel": "Explore Shop Categories"
+  },
   "productDetails": {
     "sizeLabel": "Size",
     "soldOutBtnLabel": "Sold Out",

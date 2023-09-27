@@ -19,6 +19,7 @@ import Categories from '@/components/modules/OnBoarding/Categories';
 import Influencer from '@/components/modules/OnBoarding/Influencer';
 import UploadImage from '@/utils/handlers/image/UploadImage';
 import SellerPaymentInfo from '@/components/modules/OnBoarding/SellerPaymentInfo';
+import useLocale from '@/hooks/useLocale';
 
 type FormValues = {
   countryCode: string;
@@ -39,6 +40,7 @@ const OnBoardingForm = () => {
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const methods = useForm<FormValues>();
+  const locale = useLocale();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -73,8 +75,8 @@ const OnBoardingForm = () => {
       }
       delete obj.image;
       await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
-      if (role === 'buyer') router.push('/');
-      else router.push('/seller/dashboard');
+      if (role === 'buyer') router.push(`/${locale}`);
+      else router.push(`/${locale}/seller/dashboard`);
     } catch (error: any) {
       toast.error(`Error! ${error.message}`);
     } finally {

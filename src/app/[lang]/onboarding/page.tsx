@@ -3,6 +3,8 @@ import { db } from '@/lib/firebase/client';
 import { doc, getDoc } from '@firebase/firestore';
 
 import OnBoardingForm from '@/components/modules/OnBoarding';
+import { LocaleType } from '@/app/[lang]/(buyer)/page';
+import { Locale } from '@/i18n-config';
 
 async function getOnboardingInfo(id: string) {
   const docRef = await getDoc(doc(db, 'users', `${id}`));
@@ -11,19 +13,21 @@ async function getOnboardingInfo(id: string) {
 }
 
 const OnBoarding = async ({
-  searchParams
+  searchParams,
+  params: { lang }
 }: {
   searchParams?: { [key: string]: string | undefined };
+  params: { lang: Locale }
 }) => {
   const { id } = searchParams!;
   if (!id) {
-    redirect('/');
+    redirect(`/${lang}`);
   }
   const isOnboarded = await getOnboardingInfo(id);
   if (isOnboarded === 'seller') {
-    redirect('/seller/dashboard');
+    redirect(`/${lang}/seller/dashboard`);
   } else if (isOnboarded) {
-    redirect('/');
+    redirect(`/${lang}`);
   }
 
   return (

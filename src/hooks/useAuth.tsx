@@ -22,6 +22,7 @@ import {
 
 import { auth } from '@/lib/firebase/client';
 import toast from 'react-hot-toast';
+import useLocale from '@/hooks/useLocale';
 
 const provider = new GoogleAuthProvider();
 const fbprovider = new FacebookAuthProvider();
@@ -55,6 +56,8 @@ export const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<any>(null);
   const [initialLoading, setInitialLoading] = useState<boolean>(true);
   const router = useRouter();
+  const locale = useLocale();
+  console.log(locale)
 
   useEffect(
     () =>
@@ -75,7 +78,7 @@ export const AuthProvider = ({ children }: any) => {
     try {
       setLoading(true);
       await signInWithPopup(auth, provider);
-      router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
+      router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {
       if (e.code === 'auth/user-not-found') {
         toast.error('Sorry, your account is not registered. Please check your email');
@@ -96,7 +99,7 @@ export const AuthProvider = ({ children }: any) => {
       setLoading(true);
       await signInWithPopup(auth, fbprovider);
       setUser(user);
-      router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
+      router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {
       if (e.code === 'auth/user-not-found') {
         toast.error('Sorry, your account is not registered. Please check your email');
@@ -117,8 +120,8 @@ export const AuthProvider = ({ children }: any) => {
       setLoading(true);
       const userCredentials = (await signInWithEmailAndPassword(auth, email, password)) as any;
       setUser(userCredentials.user);
-      if (userCredentials?.role === 'superadmin') router.push(`/superadmin`);
-      else router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
+      if (userCredentials?.role === 'superadmin') router.push(`/${locale}/superadmin`);
+      else router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {
       if (e.code === 'auth/user-not-found') {
         toast.error('Sorry, your account is not registered. Please check your email');
@@ -139,7 +142,7 @@ export const AuthProvider = ({ children }: any) => {
       setLoading(true);
       await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
-      router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
+      router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {
       if (e.code === 'auth/user-not-found') {
         toast.error('Sorry, your account is not registered. Please check your email');
@@ -160,7 +163,7 @@ export const AuthProvider = ({ children }: any) => {
       await signOut(auth);
       deleteUser();
       setUser(null);
-      router.push('/auth/login');
+      router.push(`/${locale}/auth/login`);
     } catch (e: any) {
       toast.error(`Oops! We encountered an issue while logout.`);
     }

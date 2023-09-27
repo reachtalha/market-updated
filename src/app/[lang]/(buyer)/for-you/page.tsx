@@ -58,13 +58,13 @@ export default async function Index({ params: { lang } }: LocaleType) {
       <section className="bg-black py-10 md:py-16">
         <BoxedContent>
           <header className="text-sm flex-wrap gap-y-4 md:text-lg text-white flex justify-between items-center mb-10">
-            <h5 className="uppercase">Shops</h5>
+            <h5 className="uppercase">{dictionary.forYou.shopsLabel}</h5>
             <Button
               variant="outline"
               size="resp"
               className="border-2 uppercase w-fit bg-transparent text-white rounded-3xl"
             >
-              Explore Shop Categories
+              {dictionary.forYou.exploreShopsLabel}
             </Button>
           </header>
           <FeaturesShops />

@@ -13,7 +13,6 @@ interface IProfileCard {
 }
 
 export default function ExpertCard({ id, image, name, title, bio, dictionary }: IProfileCard) {
-  console.log(dictionary);
   return (
     <>
       <div className="group h-fit w-full relative hover:scale-105 transition-all duration-300 ease-in-out ">
