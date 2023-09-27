@@ -82,7 +82,6 @@ const PriceFilter = () => {
 };
 
 const ReviewFilter = ({ value }: { value: number }) => {
-  const locale = useLocale();
   const router = useRouter();
   const path = usePathname();
   const params = useSearchParams();

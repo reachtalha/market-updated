@@ -174,7 +174,7 @@ const EditAccount = ({ loading, isPasswordUpdate, setIsPasswordUpdate, dictionar
           <Label>{dictionary.newPassword.label}</Label>
           <Input
             className="w-full placeholder:text-sm"
-            placeholder={dictionary.newPassword.placeholder}
+            placeholder={dictionary.newPassword.placeholder} 
             type="password"
             {...register('newPassword')}
           />
