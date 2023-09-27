@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { ReactNode } from 'react';
 import toast from 'react-hot-toast';
-import ReactStars from 'react-stars';
+import ReactStar from 'react-stars';
 import Image from '@/components/common/FallbackImage';
 
 import { db, auth } from '@/lib/firebase/client';
@@ -28,6 +28,7 @@ import {
 } from 'firebase/firestore';
 import { mutate } from 'swr';
 import { ArrowLeft } from 'lucide-react';
+const ReactStars = ReactStar as any;
 
 type LeaveReviewModalProps = {
   trigger: ReactNode;
@@ -177,14 +178,16 @@ const AddReview = ({
   };
   return (
     <div>
-      <ReactStars
-        count={5}
-        onChange={(rating) => setRating(rating)}
-        size={24}
-        value={rating}
-        color1="#E0E0E0"
-        color2={'#000000'}
-      />
+      <>
+        <ReactStars
+          count={5}
+          onChange={(rating: any) => setRating(rating)}
+          size={24}
+          value={rating}
+          color1="#E0E0E0"
+          color2={'#000000'}
+        />
+      </>
       <form onSubmit={handleSubmit} className="mt-4">
         <div className="flex flex-col gap-2">
           <Label htmlFor="description">Description</Label>
