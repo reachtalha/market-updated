@@ -24,32 +24,38 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const searchParams = request.nextUrl.searchParams;
   const cookies = request.cookies.get('user');
+  const locale = getLocale(request);
 
   const user: any = cookies ? JSON.parse(cookies?.value) : { role: '' };
- 
-  //if not logged in but trying to access account
-  if ((pathname.startsWith('/account') || pathname.startsWith('/chat')) && user.role === '') {
+
+  //if not logged in but trying to access accountx
+  if (
+    (pathname.startsWith(`/${locale}/account`) ||
+      pathname.startsWith(`/${locale}/chat`) ||
+      pathname.startsWith(`/${locale}/for-you`)) &&
+    user.role === ''
+  ) {
     return NextResponse.redirect(new URL('/auth/login', request.nextUrl));
   }
   //If not seller but trying to access seller dashboard
-  if (pathname.startsWith('/seller') && user.role !== 'seller') {
+  if (pathname.startsWith(`/${locale}/seller`) && user.role !== 'seller') {
     return NextResponse.redirect(new URL('/', request.nextUrl));
   }
 
   //if seller but trying to access buyer side
   if (
     user.role === 'seller' &&
-    (pathname.startsWith('/account') ||
-      pathname.startsWith('/blogs') ||
-      pathname.startsWith('/cart') ||
-      pathname.startsWith('/checkout') ||
-      pathname.startsWith('/auth') ||
-      pathname.startsWith('/new-registration') ||
-      pathname.startsWith('/for-you') ||
-      pathname.startsWith('/market') ||
-      pathname.startsWith('/orders') ||
-      pathname.startsWith('/products') ||
-      pathname === '/')
+    (pathname.startsWith(`/${locale}/account`) ||
+      pathname.startsWith(`/${locale}/blogs`) ||
+      pathname.startsWith(`/${locale}/cart`) ||
+      pathname.startsWith(`/${locale}/checkout`) ||
+      pathname.startsWith(`/${locale}/auth`) ||
+      pathname.startsWith(`/${locale}/new-registration`) ||
+      pathname.startsWith(`/${locale}/for-you`) ||
+      pathname.startsWith(`/${locale}/market`) ||
+      pathname.startsWith(`/${locale}/orders`) ||
+      pathname.startsWith(`/${locale}/products`) ||
+      pathname === `/${locale}/`)
   ) {
     return NextResponse.redirect(new URL('/seller/dashboard', request.nextUrl));
   }
@@ -69,7 +75,6 @@ export function middleware(request: NextRequest) {
 
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
-    const locale = getLocale(request);
     // e.g. incoming request is /products
     // The new URL is now /en/products
     return NextResponse.redirect(

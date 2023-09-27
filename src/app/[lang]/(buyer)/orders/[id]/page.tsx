@@ -12,7 +12,7 @@ import Error from '@/components/common/Error';
 
 type Props = {
   params: {
-    id: string;
+    id: string; 
   };
 };
 
@@ -111,7 +111,7 @@ const Order = (props: Props) => {
           order={data}
         />
       </div>
-      <OrderDetail order={data} />
+      <OrderDetail order={data} dictionary={dictionary} />
     </div>
   );
 };
