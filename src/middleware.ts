@@ -31,7 +31,8 @@ export function middleware(request: NextRequest) {
   //if not logged in but trying to access account
   if (
     (pathname.startsWith(`${localeFromPathname}/account`) ||
-      pathname.startsWith(`${localeFromPathname}/chat`)) &&
+      pathname.startsWith(`${localeFromPathname}/chat`) ||
+      pathname.startsWith(`${localeFromPathname}/for-you`)) &&
     user.role === ''
   ) {
     return NextResponse.redirect(new URL(`${localeFromPathname}/auth/login`, request.nextUrl));

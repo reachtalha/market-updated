@@ -11,6 +11,7 @@ import useGuestCartStore from '@/state/useGuestCartStore';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
 
+
 const fetchCreatePaymentIntent = (price: number) => {
   return axios.post('/api/payment/createPayment', {
     price

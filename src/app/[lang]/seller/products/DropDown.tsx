@@ -7,18 +7,21 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { ChevronDownIcon } from 'lucide-react';
+import useLocale from '@/hooks/useLocale';
 
 type Props = {
   sortBy: any;
 };
 
 const DropDown = ({ sortBy = 'latest' }: Props) => {
+  const locale = useLocale();
   const getURL = (sortBy: string) => {
     const queryParams = [];
+    console.log('here');
 
     queryParams.push(`sort=${encodeURIComponent(sortBy)}`);
 
-    return `/seller/products?${queryParams.join('&')}`;
+    return `/${locale}/seller/products?${queryParams.join('&')}`;
   };
   return (
     <DropdownMenu>

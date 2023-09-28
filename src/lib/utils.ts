@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function isColoredRoute(route: string, locale: string) {
   const coloredRoutes = [
     `/${locale}/experts`,
+    `/${locale}/blog/write`,
     `/${locale}/market`,
     `/${locale}/account`,
     `/${locale}/cart`,
