@@ -107,6 +107,10 @@
       "expertLabel": "Deskundige"
     }
   },
+  "shop": {
+    "similarShopsLabel": "ähnliche Geschäfte",
+    "noProductsLabel": "In diesem Shop wurden keine Produkte gefunden"
+  },
   "auth": {
     "common": {
       "orLabel": "OF",
