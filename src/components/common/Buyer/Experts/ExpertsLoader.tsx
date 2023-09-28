@@ -16,21 +16,32 @@ const ExpertsLoader = ({ experts, dictionary }: Props) => {
   const { ref, inView } = useInView();
 
   const searchParams = useSearchParams();
+  let lastDoc = experts[experts.length - 1];
   const [responseEnded, setResponseEnded] = useState(false);
   const category = searchParams.get('category') || '';
   const sort = searchParams.get('sort') || '';
-  console.log(allExperts[allExperts.length - 1]);
-  const loadMoreShops = async () => {
-    const response = await getExperts(category, sort, allExperts[allExperts.length - 1]);
+
+  const loadMoreExperts = async () => {
+    const response: any = await getExperts(category, sort, lastDoc);
+    if (response.length > 0) {
+      lastDoc = response[response.length - 1];
+      setAllExperts((prev: any) => [...prev, ...response]);
+    }
     if (response.length < 3) setResponseEnded(true);
-    setAllExperts((prev: any) => [...prev, ...response]);
   };
 
   useEffect(() => {
+    setAllExperts(experts);
+    lastDoc = experts[experts.length - 1];
+    setResponseEnded(false);
+  }, [experts]);
+
+  useEffect(() => {
     if (inView) {
-      loadMoreShops();
+      loadMoreExperts();
     }
   }, [inView]);
+
   return (
     <div>
       <Experts dictionary={dictionary} experts={allExperts} />

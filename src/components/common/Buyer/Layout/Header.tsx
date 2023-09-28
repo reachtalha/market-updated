@@ -84,7 +84,8 @@ const Header = ({ dictionary }: { dictionary: any }) => {
               variant="link"
               className={cn(
                 'z-2 text-white relative',
-                (toggleSearchbar || isColoredRoute(pathname, locale) || isScrollChanged) && 'text-black'
+                (toggleSearchbar || isColoredRoute(pathname, locale) || isScrollChanged) &&
+                  'text-black'
               )}
             >
               <SearchIcon height={18} width={18} />
@@ -100,7 +101,8 @@ const Header = ({ dictionary }: { dictionary: any }) => {
                 <Button
                   className={cn(
                     'z-2 text-white relative w-fit',
-                    (isScrollChanged || isColoredRoute(pathname, locale) || toggleSearchbar) && 'text-black'
+                    (isScrollChanged || isColoredRoute(pathname, locale) || toggleSearchbar) &&
+                      'text-black'
                   )}
                   onClick={() =>
                     auth?.currentUser

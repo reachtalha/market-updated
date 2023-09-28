@@ -17,17 +17,17 @@ function EditNavbar({ step, setStep, data }: Props) {
         <div
           key={index}
           onClick={() => setStep(item.step)}
-          className={`flex flex-row cursor-pointer  space-x-2 items-center relative`}
+          className={`flex flex-row cursor-pointer    space-x-2 items-center relative`}
         >
           <span
-            className={`text-gray-400 transition-all duration-500 ${
+            className={`text-gray-400   transition-all duration-500 ${
               step === item.step && ' text-primary'
             }`}
           >
             {item.icon}
           </span>
           <span
-            className={`text-sm text-gray-400 after:h-[2px] transition-all duration-500 ${
+            className={`text-sm   text-gray-400 after:h-[2px] transition-all duration-500 ${
               step === item.step &&
               ' after:bg-primary after:absolute after:top-[125%]  sm:after:top-[167%]   after:left-0 after:w-[90%] sm:after:w-[100%] text-primary'
             } `}

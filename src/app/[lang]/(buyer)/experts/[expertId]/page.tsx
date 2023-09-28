@@ -78,7 +78,7 @@ const Expert = async ({ params }: ExpertProps) => {
     <>
       <ExpertCoverImage uid={expert?.id} coverImage={expert?.coverImage} />
       <BoxedContent className="pb-5">
-        <div className="-mt-32 flex flex-col w-[90%] items-center mx-auto relative">
+        <div className=" -mt-16 md:-mt-32 flex flex-col w-[90%] items-center mx-auto relative">
           <AddPinnedContentModal uid={params.expertId} pinnedLinks={expert?.pinned} />
           <div className="flex w-full flex-row mb-5 gap-x-4 md:gap-x-8 items-end">
             <div className="w-[150px] z-20 h-[150px] bg-gray-200 ring-2 ring-offset-2 ring-neutral-300 relative md:w-[200px] md:h-[200px] overflow-hidden lg:h-[250px] lg:w-[250px] rounded-full ">
@@ -107,31 +107,25 @@ const Expert = async ({ params }: ExpertProps) => {
           <div className="w-full  flex flex-col">
             <p className="uppercase mt-7 lg:mt-10">{dictionary.expertDetails.biographyLabel}</p>
             <p className="md:text-2xl lg:text-3xl mt-2">{expert?.bio}</p>
-
-            <div className="mt-8 lg:mt-10">
-              <p className="uppercase">{dictionary.expertDetails.topicsLabel}</p>
-              <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
-                {expert?.topics.length > 0 && (
-                  <div className="mt-8 lg:mt-10">
-                    <p className="uppercase">topics</p>
-                    <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
-                      {expert?.topics?.map((item: any, idx: number) => (
-                        <Link href={`/experts?category=${item}`} key={idx}>
-                          <Button
-                            key={idx}
-                            variant="outline"
-                            size="resp"
-                            className="uppercase border-black h-8 px-3"
-                          >
-                            {item}
-                          </Button>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            {expert?.topics.length > 0 && (
+              <div className="mt-8 lg:mt-10">
+                <p className="uppercase">{dictionary.expertDetails.topicsLabel}</p>
+                <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
+                  {expert?.topics?.map((item: any, idx: number) => (
+                    <Link href={`/experts?category=${item}`} key={idx}>
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        size="resp"
+                        className="uppercase border-black h-8 px-3"
+                      >
+                        {item}
+                      </Button>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </BoxedContent>

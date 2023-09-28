@@ -81,7 +81,7 @@ const useGuestCartStore = create(
           }
         });
       },
-      getGuestCart: (userId: string, isCartLoading: boolean = true) => {},
+      getGuestCart: (userId: string, isCartLoading: boolean = true) => { },
       incrementGuestCartItem: (productId: string, skuId: string) => {
         // @ts-ignore
         const guestCart = get().guestCart;

@@ -30,7 +30,7 @@ export default function ExpertCategories({
         {categories.map((category, idx) => (
           <li
             key={idx}
-            className="tracking-wide cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
+            className="tracking-wide cursor-pointer transition-all duration-300 hover:text-neutral-900 hover:underline underline-offset-4"
           >
             <Link
               className={category.slug === selectedCategory ? 'font-medium' : ''}

@@ -4,13 +4,11 @@ import ProductCard from '@/components/common/Buyer/Cards/ProductCard';
 import BoxedContent from '@/components/common/BoxedContent';
 import ProductCategories, { Category } from '@/components/common/Buyer/Products/ProductCategories';
 import ProductHeader from '@/components/common/Buyer/Products/ProductHeader';
-import OrganicSimplifiedSection from '../OrganicSimplifiedSection';
 import useCategorySlug from '@/hooks/useCategorySlug';
 import { ProductsLoader } from '@/components/common/Skeleton/SkeletonLoader';
 
 import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
-import { Button } from '@/components/ui/button';
 import {
   getDocs,
   collection,
@@ -20,15 +18,11 @@ import {
   startAfter,
   orderBy,
   CollectionReference,
-  Query,
-  QueryFieldFilterConstraint,
-  updateDoc,
-  doc
+  Query
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import useSWR, { mutate } from 'swr';
 
-import FeaturesShops from '../FeaturesShops';
 import useSortingStore from '@/state/useSortingStore';
 import useProductTypeSlug from '@/hooks/useProductTypeSlug';
 import { useInView } from 'react-intersection-observer';
@@ -180,7 +174,6 @@ export default function Products({ categories }: ProductsProps) {
 
   if (isLoading) return <ProductsLoader />;
   if (error) {
-    console.log(error);
     return <Error className="h-screen w-full grid place-content-center" />;
   }
 

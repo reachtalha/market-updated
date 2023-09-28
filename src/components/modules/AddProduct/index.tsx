@@ -40,6 +40,7 @@ type FormValues = {
   price: string;
   quantity: string;
   unit: string;
+  rating: number;
   SKU: any[];
 };
 

@@ -22,7 +22,6 @@ import toast from 'react-hot-toast';
 
 const convertToEmbedUrl = (url: string) => {
   const videoId = extractVideoId(url);
-
   if (videoId) {
     return `https://www.youtube.com/embed/${videoId}`;
   }

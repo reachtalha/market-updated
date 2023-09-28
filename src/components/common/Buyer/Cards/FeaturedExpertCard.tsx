@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from '@/components/common/FallbackImage';
+import ExpertCard from './ExpertCard';
 
 export type Expert = {
   id: string;

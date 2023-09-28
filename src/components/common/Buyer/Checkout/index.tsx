@@ -37,8 +37,7 @@ type ShippingAddressType = {
   lastName: string;
   phone: string;
   country: string;
-  company: string;
-  apartment: string;
+
   city: string;
   address: string;
 };
@@ -93,8 +92,6 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
           lastName: values.lastName,
           phone: values.phone,
           country: values.country || 'Pakistan',
-          company: values.company,
-          apartment: values.apartments || '',
           city: values.city,
           address: values.address,
           email: values.email
@@ -150,8 +147,8 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
       email: user?.email || '',
       firstName: auth.currentUser ? user?.name?.split(' ')[0] : '',
       lastName: auth.currentUser
-        ? user?.name?.split(' ').length > 1
-          ? user?.name?.split(' ')[1]
+        ? user?.name.split(' ').length > 1
+          ? user?.name.split(' ')[1]
           : ''
         : '',
       address: user?.address || '',

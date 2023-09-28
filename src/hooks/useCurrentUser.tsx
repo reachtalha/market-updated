@@ -14,7 +14,7 @@ const getCurrentUser = async () => {
     ...docRef.data()
   } as any;
 };
-preload('currentUSer', getCurrentUser);
+preload('currentUser', getCurrentUser);
 
 export const useCurrentUser = () => {
   const {

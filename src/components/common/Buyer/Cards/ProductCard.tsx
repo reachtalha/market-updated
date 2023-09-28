@@ -34,7 +34,6 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
   const [isPinned, setIsPinned] = useState(user?.pinnedProducts?.includes(id));
 
   const locale = useLocale();
-  const searchParams = useSearchParams();
 
   const pinProduct = async () => {
     try {
@@ -49,6 +48,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
       setIsPinned(true);
       toast.success('Product added to your pinned products!');
     } catch (error) {
+      console.log(error);
       toast.error('Unable to add the product to your pinned products. Please try again.');
     } finally {
       setLoading(false);

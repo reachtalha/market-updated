@@ -12,6 +12,7 @@ import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigat
 import useLocale from '@/hooks/useLocale';
 
 
+
 const ReactStars = ReactStar as any;
 
 export type Category = {

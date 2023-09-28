@@ -24,7 +24,6 @@ import useCartStore from '@/state/useCartStore';
 import { updateDoc, getDoc, doc, setDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import useGuestCartStore from '@/state/useGuestCartStore';
 
-
 const isInWishlist = async (productId: string) => {
   if (!auth.currentUser) return false;
   const wishlistRef = await getDoc(doc(db, 'wishlist', auth.currentUser?.uid));
@@ -57,14 +56,14 @@ export default function Product({
   dictionary: any;
 }) {
   const product = JSON.parse(productJSON);
-  const uniqueSizes = getUniqueSizes(product);
   const role = useRole();
   const { user } = useCurrentUser();
 
+  const uniqueSizes = getUniqueSizes(product);
   const [loading, setLoading] = useState(false);
+  const [averageReviews, setAverageReviews] = useState(5);
   const [selectedSize, setSelectedSize] = useState(uniqueSizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.SKU[0].id);
-  const [averageReviews, setAverageReviews] = useState(5);
   const [selectedVariant, setSelectedVariant] = useState(getSelectedVariant(product));
   const [isPinned, setIsPinned] = useState(user?.pinnedProducts?.includes(product.id));
 
@@ -88,7 +87,6 @@ export default function Product({
       addToGuestCart({ ...product, selectedVariant });
     }
   };
-
   const handleRemoveFromWishlist = async () => {
     setLoading(true);
     if (auth.currentUser) {
@@ -125,7 +123,6 @@ export default function Product({
       setLoading(false);
     }
   };
-
   const unPinProduct = async () => {
     try {
       setLoading(true);
@@ -144,7 +141,6 @@ export default function Product({
       setLoading(false);
     }
   };
-
   const handle = () => {
     if (isPinned) {
       unPinProduct();
@@ -152,7 +148,6 @@ export default function Product({
       pinProduct();
     }
   };
-
   const handleAddToWishlist = async () => {
     setLoading(true);
     if (auth.currentUser) {

@@ -75,7 +75,7 @@ const getExperts = async (category: string, sort: string) => {
     usersCollection,
     where('role', '==', 'influencer'),
     orderBy(sortBy.name, sortBy.by),
-    limit(3)
+    limit(6)
   );
 
   if (category) {
@@ -84,7 +84,7 @@ const getExperts = async (category: string, sort: string) => {
       where('role', '==', 'influencer'),
       where('topics', 'array-contains', category),
       orderBy(sortBy.name, sortBy.by),
-      limit(3)
+      limit(6)
     );
   }
 
