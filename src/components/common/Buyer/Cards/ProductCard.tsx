@@ -79,7 +79,7 @@ const ProductCard = ({ id, image, shop, name, price, type, shrink = true }: Prod
   };
 
   const onProductClick = (e: any) => {
-    router.push(`/products/${id}`);
+    router.push(`/${locale}/products/${id}`);
   };
 
   const handle = () => {

@@ -8,10 +8,12 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import useLocale from '@/hooks/useLocale';
 
 export default function OrderSuccess() {
   const { clearCart, cart } = useCartStore((state: any) => state);
   const { clearGuestCart, guestCart } = useGuestCartStore((state: any) => state);
+  const locale = useLocale();
 
   const router = useRouter();
 
@@ -34,9 +36,9 @@ export default function OrderSuccess() {
         <h1 className="text-4xl text-primary">Order Successful</h1>
         <Separator className="my-1" />
         {auth.currentUser ? (
-          <Button onClick={() => router.push('/account?display=order')}>See Orders</Button>
+          <Button onClick={() => router.push(`/${locale}/account?display=order`)}>See Orders</Button>
         ) : (
-          <Button onClick={() => router.push('/products')}>Explore Products</Button>
+          <Button onClick={() => router.push(`/${locale}/products`)}>Explore Products</Button>
         )}
       </div>
     </BoxedContent>

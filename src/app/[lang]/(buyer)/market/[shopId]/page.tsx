@@ -125,6 +125,7 @@ export default async function Shop({ params }: ShopProps) {
 
       <BoxedContent className="my-16">
         <OrganicSimplifiedSection
+          lang={params.lang}
           title={dictionary.home.bloggingSection.title}
           tag={dictionary.home.bloggingSection.tag}
         />
