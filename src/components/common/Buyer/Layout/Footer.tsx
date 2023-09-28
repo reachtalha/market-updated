@@ -53,7 +53,7 @@ const Footer = ({ dictionary, locale }: { dictionary: any, locale: string }) => 
               </li>
             </ul>
           </div>
-          <div className="flex-shrink-0 space-y-3">
+          <div className="space-y-3">
             <h6 className="font-medium uppercase">
               {dictionary.footer.links.ordersAndSupport.heading}
             </h6>
