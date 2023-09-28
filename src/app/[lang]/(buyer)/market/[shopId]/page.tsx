@@ -72,6 +72,7 @@ export default async function Shop({ params }: ShopProps) {
     getProducts(params.shopId)
   ]);
 
+
   const dictionary = await getDictionary(params.lang);
 
   return (
@@ -87,7 +88,7 @@ export default async function Shop({ params }: ShopProps) {
               <p className="text-lg">{shop.tagline}</p>
             </div>
             <Link className="self-end flex items-center gap-4 text-lg" href="/market">
-              <span className="uppercase">similar shops</span>
+              <span className="uppercase">{dictionary.shop.similarShopsLabel}</span>
               <CircledArrowRight className="text-transparent" />
             </Link>
           </header>
@@ -112,7 +113,7 @@ export default async function Shop({ params }: ShopProps) {
           ))
         ) : (
           <div className="text-center flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
-            No products found in this shop
+            {dictionary.shop.noProductsLabel}
           </div>
         )}
       </div>
@@ -125,6 +126,7 @@ export default async function Shop({ params }: ShopProps) {
 
       <BoxedContent className="my-16">
         <OrganicSimplifiedSection
+          lang={params.lang}
           title={dictionary.home.bloggingSection.title}
           tag={dictionary.home.bloggingSection.tag}
         />

@@ -22,10 +22,12 @@ const fetchGetLatestBlogPosts = async () => {
 
 export default async function OrganicSimplifiedSection({
   title,
-  tag
+  tag,
+  lang,
 }: {
   title: string;
   tag: string;
+  lang?: string;
 }) {
   const data = await fetchGetLatestBlogPosts();
   return (
@@ -41,6 +43,7 @@ export default async function OrganicSimplifiedSection({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
           {data?.map((post: any) => (
             <BlogCard
+              locale={lang}
               key={post?.id}
               title={post.title}
               slug={post?.id}

@@ -107,6 +107,10 @@
       "expertLabel": "Expert"
     }
   },
+  "shop": {
+    "similarShopsLabel": "similar shops",
+    "noProductsLabel": "No products found in this shop"
+  },
   "auth": {
     "common": {
       "orLabel": "OR",

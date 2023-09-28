@@ -16,6 +16,7 @@ import toast from 'react-hot-toast';
 import useGuestCartStore from '@/state/useGuestCartStore';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Loader from '@/components/common/Loader';
+import useLocale from '@/hooks/useLocale';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:3000';
 
@@ -63,6 +64,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
   const { cart } = useCartStore((state: any) => state);
   const { guestCart } = useGuestCartStore((state: any) => state);
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
+  const locale = useLocale();
 
   const submitOrder = async (values: any) => {
     try {
@@ -128,7 +130,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${DOMAIN}/order/success`
+        return_url: `${DOMAIN}/${locale}/order/success`
       }
     });
 

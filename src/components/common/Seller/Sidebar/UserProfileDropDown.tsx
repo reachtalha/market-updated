@@ -16,7 +16,6 @@ const UserProfileDropDown = () => {
   const { logout } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-  const clickOutside = useClickOutside(ref, () => setOpen(false));
   const currentUser = auth.currentUser as any;
 
   return (
