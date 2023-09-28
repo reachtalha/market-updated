@@ -18,7 +18,6 @@ function getLocale(request: NextRequest): string | undefined {
   let languages = new Negotiator({ headers: negotiatorHeaders }).languages(locales);
   const locale = matchLocale(languages, locales, i18n.defaultLocale);
   return locale;
-
 }
 
 export function middleware(request: NextRequest) {
@@ -26,12 +25,15 @@ export function middleware(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const cookies = request.cookies.get('user');
   const localeFromPathname = pathname.slice(0, 3) === '/' ? '' : pathname.slice(0, 3);
-  console.log({ localeFromPathname })
 
   const user: any = cookies ? JSON.parse(cookies?.value) : { role: '' };
 
   //if not logged in but trying to access account
-  if ((pathname.startsWith(`${localeFromPathname}/account`) || pathname.startsWith(`${localeFromPathname}/chat`)) && user.role === '') {
+  if (
+    (pathname.startsWith(`${localeFromPathname}/account`) ||
+      pathname.startsWith(`${localeFromPathname}/chat`)) &&
+    user.role === ''
+  ) {
     return NextResponse.redirect(new URL(`${localeFromPathname}/auth/login`, request.nextUrl));
   }
   //If not seller but trying to access seller dashboard
@@ -54,7 +56,9 @@ export function middleware(request: NextRequest) {
       pathname.startsWith(`${localeFromPathname}/products`) ||
       pathname === '/')
   ) {
-    return NextResponse.redirect(new URL(`${localeFromPathname}/seller/dashboard`, request.nextUrl));
+    return NextResponse.redirect(
+      new URL(`${localeFromPathname}/seller/dashboard`, request.nextUrl)
+    );
   }
 
   // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
@@ -72,6 +76,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
+    const locale = getLocale(request) || i18n.defaultLocale;
     // e.g. incoming request is /products
     // The new URL is now /en/products
     return NextResponse.redirect(

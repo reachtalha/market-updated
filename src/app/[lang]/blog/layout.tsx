@@ -1,25 +1,15 @@
-'use client';
+import { getDictionary } from '@/get-dictionary';
+import { Locale } from '@/i18n-config';
+import Blog from '@/components/common/Blog/blog';
+export type LocaleType = {
+  params: {
+    lang: Locale;
+  };
+};
+const Layout = async ({ children, params }: { children: React.ReactNode; params: any }) => {
+  const dictionary = await getDictionary(params?.lang);
 
-import React from 'react';
-import { notFound } from 'next/navigation';
-import Header from '@/components/common/Buyer/Layout/Header';
-import { useRole } from '@/hooks/useUserRole';
-
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const role = useRole();
-
-  if (role && role !== 'influencer') {
-    notFound();
-  }
-  return (
-    <>
-      <header className="w-full fixed top-0 z-50">
-        <Header />
-      </header>
-
-      <main>{children}</main>
-    </>
-  );
+  return <Blog dictionary={dictionary}>{children}</Blog>;
 };
 
 export default Layout;

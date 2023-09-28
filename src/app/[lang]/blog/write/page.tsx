@@ -1,7 +1,7 @@
+'use client';
 import BoxedContent from '@/components/common/BoxedContent';
 import NewBlogForm from '@/components/common/Blog/NewBlogForm';
-
-export default function WriteBlog() {
+const WriteBlog = () => {
   return (
     <BoxedContent className="py-24 max-w-[800px] mx-auto">
       <h1 className="text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-left">
@@ -14,4 +14,6 @@ export default function WriteBlog() {
       <NewBlogForm />
     </BoxedContent>
   );
-}
+};
+
+export default WriteBlog;

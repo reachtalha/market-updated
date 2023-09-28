@@ -7,11 +7,12 @@ import { auth, db } from '@/lib/firebase/client';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 import useSwr, { mutate } from 'swr';
-import ReactStars from 'react-stars';
+import ReactStar from 'react-stars';
 
 import ProductSlider from '@/components/common/Buyer/Products/ProductDetails/ProductSlider';
 import ProductReviews from '@/components/common/Buyer/Products/ProductDetails/ProductReviews';
 import edjsHTML from 'editorjs-html';
+const ReactStars = ReactStar as any;
 
 const edjsParser = edjsHTML();
 import SimiliarProducts from '@/components/common/Buyer/SimilarProducts';
@@ -22,7 +23,7 @@ import { PinIcon, PinOffIcon } from 'lucide-react';
 import useCartStore from '@/state/useCartStore';
 import { updateDoc, getDoc, doc, setDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import useGuestCartStore from '@/state/useGuestCartStore';
-import useGlobalStore from '@/state';
+
 
 const isInWishlist = async (productId: string) => {
   if (!auth.currentUser) return false;

@@ -3,10 +3,9 @@ import ExpertCard from '@/components/common/Buyer/Cards/ExpertCard';
 type Props = {
   experts: any;
   dictionary: any;
-  locale: string;
 };
 
-const Experts = ({ locale, experts, dictionary }: Props) => {
+const Experts = ({ experts, dictionary }: Props) => {
   return (
     <>
       {experts?.length === 0 ? (

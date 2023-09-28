@@ -65,6 +65,10 @@
       "tag": "@allorganicsmarkt"
     }
   },
+  "forYou": {
+    "shopsLabel": "Winkels",
+    "exploreShopsLabel": "Ontdek winkelcategorieën"
+  },
   "productDetails": {
     "sizeLabel": "Maat",
     "soldOutBtnLabel": "Uitverkocht",

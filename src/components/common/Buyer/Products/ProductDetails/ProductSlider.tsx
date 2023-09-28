@@ -7,7 +7,8 @@ import { toast } from 'react-hot-toast';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { FacebookShareButton, TwitterShareButton } from 'react-share';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { CopyToClipboard as clipBoardComponent } from 'react-copy-to-clipboard';
+const CopyToClipboard = clipBoardComponent as any;
 
 export default function ProductSlider({ images }: { images: string[] }) {
   return (

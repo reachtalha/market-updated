@@ -1,19 +1,20 @@
 'use client';
 
 import * as React from 'react';
-import * as SheetPrimitive from '@radix-ui/react-dialog';
+import * as SheetPrimitiveComponent from '@radix-ui/react-dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
+const SheetPrimitive = SheetPrimitiveComponent as any;
 const Sheet = SheetPrimitive.Root;
 
 const SheetTrigger = SheetPrimitive.Trigger;
 
 const SheetClose = SheetPrimitive.Close;
 
-const SheetPortal = ({ className, ...props }: SheetPrimitive.DialogPortalProps) => (
+const SheetPortal: any = ({ className, ...props }: { className: any; props: any }) => (
   <SheetPrimitive.Portal className={cn(className)} {...props} />
 );
 SheetPortal.displayName = SheetPrimitive.Portal.displayName;

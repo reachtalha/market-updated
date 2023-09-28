@@ -6,9 +6,9 @@ import { db } from '@/lib/firebase/client';
 import { collection, getDoc, query, where, getDocs, doc } from 'firebase/firestore';
 import useSwr from 'swr';
 import Error from '@/components/common/Error';
-import ReactStars from 'react-stars';
+import ReactStar from 'react-stars';
 import { useEffect, useState } from 'react';
-
+const ReactStars = ReactStar as any;
 const getReviews = async (productId: string) => {
   const reviewDocs = await getDocs(
     query(collection(db, 'reviews'), where('productId', '==', productId))
@@ -43,7 +43,7 @@ export default function ProductReviews({
   productId: string;
   averageReviews: number;
   setAverageReviews: (value: number) => void;
-  dictionary: any
+  dictionary: any;
 }) {
   const [sort, setSort] = useState('highest');
   const [showReviews, setShowReviews] = useState(4);
@@ -69,7 +69,9 @@ export default function ProductReviews({
   if (reviews?.length === 0) {
     return (
       <div className="bg-neutral-100 rounded-lg px-3 py-6 md:py-12 mb-5">
-        <p className="text-center text-lg 2xl:text-xl font-semibold">{dictionary.productDetails.reviews.noReviewsLabel}</p>
+        <p className="text-center text-lg 2xl:text-xl font-semibold">
+          {dictionary.productDetails.reviews.noReviewsLabel}
+        </p>
         <p className="text-center text-sm 2xl:text-base">
           {dictionary.productDetails.reviews.leaveReviewLabel}
         </p>
@@ -82,7 +84,9 @@ export default function ProductReviews({
         <div className="flex flex-col items-center md:items-start md:justify-center w-full md:w-fit">
           <h6 className="flex gap-2 items-center mb-1">
             {averageReviews < 0 ? (
-              <span className="font-medium">{dictionary.productDetails.reviews.noReviewsLabel}</span>
+              <span className="font-medium">
+                {dictionary.productDetails.reviews.noReviewsLabel}
+              </span>
             ) : (
               <>
                 <span className="font-medium">{averageReviews.toFixed(2)}</span>
@@ -95,7 +99,9 @@ export default function ProductReviews({
       </header>
 
       <div className="mt-10 flex items-center justify-between pb-3 border-b border-neutral-900/15">
-        <p>{reviews?.length} {dictionary.productDetails.reviews.reviewsLabel}</p>
+        <p>
+          {reviews?.length} {dictionary.productDetails.reviews.reviewsLabel}
+        </p>
         <SortByRating sort={sort} setSort={setSort} />
       </div>
       <ul className="">
