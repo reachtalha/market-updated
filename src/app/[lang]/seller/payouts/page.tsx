@@ -1,24 +1,22 @@
 'use client';
+import { useState } from 'react';
 import BoxedContent from '@/components/common/BoxedContent';
 import Title from '@/components/common/Seller/Shared/Title';
 import axios from 'axios';
-import useSwr from 'swr';
-
+import { useRouter } from 'next/navigation';
 const fetchCreatePayoutAccount = (data: any) => {
   return axios.post('/api/payouts/create-account', data);
 };
 
 export default function Payouts() {
   const handleCreateAccount = async () => {
-    const data = await fetchCreatePayoutAccount({
+   fetchCreatePayoutAccount({
       stripeAccountId: null,
-      email: 'dawoodshahat@gmail.com',
-      firstName: 'Dawood',
-      lastName: 'Shahat',
+      email: 'dev@allorganics.com',
+      firstName: 'Dev',
+      lastName: 'Team',
       phone: '+923414419121'
     });
-
-    console.log(data);
   };
 
   return (

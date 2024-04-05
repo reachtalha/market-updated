@@ -55,7 +55,7 @@ const Sidebar = ({ dictionary } : { dictionary: any }) => {
       title: dictionary.seller.sidebar.chatLabel
     },
     {
-      href: `${locale}/seller/payouts`,
+      href: `/${locale}/seller/payouts`,
       icon: (
         <svg
           className="w-6 h-6 text-current"

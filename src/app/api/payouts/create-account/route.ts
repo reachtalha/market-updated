@@ -31,7 +31,6 @@ export async function POST(req: Request) {
         },
         individual: {
           email,
-          phone,
           first_name: firstName,
           last_name: lastName
         },
@@ -41,19 +40,15 @@ export async function POST(req: Request) {
         }
       });
     }
-
     const accountLink = await stripe.accountLinks.create({
       account: account?.id || stripeAccountId,
       refresh_url:
-        'http://localhost:3000/seller/dashboard/payouts?redirected_from=stripe_connect_onboarding',
+        'http://localhost:3000/en/seller/payouts?redirected_from=stripe_connect_onboarding',
       return_url:
-        'http://localhost:3000/seller/dashboard/payouts?redirected_from=stripe_connect_onboarding',
+        'http://localhost:3000/en/seller/payouts?redirected_from=stripe_connect_onboarding',
       type: 'account_onboarding'
     });
-
-    return NextResponse.json({
-      payload: { status: true, accountLink: accountLink?.url }
-    });
+    return NextResponse.redirect(new URL(accountLink?.url));
   } catch (err: any) {
     console.log(err);
     return NextResponse.json({

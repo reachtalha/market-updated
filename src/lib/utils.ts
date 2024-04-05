@@ -15,12 +15,12 @@ export function isColoredRoute(route: string, locale: string) {
     `/${locale}/for-you`,
     `/${locale}/checkout`,
     `/${locale}/new-registration`,
-    `/${locale}/order/success`
+    `/${locale}/order/success`,
+    `/${locale}/products` 
   ];
   return (
     coloredRoutes.includes(route) ||
     route === '/blogs' ||
-    route.startsWith('/products') ||
-    route.startsWith('/orders')
-  );
+    route.startsWith(`/${locale}/products`)
+    );
 }
