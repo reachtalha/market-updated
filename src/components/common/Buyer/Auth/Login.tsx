@@ -8,7 +8,6 @@ import useAuth from '@/hooks/useAuth';
 import Google from '@/assets/icons/social/Google';
 import Facebook from '@/assets/icons/social/Facebook';
 
-import toast from 'react-hot-toast';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';

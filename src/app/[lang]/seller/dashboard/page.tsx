@@ -3,7 +3,7 @@ import { getDictionary } from '@/get-dictionary';
 import { LocaleType } from '@/app/[lang]/(buyer)/page';
 
 export const metadata = {
-  title: 'Seller Central - All Organics',
+  title: 'Dashboard - All Organics',
   description: 'Seller Dashboard'
 };
 

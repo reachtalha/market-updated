@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 import BoxedContent from '@/components/common/BoxedContent';
 import Title from '@/components/common/Seller/Shared/Title';
 import axios from 'axios';

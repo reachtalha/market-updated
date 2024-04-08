@@ -1,28 +1,23 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-const EMAIL = 'dev10@ccript.com';
-const PASSWORD = 'helloworld123A$';
-const DOMAIN = 'smtppro.zoho.com';
-
 const transporter = nodemailer.createTransport({
-  host: DOMAIN,
-  port: 465, // Use 465 for SSL
-  secure: true, // Use SSL
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    user: EMAIL, // Your Zoho Mail email address
-    pass: PASSWORD // Your Zoho Mail password
+    user: process.env.EMAIL, // Your Zoho Mail email address
+    pass: process.env.PASSWORD // Your Zoho Mail password
   }
 });
-
-console.log(EMAIL, PASSWORD, DOMAIN);
 
 export async function POST(req: Request) {
   const { name, password, email } = await req.json();
 
   try {
     const options = {
-      from: EMAIL,
+      from: process.env.EMAIL,
       to: email,
       subject: 'Account Registration Successful',
       html: `
@@ -47,7 +42,7 @@ export async function POST(req: Request) {
           <p style="font-size: 0.875rem;">Here are your login credentials:</p>
           <p style="font-size: 0.875rem;">Email: ${email}</p>
           <p style="font-size: 0.875rem;">Password: ${password}</p>
-          <p style="font-size: 0.875rem;">Use this link to login : http://localhost:3000/auth/login </p>
+          <p style="font-size: 0.875rem;">Use this link to login : ${process.env.DOMAIN}/auth/login </p>
         </div>
         <div style="text-align: center; margin-top: 32px; margin-bottom: 32px;">
           <p style="font-size: 0.875rem;">
