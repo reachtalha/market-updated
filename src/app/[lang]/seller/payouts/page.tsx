@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 import BoxedContent from '@/components/common/BoxedContent';
 import Title from '@/components/common/Seller/Shared/Title';
 import axios from 'axios';
@@ -23,6 +23,7 @@ type PayoutTypes = {
   firstName: string;
   lastName: string;
   phone: string;
+  amount: number;
 };
 
 export default function Payouts() {
@@ -43,38 +44,44 @@ export default function Payouts() {
 
   const fetchCreatePayoutAccount = async (data: any) => {
     const res = await axios.post('/api/payouts/create-account', data);
-    console.log(data);
-    router.push(res.data);
+    console.log(res.data);
+    if (typeof res.data === 'string') {
+      router.push(res.data);
+    }
     return;
   };
 
-  // const handleCreateAccount  = async (data: any) => {
-  //   fetchCreatePayoutAccount({
-  //     stripeAccountId: null,
-  //     email: 'dev@allorganics.com',
-  //     firstName: 'Dev',
-  //     lastName: 'Team',
-  //     phone: '+923414419121'
-  //   });
-  // };
-
-  const onSubmit = async (data: any) => {
-    console.log(data);
-
+  const handleCreateAccount = async (data: any) => {
     fetchCreatePayoutAccount({
-      stripeAccountId: null,
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      phone: data.phone
+      // acct_1P3FRLGhzjOMQ8ID working
+      // acct_1P3Co22cxlpaluiu
+
+      stripeAccountId: 'acct_1P3FRLGhzjOMQ8ID' || null,
+      email: 'dev@allorganics.com',
+      firstName: 'Dev',
+      lastName: 'Team',
+      phone: '+923414419121',
+      amount: 1
     });
   };
+
+  // const onSubmit = async (data: any) => {
+  //   console.log(data);
+
+  //   fetchCreatePayoutAccount({
+  //     stripeAccountId: null,
+  //     email: data.email,
+  //     firstName: data.firstName,
+  //     lastName: data.lastName,
+  //     phone: data.phone
+  //   });
+  // };
 
   return (
     <BoxedContent className="py-5">
       <Title title="Payouts" />
       <div className="flex w-full justify-center items-center">
-        <Card className="md:w-[50%] w-full px-3">
+        {/* <Card className="md:w-[50%] w-full px-3">
           <CardHeader>
             <CardTitle>Add Payout Details</CardTitle>
           </CardHeader>
@@ -162,7 +169,14 @@ export default function Payouts() {
               </form>
             </Form>
           </CardContent>
-        </Card>
+        </Card> */}
+        <button
+          onClick={handleCreateAccount}
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Create Payout
+        </button>
       </div>
     </BoxedContent>
   );

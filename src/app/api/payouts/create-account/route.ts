@@ -1,22 +1,21 @@
 import { NextResponse } from 'next/server';
 import { Stripe } from 'stripe';
-import { redirect } from 'next/navigation';
 const stripe = new Stripe(process.env.STRIPE_SECRET || '', {
   apiVersion: '2022-11-15'
 });
 
-export const config = {
-  api: {
-    bodyParser: false
-  }
-};
 export async function POST(req: Request) {
-  const { userId, stripeAccountId, email, firstName, lastName, phone } = await req.json();
+  const { userId, stripeAccountId, email, firstName, lastName, phone, amount } = await req.json();
+
   try {
     let account;
+    console.log('BODY', { userId, stripeAccountId, email, firstName, lastName, phone, amount });
+    const balance = await stripe.balance.retrieve();
+    console.log('BALANCE', balance);
+
     if (!stripeAccountId) {
       account = await stripe.accounts.create({
-        // country: "US",
+        // country: 'US',
         email,
         type: 'express',
         capabilities: {
@@ -41,7 +40,26 @@ export async function POST(req: Request) {
           url: ''
         }
       });
+
+      console.log(`New Stripe Account ID: ${account.id}`);
+    } else {
+      const payout = await stripe.payouts.create(
+        {
+          amount: amount,
+          currency: 'usd',
+          source_type: 'card'
+        },
+        {
+          stripeAccount: stripeAccountId
+        }
+      );
+      console.log(payout);
+      console.log(`Payout created: ${payout.id}`);
+      return NextResponse.json({
+        message: `Payout of ${amount} created for account ${stripeAccountId}`
+      });
     }
+
     const accountLink = await stripe.accountLinks.create({
       account: account?.id || stripeAccountId,
       refresh_url:
@@ -51,14 +69,14 @@ export async function POST(req: Request) {
       type: 'account_onboarding'
     });
 
+    console.log(accountLink);
     const stripeURL = new URL(accountLink?.url);
-
-    // return NextResponse.redirect(new URL(accountLink?.url));
+    console.log(stripeURL);
     return NextResponse.json(stripeURL);
   } catch (err: any) {
     console.log(err);
     return NextResponse.json({
-      message: err?.message || 'Something went wrong with creating account!'
+      message: err?.message || 'Something went wrong!'
     });
   }
 }
