@@ -1940,6 +1940,16 @@
     domhandler "^5.0.3"
     selderee "^0.10.0"
 
+"@stripe/connect-js@^3.3.3":
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@stripe/connect-js/-/connect-js-3.3.3.tgz#cb9da96267f7e9509426dd8d43f0f2b22422ba78"
+  integrity sha512-gG4TVWnlvsij1+4Mfe47K/L/RH8tnV4Etn78DOHJcadSNWcWIdEo9VIuLqpW3yjmJ5JFoRqhuqjmxzxZfk1orQ==
+
+"@stripe/react-connect-js@^3.3.4":
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/@stripe/react-connect-js/-/react-connect-js-3.3.4.tgz#1ba21f28c4c0b29ffabd383a1beb3cf8c79d36ae"
+  integrity sha512-2CkLw+cR0BjJpcGKfA+lZ7VD5pb4pXieSyUO/72g9rDrsCznIpdDMjrhdUlmEyFyg2aGT2efn+Tp6P48XU5QCA==
+
 "@stripe/react-stripe-js@^2.1.1":
   version "2.6.2"
   resolved "https://registry.npmjs.org/@stripe/react-stripe-js/-/react-stripe-js-2.6.2.tgz"
@@ -8023,6 +8033,7 @@ strict-uri-encode@^1.0.0:
   integrity sha512-R3f198pcvnB+5IpnBlRkphuE9n46WyVl8I39W/ZUTZLz4nqSP/oLYUrcnJrw462Ds8he4YKMov2efsTIw1BDGQ==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -8102,6 +8113,7 @@ stringify-entities@^4.0.0:
     character-entities-legacy "^3.0.0"
 
 "strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  name strip-ansi-cjs
   version "6.0.1"
   resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -8953,6 +8965,7 @@ word-wrap@~1.2.3:
   integrity sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-7.0.0.tgz"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==

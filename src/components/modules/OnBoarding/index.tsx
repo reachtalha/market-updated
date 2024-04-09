@@ -20,6 +20,7 @@ import Influencer from '@/components/modules/OnBoarding/Influencer';
 import UploadImage from '@/utils/handlers/image/UploadImage';
 import SellerPaymentInfo from '@/components/modules/OnBoarding/SellerPaymentInfo';
 import useLocale from '@/hooks/useLocale';
+import axios from 'axios';
 
 type FormValues = {
   countryCode: string;
@@ -34,7 +35,7 @@ type FormValues = {
   image?: any;
 };
 
-const OnBoardingForm = () => {
+const OnBoardingForm = ({ searchParams }: any) => {
   const router = useRouter();
   const role = useRole();
   const [step, setStep] = useState<number>(1);
@@ -42,7 +43,21 @@ const OnBoardingForm = () => {
   const methods = useForm<FormValues>();
   const locale = useLocale();
 
+  const fetchCreatePayoutAccount = async (data: any) => {
+    try {
+      const res = await axios.post('/api/payouts/create-account', data);
+      console.log(res.data);
+      if (typeof res.data === 'string') {
+        router.push(res.data); // Navigate to the provided route
+      }
+    } catch (error) {
+      console.error('Error creating payout account:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data);
     try {
       setLoading(true);
 
@@ -74,7 +89,15 @@ const OnBoardingForm = () => {
         Object.assign(obj, { photoURL: url });
       }
       delete obj.image;
-      await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
+      // await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
+
+      fetchCreatePayoutAccount({
+        email: auth.currentUser?.email,
+        firstName: auth.currentUser?.displayName?.toLowerCase().split(' ')[0],
+        lastName: auth.currentUser?.displayName?.toLowerCase().split(' ')[1],
+        phone: auth.currentUser?.phoneNumber
+      });
+
       if (role === 'buyer') router.push(`/${locale}`);
       else router.push(`/${locale}/seller/dashboard`);
     } catch (error: any) {
@@ -96,11 +119,12 @@ const OnBoardingForm = () => {
         {step === 1 && (
           <>
             <BasicDetails setStep={setStep} role={role} />
+            {renderButton('Finish')}
           </>
         )}
         {step === 2 && role === 'seller' && (
           <>
-            <SellerPaymentInfo />
+            <SellerPaymentInfo searchParams={searchParams} />
             {role === 'seller' && renderButton('Finish')}
           </>
         )}

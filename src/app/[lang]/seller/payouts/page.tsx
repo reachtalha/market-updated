@@ -3,19 +3,19 @@ import BoxedContent from '@/components/common/BoxedContent';
 import Title from '@/components/common/Seller/Shared/Title';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// import {
+//   Form,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormControl,
+//   FormMessage
+// } from '@/components/ui/form';
+// import { Input } from '@/components/ui/input';
+// import { useForm } from 'react-hook-form';
+// import { zodResolver } from '@hookform/resolvers/zod';
+// import * as z from 'zod';
 
 type PayoutTypes = {
   // stripeAccountId?: string | null;
@@ -29,18 +29,18 @@ type PayoutTypes = {
 export default function Payouts() {
   const router = useRouter();
 
-  const PayoutSchema = z.object({
-    email: z.string().min(1, { message: 'required' }).email({
-      message: 'Must be a valid email'
-    }),
-    firstName: z.string().min(1, { message: 'required' }),
-    lastName: z.string().min(1, { message: 'required' }),
-    phone: z.string().min(1, { message: 'required' })
-  });
+  // const PayoutSchema = z.object({
+  //   email: z.string().min(1, { message: 'required' }).email({
+  //     message: 'Must be a valid email'
+  //   }),
+  //   firstName: z.string().min(1, { message: 'required' }),
+  //   lastName: z.string().min(1, { message: 'required' }),
+  //   phone: z.string().min(1, { message: 'required' })
+  // });
 
-  const form = useForm<PayoutTypes>({
-    resolver: zodResolver(PayoutSchema)
-  });
+  // const form = useForm<PayoutTypes>({
+  //   resolver: zodResolver(PayoutSchema)
+  // });
 
   const fetchCreatePayoutAccount = async (data: any) => {
     const res = await axios.post('/api/payouts/create-account', data);

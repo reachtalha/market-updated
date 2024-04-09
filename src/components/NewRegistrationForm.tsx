@@ -21,6 +21,12 @@ import { useForm } from 'react-hook-form';
 
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+import { useRouter } from 'next/navigation';
+import { Locale } from '@/i18n-config';
+
+interface NewRegistrationFormProps {
+  params: { lang: Locale };
+}
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'required' }),
@@ -30,8 +36,9 @@ const formSchema = z.object({
   role: z.union([z.literal('seller'), z.literal('influencer')])
 });
 
-export default function NewRegistrationForm() {
+export default function NewRegistrationForm({ params }: NewRegistrationFormProps) {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,6 +81,7 @@ export default function NewRegistrationForm() {
 
       toast.success('You have been added to the waiting list');
       reset();
+      // router.push(`/${params.lang}/auth/login`);
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
