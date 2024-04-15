@@ -147,7 +147,7 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
             type="button"
             disabled={loading}
             onClick={signInWithGoogleAccount}
-            className="w-36 h-fit gap-x-2.5 group flex items-center cursor-pointer p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"
+            className="w-40 h-fit gap-x-2.5 group flex items-center cursor-pointer p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"
           >
             <span className="bg-gray-200  rounded-full border p-2">
               <Google className="w-5 2xl:w-8 h-5 2xl:h-8" fill={'#414D35'} />
@@ -160,7 +160,7 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
             type="button"
             disabled={loading}
             onClick={signInWithFacebookAccount}
-            className="w-36 h-fit group flex items-center cursor-pointer gap-x-2.5 p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"
+            className="w-40 h-fit group flex items-center cursor-pointer gap-x-2.5 p-1 rounded-full bg-gray-100  hover:bg-primary transition-colors duration-300"
           >
             <span className=" bg-gray-200  rounded-full border p-2">
               <Facebook className="w-5 2xl:w-8 h-5 2xl:h-8 " fill={'#414D35'} />

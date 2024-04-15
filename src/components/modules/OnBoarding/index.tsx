@@ -20,7 +20,6 @@ import Influencer from '@/components/modules/OnBoarding/Influencer';
 import UploadImage from '@/utils/handlers/image/UploadImage';
 import SellerPaymentInfo from '@/components/modules/OnBoarding/SellerPaymentInfo';
 import useLocale from '@/hooks/useLocale';
-import axios from 'axios';
 
 type FormValues = {
   countryCode: string;
@@ -43,24 +42,9 @@ const OnBoardingForm = ({ searchParams }: any) => {
   const methods = useForm<FormValues>();
   const locale = useLocale();
 
-  const fetchCreatePayoutAccount = async (data: any) => {
-    try {
-      const res = await axios.post('/api/payouts/create-account', data);
-      console.log(res.data);
-      if (typeof res.data === 'string') {
-        router.push(res.data); // Navigate to the provided route
-      }
-    } catch (error) {
-      console.error('Error creating payout account:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
     try {
       setLoading(true);
-
       if (role === 'influencer' && !data.topics) {
         toast.error('Please add atleast one topic');
         return;
@@ -89,17 +73,11 @@ const OnBoardingForm = ({ searchParams }: any) => {
         Object.assign(obj, { photoURL: url });
       }
       delete obj.image;
-      // await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
+      await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
 
-      fetchCreatePayoutAccount({
-        email: auth.currentUser?.email,
-        firstName: auth.currentUser?.displayName?.toLowerCase().split(' ')[0],
-        lastName: auth.currentUser?.displayName?.toLowerCase().split(' ')[1],
-        phone: auth.currentUser?.phoneNumber
-      });
-
-      if (role === 'buyer') router.push(`/${locale}`);
-      else router.push(`/${locale}/seller/dashboard`);
+      if (role === 'seller') {
+        setStep(3);
+      } else router.push(`/${locale}`);
     } catch (error: any) {
       toast.error(`Error! ${error.message}`);
     } finally {
@@ -119,12 +97,6 @@ const OnBoardingForm = ({ searchParams }: any) => {
         {step === 1 && (
           <>
             <BasicDetails setStep={setStep} role={role} />
-            {renderButton('Finish')}
-          </>
-        )}
-        {step === 2 && role === 'seller' && (
-          <>
-            <SellerPaymentInfo searchParams={searchParams} />
             {role === 'seller' && renderButton('Finish')}
           </>
         )}
@@ -138,6 +110,11 @@ const OnBoardingForm = ({ searchParams }: any) => {
           <>
             <Influencer />
             {renderButton('Finish')}
+          </>
+        )}
+        {step === 3 && role === 'seller' && (
+          <>
+            <SellerPaymentInfo />
           </>
         )}
       </form>

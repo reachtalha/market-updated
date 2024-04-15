@@ -145,7 +145,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
                 <SelectGroup>
                   <SelectLabel className="capitalize">Country Code</SelectLabel>
                   {Country.getAllCountries().map((c) => (
-                    <SelectItem key={c.phonecode + Math.random()} value={c.phonecode}>
+                    <SelectItem key={c.phonecode} value={c.phonecode}>
                       {c.phonecode}
                     </SelectItem>
                   ))}
@@ -198,9 +198,11 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
           <span className="text-sm text-red-500">Is your address spelled right?</span>
         )}
       </div>
-      <Button type="button" onClick={nextStep} className=" mt-3 w-full">
-        Next
-      </Button>
+      {role !== 'seller' && (
+        <Button type="button" onClick={nextStep} className=" mt-3 w-full">
+          Next
+        </Button>
+      )}
     </>
   );
 };

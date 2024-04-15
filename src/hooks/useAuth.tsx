@@ -57,7 +57,6 @@ export const AuthProvider = ({ children }: any) => {
   const [initialLoading, setInitialLoading] = useState<boolean>(true);
   const router = useRouter();
   const locale = useLocale();
-  console.log(locale)
 
   useEffect(
     () =>
@@ -118,8 +117,7 @@ export const AuthProvider = ({ children }: any) => {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const userCredentials = (await signInWithEmailAndPassword(auth, email, password)) as any;
-      setUser(userCredentials.user);
+      const userCredentials: any = await signInWithEmailAndPassword(auth, email, password);
       if (userCredentials?.role === 'superadmin') router.push(`/${locale}/superadmin`);
       else router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
     } catch (e: any) {

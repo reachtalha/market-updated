@@ -105,7 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${america.variable} ${alpina.variable} `}>
       <body className="font-america">
         <AuthProvider>{children}</AuthProvider>
-        <Toaster position="top-right" reverseOrder={false} />
+        <Toaster position="bottom-right" reverseOrder={false} />
       </body>
     </html>
   );

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { toast } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -54,24 +54,21 @@ export default function NewRegistrationForm({ params }: NewRegistrationFormProps
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      //get user with email
-      let userRef = await getDocs(
-        query(collection(db, 'users'), where('email', '==', values.email))
-      );
+
+      const [userRef, waitingListRef] = await Promise.all([
+        getDocs(query(collection(db, 'users'), where('email', '==', values.email))),
+        getDocs(query(collection(db, 'waiting-list'), where('email', '==', values.email)))
+      ]);
+
       if (userRef.docs.length > 0) {
         toast.error('User with this email already registered');
         return;
       }
 
-      userRef = await getDocs(
-        query(collection(db, 'waiting-list'), where('email', '==', values.email))
-      );
-
-      if (userRef.docs.length > 0) {
+      if (waitingListRef.docs.length > 0) {
         toast.error('User with this email already in waiting list');
         return;
       }
-      console.log(values);
 
       await addDoc(collection(db, 'waiting-list'), {
         name: values.name,
@@ -81,9 +78,8 @@ export default function NewRegistrationForm({ params }: NewRegistrationFormProps
 
       toast.success('You have been added to the waiting list');
       reset();
-      // router.push(`/${params.lang}/auth/login`);
+      router.push(`/${params.lang}/auth/login`);
     } catch (error) {
-      console.log(error);
       toast.error('Something went wrong');
     } finally {
       setLoading(false);
@@ -153,7 +149,7 @@ export default function NewRegistrationForm({ params }: NewRegistrationFormProps
           )}
         />
         <Button type="submit" disabled={loading}>
-          {loading ? 'Registering' : 'Register'}{' '}
+          {loading ? 'Registering' : 'Register'}
         </Button>
       </form>
     </Form>
