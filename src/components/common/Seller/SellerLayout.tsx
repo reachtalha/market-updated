@@ -1,49 +1,31 @@
 'use client';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import MobileNavbar from '@/components/common/Seller/Navbar/MobileNavbar';
 import useGlobalStore from '@/state';
-import { auth } from '@/lib/firebase/client';
-import { doc, getDoc } from '@firebase/firestore';
-import { db } from '@/lib/firebase/client';
-import { useRouter } from 'next/navigation';
-import useLocale from '@/hooks/useLocale';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { usePathname } from 'next/navigation';
-async function currentSellerInfo(locale: string, id: string, router: AppRouterInstance) {
-  const docRef = await getDoc(doc(db, 'users', `${id}`));
-  if (docRef.exists()) {
-    const data = docRef.data();
-    // if (!data.stripeAccountId) {
-    //   router.push(`/${locale}/connect-with-stripe`);
-    // } else {
-    // }
-    return data;
-  } else {
-    router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
-  }
-}
+import Loader from '@/components/common/Loader';
 
-export default function SellerLayout({ children }: { children: ReactNode }) {
+export default function SellerLayout({ data, children }: { data: any; children: ReactNode }) {
   const { showSidebar } = useGlobalStore() as any;
-  const locale = useLocale();
+  const userData = JSON.parse(data);
   const router = useRouter();
-  const [sellerData, setSellerData] = useState<any>(null);
-  const pathname = usePathname();
-  useEffect(() => {
-    const fetchSellerInfo = async () => {
-      if (auth.currentUser) {
-        const seller = await currentSellerInfo(locale, auth.currentUser.uid, router);
-        if (seller) {
-          setSellerData(seller);
-        }
-      }
-    };
 
-    fetchSellerInfo();
-  }, [locale, pathname, router]);
-
-  console.log('AUTH SELLER', sellerData);
-  console.log('SELLER UID', auth?.currentUser?.uid);
+  if (!userData) {
+    router.push('/onboarding');
+    return (
+      <div className="z-50 fixed inset-0 w-screen bg-white h-screen overflow-hidden grid place-content-center">
+        <Loader />
+      </div>
+    );
+  }
+  if (!userData?.stripeAccountId) {
+    router.push('/connect-with-stripe');
+    return (
+      <div className="z-50 fixed inset-0 w-screen bg-white h-screen overflow-hidden grid place-content-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <section

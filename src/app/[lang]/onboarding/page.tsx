@@ -3,7 +3,6 @@ import { db } from '@/lib/firebase/client';
 import { doc, getDoc } from '@firebase/firestore';
 
 import OnBoardingForm from '@/components/modules/OnBoarding';
-import { LocaleType } from '@/app/[lang]/(buyer)/page';
 import { Locale } from '@/i18n-config';
 
 async function getOnboardingInfo(id: string) {

@@ -32,6 +32,9 @@ export function middleware(request: NextRequest) {
   if (
     (pathname.startsWith(`${localeFromPathname}/account`) ||
       pathname.startsWith(`${localeFromPathname}/chat`) ||
+      pathname.startsWith(`${localeFromPathname}/connect-with-stripe`) ||
+      pathname.startsWith(`${localeFromPathname}/onboarding`) ||
+      pathname.startsWith(`${localeFromPathname}/seller/`) ||
       pathname.startsWith(`${localeFromPathname}/for-you`)) &&
     user.role === ''
   ) {
@@ -46,6 +49,8 @@ export function middleware(request: NextRequest) {
   if (
     user.role === 'seller' &&
     (pathname.startsWith(`${localeFromPathname}/account`) ||
+      pathname.endsWith(`${localeFromPathname}/`) ||
+      pathname.endsWith(`${localeFromPathname}`) ||
       pathname.startsWith(`${localeFromPathname}/blogs`) ||
       pathname.startsWith(`${localeFromPathname}/cart`) ||
       pathname.startsWith(`${localeFromPathname}/checkout`) ||

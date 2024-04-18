@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import Link from 'next/link';
 import UserProfileDropDown from './UserProfileDropDown';
 import Dashboard from '@/assets/icons/system/Dashboard';
@@ -11,7 +11,7 @@ import useGlobalStore from '@/state';
 import { XSquare } from 'lucide-react';
 import useLocale from '@/hooks/useLocale';
 
-const Sidebar = ({ dictionary } : { dictionary: any }) => {
+const Sidebar = ({ dictionary }: { dictionary: any }) => {
   const locale = useLocale();
   const { showSidebar, setShowSidebar } = useGlobalStore((state: any) => state);
 

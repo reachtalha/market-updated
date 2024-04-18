@@ -8,6 +8,7 @@ import { doc, getDoc, getDocs, collection, query, where, limit, orderBy } from '
 import { db } from '@/lib/firebase/client';
 import { cookies } from 'next/headers';
 import ForYou from '@/components/common/Buyer/For-you';
+
 export const metadata = {
   title: 'For you - All Organics',
   description: 'Products curated for you on Organic living, simplied'

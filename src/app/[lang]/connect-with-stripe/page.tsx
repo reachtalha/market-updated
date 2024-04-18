@@ -7,62 +7,47 @@ import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/firebase/client';
 import useLocale from '@/hooks/useLocale';
 import Loader from '@/components/common/Loader';
+
 const ConnectStripe = () => {
   const router = useRouter();
   const locale = useLocale();
   const { user, isLoading } = useCurrentUser();
 
-  if (!auth.currentUser) {
-    router.push('/auth/login');
-    return (
-      <div className="w-screen h-screen overflow-hidden grid place-content-center">
-        <Loader />
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="w-screen h-screen overflow-hidden grid place-content-center">
-        <Loader />
-      </div>
-    );
-  }
-
-  if (!user) {
+  if (!isLoading && !user) {
     router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
     return (
-      <div className="w-screen h-screen overflow-hidden grid place-content-center">
+      <div className="w-screen bg-white h-screen overflow-hidden grid place-content-center">
         <Loader />
       </div>
     );
   }
-  if (user.stripeAccountId !== null) {
+  if (!isLoading && user.stripeAccountId) {
     router.push(`/${locale}/seller/dashboard`);
     return (
-      <div className="w-screen h-screen overflow-hidden grid place-content-center">
+      <div className="w-screen bg-white h-screen overflow-hidden grid place-content-center">
         <Loader />
       </div>
     );
   }
 
-  console.log(user);
-
-  return (
-    <BoxedContent className="py-5">
-      <Title title="Connect with Stripe" />
-      <div className="container-sm flex w-full h-full justify-center items-center">
-        <div className="w-full h-full md:w-1/2">
-          <SellerPaymentInfo
-            title={'Connect with Stripe for Payouts'}
-            description={
-              'Start receiving payouts seamlessly by connecting your account with Stripe. By linking your account, you can easily manage your earnings and streamline your payment process.'
-            }
-          />
+  if (!isLoading && !user.stripeAccountId) {
+    return (
+      <BoxedContent className="py-5">
+        <Title title="Connect with Stripe" />
+        <div className="container-sm flex w-full h-full justify-center items-center">
+          <div className="w-full h-full md:w-1/2">
+            <SellerPaymentInfo
+              title={'Connect with Stripe for Payouts'}
+              description={
+                'Start receiving payouts seamlessly by connecting your account with Stripe. By linking your account, you can easily manage your earnings and streamline your payment process.'
+              }
+            />
+          </div>
         </div>
-      </div>
-    </BoxedContent>
-  );
+      </BoxedContent>
+    );
+  }
+  return null;
 };
 
 export default ConnectStripe;
