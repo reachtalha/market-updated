@@ -13,11 +13,11 @@ async function currentSellerInfo(locale: string, id: string, router: AppRouterIn
   const docRef = await getDoc(doc(db, 'users', `${id}`));
   if (docRef.exists()) {
     const data = docRef.data();
-    if (!data.stripeAccountId) {
-      router.push(`/${locale}/connect-with-stripe`);
-    } else {
-      return data;
-    }
+    // if (!data.stripeAccountId) {
+    //   router.push(`/${locale}/connect-with-stripe`);
+    // } else {
+    // }
+    return data;
   } else {
     router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
   }

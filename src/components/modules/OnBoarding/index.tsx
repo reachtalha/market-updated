@@ -78,7 +78,8 @@ const OnBoardingForm = ({ searchParams }: any) => {
       await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
 
       if (role === 'seller') {
-        setStep(3);
+        // setStep(3);
+        router.push(`/${locale}/connect-with-stripe`);
       } else router.push(`/${locale}`);
     } catch (error: any) {
       toast.error(`Error! ${error.message}`);
@@ -122,7 +123,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
               {renderButton('Finish')}
             </>
           )}
-          {step === 3 && role === 'seller' && (
+          {/* {step === 3 && role === 'seller' && (
             <>
               <SellerPaymentInfo
                 title={'Connect with Stripe for Payouts'}
@@ -131,7 +132,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
                 }
               />
             </>
-          )}
+          )} */}
         </form>
       </FormProvider>
     </>

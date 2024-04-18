@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-
 import { auth } from '@/lib/firebase/client';
 import { Button } from '@/components/ui/button';
 
