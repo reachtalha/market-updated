@@ -17,7 +17,7 @@ const OnBoarding = async ({
   params: { lang }
 }: {
   searchParams?: { [key: string]: string | undefined };
-  params: { lang: Locale }
+  params: { lang: Locale };
 }) => {
   const { id } = searchParams!;
   if (!id) {

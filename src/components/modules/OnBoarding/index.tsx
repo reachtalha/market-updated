@@ -20,6 +20,7 @@ import Influencer from '@/components/modules/OnBoarding/Influencer';
 import UploadImage from '@/utils/handlers/image/UploadImage';
 import SellerPaymentInfo from '@/components/modules/OnBoarding/SellerPaymentInfo';
 import useLocale from '@/hooks/useLocale';
+import useAuth from '@/hooks/useAuth';
 
 type FormValues = {
   countryCode: string;
@@ -41,6 +42,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const methods = useForm<FormValues>();
   const locale = useLocale();
+  const { logout } = useAuth();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -92,33 +94,47 @@ const OnBoardingForm = ({ searchParams }: any) => {
   );
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        {step === 1 && (
-          <>
-            <BasicDetails setStep={setStep} role={role} />
-            {role === 'seller' && renderButton('Finish')}
-          </>
-        )}
-        {step === 2 && role === 'buyer' && (
-          <>
-            <Categories />
-            {renderButton('Finish')}
-          </>
-        )}
-        {step === 2 && role === 'influencer' && (
-          <>
-            <Influencer />
-            {renderButton('Finish')}
-          </>
-        )}
-        {step === 3 && role === 'seller' && (
-          <>
-            <SellerPaymentInfo />
-          </>
-        )}
-      </form>
-    </FormProvider>
+    <>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          {step === 1 && (
+            <>
+              <button
+                type="button"
+                className=" absolute top-8 right-8 gap-x-1.5 items-center rounded-md px-2 py-1.5 hover:bg-red-100"
+                onClick={logout}
+              >
+                <span className="text-base text-red-500 font-medium">Logout</span>
+              </button>
+              <BasicDetails setStep={setStep} role={role} />
+              {role === 'seller' && renderButton('Finish')}
+            </>
+          )}
+          {step === 2 && role === 'buyer' && (
+            <>
+              <Categories />
+              {renderButton('Finish')}
+            </>
+          )}
+          {step === 2 && role === 'influencer' && (
+            <>
+              <Influencer />
+              {renderButton('Finish')}
+            </>
+          )}
+          {step === 3 && role === 'seller' && (
+            <>
+              <SellerPaymentInfo
+                title={'Connect with Stripe for Payouts'}
+                description={
+                  'Start receiving payouts seamlessly by connecting your account with Stripe. By linking your account, you can easily manage your earnings and streamline your payment process.'
+                }
+              />
+            </>
+          )}
+        </form>
+      </FormProvider>
+    </>
   );
 };
 

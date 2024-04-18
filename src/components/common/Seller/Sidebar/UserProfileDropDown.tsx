@@ -17,12 +17,11 @@ const UserProfileDropDown = () => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const currentUser = auth.currentUser as any;
-
   return (
     <DropdownMenu.Root open={open}>
       <DropdownMenu.Trigger asChild onClick={() => setOpen(true)} className="focus:outline-none">
-        <button className="flex items-center gap-x-1.5 p-1 hover:bg-neutral-300/25  rounded-lg cursor-pointer">
-          <Avatar className="h-9 w-9 ">
+        <button className="flex items-center gap-x-1.5 p-1 hover:bg-neutral-300/25 rounded-lg cursor-pointer">
+          <Avatar className="h-7 w-7  md:h-9 md:w-9">
             <AvatarImage src={currentUser?.photoURL} alt="Avatar" />
 
             <AvatarFallback>
@@ -30,10 +29,10 @@ const UserProfileDropDown = () => {
             </AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <h6 className="font-semibold text-left capitalize truncate">
+            <h6 className="text-xs md:text-sm font-semibold text-left capitalize truncate">
               {currentUser?.displayName}
             </h6>
-            <p className="text-sm text-left text-neutral-300 w-[95%]  truncate">
+            <p className="text-xs md:text-sm text-left text-neutral-300 w-[85%] truncate">
               {currentUser?.email}
             </p>
           </div>

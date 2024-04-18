@@ -7,7 +7,13 @@ import toast from 'react-hot-toast';
 import { auth } from '@/lib/firebase/client';
 import { Button } from '@/components/ui/button';
 
-export default function SellerPaymentInfo() {
+export default function SellerPaymentInfo({
+  title,
+  description
+}: {
+  title: string;
+  description: string;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -33,11 +39,8 @@ export default function SellerPaymentInfo() {
   return (
     <div className="p-5 space-y-5">
       <div className="space-y-3">
-        <h2 className="text-2xl font-bold">Connect with Stripe for Payouts</h2>
-        <p>
-          Start receiving payouts seamlessly by connecting your account with Stripe. By linking your
-          account, you can easily manage your earnings and streamline your payment process.
-        </p>
+        <h2 className="text-2xl font-bold">{title}</h2>
+        <p>{description}</p>
       </div>
       <Button type="button" className="w-full" disabled={loading} onClick={handleLinkAccount}>
         {loading ? 'Connecting...' : ' Connect with Stripe'}
