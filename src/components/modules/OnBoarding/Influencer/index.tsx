@@ -66,7 +66,6 @@ const Influencer = () => {
     setSocialMediaList((prevList) => prevList.filter((_, i) => i !== index));
   };
 
-  console.log(topics);
   return (
     <>
       <h4 className="text-primary font-semibold mb-3 text-2xl">Add Personal Info</h4>

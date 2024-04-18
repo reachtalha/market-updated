@@ -117,7 +117,6 @@ export default function Product({
       setIsPinned(true);
       toast.success('Product added to your pinned products!');
     } catch (error) {
-      console.log(error);
       toast.error('Unable to add the product to your pinned products. Please try again.');
     } finally {
       setLoading(false);

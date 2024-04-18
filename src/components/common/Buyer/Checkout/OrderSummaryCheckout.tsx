@@ -25,15 +25,15 @@ export default function OrderSummaryCheckout({
 
   const cartSummary = auth.currentUser
     ? {
-      subTotal: formatCurrency(cart?.summary?.subTotal ?? 0),
-      shipping: formatCurrency(cart?.summary?.shipping ?? 0),
-      total: formatCurrency(cart?.summary?.total ?? 0)
-    }
+        subTotal: formatCurrency(cart?.summary?.subTotal ?? 0),
+        shipping: formatCurrency(cart?.summary?.shipping ?? 0),
+        total: formatCurrency(cart?.summary?.total ?? 0)
+      }
     : {
-      subTotal: formatCurrency(guestCart?.summary?.subTotal ?? 0),
-      shipping: formatCurrency(guestCart?.summary?.shipping ?? 0),
-      total: formatCurrency(guestCart?.summary?.total ?? 0)
-    };
+        subTotal: formatCurrency(guestCart?.summary?.subTotal ?? 0),
+        shipping: formatCurrency(guestCart?.summary?.shipping ?? 0),
+        total: formatCurrency(guestCart?.summary?.total ?? 0)
+      };
 
   return isCartLoading ? (
     <Skeleton className="bg-gray-200 h-[300px]" />
@@ -92,7 +92,7 @@ export default function OrderSummaryCheckout({
         </div>
       </div>
 
-      <Button className="w-full mt-4">
+      <Button disabled={isConfirmButtonLoading} className="w-full mt-4">
         {isConfirmButtonLoading ? 'Loading' : dictionary.confirmOrderBtnLabel}
       </Button>
     </div>

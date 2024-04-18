@@ -78,7 +78,6 @@ const Header = ({ chatId, users }: HeaderProps) => {
       mutate('user_chats');
       window.location.replace('/chat');
     } catch (error) {
-      console.log(error);
       toast.error('Oops! Something went wrong!');
     } finally {
       setLoading(false);

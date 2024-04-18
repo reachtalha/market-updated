@@ -23,7 +23,6 @@ const Page = async ({ params: { lang } }: LocaleType) => {
       href: '/account?display'
     }
   ];
-  console.log('here');
   return <Index dictionary={dictionary} options={options} />;
 };
 

@@ -47,7 +47,6 @@ async function getData(sort: string, lastDoc?: any, isNext?: string): Promise<Pr
   const sortBy = sortOptions[sort] || sortOptions['latest'];
 
   const user = JSON.parse(cookies().get('user')?.value as string);
-  console.log('user', user);
   let queryBase: CollectionReference | Query = collection(db, 'products');
   let queryCondition: QueryFieldFilterConstraint | any = where('uid', '==', user.uid);
   let q = query(
@@ -112,8 +111,7 @@ async function getData(sort: string, lastDoc?: any, isNext?: string): Promise<Pr
 
     return products;
   } catch (error) {
-    console.log(error);
-    return [];
+    throw new Error();
   }
 }
 

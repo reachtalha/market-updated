@@ -96,7 +96,6 @@ export default function Chat() {
     return <Loader className="w-full h-full flex items-center justify-center" />;
   }
   if (error) {
-    console.log(error);
     return <Error />;
   }
   if (chats?.length === 0) {

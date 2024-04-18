@@ -112,7 +112,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
       });
       toast.success('We have received your order!');
     } catch (err) {
-      console.log(err);
+      throw new Error();
     } finally {
       setIsOrderLoading(false);
     }
@@ -145,36 +145,22 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: user?.email || '',
-      firstName: auth.currentUser ? user?.name?.split(' ')[0] : '',
-      lastName: auth.currentUser
-        ? user?.name.split(' ').length > 1
-          ? user?.name.split(' ')[1]
-          : ''
-        : '',
-      address: user?.address || '',
-      city: user?.city || '',
-      state: '',
-      phone: user?.phone || ''
-    },
     shouldUnregister: false
   });
 
   useEffect(() => {
-    form.reset({
-      email: user?.email || '',
-      firstName: auth.currentUser ? user?.name?.split(' ')[0] : '',
-      lastName: auth.currentUser
-        ? user?.name?.split(' ').length > 1
-          ? user?.name?.split(' ')[1]
-          : ''
-        : '',
-      address: user?.address || '',
-      city: user?.city || '',
-      state: '',
-      phone: user?.phone || ''
-    });
+    if (user) {
+      const [firstName = '', lastName = ''] = auth.currentUser?.displayName?.split(' ') || ['', ''];
+      form.reset({
+        email: user?.email || '',
+        firstName: firstName,
+        lastName: lastName,
+        address: user?.address || '',
+        city: user?.city || '',
+        state: '',
+        phone: user?.phone || ''
+      });
+    }
   }, [user]);
 
   async function onSubmit(values: any) {

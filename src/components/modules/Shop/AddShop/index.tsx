@@ -20,8 +20,6 @@ import { List, Link, Image } from 'lucide-react';
 import EditNavbar from '@/components/common/Seller/Shared/EditNavbar';
 import UploadImage from '@/utils/handlers/image/UploadImage';
 
-
-
 type FormValues = {
   id: string;
   coverImage: string;
@@ -45,7 +43,7 @@ const getTypeData = async (category: string) => {
   return types;
 };
 
-const AddShop = ({ defaultValues, dictionary }: { defaultValues: FormValues, dictionary: any }) => {
+const AddShop = ({ defaultValues, dictionary }: { defaultValues: FormValues; dictionary: any }) => {
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(defaultValues.id !== '');
@@ -136,7 +134,6 @@ const AddShop = ({ defaultValues, dictionary }: { defaultValues: FormValues, dic
       window.location.reload();
     } catch (e) {
       toast.error('Error while creating shop');
-      console.log(e);
     } finally {
       setLoading(false);
     }
@@ -171,7 +168,12 @@ const AddShop = ({ defaultValues, dictionary }: { defaultValues: FormValues, dic
 
           <div className=" w-[90%] sm:wd-[80%] md:w-[65%] lg:w-[45%] xl:w-[60%] m-auto mt-5 2xl:mt-16">
             {step === 1 && (
-              <ShopInformation dictionary={dictionary} setStep={setStep} isEdit={isEdit} types={types as string[]} />
+              <ShopInformation
+                dictionary={dictionary}
+                setStep={setStep}
+                isEdit={isEdit}
+                types={types as string[]}
+              />
             )}
             {step === 2 && <Socials dictionary={dictionary} setStep={setStep} isEdit={isEdit} />}
             {step === 3 && (

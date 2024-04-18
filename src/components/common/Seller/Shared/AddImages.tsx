@@ -35,7 +35,7 @@ function AddImages({
   images,
   isEdit,
   loading = false,
-  dictionary,
+  dictionary
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isShop?: boolean;
@@ -78,9 +78,15 @@ function AddImages({
       <div className="mt-3 xl:mt-5">
         <div className="relative h-fit w-full rounded-lg border p-5 2xl:border-2">
           <p className="text-sm text-neutral-600 mb-2">
-            <span className="font-medium">{dictionary.seller.shop.imagesForm.fileSupportedLabel}</span>: JPG,JPEG, PNG, Webp
+            <span className="font-medium">
+              {dictionary.seller.shop.imagesForm.fileSupportedLabel}
+            </span>
+            : JPG,JPEG, PNG, Webp
             <br />
-            <span className="font-medium">{dictionary.seller.shop.imagesForm.maximumSizeLabel}</span>: 10MB
+            <span className="font-medium">
+              {dictionary.seller.shop.imagesForm.maximumSizeLabel}
+            </span>
+            : 10MB
           </p>
 
           <ImageUpload label="Cover Image" onUpload={handleCoverImage} />
@@ -91,7 +97,9 @@ function AddImages({
         </div>
         {(coverImage || logoImage || pictures?.length > 0) && (
           <div className="mt-2 h-fit w-full border rounded-lg py-2 px-5">
-            <h6 className="mb-2 text-lg font-medium text-gray-600 2xl:text-xl">{dictionary.seller.shop.imagesForm.imagePreviewLabel}</h6>
+            <h6 className="mb-2 text-lg font-medium text-gray-600 2xl:text-xl">
+              {dictionary.seller.shop.imagesForm.imagePreviewLabel}
+            </h6>
             <div className="flex gap-x-2">
               <div className={coverImage ? 'h-24 w-24 relative' : 'hidden'}>
                 <button
@@ -177,6 +185,7 @@ function AddImages({
           <Button
             type="button"
             variant="secondary"
+            disabled={loading}
             onClick={() => setStep((prev: any) => prev - 1)}
             className="w-1/2"
           >

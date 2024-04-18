@@ -88,7 +88,7 @@ const getOrder = async () => {
   return orders;
 };
 
-const Index = ({ dictionary } : { dictionary: any }) => {
+const Index = ({ dictionary }: { dictionary: any }) => {
   const {
     data: orders,
     error,
@@ -112,10 +112,14 @@ const Index = ({ dictionary } : { dictionary: any }) => {
 
   return (
     <section className="py-10 sm:py-0  w-full flex">
-      <div className="px-1 sm:px-5 gap-y-3 w-full md:w-2/5 flex flex-col ">
-        <span className="text-primary text-sm sm:text-base font-medium uppercase">{dictionary.myOrdersLabel}</span>
+      <div className="px-1 sm:px-5 gap-y-3 w-full md:w-2/5 flex flex-col pt-1.5">
+        <h5 className="text-primary text-sm sm:text-base font-medium uppercase py-1.5">
+          {dictionary.myOrdersLabel}
+        </h5>
         {orders?.length === 0 && (
-          <p className="text-sm 3xl:text-base text-neutral-700 py-[5%]">{dictionary.noOrdersFoundLabel}</p>
+          <p className="text-sm 3xl:text-base text-neutral-700 py-[5%]">
+            {dictionary.noOrdersFoundLabel}
+          </p>
         )}
         {orders?.map((order, index) => (
           <OrderCard
@@ -146,7 +150,10 @@ const Index = ({ dictionary } : { dictionary: any }) => {
               order={orders?.filter((order) => order.id === selectedOrder)[0]}
             />
           </div>
-          <OrderDetail dictionary={dictionary.orderDetails} order={orders?.filter((order) => order.id === selectedOrder)[0]} />
+          <OrderDetail
+            dictionary={dictionary.orderDetails}
+            order={orders?.filter((order) => order.id === selectedOrder)[0]}
+          />
         </div>
       )}
     </section>

@@ -58,7 +58,6 @@ export const getExperts = async (category: string, sort: string, lastDoc: any) =
       id: doc.id,
       ...doc.data()
     }));
-    console.log(experts);
     return experts;
   } catch (error) {
     return error;

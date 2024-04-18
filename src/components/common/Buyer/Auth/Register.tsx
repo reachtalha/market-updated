@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -65,7 +65,7 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
       router.push('/auth/login');
     } catch (error: any) {
       if (axios.isCancel(error)) {
-        console.log('Request canceled:', error.message);
+        return;
       } else {
         toast.error(`Error!: ${error.response.data.message}`);
       }

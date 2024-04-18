@@ -32,20 +32,20 @@ export default function ExpertCard({ id, image, name, title, bio, dictionary }: 
             alt={name}
           />
         </div>
-        <div className="bottom-0 w-full z-[1] text-white py-5 px-6 flex justify-between items-start absolute">
-          <div className="flex gap-3 items-center w-full">
-            <div className="space-y-1 flex-1">
+        <div className="bottom-0 w-full z-[1] text-white py-5 px-4 flex justify-between items-start absolute">
+          <div className="w-full">
+            <div className="flex items-center justify-between">
               <h5 className="text-2xl lg:text-3xl capitalize font-medium"> {name}</h5>
-              <p className="text-sm  line-clamp-3 sm:line-clamp-2 text-neutral-100 md:line-clamp-2 lg:line-clamp-none">
-                {bio.length > 50 ? bio.slice(0, 50) + '...' : bio}
-              </p>
+              <Link
+                href={`experts/${id}`}
+                className="bg-transparent hover:bg-neutral-50 duration-300 transition-colors px-5 w-fit h-fit py-2.5 flex items-center hover:text-neutral-900 border rounded-full"
+              >
+                {dictionary.market.featuredExperts.exploreExpertBtnLabel}
+              </Link>
             </div>
-            <Link
-              href={`experts/${id}`}
-              className="bg-transparent hover:bg-neutral-50 duration-300 transition-colors px-5 w-fit h-fit py-2.5 flex items-center hover:text-neutral-900 border rounded-full"
-            >
-              {dictionary.market.featuredExperts.exploreExpertBtnLabel}
-            </Link>
+            <p className="text-sm  text-neutral-100 line-clamp-3">
+              {bio.length > 50 ? bio.slice(0, 50) + '...' : bio}
+            </p>
           </div>
         </div>
       </div>

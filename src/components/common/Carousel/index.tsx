@@ -69,7 +69,6 @@ export default function Carousel({
     <>
       <Swiper
         onSlideChange={() => {
-          console.log('hello');
           setForceRerender(!forceRerender);
         }}
         keyboard

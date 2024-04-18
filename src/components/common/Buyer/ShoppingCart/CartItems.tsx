@@ -16,11 +16,7 @@ export default function CartItems() {
   const { cart, deleteFromCart, isCartLoading } = useCartStore((state: any) => state);
   const { guestCart, deleteFromGuestCart } = useGuestCartStore((state: any) => state);
   const router = useRouter();
-  const filteredItems = cart?.items?.map((item: any) => ({
-    productId: item.productId,
-    quantity: item.quantity,
-    skuId: item.skuId
-  }));
+
   const handleOnDelete = (item: any) => {
     if (auth.currentUser) {
       deleteFromCart(item.itemId);
