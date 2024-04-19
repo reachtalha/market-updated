@@ -390,10 +390,10 @@
           "error": "Shop Name doesn`t look valid"
         },
         "tagline": {
-          "label": "",
-          "placeholder": "",
-          "error": ""
-        },
+          "label": "Shop Tagline",
+          "placeholder": "Enter your shop's tagline",
+          "error": "Please enter a valid tagline"
+        },        
         "category": {
           "label": "Shop Category",
           "placeholder": "Select shop category",

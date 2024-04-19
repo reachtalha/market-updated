@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatCurrency, formatMonth } from '@/utils/formatters';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 type Props = {
   id: string;
@@ -14,7 +14,13 @@ type Props = {
   email?: string;
 };
 
-export function RecentSales({ sales, recentSalesTitle }: { sales: Props[], recentSalesTitle: string }) {
+export function RecentSales({
+  sales,
+  recentSalesTitle
+}: {
+  sales: Props[];
+  recentSalesTitle: string;
+}) {
   function getMonthData(month: string) {
     let thisMonth = 0;
     sales.forEach((e: any) => {
@@ -24,7 +30,7 @@ export function RecentSales({ sales, recentSalesTitle }: { sales: Props[], recen
   }
   const thisMonthSales = getMonthData(formatMonth(new Date()));
   return (
-    <Card className="col-span-3">
+    <>
       <CardHeader>
         <CardTitle>{recentSalesTitle}</CardTitle>
         <CardDescription>
@@ -50,6 +56,6 @@ export function RecentSales({ sales, recentSalesTitle }: { sales: Props[], recen
           ))}
         </div>
       </CardContent>
-    </Card>
+    </>
   );
 }

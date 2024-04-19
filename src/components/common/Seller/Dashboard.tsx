@@ -35,7 +35,6 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
     totalProducts = productSnap.docs[0]?.data()?.noOfProducts;
     let activeOrders = 0;
     orderSnap.forEach((order) => {
-      totalOrders++;
       if (order.data().status === 'processing') activeOrders++;
       recentSales.push({
         id: order.id,
@@ -63,19 +62,35 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
     } as any;
   });
   if (isLoading) {
-    return <Loader className="h-full w-full grid place-content-center" />;
+    return (
+      <main className="p-4 md:p-5 2xl:p-10 h-screen space-y-5 animate-pulse">
+        <div className="h-12 w-44 bg-gray-300 rounded-md" />
+        <div className="grid grid-cols-4 grid-rows-5 h-full w-full gap-5 py-5">
+          <div className="col-span-1 col-start-1 col-end-2 row-start-1 w-full h-full bg-gray-300 rounded-lg row-end-2" />
+          <div className="col-span-1 col-start-2 col-end-3 row-start-1 row-end-2 w-full h-full bg-gray-300 rounded-lg" />
+          <div className="col-span-1 col-start-3 col-end-4 row-start-1 row-end-2 w-full h-full bg-gray-300 rounded-lg" />
+          <div className="col-span-1 col-start-4 col-end-5 row-start-1 row-end-2 w-full h-full bg-gray-300 rounded-lg" />
+          <div className="row-start-2 row-end-6 col-start-1 col-end-3 w-full h-full bg-gray-300 rounded-lg" />
+          <div className="row-start-2 row-end-6 col-start-3 col-end-5 w-full h-full bg-gray-300 rounded-lg" />
+        </div>
+      </main>
+    );
   }
   if (error) {
     return <Error className="h-full w-full grid place-content-center" />;
   }
 
   return (
-    <main className="p-3 md:p-5 lg:p-8 space-y-4">
-      <h1 className="text-xl font-semibold">{dictionary.seller.main.greetingLabel}, {auth.currentUser?.displayName}</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+    <main className="p-4 md:p-5 2xl:p-10 h-screen space-y-5">
+      <h1 className="text-xl font-semibold">
+        {dictionary.seller.main.greetingLabel}, {auth.currentUser?.displayName}
+      </h1>
+      <div className="grid grid-cols-4 grid-rows-5 h-full w-full gap-5 py-5">
+        <Card className="col-span-1 col-start-1 col-end-2 row-start-1 row-end-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm 2xl:text-lg font-medium">{dictionary.seller.main.totalRevenueLabel}</CardTitle>
+            <CardTitle className="text-sm 2xl:text-lg font-medium">
+              {dictionary.seller.main.totalRevenueLabel}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -95,27 +110,33 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="col-span-1 col-start-2 col-end-3 row-start-1 row-end-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm 2xl:text-lg  font-medium">{dictionary.seller.main.totalProductsLabel}</CardTitle>
+            <CardTitle className="text-sm 2xl:text-lg  font-medium">
+              {dictionary.seller.main.totalProductsLabel}
+            </CardTitle>
             <Products className="w-5 h-5 2xl:h-8 2xl:w-8 text-neutral-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl 2xl:text-3xl font-bold">{analytics.totalProducts}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="col-span-1 col-start-3 col-end-4 row-start-1 row-end-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm 2xl:text-lg  font-medium">{dictionary.seller.main.totalOrdersLabel}</CardTitle>
+            <CardTitle className="text-sm 2xl:text-lg  font-medium">
+              {dictionary.seller.main.totalOrdersLabel}
+            </CardTitle>
             <Cart className="w-5 h-5 2xl:h-8 2xl:w-8 text-neutral-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl 2xl:text-3xl font-bold">{analytics.totalOrders}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="col-span-1 col-start-4 col-end-5 row-start-1 row-end-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm 2xl:text-lg  font-medium">{dictionary.seller.main.activeOrdersLabel}</CardTitle>
+            <CardTitle className="text-sm 2xl:text-lg  font-medium">
+              {dictionary.seller.main.activeOrdersLabel}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -133,10 +154,20 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
             <div className="text-2xl 2xl:text-3xl font-bold">{analytics.activeOrders}</div>
           </CardContent>
         </Card>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Overview overviewTitle={dictionary.seller.main.overviewTitle} sales={analytics.recentSales} />
-        <RecentSales recentSalesTitle={dictionary.seller.main.recentSalesTitle} sales={analytics.recentSales} />
+        <Card className="row-start-2 row-end-6 col-start-1 col-end-3">
+          <CardHeader>
+            <CardTitle>{dictionary.seller.main.overviewTitle}</CardTitle>
+          </CardHeader>
+          <CardContent className="w-full h-[90%]">
+            <Overview sales={analytics.recentSales} />
+          </CardContent>
+        </Card>
+        <Card className="row-start-2 row-end-6 col-start-3 col-end-5">
+          <RecentSales
+            recentSalesTitle={dictionary.seller.main.recentSalesTitle}
+            sales={analytics.recentSales}
+          />
+        </Card>
       </div>
     </main>
   );
