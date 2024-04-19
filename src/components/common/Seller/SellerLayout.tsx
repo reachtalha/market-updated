@@ -18,7 +18,7 @@ export default function SellerLayout({ data, children }: { data: any; children: 
       </div>
     );
   }
-  if (!userData?.stripeAccountId) {
+  if (!userData?.stripeConnectId) {
     router.push('/connect-with-stripe');
     return (
       <div className="z-50 fixed inset-0 w-screen bg-white h-screen overflow-hidden grid place-content-center">

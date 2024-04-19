@@ -1,58 +1,80 @@
 import { NextResponse } from 'next/server';
 import { Stripe } from 'stripe';
 
-const calculatePlatformFee = (price: number) => {
-  const platformFeePercentage = 5; // Platform fee percentage
-  const platformFee = (price * platformFeePercentage) / 100; // Calculate platform fee
-  return Number((platformFee * 100).toFixed(0));
-};
+interface CartItem {
+  itemId: string;
+  docId: string;
+  selectedVariant?: { key: string; price: number };
+  image: string;
+  name: string;
+  shopId: string;
+  unit: string;
+  stripeConnectId: string;
+  quantity: number;
+}
 
+// Function to group items by a given key
+function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
+  return array.reduce((result: Record<string, T[]>, currentValue: T) => {
+    const keyValue = String(currentValue[key]);
+    (result[keyValue] ||= []).push(currentValue);
+    return result;
+  }, {});
+}
+
+// Main function handling the POST request
 export async function POST(req: Request) {
-  const { price, cartDetails } = await req.json();
-  const stripe = new Stripe(process.env.STRIPE_SECRET || '', {
-    apiVersion: '2022-11-15'
-  });
-
-  console.log('CART DETAILS', cartDetails);
-
-  const transferGroup = Date.now().toString();
-
-  function groupBy(array: any, key: any) {
-    return array.reduce((result: any, currentValue: any) => {
-      const keyValue = currentValue[key];
-      (result[keyValue] = result[keyValue] || []).push(currentValue);
-      return result;
-    }, {});
-  }
-  const result = groupBy(cartDetails.items, 'shopId');
-
-  console.log(result);
   try {
-    const amount = Number((price * 100).toFixed(0));
+    // Parse request body
+    const { price, cartDetails } = await req.json();
 
+    // Create Stripe instance
+    const stripe = new Stripe(process.env.STRIPE_SECRET || '', { apiVersion: '2022-11-15' });
+
+    // Generate transfer group ID
+    const transferGroup = Date.now().toString();
+
+    // Group items by stripeConnectId and calculate total amount for each stripeConnectId
+    const result: { key: string; totalAmount: number }[] = [];
+    for (const [accountId, accountItems] of Object.entries(
+      groupBy(cartDetails.items, 'stripeConnectId')
+    )) {
+      const totalAmount = accountItems.reduce((sum, item: any) => {
+        if (item.selectedVariant && item.quantity !== undefined) {
+          // Check if selectedVariant and quantity exist
+          const { price } = item.selectedVariant;
+          return sum + price * item.quantity;
+        }
+        return sum;
+      }, 0);
+      result.push({ key: accountId, totalAmount });
+    }
+
+    // Create payment intent
+    const totalAmount = Number((price * 100).toFixed(0));
     const paymentIntent = await stripe.paymentIntents.create({
       payment_method_types: ['card'],
-      amount: Number((price * 100).toFixed(0)),
+      amount: totalAmount,
       currency: 'usd',
       transfer_group: transferGroup
     });
 
-    for (const item of cartDetails.items) {
-      const { shopId, stripeId } = item;
-
-      const transfer = await stripe.transfers.create({
-        amount: price * 100,
-        currency: 'usd',
-        destination: stripeId,
-        transfer_group: transferGroup
-      });
-    }
+    // Make transfers for each stripeConnectId
+    await Promise.all(
+      result.map(({ key, totalAmount }) =>
+        stripe.transfers.create({
+          amount: Number((totalAmount * 100).toFixed(0)),
+          currency: 'usd',
+          destination: key,
+          transfer_group: transferGroup
+        })
+      )
+    );
 
     return NextResponse.json({
       payload: { paymentIntentId: paymentIntent.id, clientSecret: paymentIntent.client_secret }
     });
-  } catch (err) {
-    console.error('Error:', err);
+  } catch (error) {
     return NextResponse.json({ message: 'Something went wrong!' });
   }
 }

@@ -60,7 +60,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
         name: auth.currentUser?.displayName?.toLowerCase(),
         email: auth.currentUser?.email,
         role: role,
-        ...(role === 'seller' && { stripeAccountId: null }),
+        ...(role === 'seller' && { stripeConnectId: null }),
         createdAt: Timestamp.fromDate(new Date())
       };
       if (data.image) {

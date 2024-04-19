@@ -32,25 +32,6 @@ const formSchema = z.object({
   phone: z.string().min(1, { message: 'required' })
 });
 
-type ShippingAddressType = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  country: string;
-
-  city: string;
-  address: string;
-};
-
-type CartItemType = {
-  productId: string;
-  quantity: number;
-  skuId: string;
-};
-
-type ItemsType = CartItemType[];
-
 export default function Checkout({ dictionary }: { dictionary: any }) {
   const { user, isLoading } = useCurrentUser();
 
@@ -65,8 +46,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
   const { guestCart } = useGuestCartStore((state: any) => state);
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
   const locale = useLocale();
-  console.log(cartItems);
-  console.log(user);
+
   const submitOrder = async (values: any) => {
     try {
       setIsOrderLoading(true);
@@ -76,7 +56,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
       const items = cartItems?.map((i: any) => {
         return {
           id: i.docId,
-          stripeId: i?.stripeId,
+          stripeConnectId: i?.stripeConnectId,
           image: auth.currentUser ? i.image : i.coverImage,
           name: i.name,
           quantity: i.quantity,

@@ -141,7 +141,7 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
   ) => {
     const obj = {
       uid: auth.currentUser?.uid,
-      stripeAccountId: user?.stripeAccountId,
+      stripeConnectId: user?.stripeConnectId,
       shopId: shop.id,
       ...data,
       name: data.name?.toLocaleLowerCase(),
@@ -259,9 +259,9 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
       </div>
     );
   return (
-    <section className={`h-full ${isEdit ? 'pb-10' : 'py-10'} `}>
+    <section className="h-full py-10">
       <FormProvider {...methods}>
-        <form id="add-product-form" onSubmit={handleSubmit(onSubmit)}>
+        <form id="add-product-form" onSubmit={handleSubmit(onSubmit)} className="m-auto max-w-2xl">
           {isEdit ? (
             <EditNavbar setStep={setStep} step={step} data={STEPPER_DATA} />
           ) : (

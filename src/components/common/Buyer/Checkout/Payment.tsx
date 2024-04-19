@@ -6,9 +6,8 @@ import useSwr from 'swr';
 import axios from 'axios';
 import { auth } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
-import BoxedContent from '../../BoxedContent';
 import useGuestCartStore from '@/state/useGuestCartStore';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
+import BoxedContent from '../../BoxedContent';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
 
@@ -21,38 +20,37 @@ const fetchCreatePaymentIntent = (price: number, cartDetails: any) => {
 
 const Payment = ({ children }: { children: ReactNode }) => {
   const { cart } = useCartStore((state: any) => state);
-
-  const { user } = useCurrentUser();
   const { guestCart } = useGuestCartStore((state: any) => state);
 
   const cartTotal = auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total;
   const cartDetails = auth.currentUser ? cart : guestCart;
-  const { data, isLoading } = useSwr(
+  const { data } = useSwr(
     () => (cartTotal != null ? 'payment_intent_creation' : null),
     () => fetchCreatePaymentIntent(cartTotal, cartDetails),
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       refreshWhenOffline: false,
-      refreshWhenHidden: false,
-      refreshInterval: 0
+      refreshWhenHidden: false
     }
   );
 
-  return isLoading || !cartTotal ? (
-    <BoxedContent className="flex gap-x-5 py-24 mt-8">
-      <div className="grid lg:grid-cols-2 gap-x-10">
-        <div className="h-4/5 w-full bg-gray-200 animate-pulse" />
-        <div className="h-96 w-full bg-gray-200 animate-pulse" />
-      </div>
+  if (data?.data?.payload?.clientSecret) {
+    return (
+      <Elements
+        stripe={stripePromise}
+        options={{ clientSecret: data?.data?.payload?.clientSecret || '' }}
+      >
+        {children}
+      </Elements>
+    );
+  }
+
+  return (
+    <BoxedContent className="my-28 bg-gray-100 p-5 lg:p-10 grid rounded-lg grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-8">
+      <div className="h-[80vh] w-full bg-gray-200 rounded-md animate-pulse" />
+      <div className="h-[40vh] w-full bg-gray-200 rounded-md animate-pulse" />
     </BoxedContent>
-  ) : (
-    <Elements
-      stripe={stripePromise}
-      options={{ clientSecret: data?.data?.payload?.clientSecret || '' }}
-    >
-      {children}
-    </Elements>
   );
 };
 

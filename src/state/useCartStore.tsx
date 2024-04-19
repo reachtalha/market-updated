@@ -38,7 +38,7 @@ const fetchGetCart = async () => {
           name: productData?.name,
           shopId: productData?.shopId,
           unit: productData?.unit,
-          stripeAccountId: productData?.stripeAccountId,
+          stripeConnectId: productData?.stripeConnectId,
           quantity: document.data().quantity
         };
       })

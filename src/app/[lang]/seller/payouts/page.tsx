@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 // import * as z from 'zod';
 
 type PayoutTypes = {
-  // stripeAccountId?: string | null;
+  // stripeConnectId?: string | null;
   email: string;
   firstName: string;
   lastName: string;
@@ -55,7 +55,7 @@ export default function Payouts() {
       // acct_1P3FRLGhzjOMQ8ID working
       // acct_1P3Co22cxlpaluiu
 
-      stripeAccountId: 'acct_1P3FRLGhzjOMQ8ID' || null,
+      stripeConnectId: 'acct_1P3FRLGhzjOMQ8ID' || null,
       email: 'dev@allorganics.com',
       firstName: 'Dev',
       lastName: 'Team',
@@ -68,7 +68,7 @@ export default function Payouts() {
   //   console.log(data);
 
   //   fetchCreatePayoutAccount({
-  //     stripeAccountId: null,
+  //     stripeConnectId: null,
   //     email: data.email,
   //     firstName: data.firstName,
   //     lastName: data.lastName,

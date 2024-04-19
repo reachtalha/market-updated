@@ -37,10 +37,10 @@ export async function POST(req: Request) {
       }
     });
 
-    const res = await setDoc(
+    await setDoc(
       doc(db, 'users', `${uid}`),
       {
-        stripeAccountId: account?.id
+        stripeConnectId: account?.id
       },
       { merge: true }
     );

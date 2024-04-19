@@ -21,7 +21,7 @@ const ConnectStripe = () => {
       </div>
     );
   }
-  if (!isLoading && user.stripeAccountId) {
+  if (!isLoading && user.stripeConnectId) {
     router.push(`/${locale}/seller/dashboard`);
     return (
       <div className="w-screen bg-white h-screen overflow-hidden grid place-content-center">
@@ -30,7 +30,7 @@ const ConnectStripe = () => {
     );
   }
 
-  if (!isLoading && !user.stripeAccountId) {
+  if (!isLoading && !user.stripeConnectId) {
     return (
       <BoxedContent className="py-5">
         <Title title="Connect with Stripe" />
