@@ -27,7 +27,7 @@ import Stepper from '@/components/common/Seller/Shared/Stepper';
 import UploadImage from '@/utils/handlers/image/UploadImage';
 import Loader from '@/components/common/Loader';
 import EditNavbar from '@/components/common/Seller/Shared/EditNavbar';
-
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 type FormValues = {
   coverImage: string;
   moreImages: string[];
@@ -51,6 +51,8 @@ type props = {
 };
 
 const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
+  const { user } = useCurrentUser();
+  console.log(user?.stripeAccountId);
   const {
     data: shop,
     error,
@@ -59,6 +61,7 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
     const docRef = await getDocs(
       query(collection(db, 'shops'), where('uid', '==', `${auth.currentUser?.uid}`))
     );
+
     if (docRef.docs[0].exists()) {
       const typeRef = await getDocs(
         query(
@@ -157,6 +160,7 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
       } else {
         const obj = {
           uid: auth.currentUser?.uid,
+          stripeId: user?.stripeAccountId,
           shopId: shop.id,
           ...data,
           name: data.name?.toLocaleLowerCase(),

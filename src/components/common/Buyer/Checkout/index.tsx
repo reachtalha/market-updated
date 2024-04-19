@@ -65,7 +65,8 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
   const { guestCart } = useGuestCartStore((state: any) => state);
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
   const locale = useLocale();
-
+  console.log(cartItems);
+  console.log(user);
   const submitOrder = async (values: any) => {
     try {
       setIsOrderLoading(true);
@@ -75,6 +76,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
       const items = cartItems?.map((i: any) => {
         return {
           id: i.docId,
+          stripeId: i?.stripeId,
           image: auth.currentUser ? i.image : i.coverImage,
           name: i.name,
           quantity: i.quantity,
@@ -104,6 +106,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
         userId: auth.currentUser ? auth?.currentUser?.uid : 'guest',
         total: auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total
       };
+      console.log(order);
 
       await axios.post('/api/checkout', {
         order,
@@ -178,6 +181,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
   }, [user]);
 
   async function onSubmit(values: any) {
+    console.log(values);
     await submitPayment(values);
   }
 

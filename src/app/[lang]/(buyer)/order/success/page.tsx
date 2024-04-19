@@ -36,7 +36,9 @@ export default function OrderSuccess() {
         <h1 className="text-4xl text-primary">Order Successful</h1>
         <Separator className="my-1" />
         {auth.currentUser ? (
-          <Button onClick={() => router.push(`/${locale}/account?display=order`)}>See Orders</Button>
+          <Button onClick={() => router.push(`/${locale}/account?display=order`)}>
+            See Orders
+          </Button>
         ) : (
           <Button onClick={() => router.push(`/${locale}/products`)}>Explore Products</Button>
         )}
