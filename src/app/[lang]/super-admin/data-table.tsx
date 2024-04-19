@@ -76,7 +76,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<any, 
       toast.success('An email with account details has been sent to the user.');
       window.location.reload();
     } catch (error: any) {
-      console.log(error);
       toast.error('An error occurred while processing your request. Please try again later.');
     } finally {
       setLoading(false);

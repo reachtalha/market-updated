@@ -35,10 +35,8 @@ const PerishableItemForm: React.FC = () => {
       lifeSpaan: isPerishable ? 'perishable' : 'non-perishable',
       list: items
     };
-    console.log(object);
     const addDocument = async () => {
       const ref = await addDoc(collection(db, 'categories'), object);
-      console.log(ref);
     };
     addDocument();
   };

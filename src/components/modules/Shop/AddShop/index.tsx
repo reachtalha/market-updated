@@ -134,7 +134,6 @@ const AddShop = ({ defaultValues, dictionary }: { defaultValues: FormValues; dic
       window.location.reload();
     } catch (e) {
       toast.error('Error while creating shop');
-      console.log(e);
     } finally {
       setLoading(false);
     }

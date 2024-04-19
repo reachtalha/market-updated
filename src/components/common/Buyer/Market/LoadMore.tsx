@@ -22,7 +22,6 @@ const LoadMore = ({ markets }: Props) => {
 
   const loadMoreShops = async () => {
     try {
-      console.log(responseEnded);
       const response: any = await getShops(category, sort, lastDoc);
       if (response.length > 0) {
         lastDoc = response[response.length - 1];
@@ -30,7 +29,7 @@ const LoadMore = ({ markets }: Props) => {
       }
       if (response.length < 4) setResponseEnded(true);
     } catch (error) {
-      console.log(error);
+      throw new Error();
     }
   };
 

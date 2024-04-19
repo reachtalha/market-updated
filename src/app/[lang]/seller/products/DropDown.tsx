@@ -17,7 +17,6 @@ const DropDown = ({ sortBy = 'latest' }: Props) => {
   const locale = useLocale();
   const getURL = (sortBy: string) => {
     const queryParams = [];
-    console.log('here');
 
     queryParams.push(`sort=${encodeURIComponent(sortBy)}`);
 

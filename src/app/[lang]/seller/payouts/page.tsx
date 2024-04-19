@@ -44,7 +44,6 @@ export default function Payouts() {
 
   const fetchCreatePayoutAccount = async (data: any) => {
     const res = await axios.post('/api/payouts/create-account', data);
-    console.log(res.data);
     if (typeof res.data === 'string') {
       router.push(res.data);
     }

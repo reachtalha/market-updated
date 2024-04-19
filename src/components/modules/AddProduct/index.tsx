@@ -19,6 +19,8 @@ import useGlobalStore from '@/state';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { List, Package2, Image, FileText } from 'lucide-react';
 
+import DeleteImage from '@/utils/handlers/image/DeleteImage';
+
 import CreateSKU from './CreateSKU';
 import DetailedDescription from './DetailedDescription';
 import BasicDetails from './BasicDetails';
@@ -28,6 +30,7 @@ import UploadImage from '@/utils/handlers/image/UploadImage';
 import Loader from '@/components/common/Loader';
 import EditNavbar from '@/components/common/Seller/Shared/EditNavbar';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
+
 type FormValues = {
   coverImage: string;
   moreImages: string[];
@@ -51,8 +54,6 @@ type props = {
 };
 
 const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
-  const { user } = useCurrentUser();
-  console.log(user?.stripeAccountId);
   const {
     data: shop,
     error,
@@ -61,7 +62,6 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
     const docRef = await getDocs(
       query(collection(db, 'shops'), where('uid', '==', `${auth.currentUser?.uid}`))
     );
-
     if (docRef.docs[0].exists()) {
       const typeRef = await getDocs(
         query(
@@ -77,6 +77,8 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
     }
     return false;
   });
+  const { user } = useCurrentUser();
+
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const { emptySKUList, setInitialSKUList } = useGlobalStore() as any;
@@ -112,15 +114,98 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
     } else emptySKUList();
   }, []);
 
+  const updateProduct = async (
+    data: any,
+    coverImageURL: string | undefined,
+    otherImagesURL: string[]
+  ) => {
+    const product = {
+      ...data,
+      name: data.name?.toLocaleLowerCase(),
+      type: data.type?.toLocaleLowerCase(),
+      updatedAt: Timestamp.fromDate(new Date()),
+      coverImage: coverImageURL || defaultValues.coverImage,
+      moreImages: otherImagesURL,
+      price:
+        data.SKU.length === 1
+          ? data.SKU[0].price
+          : data.SKU.sort((a: any, b: any) => a.price - b.price)[0].price
+    };
+    await updateDoc(doc(db, 'products', `${defaultValues.id}`), product);
+  };
+
+  const addNewProduct = async (
+    data: any,
+    coverImageURL: string | undefined,
+    otherImagesURL: string[]
+  ) => {
+    const obj = {
+      uid: auth.currentUser?.uid,
+      stripeAccountId: user?.stripeAccountId,
+      shopId: shop.id,
+      ...data,
+      name: data.name?.toLocaleLowerCase(),
+      type: data.type?.toLocaleLowerCase(),
+      submittedAt: Timestamp.fromDate(new Date()),
+      coverImage: coverImageURL,
+      moreImages: otherImagesURL,
+      shopName: shop.name,
+      price:
+        data.SKU.length === 1
+          ? data.SKU[0].price
+          : data.SKU.sort((a: any, b: any) => a.price - b.price)[0].price,
+      category: shop.category,
+      status: 'listed',
+      rating: 0
+    };
+
+    await addDoc(collection(db, 'products'), obj);
+    await updateDoc(doc(db, 'shops', `${shop.id}`), {
+      noOfProducts: increment(1)
+    });
+  };
+
+  const handleSubmissionError = async (
+    error: any,
+    coverImageURL: string | undefined,
+    otherImagesURL: string[] | undefined
+  ) => {
+    toast.error('Something went wrong!');
+    if (coverImageURL) {
+      try {
+        await DeleteImage({ imageUrl: coverImageURL });
+      } catch (rollbackError) {
+        console.error('Cover Image rollback Error:', rollbackError);
+      }
+    }
+
+    if (otherImagesURL && otherImagesURL.length > 0) {
+      const deletePromises = otherImagesURL.map((imageUrl) => {
+        return DeleteImage({ imageUrl });
+      });
+
+      try {
+        await Promise.all(deletePromises);
+      } catch (rollbackError) {
+        console.error('Other Images rollback Error:', rollbackError);
+      }
+    }
+  };
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    let coverImageURL;
+    let otherImagesURL;
+
     try {
       setLoading(true);
+
+      // Validate form data
       if (!data.coverImage) {
-        toast.error('Please add Cover Image!');
+        toast.error('Please add a Cover Image!');
         return;
       }
-      let coverImageURL;
 
+      // Upload cover image if it's not already hosted
       if (!data.coverImage.includes('firebasestorage.googleapis.com')) {
         coverImageURL = await UploadImage({
           collection: 'products',
@@ -129,6 +214,7 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
         });
       }
 
+      // Upload other images
       const imagePromises = Array.from(data.moreImages, async (pic: any) => {
         if (!pic.includes('firebasestorage.googleapis.com')) {
           return await UploadImage({
@@ -139,58 +225,24 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
         }
         return pic;
       });
-      const otherImagesURL = await Promise.all(imagePromises);
-      if (isEdit) {
-        const obj = {
-          ...data,
-          name: data.name?.toLocaleLowerCase(),
-          type: data.type?.toLocaleLowerCase(),
-          updatedAt: Timestamp.fromDate(new Date()),
-          coverImage: coverImageURL || defaultValues.coverImage,
-          moreImages: otherImagesURL,
-          price:
-            data.SKU.length === 1
-              ? data.SKU[0].price
-              : data.SKU.sort((a: any, b: any) => a.price - b.price)[0].price
-        };
+      otherImagesURL = await Promise.all(imagePromises);
 
-        await updateDoc(doc(db, 'products', `${defaultValues.id}`), obj);
+      // Handle edit or add new product
+      if (isEdit) {
+        await updateProduct(data, coverImageURL, otherImagesURL);
         toast.success('Product Updated!');
         window.location.reload();
       } else {
-        const obj = {
-          uid: auth.currentUser?.uid,
-          stripeId: user?.stripeAccountId,
-          shopId: shop.id,
-          ...data,
-          name: data.name?.toLocaleLowerCase(),
-          type: data.type?.toLocaleLowerCase(),
-          submittedAt: Timestamp.fromDate(new Date()),
-          coverImage: coverImageURL,
-          moreImages: otherImagesURL,
-          shopName: shop.name,
-          price:
-            data.SKU.length === 1
-              ? data.SKU[0].price
-              : data.SKU.sort((a: any, b: any) => a.price - b.price)[0].price,
-          category: shop.category,
-          status: 'listed',
-          rating: 0
-        };
-
-        await addDoc(collection(db, 'products'), obj);
-        await updateDoc(doc(db, 'shops', `${shop.id}`), {
-          noOfProducts: increment(1)
-        });
-        toast.success('Product added!');
+        await addNewProduct(data, coverImageURL, otherImagesURL);
+        toast.success('Product Added!');
         setStep(1);
       }
 
+      // Reset form and state
       emptySKUList();
       reset();
-    } catch (e) {
-      console.log(e);
-      toast.error('Something went wrong!');
+    } catch (error) {
+      handleSubmissionError(error, coverImageURL, otherImagesURL);
     } finally {
       setLoading(false);
     }
@@ -207,9 +259,9 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
       </div>
     );
   return (
-    <section className="h-full py-10">
+    <section className={`h-full ${isEdit ? 'pb-10' : 'py-10'} `}>
       <FormProvider {...methods}>
-        <form id="add-product-form" onSubmit={handleSubmit(onSubmit)} className="m-auto max-w-2xl">
+        <form id="add-product-form" onSubmit={handleSubmit(onSubmit)}>
           {isEdit ? (
             <EditNavbar setStep={setStep} step={step} data={STEPPER_DATA} />
           ) : (

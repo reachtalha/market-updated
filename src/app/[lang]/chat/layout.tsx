@@ -33,7 +33,7 @@ const getChat = async (seller: string, router: any, returnUrl: string) => {
       ).id;
     router.push(`/chat/${chatId}?return_url=${returnUrl}`);
   } catch (error) {
-    console.log(error);
+    throw new Error();
   }
 };
 
@@ -46,7 +46,6 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   const isOnlychat = pathname === '/chat';
 
   let loading = false;
-  console.log(pathname);
   if (!auth.currentUser) {
     redirect('/auth/login');
   }

@@ -76,7 +76,6 @@ export function DataTable<TValue>({ columns, data, totalRecords }: DataTableProp
       );
 
       wishListQuery.docs.forEach((d) => {
-        console.log(d.data());
         updateDoc(doc(db, 'wishlist', `${d.id}`), {
           productIds: d.data().productIds.filter((i: string) => i !== id)
         });
@@ -117,8 +116,7 @@ export function DataTable<TValue>({ columns, data, totalRecords }: DataTableProp
       toast.success('Product Successfully Deleted');
       router.refresh();
     } catch (e) {
-      console.log(e);
-      console.log('Error occured');
+      throw new Error();
     } finally {
       setLoading(false);
     }

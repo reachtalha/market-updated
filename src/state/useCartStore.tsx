@@ -38,6 +38,7 @@ const fetchGetCart = async () => {
           name: productData?.name,
           shopId: productData?.shopId,
           unit: productData?.unit,
+          stripeAccountId: productData?.stripeAccountId,
           quantity: document.data().quantity
         };
       })
@@ -83,7 +84,7 @@ const fetchClearCart = async (cartItems: any) => {
       );
     }
   } catch (err) {
-    console.log(err);
+    throw new Error();
   }
 };
 

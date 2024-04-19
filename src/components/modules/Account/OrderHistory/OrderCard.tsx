@@ -16,13 +16,12 @@ type Props = {
   placedAt: Date;
   selectedOrder: string;
   setSelectedOrder: React.Dispatch<React.SetStateAction<string>>;
-  dictionary: any
+  dictionary: any;
 };
 
 function OrderCard({ dictionary, id, products, placedAt, setSelectedOrder, selectedOrder }: Props) {
   const router = useRouter();
   const handleClick = () => {
-    console.log(window.innerWidth);
     if (window.innerWidth < 756) {
       router.push(`/orders/${id}`);
     } else {

@@ -8,6 +8,7 @@ import { auth } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import BoxedContent from '../../BoxedContent';
 import useGuestCartStore from '@/state/useGuestCartStore';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
 
@@ -20,6 +21,8 @@ const fetchCreatePaymentIntent = (price: number, cartDetails: any) => {
 
 const Payment = ({ children }: { children: ReactNode }) => {
   const { cart } = useCartStore((state: any) => state);
+
+  const { user } = useCurrentUser();
   const { guestCart } = useGuestCartStore((state: any) => state);
 
   const cartTotal = auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total;
@@ -36,7 +39,7 @@ const Payment = ({ children }: { children: ReactNode }) => {
     }
   );
 
-  return isLoading || cartTotal == null ? (
+  return isLoading || !cartTotal ? (
     <BoxedContent className="flex gap-x-5 py-24 mt-8">
       <div className="grid lg:grid-cols-2 gap-x-10">
         <div className="h-4/5 w-full bg-gray-200 animate-pulse" />

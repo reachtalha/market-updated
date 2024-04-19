@@ -92,7 +92,7 @@ export default function OrderSummaryCheckout({
         </div>
       </div>
 
-      <Button className="w-full mt-4">
+      <Button disabled={isConfirmButtonLoading} className="w-full mt-4">
         {isConfirmButtonLoading ? 'Loading' : dictionary.confirmOrderBtnLabel}
       </Button>
     </div>

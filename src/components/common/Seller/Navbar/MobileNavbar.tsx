@@ -7,7 +7,6 @@ type Props = {};
 
 const MobileNavbar = (props: Props) => {
   const { showSidebar, setShowSidebar } = useGlobalStore((state: any) => state);
-
   return (
     <div className="sm:hidden h-14 w-full border-b px-2 flex flex-row items-center justify-center">
       {!showSidebar && (

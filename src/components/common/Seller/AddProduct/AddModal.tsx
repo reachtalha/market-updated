@@ -19,7 +19,6 @@ type Props = {
 
 export default function AddModal({ list, setList }: Props) {
   const [item, setItem] = useState<string>('');
-  console.log('Here');
   const addData = () => {
     if (item.length === 0) {
       alert('Please add item');

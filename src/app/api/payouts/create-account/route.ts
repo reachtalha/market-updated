@@ -45,8 +45,6 @@ export async function POST(req: Request) {
       { merge: true }
     );
 
-    console.log(res);
-
     const accountLink = await stripe.accountLinks.create({
       account: account?.id,
       refresh_url: `${process.env.DOMAIN}/en/seller/dashboard`,
