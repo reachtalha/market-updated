@@ -9,12 +9,12 @@ import useCartStore from '@/state/useCartStore';
 import BoxedContent from '../../BoxedContent';
 import useGuestCartStore from '@/state/useGuestCartStore';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
 
-
-const fetchCreatePaymentIntent = (price: number) => {
+const fetchCreatePaymentIntent = (price: number, cartDetails: any) => {
   return axios.post('/api/payment/createPayment', {
-    price
+    price,
+    cartDetails
   });
 };
 
@@ -23,9 +23,10 @@ const Payment = ({ children }: { children: ReactNode }) => {
   const { guestCart } = useGuestCartStore((state: any) => state);
 
   const cartTotal = auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total;
+  const cartDetails = auth.currentUser ? cart : guestCart;
   const { data, isLoading } = useSwr(
     () => (cartTotal != null ? 'payment_intent_creation' : null),
-    () => fetchCreatePaymentIntent(cartTotal),
+    () => fetchCreatePaymentIntent(cartTotal, cartDetails),
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
