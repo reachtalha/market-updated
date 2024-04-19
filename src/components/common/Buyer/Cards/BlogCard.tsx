@@ -6,16 +6,15 @@ type BlogCardProps = {
   title: string;
   slug: string;
   thumbnailImage: string;
-  locale?: string;
   postedAt: {
     seconds: number;
     milliseconds: number;
   };
 };
 
-export default function BlogCard({ locale, title, slug, thumbnailImage, postedAt }: BlogCardProps) {
+export default function BlogCard({ title, slug, thumbnailImage, postedAt }: BlogCardProps) {
   return (
-    <Link href={`/${locale}/blogs/${slug}`} className="group h-fit w-full relative">
+    <Link href={`/blogs/${slug}`} className="group h-fit w-full relative">
       <div className="relative h-96 w-full drop-shadow-sm rounded overflow-hidden">
         <Image
           src={thumbnailImage}

@@ -23,15 +23,13 @@ type Props = {
 export default function ExpertHeader({ selectedCategory = '', categories, sortBy }: Props) {
   const getURL = (sortBy: string) => {
     const queryParams = [];
-
     if (selectedCategory) {
       queryParams.push(`category=${encodeURIComponent(selectedCategory)}`);
     }
-
     queryParams.push(`sort=${encodeURIComponent(sortBy)}`);
-
     return `/experts?${queryParams.join('&')}`;
   };
+
   return (
     <div className="flex items-center justify-between">
       <p className="hidden md:block uppercase font-medium tracking-wide text-sm">

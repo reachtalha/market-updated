@@ -16,11 +16,11 @@ export function isColoredRoute(route: string, locale: string) {
     `/${locale}/checkout`,
     `/${locale}/new-registration`,
     `/${locale}/order/success`,
-    `/${locale}/products` 
+    `/${locale}/products`
   ];
   return (
     coloredRoutes.includes(route) ||
-    route === '/blogs' ||
+    route === `/${locale}/blogs` ||
     route.startsWith(`/${locale}/products`)
-    );
+  );
 }

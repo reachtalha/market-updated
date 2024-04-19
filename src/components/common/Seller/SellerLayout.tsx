@@ -18,6 +18,7 @@ export default function SellerLayout({ data, children }: { data: any; children: 
       </div>
     );
   }
+
   if (!userData?.stripeConnectId) {
     router.push('/connect-with-stripe');
     return (

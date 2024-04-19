@@ -2,14 +2,7 @@ import BoxedContent from '@/components/common/BoxedContent';
 import BlogCard from '@/components/common/Buyer/Cards/BlogCard';
 
 import { db } from '@/lib/firebase/client';
-import { cn } from '@/lib/utils';
 import { collection, getDocs, limit, query } from 'firebase/firestore';
-
-type LatestBlogsSectionProps = {
-  title: string;
-  className?: string;
-  uid: string;
-};
 
 const fetchGetLatestBlogPosts = async () => {
   const querySnapshot = await getDocs(query(collection(db, 'blog-posts'), limit(3)));
@@ -22,12 +15,10 @@ const fetchGetLatestBlogPosts = async () => {
 
 export default async function OrganicSimplifiedSection({
   title,
-  tag,
-  lang,
+  tag
 }: {
   title: string;
   tag: string;
-  lang?: string;
 }) {
   const data = await fetchGetLatestBlogPosts();
   return (
@@ -43,7 +34,6 @@ export default async function OrganicSimplifiedSection({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
           {data?.map((post: any) => (
             <BlogCard
-              locale={lang}
               key={post?.id}
               title={post.title}
               slug={post?.id}

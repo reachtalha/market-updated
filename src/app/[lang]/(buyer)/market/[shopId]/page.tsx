@@ -32,25 +32,8 @@ const getProducts = async (shopId: string) => {
 
 const getShop = async (shopId: string) => {
   const docRef = await getDoc(doc(db, 'shops', shopId));
-
   return docRef.data();
 };
-
-// const getExperts = async () => {
-//   const querySnapshot = await getDocs(
-//     query(collection(db, 'users'), where('role', '==', 'influencer'), limit(4))
-//   );
-
-//   let experts: any = [];
-
-//   querySnapshot.forEach((doc) => {
-//     experts.push({
-//       id: doc.id,
-//       ...doc.data()
-//     });
-//   });
-//   return experts;
-// };
 
 type ShopProps = {
   params: {
@@ -71,7 +54,6 @@ export default async function Shop({ params }: ShopProps) {
     getShop(params.shopId),
     getProducts(params.shopId)
   ]);
-
 
   const dictionary = await getDictionary(params.lang);
 
@@ -126,7 +108,6 @@ export default async function Shop({ params }: ShopProps) {
 
       <BoxedContent className="my-16">
         <OrganicSimplifiedSection
-          lang={params.lang}
           title={dictionary.home.bloggingSection.title}
           tag={dictionary.home.bloggingSection.tag}
         />
