@@ -9,6 +9,7 @@ const getCurrentUser = async () => {
   if (!docRef.exists()) {
     return null;
   }
+
   return {
     id: docRef.id,
     ...docRef.data()
@@ -27,6 +28,7 @@ export const useCurrentUser = () => {
     revalidateOnReconnect: false
   });
 
+  // console.log(user);
   return {
     user,
     isLoading,
