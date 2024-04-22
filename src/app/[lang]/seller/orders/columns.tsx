@@ -42,7 +42,7 @@ export const columns: ColumnDef<Order>[] = [
           className={` rounded-xl p-1 px-2 capitalize flex items-center font-medium justify-center ${
             status.toLowerCase() === 'complete'
               ? 'bg-green-100 text-green-500'
-              : status.toLowerCase() === 'pending'
+              : status.toLowerCase() === 'processing'
               ? 'bg-yellow-100 text-yellow-500'
               : 'bg-red-100 text-red-500'
           }`}

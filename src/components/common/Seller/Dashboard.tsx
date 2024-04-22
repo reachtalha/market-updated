@@ -1,4 +1,5 @@
 'use client';
+
 import useSWR from 'swr';
 import { db, auth } from '@/lib/firebase/client';
 import { getDocs, query, collection, where, limit } from '@firebase/firestore';
@@ -8,7 +9,6 @@ import { RecentSales } from '@/components/modules/Seller/Dashboard/RecentSales';
 import Overview from '@/components/modules/Seller/Dashboard/Overview';
 
 import { formatCurrency, formatDate, formatMonth } from '@/utils/formatters';
-import Loader from '@/components/common/Loader';
 import Error from '@/components/common/Error';
 
 import Products from '@/assets/icons/system/Products';
@@ -35,24 +35,33 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
     totalProducts = productSnap.docs[0]?.data()?.noOfProducts;
     let activeOrders = 0;
     orderSnap.forEach((order) => {
-      if (order.data().status === 'processing') activeOrders++;
+      const orderData = order.data();
+      if (orderData.status === 'processing') activeOrders++;
+
+      let totalAmount = orderData.items.reduce((acc: number, item: any) => {
+        if (item.shopId === shopId) {
+          return acc + Number(item.selectedVariant.price) * parseInt(item.quantity);
+        }
+        return acc;
+      }, 0);
+
       recentSales.push({
         id: order.id,
-        firstName: order.data().shippingAddress.firstName,
-        lastName: order.data().shippingAddress.lastName,
-        email: order.data().shippingAddress.email ?? '',
-        photoURL: order.data().photoURL ?? '',
-        amount: order.data().total,
-        time: formatDate(order.data().timeStamp.seconds * 1000),
-        month: formatMonth(order.data().timeStamp.seconds * 1000),
-        status: order.data().status ?? 'Processing'
+        firstName: orderData.shippingAddress.firstName,
+        lastName: orderData.shippingAddress.lastName,
+        email: orderData.shippingAddress.email || '',
+        photoURL: orderData.photoURL || '',
+        amount: totalAmount,
+        timeStamp: orderData.timeStamp.seconds,
+        time: formatDate(orderData.timeStamp.seconds * 1000),
+        month: formatMonth(orderData.timeStamp.seconds * 1000),
+        status: orderData.status || 'processing'
       });
-      order.data().items.map((item: any) => {
-        if (item.shopId === shopId) {
-          totalSales += Number(item.selectedVariant.price) * parseInt(item.quantity);
-        }
-      });
+
+      totalSales += totalAmount;
+      totalOrders++;
     });
+
     return {
       totalSales,
       totalProducts,
@@ -61,6 +70,7 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
       activeOrders
     } as any;
   });
+
   if (isLoading) {
     return (
       <main className="p-4 md:p-5 2xl:p-10 h-screen space-y-5 animate-pulse">
@@ -85,8 +95,8 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
       <h1 className="text-xl font-semibold">
         {dictionary.seller.main.greetingLabel}, {auth.currentUser?.displayName}
       </h1>
-      <div className="grid grid-cols-4 grid-rows-5 h-full w-full gap-5 py-5">
-        <Card className="col-span-1 col-start-1 col-end-2 row-start-1 row-end-2">
+      <div className="grid grid-cols-12 grid-rows-5 h-full w-full gap-5 py-5">
+        <Card className="col-span-3 col-start-1 col-end-4 row-start-1 row-end-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm 2xl:text-lg font-medium">
               {dictionary.seller.main.totalRevenueLabel}
@@ -110,7 +120,7 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
             </div>
           </CardContent>
         </Card>
-        <Card className="col-span-1 col-start-2 col-end-3 row-start-1 row-end-2">
+        <Card className="col-span-3 col-start-4 col-end-7 row-start-1 row-end-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm 2xl:text-lg  font-medium">
               {dictionary.seller.main.totalProductsLabel}
@@ -121,7 +131,7 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
             <div className="text-2xl 2xl:text-3xl font-bold">{analytics.totalProducts}</div>
           </CardContent>
         </Card>
-        <Card className="col-span-1 col-start-3 col-end-4 row-start-1 row-end-2">
+        <Card className="col-span-3 col-start-7 col-end-10 row-start-1 row-end-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm 2xl:text-lg  font-medium">
               {dictionary.seller.main.totalOrdersLabel}
@@ -132,7 +142,7 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
             <div className="text-2xl 2xl:text-3xl font-bold">{analytics.totalOrders}</div>
           </CardContent>
         </Card>
-        <Card className="col-span-1 col-start-4 col-end-5 row-start-1 row-end-2">
+        <Card className="col-span-3 col-start-10 col-end-13 row-start-1 row-end-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm 2xl:text-lg  font-medium">
               {dictionary.seller.main.activeOrdersLabel}
@@ -154,7 +164,7 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
             <div className="text-2xl 2xl:text-3xl font-bold">{analytics.activeOrders}</div>
           </CardContent>
         </Card>
-        <Card className="row-start-2 row-end-6 col-start-1 col-end-3">
+        <Card className="row-start-2 row-end-6 col-start-1 col-span-7 col-end-8">
           <CardHeader>
             <CardTitle>{dictionary.seller.main.overviewTitle}</CardTitle>
           </CardHeader>
@@ -162,7 +172,7 @@ export default function Dashboard({ dictionary }: { dictionary: any }) {
             <Overview sales={analytics.recentSales} />
           </CardContent>
         </Card>
-        <Card className="row-start-2 row-end-6 col-start-3 col-end-5">
+        <Card className="row-start-2 row-end-6 col-span-5 col-start-8 col-end-13 overflow-hidden pb-6">
           <RecentSales
             recentSalesTitle={dictionary.seller.main.recentSalesTitle}
             sales={analytics.recentSales}

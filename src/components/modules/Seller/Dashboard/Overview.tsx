@@ -34,6 +34,7 @@ export default function Overview({ sales }: { sales: Props[] }) {
     return data;
   }
   const yearlyData = getSalesDataYearly();
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={yearlyData}>

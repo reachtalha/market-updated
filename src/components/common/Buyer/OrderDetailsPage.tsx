@@ -11,8 +11,8 @@ import LeaveReviewModal from '@/components/common/Buyer/LeaveReviewModal';
 import Error from '@/components/common/Error';
 
 type Props = {
-  dictionary: any
-  orderId: string
+  dictionary: any;
+  orderId: string;
 };
 
 type Product = {
@@ -53,7 +53,7 @@ const getOrder = async (id: string) => {
     order = {
       id: orderRef.id,
       placedAt: data.timeStamp.toDate(),
-      status: data.status || 'pending',
+      status: data.status || 'processing',
 
       products: data.items.map((item: any) => {
         return {

@@ -12,6 +12,7 @@ type Props = {
   status: string;
   photoURL?: string;
   email?: string;
+  timeStamp: number;
 };
 
 export function RecentSales({
@@ -37,23 +38,26 @@ export function RecentSales({
           You made {thisMonthSales} {thisMonthSales > 1 ? 'sales' : 'sale'} this month.
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-0 max-h-[50vh] overflow-y-scroll">
+      <CardContent className="p-0 max-h-full overflow-y-scroll">
         <div className="space-y-8 p-6">
-          {sales.map((s) => (
-            <div key={s.id} className="flex items-center">
-              <Avatar className="h-9 w-9">
-                <AvatarImage src={s.photoURL} alt="Avatar" />
-                <AvatarFallback>{s.firstName[0]}</AvatarFallback>
-              </Avatar>
-              <div className="ml-4 space-y-1">
-                <p className="text-sm  2xl:text-lg capitalize font-medium leading-none">
-                  {s.firstName} {s.lastName}
-                </p>
-                <p className="text-sm 2xl:text-lg  text-muted-foreground">{s.email ?? null}</p>
+          {sales
+            .sort((a, b) => a.timeStamp - b.timeStamp)
+            .slice(0, 15)
+            .map((s) => (
+              <div key={s.id} className="flex items-center">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={s.photoURL} alt="Avatar" />
+                  <AvatarFallback>{s.firstName[0].toLocaleUpperCase()}</AvatarFallback>
+                </Avatar>
+                <div className="ml-4 space-y-1">
+                  <p className="text-base 2xl:text-base capitalize font-medium leading-none">
+                    {s.firstName} {s.lastName}
+                  </p>
+                  <p className="text-xs 2xl:text-sm  text-muted-foreground">{s.email ?? null}</p>
+                </div>
+                <div className="ml-auto 2xl:text-xl font-medium">{formatCurrency(s.amount)}</div>
               </div>
-              <div className="ml-auto 2xl:text-xl font-medium">{formatCurrency(s.amount)}</div>
-            </div>
-          ))}
+            ))}
         </div>
       </CardContent>
     </>

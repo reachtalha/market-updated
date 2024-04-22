@@ -55,7 +55,7 @@ const getOrder = async () => {
     const order = {
       id: doc.id,
       placedAt: data.timeStamp.toDate(),
-      status: data.status || 'pending',
+      status: data.status || 'processing',
 
       products: data.items.map((item: any) => {
         return {

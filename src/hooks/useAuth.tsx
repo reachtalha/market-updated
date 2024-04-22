@@ -120,6 +120,7 @@ export const AuthProvider = ({ children }: any) => {
       const userCredentials: any = await signInWithEmailAndPassword(auth, email, password);
       if (userCredentials?.role === 'superadmin') router.push(`/${locale}/superadmin`);
       else router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
+      toast.success("You're logged in!");
     } catch (e: any) {
       if (e.code === 'auth/user-not-found') {
         toast.error('Sorry, your account is not registered. Please check your email');
@@ -141,6 +142,7 @@ export const AuthProvider = ({ children }: any) => {
       await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
       router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
+      toast.success("You're logged in!");
     } catch (e: any) {
       if (e.code === 'auth/user-not-found') {
         toast.error('Sorry, your account is not registered. Please check your email');

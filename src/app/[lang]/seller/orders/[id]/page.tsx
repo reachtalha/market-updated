@@ -8,7 +8,7 @@ import { getDictionary } from '@/get-dictionary';
 type Props = {
   params: {
     id: string;
-    lang: Locale
+    lang: Locale;
   };
 };
 
@@ -21,7 +21,7 @@ const getOrder = async (id: string) => {
     order = {
       id: docRef.id,
       placedAt: data.timeStamp.toDate(),
-      status: data.status || 'pending',
+      status: data.status || 'processing',
       products: data.items.map((item: any) => {
         return {
           id: item.id,
@@ -93,7 +93,7 @@ const page = async ({ params }: Props) => {
           className={`capitalize w-28 rounded-3xl   p-2 px-4 flex items-center font-medium justify-center ${
             order?.status.toLowerCase() === 'complete'
               ? 'bg-green-100 text-green-500'
-              : order?.status.toLowerCase() === 'pending'
+              : order?.status.toLowerCase() === 'processing'
               ? 'bg-yellow-100 text-yellow-500'
               : 'bg-red-100 text-red-500'
           }`}
