@@ -10,10 +10,9 @@ export async function POST(req: Request) {
 
   try {
     const balance = await stripe.balance.retrieve({ stripeAccount: stripeConnectId });
-    console.log(balance);
-
-    console.log(stripeConnectId, amount);
-
+    if (amount > balance?.available[0]?.amount) {
+      throw Error();
+    }
     const payout = await stripe.payouts.create(
       {
         amount: Number((amount * 100).toFixed(0)),
@@ -23,10 +22,7 @@ export async function POST(req: Request) {
         stripeAccount: stripeConnectId
       }
     );
-
-    console.log(payout);
-
-    return NextResponse.json('Success');
+    return NextResponse.json(payout);
   } catch (err: any) {
     return NextResponse.json({
       message: err?.message || 'Something went wrong!'

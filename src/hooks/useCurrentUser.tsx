@@ -15,7 +15,6 @@ const getCurrentUser = async () => {
     ...docRef.data()
   } as any;
 };
-preload('currentUser', getCurrentUser);
 
 export const useCurrentUser = () => {
   const {
@@ -25,10 +24,10 @@ export const useCurrentUser = () => {
   } = useSWR('currentUser', getCurrentUser, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
-    revalidateOnReconnect: false
+    revalidateOnReconnect: false,
+    keepPreviousData: true
   });
 
-  // console.log(user);
   return {
     user,
     isLoading,
