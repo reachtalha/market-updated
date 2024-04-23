@@ -1,4 +1,5 @@
 'use client';
+import { Fragment } from 'react';
 import { flexRender } from '@tanstack/react-table';
 import {
   Table,
@@ -22,7 +23,7 @@ export function DataTable({ columns, data }: any) {
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup: any) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="font-medium text-primary">
               {headerGroup.headers.map((header: any) => {
                 return (
                   <TableHead key={header.id}>
@@ -36,7 +37,7 @@ export function DataTable({ columns, data }: any) {
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {table?.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row: any) => (
               <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className="">
                 {row.getVisibleCells().map((cell: any) => (

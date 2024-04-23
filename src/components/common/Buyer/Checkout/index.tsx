@@ -17,6 +17,7 @@ import useGuestCartStore from '@/state/useGuestCartStore';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Loader from '@/components/common/Loader';
 import useLocale from '@/hooks/useLocale';
+import useTransferGroupStore from '@/state/useTransferGroup';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:3000';
 
@@ -32,99 +33,60 @@ const formSchema = z.object({
   phone: z.string().min(1, { message: 'required' })
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
+const getOrdeDetails = (values: any, cart: any) => {
+  const shops = cart?.map((s: any) => {
+    return s.shopId;
+  });
+  const items = cart?.map((i: any) => {
+    return {
+      id: i.docId,
+      stripeConnectId: i?.stripeConnectId,
+      image: auth.currentUser ? i.image : i.coverImage,
+      name: i.name,
+      quantity: i.quantity,
+      shopId: i.shopId,
+      unit: i.unit,
+      selectedVariant: {
+        id: i.selectedVariant.id,
+        color: i.selectedVariant.color,
+        measurement: i.selectedVariant.measurement,
+        price: i.selectedVariant.price
+      }
+    };
+  });
+  return {
+    shippingAddress: {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      phone: values.phone,
+      city: values.city,
+      address: values.address,
+      email: values.email
+    },
+    items: items,
+    shops: shops,
+    status: 'processing',
+    userId: auth.currentUser ? auth?.currentUser?.uid : 'guest',
+    total: cart?.summary?.total
+  };
+};
+
 export default function Checkout({ dictionary }: { dictionary: any }) {
   const { user, isLoading } = useCurrentUser();
-
-  const [processing, setProcessing] = useState(false);
-  const [error, setError] = useState<any>();
-  const [isPaymentInfoCompleted, setIsPaymentInfoCompleted] = useState(false);
-  const [isOrderLoading, setIsOrderLoading] = useState(false);
-
   const stripe = useStripe();
   const elements = useElements();
+
   const { cart } = useCartStore((state: any) => state);
   const { guestCart } = useGuestCartStore((state: any) => state);
+  const { transferGroup } = useTransferGroupStore();
+
+  const [processing, setProcessing] = useState(false);
+  const [isPaymentInfoCompleted, setIsPaymentInfoCompleted] = useState(false);
+
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
   const locale = useLocale();
-
-  const submitOrder = async (values: any) => {
-    try {
-      setIsOrderLoading(true);
-      const shops = cartItems?.map((s: any) => {
-        return s.shopId;
-      });
-      const items = cartItems?.map((i: any) => {
-        return {
-          id: i.docId,
-          stripeConnectId: i?.stripeConnectId,
-          image: auth.currentUser ? i.image : i.coverImage,
-          name: i.name,
-          quantity: i.quantity,
-          shopId: i.shopId,
-          unit: i.unit,
-          selectedVariant: {
-            id: i.selectedVariant.id,
-            color: i.selectedVariant.color,
-            measurement: i.selectedVariant.measurement,
-            price: i.selectedVariant.price
-          }
-        };
-      });
-      const order = {
-        shippingAddress: {
-          firstName: values.firstName,
-          lastName: values.lastName,
-          phone: values.phone,
-          country: values.country || 'Pakistan',
-          city: values.city,
-          address: values.address,
-          email: values.email
-        },
-        items: items,
-        shops: shops,
-        status: 'complete',
-        userId: auth.currentUser ? auth?.currentUser?.uid : 'guest',
-        total: auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total
-      };
-      console.log(order);
-
-      await axios.post('/api/checkout', {
-        order,
-        photoURL: auth.currentUser?.photoURL || 'guest',
-        cart: auth.currentUser ? cart : guestCart
-      });
-      toast.success('We have received your order!');
-    } catch (err) {
-      throw new Error();
-    } finally {
-      setIsOrderLoading(false);
-    }
-  };
-
-  const submitPayment = async (values: any) => {
-    if (!stripe || !elements) return;
-    if (!isPaymentInfoCompleted) {
-      toast.error('Fill Payment info!');
-      return;
-    }
-    await submitOrder(values);
-
-    setProcessing(true);
-    const result = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${DOMAIN}/${locale}/order/success`
-      }
-    });
-
-    if (result.error) {
-      setProcessing(false);
-      setError(result.error);
-      throw new Error(`Payment failed: ${result.error.message}`);
-    } else {
-      setProcessing(false);
-    }
-  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -146,12 +108,48 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
     }
   }, [user]);
 
-  async function onSubmit(values: any) {
-    console.log(values);
-    await submitPayment(values);
+  async function onSubmit(values: FormValues) {
+    if (!stripe || !elements) return;
+
+    if (!isPaymentInfoCompleted) {
+      toast.error('Please fill in your payment information.');
+      return;
+    }
+
+    try {
+      setProcessing(true);
+      const result = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${DOMAIN}/${locale}/order/success`
+        }
+      });
+
+      if (result.error) {
+        throw new Error(`Payment failed: ${result.error.message}`);
+      }
+
+      const order = getOrdeDetails(values, cartItems);
+      const checkoutPromise = axios.post('/api/checkout', {
+        order,
+        photoURL: auth.currentUser?.photoURL || '',
+        cart: cartItems
+      });
+      const createTransferGroupPromise = axios.post('/api/payment/create-transfer-group', {
+        transferGroup: transferGroup,
+        cartDetails: cartItems
+      });
+      await Promise.all([checkoutPromise, createTransferGroupPromise]);
+
+      toast.success('Your payment has been successfully processed!');
+    } catch (error) {
+      toast.error('An error occurred during payment processing. Please try again.');
+    } finally {
+      setProcessing(false);
+    }
   }
 
-  const isConfirmButtonLoading = processing || isOrderLoading;
+  const isConfirmButtonLoading = processing;
   if (isLoading) return <Loader className="w-full h-96 flex items-center justify-center" />;
 
   return (

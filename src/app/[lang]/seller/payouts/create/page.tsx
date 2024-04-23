@@ -39,16 +39,12 @@ const CreatePayout = () => {
 
   const {
     data: balance,
-    isLoading,
+    isValidating,
     error
   } = useSWR(user?.stripeConnectId ? 'balance' : null, async () => {
-    const res = await axios.post('/api/payouts/get-balance', {
-      stripeConnectId: user?.stripeConnectId
-    });
+    const res = await axios.get(`/api/payouts/manual-payouts?id=${user?.stripeConnectId}`);
     return res.data;
   });
-
-  console.log(error);
 
   const form = useForm<PayoutTypes>({
     resolver: zodResolver(PayoutSchema)
@@ -81,20 +77,26 @@ const CreatePayout = () => {
   return (
     <Card className="w-full max-w-[500px] h-fit mx-auto">
       <CardHeader>
-        <CardTitle>
-          <div className="flex justify-between">
-            <h1>Current Balance:</h1>
-            {isLoading ? (
-              <Loader />
-            ) : error ? (
-              <p className="text-red-500 text-xs">Error: Failed to fetch balance</p>
-            ) : (
-              <p className="text-green-500">{`$${balance}`}</p>
-            )}{' '}
-          </div>
+        <CardTitle className="space-y-2">
+          <h2>Create Payouts</h2>
+          <p className="text-lg font-medium text-gray-500 font-normal">
+            Transfer funds from your Stripe account to your bank account instantly.
+          </p>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-7">
+        <div className="inline-flex gap-x-2.5 items-center">
+          <p> Your current balance:</p>
+          <div>
+            {isValidating ? (
+              <span className="block w-12 bg-gray-300 h-8 rounded-md animate-pulse" />
+            ) : error ? (
+              <p className="text-red-500 text-xs">Failed to fetch balance</p>
+            ) : (
+              <p className="text-green-500 text-xl font-semibold">{`$${balance}`}</p>
+            )}
+          </div>
+        </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
