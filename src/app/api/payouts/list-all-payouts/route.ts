@@ -8,7 +8,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET || '', {
 export async function POST(req: Request) {
   const { stripeConnectId } = await req.json();
   try {
-    console.log(stripeConnectId);
     const payouts = await stripe.payouts.list(
       {
         limit: 10

@@ -8,25 +8,29 @@ import { auth } from '@/lib/firebase/client';
 import useCartStore from '@/state/useCartStore';
 import useGuestCartStore from '@/state/useGuestCartStore';
 import BoxedContent from '../../BoxedContent';
+import useTransferGroupStore from '@/state/useTransferGroup';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
 
-const fetchCreatePaymentIntent = (price: number, cartDetails: any) => {
-  return axios.post('/api/payment/createPayment', {
-    price,
-    cartDetails
+const fetchCreatePaymentIntent = (price: number) => {
+  return axios.post('/api/payment/create-payment-intent', {
+    price
   });
 };
 
 const Payment = ({ children }: { children: ReactNode }) => {
   const { cart } = useCartStore((state: any) => state);
   const { guestCart } = useGuestCartStore((state: any) => state);
+  const { transferGroup, setTransferGroup } = useTransferGroupStore();
 
   const cartTotal = auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total;
-  const cartDetails = auth.currentUser ? cart : guestCart;
-  const { data } = useSwr(
+  const { data, isLoading, error } = useSwr(
     () => (cartTotal != null ? 'payment_intent_creation' : null),
-    () => fetchCreatePaymentIntent(cartTotal, cartDetails),
+    async () => {
+      const res = await fetchCreatePaymentIntent(cartTotal);
+      setTransferGroup(res?.data?.payload?.transferGroup);
+      return res;
+    },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -35,7 +39,7 @@ const Payment = ({ children }: { children: ReactNode }) => {
     }
   );
 
-  if (data?.data?.payload?.clientSecret) {
+  if (data?.data?.payload) {
     return (
       <Elements
         stripe={stripePromise}

@@ -268,7 +268,7 @@ export default function Product({
           <p className="font-medium text-2xl mb-3">{selectedVariant.price}$</p>
 
           <Button
-            disabled={selectedVariant.quantity <= 0}
+            disabled={selectedVariant.quantity <= 0 || isAddToCartLoading}
             onClick={handleAddToBag}
             className={`w-full mt-5 bg-primary uppercase hover:tracking-wider hover:bg-primary hover:text-white transition-all duration-500`}
           >
