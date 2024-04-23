@@ -33,13 +33,13 @@ const Sidebar = ({ dictionary }: { dictionary: any }) => {
       subItems: [
         {
           href: `/${locale}/seller/products/`,
-          icon: <Products className="w-6 h-6 text-current" />,
+          icon: null,
           title: dictionary.seller.sidebar.allProductsLabel
         },
 
         {
           href: `/${locale}/seller/products/add`,
-          icon: <Products className="w-6 h-6 text-current" />,
+          icon: null,
           title: dictionary.seller.sidebar.addProductLabel
         }
       ]
@@ -55,7 +55,7 @@ const Sidebar = ({ dictionary }: { dictionary: any }) => {
       title: dictionary.seller.sidebar.chatLabel
     },
     {
-      href: `/${locale}/seller/payouts`,
+      href: ``,
       icon: (
         <svg
           className="w-6 h-6 text-current"
@@ -68,7 +68,20 @@ const Sidebar = ({ dictionary }: { dictionary: any }) => {
           ></path>
         </svg>
       ),
-      title: dictionary.seller.sidebar.payoutsLabel
+      title: dictionary.seller.sidebar.payoutsLabel,
+      subItems: [
+        {
+          href: `/${locale}/seller/payouts/create`,
+          icon: null,
+          title: dictionary.seller.sidebar.addPayoutLabel
+        },
+
+        {
+          href: `/${locale}/seller/payouts/view`,
+          icon: null,
+          title: dictionary.seller.sidebar.viewPayoutLabel
+        }
+      ]
     }
   ];
   return (

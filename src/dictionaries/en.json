@@ -462,7 +462,9 @@
       "addProductLabel": "Add Product",
       "ordersLabel": "Orders",
       "chatLabel": "Chat",
-      "payoutsLabel": "Payouts"
+      "payoutsLabel": "Payouts",
+      "viewPayoutLabel" : "View All Payouts",
+      "addPayoutLabel": "Create Payout"
     }
   }
 }

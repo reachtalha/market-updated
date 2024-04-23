@@ -9,12 +9,12 @@ const getCurrentUser = async () => {
   if (!docRef.exists()) {
     return null;
   }
+
   return {
     id: docRef.id,
     ...docRef.data()
   } as any;
 };
-preload('currentUser', getCurrentUser);
 
 export const useCurrentUser = () => {
   const {
@@ -24,7 +24,8 @@ export const useCurrentUser = () => {
   } = useSWR('currentUser', getCurrentUser, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
-    revalidateOnReconnect: false
+    revalidateOnReconnect: false,
+    keepPreviousData: true
   });
 
   return {
