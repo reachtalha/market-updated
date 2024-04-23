@@ -18,6 +18,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
+import useSWR from 'swr';
+import Loader from '@/components/common/Loader';
 
 type PayoutTypes = {
   amount: number;
@@ -34,6 +36,19 @@ const PayoutSchema = z.object({
 const CreatePayout = () => {
   const { user } = useCurrentUser();
   const [loading, setLoading] = useState(false);
+
+  const {
+    data: balance,
+    isLoading,
+    error
+  } = useSWR(user?.stripeConnectId ? 'balance' : null, async () => {
+    const res = await axios.post('/api/payouts/get-balance', {
+      stripeConnectId: user?.stripeConnectId
+    });
+    return res.data;
+  });
+
+  console.log(error);
 
   const form = useForm<PayoutTypes>({
     resolver: zodResolver(PayoutSchema)
@@ -67,7 +82,18 @@ const CreatePayout = () => {
   return (
     <Card className="w-full max-w-[500px] h-fit mx-auto">
       <CardHeader>
-        <CardTitle>Add Amount for the Payout</CardTitle>
+        <CardTitle>
+          <div className="flex justify-between">
+            <h1>Current Balance:</h1>
+            {isLoading ? (
+              <Loader />
+            ) : error ? (
+              <p className="text-red-500 text-xs">Error: Failed to fetch balance</p>
+            ) : (
+              <p className="text-green-500">{`$${balance}`}</p>
+            )}{' '}
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -80,11 +106,11 @@ const CreatePayout = () => {
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Payout Amount (USD)</FormLabel>
+                  <FormLabel>Add amount for the Payout (USD)</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      className="w-full bg-neutral-100 placeholder:text-sm text-xs lg:text-base"
+                      className="w-full bg-neutral-100 placeholder:text-sm text-xs lg:text-lg"
                       placeholder="Amount in USD Here..."
                       {...field}
                     />
@@ -99,7 +125,7 @@ const CreatePayout = () => {
               type="submit"
               disabled={loading || !user?.stripeConnectId}
             >
-              Create Payout
+              {loading ? 'Processing Payout' : 'Create Payout'}{' '}
             </Button>
           </form>
         </Form>
