@@ -6,11 +6,20 @@ import { db } from '@/lib/firebase/client';
 const stripe = new Stripe(process.env.STRIPE_SECRET || '', {
   apiVersion: '2022-11-15'
 });
-
 export async function POST(req: Request) {
-  const { uid, email, firstName, lastName } = await req.json();
-
   try {
+    const { uid, email, firstName, lastName } = await req.json();
+
+    if (!uid || !email || !firstName || !lastName) {
+      return NextResponse.json(
+        {
+          error: 'MISSING_PARAMETERS',
+          message: "All parameters ('uid', 'email', 'firstName', 'lastName') are required."
+        },
+        { status: 400 }
+      );
+    }
+
     let account = await stripe.accounts.create({
       email,
       type: 'express',
@@ -55,8 +64,13 @@ export async function POST(req: Request) {
     const stripeURL = new URL(accountLink?.url);
     return NextResponse.json(stripeURL);
   } catch (err: any) {
-    return NextResponse.json({
-      message: err?.message || 'Something went wrong!'
-    });
+    console.error(err);
+    return NextResponse.json(
+      {
+        error: 'SERVER_ERROR',
+        message: 'An unexpected error occurred while processing your request.'
+      },
+      { status: 500 }
+    );
   }
 }

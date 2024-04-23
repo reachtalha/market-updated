@@ -21,10 +21,10 @@ const fetchCreatePaymentIntent = (price: number) => {
 const Payment = ({ children }: { children: ReactNode }) => {
   const { cart } = useCartStore((state: any) => state);
   const { guestCart } = useGuestCartStore((state: any) => state);
-  const { transferGroup, setTransferGroup } = useTransferGroupStore();
+  const { setTransferGroup } = useTransferGroupStore();
 
   const cartTotal = auth.currentUser ? cart?.summary?.total : guestCart?.summary?.total;
-  const { data, isLoading, error } = useSwr(
+  const { data } = useSwr(
     () => (cartTotal != null ? 'payment_intent_creation' : null),
     async () => {
       const res = await fetchCreatePaymentIntent(cartTotal);

@@ -4,6 +4,17 @@ import { Stripe } from 'stripe';
 export async function POST(req: Request) {
   try {
     const { price } = await req.json();
+
+    if (!price || isNaN(price) || price <= 0) {
+      return NextResponse.json(
+        {
+          error: 'INVALID_PRICE',
+          message: "'price' must be a positive number."
+        },
+        { status: 400 }
+      );
+    }
+
     const stripe = new Stripe(process.env.STRIPE_SECRET || '', { apiVersion: '2022-11-15' });
     const transferGroup = 'trg-' + Date.now().toString();
 
@@ -15,12 +26,6 @@ export async function POST(req: Request) {
       transfer_group: transferGroup
     });
 
-    console.log({
-      paymentIntentId: paymentIntent.id,
-      clientSecret: paymentIntent.client_secret,
-      transferGroup: transferGroup
-    });
-
     return NextResponse.json({
       payload: {
         paymentIntentId: paymentIntent.id,
@@ -29,7 +34,12 @@ export async function POST(req: Request) {
       }
     });
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: 'Something went wrong!' });
+    return NextResponse.json(
+      {
+        error: 'SERVER_ERROR',
+        message: 'An unexpected error occurred while processing your request.'
+      },
+      { status: 500 }
+    );
   }
 }
