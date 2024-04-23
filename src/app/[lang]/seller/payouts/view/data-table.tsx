@@ -19,13 +19,13 @@ export function DataTable({ columns, data }: any) {
 
   return (
     <>
-      <Table className="w-full rounded-lg overflow-y-auto">
-        <TableHeader className="bg-neutral-900 rounded-xl">
+      <Table>
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup: any) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header: any) => {
                 return (
-                  <TableHead key={header.id} className=" text-white">
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}

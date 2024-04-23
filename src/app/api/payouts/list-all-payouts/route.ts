@@ -11,15 +11,12 @@ export async function POST(req: Request) {
     console.log(stripeConnectId);
     const payouts = await stripe.payouts.list(
       {
-        limit: 100
+        limit: 10
       },
       {
         stripeAccount: stripeConnectId
       }
     );
-
-    console.log(payouts);
-
     return NextResponse.json(payouts);
   } catch (err: any) {
     return NextResponse.json({

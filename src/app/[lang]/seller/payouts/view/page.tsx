@@ -5,7 +5,7 @@ import axios from 'axios';
 import { columns } from './columns';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Error from '@/components/common/Error';
-import { DataTable } from './Data_Table';
+import { DataTable } from './data-table';
 import Loader from '@/components/common/Loader';
 
 const ListPayouts = () => {
@@ -36,11 +36,10 @@ const ListPayouts = () => {
       </div>
     );
   }
-  // console.log(payouts);
-  return (
-    <div className="w-full space-y-3">
-      <h1 className="font-medium ">List of Payouts</h1>
 
+  return (
+    <div className="w-full h-fit space-y-3 border rounded-lg">
+      <h1 className="p-5 text-xl font-semibold text-primary">Your Payouts</h1>
       <div className="">{payouts && <DataTable data={payouts} columns={columns} />}</div>
     </div>
   );

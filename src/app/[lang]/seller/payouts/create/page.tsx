@@ -57,7 +57,6 @@ const CreatePayout = () => {
         form.reset();
       }
     } catch (error: any) {
-      console.log(error.message);
       toast.error('Error creating payout. Please try again!');
     } finally {
       setLoading(false);

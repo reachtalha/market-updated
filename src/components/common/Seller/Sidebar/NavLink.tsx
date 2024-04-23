@@ -1,8 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 interface NavLinkProps {
   icon: React.ReactNode;
@@ -19,7 +19,7 @@ interface SubNavLink {
 }
 
 const SubNavLink = ({ href, index, totalItems, title }: SubNavLink) => {
-  const { pathname } = window.location;
+  const pathname = usePathname();
   return (
     <Link
       href={href}
@@ -41,7 +41,7 @@ const SubNavLink = ({ href, index, totalItems, title }: SubNavLink) => {
 
 const NavLink = ({ icon, href, title, subItems }: NavLinkProps) => {
   const [displaySubItems, setDisplaySubItems] = useState(false);
-  const { pathname } = window.location;
+  const pathname = usePathname();
 
   return (
     <>
