@@ -7,21 +7,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET || '', {
 
 export async function POST(req: Request) {
   const { stripeConnectId, amount } = await req.json();
-  const amountInCents = Number((amount * 100).toFixed(0));
   try {
     const balance = await stripe.balance.retrieve({ stripeAccount: stripeConnectId });
 
-    const payout = await stripe.payouts.create(
-      {
-        amount: amountInCents,
-        currency: 'usd'
-      },
-      {
-        stripeAccount: stripeConnectId
-      }
-    );
-    console.log(payout);
-    return NextResponse.json(payout);
+    const currentBalance = balance;
+
+    console.log(currentBalance);
+
+    return NextResponse.json(currentBalance);
   } catch (err: any) {
     return NextResponse.json({
       message: err || 'Something Went Wrong'

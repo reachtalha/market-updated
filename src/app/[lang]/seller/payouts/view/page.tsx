@@ -2,9 +2,11 @@
 
 import useSWR from 'swr';
 import axios from 'axios';
-
+import { columns } from './columns';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Error from '@/components/common/Error';
+import { DataTable } from './Data_Table';
+import Loader from '@/components/common/Loader';
 
 const ListPayouts = () => {
   const { user } = useCurrentUser();
@@ -21,11 +23,8 @@ const ListPayouts = () => {
 
   if (isLoading) {
     return (
-      <div>
-        Loading
-        {
-          //show skeleton loder here
-        }
+      <div className="w-screen bg-white h-screen overflow-hidden grid place-content-center">
+        <Loader />
       </div>
     );
   }
@@ -37,19 +36,12 @@ const ListPayouts = () => {
       </div>
     );
   }
-
+  // console.log(payouts);
   return (
-    <div>
-      <h1>List of Payouts</h1>
-      <ul>
-        {payouts?.map((payout: any) => (
-          <li key={payout.id}>
-            <p>ID: {payout.id}</p>
-            <p>Amount: {'$' + Number(payout.amount) / 100}</p>
-            <p>Currency: {payout.currency}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="w-full space-y-3">
+      <h1 className="font-medium ">List of Payouts</h1>
+
+      <div className="">{payouts && <DataTable data={payouts} columns={columns} />}</div>
     </div>
   );
 };

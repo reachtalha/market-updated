@@ -28,9 +28,9 @@ const PayoutSchema = z.object({
     .string()
     .regex(/^\d+(\.\d{1,2})?$/, { message: 'Invalid currency format' })
     .min(1, { message: 'Amount is required' })
+    .max(8, { message: 'Exceeded maximum payout amount' })
     .refine((value) => parseFloat(value) >= 0, { message: 'Amount must be non-negative' })
 });
-
 const CreatePayout = () => {
   const { user } = useCurrentUser();
   const [loading, setLoading] = useState(false);
@@ -46,13 +46,18 @@ const CreatePayout = () => {
         stripeConnectId: user?.stripeConnectId,
         amount: data.amount
       });
-      console.log(res.data?.failure_code);
-      if (res.data) {
-        toast.success('Payout created successfully!');
-      } else {
-        toast.error('Oops! Something went wrong');
+
+      if (res.status !== 200) {
+        throw Error();
       }
-    } catch (error) {
+      if (res.data && res.data.message && res.data.message.code === 'balance_insufficient') {
+        toast.error('Error creating payout. You have Insufficient Balance for this payout request');
+      } else {
+        toast.success('Payout created successfully!');
+        form.reset();
+      }
+    } catch (error: any) {
+      console.log(error.message);
       toast.error('Error creating payout. Please try again!');
     } finally {
       setLoading(false);

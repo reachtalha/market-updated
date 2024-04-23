@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     console.log(stripeConnectId);
     const payouts = await stripe.payouts.list(
       {
-        limit: 3
+        limit: 100
       },
       {
         stripeAccount: stripeConnectId
