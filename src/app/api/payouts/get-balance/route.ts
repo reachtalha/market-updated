@@ -6,14 +6,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET || '', {
 });
 
 export async function POST(req: Request) {
-  const { stripeConnectId, amount } = await req.json();
+  const { stripeConnectId } = await req.json();
   try {
     const balance = await stripe.balance.retrieve({ stripeAccount: stripeConnectId });
 
-    const currentBalance = balance;
-
-    console.log(currentBalance);
-
+    const currentBalance = Number(balance.available[0].amount) / 100;
     return NextResponse.json(currentBalance);
   } catch (err: any) {
     return NextResponse.json({
