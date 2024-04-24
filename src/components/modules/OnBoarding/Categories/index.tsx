@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 
 const MAX = 5;
 
-const Categories = () => {
+const Categories = ({ loading }: { loading: boolean }) => {
   const { categories, isError, isLoading } = useCategories();
   const [selected, setSelected] = useState<string[]>([]);
   const { setValue } = useFormContext();
@@ -26,7 +26,7 @@ const Categories = () => {
       setSelected(selected.filter((c) => c !== category));
     } else {
       if (selected.length >= MAX) {
-        toast.error(`You can select up to ${MAX} options`);
+        toast.error(`You can select up to ${MAX} options only`);
         return;
       }
       setSelected((c) => [...c, category]);
@@ -52,11 +52,16 @@ const Categories = () => {
             <Input
               type="checkbox"
               value={c.title}
+              disabled={loading}
               onChange={() => select(c.title)}
               checked={selected.includes(c.title) ? true : false}
               className="peer hidden"
             />
-            <div className="w-fit rounded-full border-2 border-gray-300 px-3 py-2 text-sm capitalize peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white 2xl:text-base">
+            <div
+              className={`w-fit rounded-full border-2 border-gray-300 px-3 py-2 text-sm capitalize peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white 2xl:text-base ${
+                loading ? 'opacity-50' : ''
+              }`}
+            >
               {c.title}
             </div>
           </Label>

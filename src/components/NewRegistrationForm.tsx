@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import toast from 'react-hot-toast';
-
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -21,7 +21,6 @@ import { useForm } from 'react-hook-form';
 
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
-import { useRouter } from 'next/navigation';
 import { Locale } from '@/i18n-config';
 
 interface NewRegistrationFormProps {
@@ -38,7 +37,6 @@ const formSchema = z.object({
 
 export default function NewRegistrationForm({ params }: NewRegistrationFormProps) {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -78,7 +76,6 @@ export default function NewRegistrationForm({ params }: NewRegistrationFormProps
 
       toast.success('You have been added to the waiting list');
       reset();
-      router.push(`/${params.lang}/auth/login`);
     } catch (error) {
       toast.error('Something went wrong');
     } finally {
@@ -151,6 +148,9 @@ export default function NewRegistrationForm({ params }: NewRegistrationFormProps
         <Button type="submit" disabled={loading}>
           {loading ? 'Registering' : 'Register'}
         </Button>
+        <Link href={`/${params.lang}/auth/login`} className="w-full h-full text-center">
+          <span className="underline text-sm">Back to Login?</span>
+        </Link>
       </form>
     </Form>
   );

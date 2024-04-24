@@ -18,7 +18,6 @@ import BasicDetails from '@/components/modules/OnBoarding/BasicDetails';
 import Categories from '@/components/modules/OnBoarding/Categories';
 import Influencer from '@/components/modules/OnBoarding/Influencer';
 import UploadImage from '@/utils/handlers/image/UploadImage';
-import SellerPaymentInfo from '@/components/modules/OnBoarding/SellerPaymentInfo';
 import useLocale from '@/hooks/useLocale';
 import useAuth from '@/hooks/useAuth';
 
@@ -47,6 +46,10 @@ const OnBoardingForm = ({ searchParams }: any) => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       setLoading(true);
+      if (!data.favourites || data.favourites.length <= 0) {
+        toast.error('Please select at least one category');
+        return;
+      }
       if (role === 'influencer' && !data.topics) {
         toast.error('Please add atleast one topic');
         return;
@@ -78,7 +81,6 @@ const OnBoardingForm = ({ searchParams }: any) => {
       await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
 
       if (role === 'seller') {
-        // setStep(3);
         router.push(`/${locale}/connect-with-stripe`);
       } else router.push(`/${locale}`);
     } catch (error: any) {
@@ -113,7 +115,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
           )}
           {step === 2 && role === 'buyer' && (
             <>
-              <Categories />
+              <Categories loading={loading} />
               {renderButton('Finish')}
             </>
           )}
@@ -123,16 +125,6 @@ const OnBoardingForm = ({ searchParams }: any) => {
               {renderButton('Finish')}
             </>
           )}
-          {/* {step === 3 && role === 'seller' && (
-            <>
-              <SellerPaymentInfo
-                title={'Connect with Stripe for Payouts'}
-                description={
-                  'Start receiving payouts seamlessly by connecting your account with Stripe. By linking your account, you can easily manage your earnings and streamline your payment process.'
-                }
-              />
-            </>
-          )} */}
         </form>
       </FormProvider>
     </>
