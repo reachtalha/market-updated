@@ -122,11 +122,17 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
             {errors.password && (
               <ul className=" text-sm text-red-500">
                 {errors.password.type === 'required' && (
-                  <li>{dictionary.auth.password.required}</li>
+                  <li>{dictionary.auth.register.password.required}</li>
                 )}
-                {errors.password.type === 'minLength' && <li>{dictionary.auth.password.min}</li>}
-                {errors.password.type === 'maxLength' && <li>{dictionary.auth.password.max}</li>}
-                {errors.password.type === 'pattern' && <li>{dictionary.auth.password.pattern}</li>}
+                {errors.password.type === 'minLength' && (
+                  <li>{dictionary.auth.register.password.min}</li>
+                )}
+                {errors.password.type === 'maxLength' && (
+                  <li>{dictionary.auth.register.password.max}</li>
+                )}
+                {errors.password.type === 'pattern' && (
+                  <li>{dictionary.auth.register.password.pattern}</li>
+                )}
               </ul>
             )}
           </div>
