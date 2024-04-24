@@ -20,6 +20,7 @@ import { Country, City } from 'country-state-city';
 import { ImageIcon } from '@radix-ui/react-icons';
 import Image from '@/components/common/FallbackImage';
 import ImageReader from '@/utils/handlers/image/ImageReader';
+import { InfiniteScrollSelect } from './InfiniteScrollSelect';
 
 interface IBasicDetails {
   setStep: Dispatch<SetStateAction<number>>;
@@ -95,16 +96,13 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
           <Label>Country</Label>
           <Select onValueChange={handleCountry}>
             <SelectTrigger>
-              <SelectValue
-                {...register('country', { required: true })}
-                placeholder="Select country"
-              />
+              <SelectValue placeholder="Select country" />
             </SelectTrigger>
             <SelectContent className="max-h-56">
               <SelectGroup>
                 <SelectLabel>Countries</SelectLabel>
                 {Country.getAllCountries().map((c) => (
-                  <SelectItem key={c.isoCode} value={c.isoCode}>
+                  <SelectItem key={c.flag + c.name} value={c.isoCode}>
                     {c.flag}-{c.name}
                   </SelectItem>
                 ))}
@@ -115,37 +113,23 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
         </div>
         <div className="w-full md:w-1/2 space-y-1">
           <Label>City</Label>
-          <Select onValueChange={handleCity}>
-            <SelectTrigger>
-              <SelectValue {...register('city', { required: true })} placeholder="Select City" />
-            </SelectTrigger>
-            <SelectContent className="max-h-56">
-              <SelectGroup>
-                <SelectLabel className="capitalize">{selectedCountry} Cities</SelectLabel>
-                {City.getCitiesOfCountry(selectedCountry)?.map((c) => (
-                  <SelectItem key={c.name} value={c.name}>
-                    {c.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <InfiniteScrollSelect selectedCountry={selectedCountry} onValueChange={handleCity} />
           {errors.city && <span className="text-sm text-red-500">Please select city</span>}
         </div>
       </div>
       <div className="flex mt-3 flex-col md:flex-row w-full gap-3">
-        <div className="w-full md:w-1/2 space-y-1">
+        <div className="w-full md:w-2/3 space-y-1">
           <Label>Contact</Label>
           <div className="flex gap-x-1.5">
             <Select onValueChange={handleCountryCode}>
-              <SelectTrigger className="w-14">
-                <SelectValue {...register('countryCode', { required: true })} placeholder="CC" />
+              <SelectTrigger className="w-24 truncate">
+                <SelectValue placeholder="CC" />
               </SelectTrigger>
               <SelectContent className="max-h-56">
                 <SelectGroup>
                   <SelectLabel className="capitalize">Country Code</SelectLabel>
-                  {Country.getAllCountries().map((c) => (
-                    <SelectItem key={c.phonecode} value={c.phonecode}>
+                  {Country.getAllCountries().map((c, idx) => (
+                    <SelectItem key={idx} value={c.phonecode}>
                       {c.phonecode}
                     </SelectItem>
                   ))}
@@ -154,7 +138,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
             </Select>
             <Input
               type="text"
-              className="w-full placeholder:text-sm"
+              className="flex-1 placeholder:text-sm"
               placeholder="Your Contact"
               {...register('phone', {
                 required: true
@@ -166,7 +150,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
           )}
           {errors.phone && <span className="text-sm text-red-500">Make sure its right</span>}
         </div>
-        <div className="w-full md:w-1/2 space-y-1">
+        <div className="w-full md:w-1/3 space-y-1">
           <Label>Zipcode</Label>
           <Input
             type="text"

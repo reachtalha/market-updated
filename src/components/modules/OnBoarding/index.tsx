@@ -78,7 +78,6 @@ const OnBoardingForm = ({ searchParams }: any) => {
       await setDoc(doc(db, 'users', `${auth.currentUser?.uid}`), obj);
 
       if (role === 'seller') {
-        // setStep(3);
         router.push(`/${locale}/connect-with-stripe`);
       } else router.push(`/${locale}`);
     } catch (error: any) {
@@ -123,16 +122,6 @@ const OnBoardingForm = ({ searchParams }: any) => {
               {renderButton('Finish')}
             </>
           )}
-          {/* {step === 3 && role === 'seller' && (
-            <>
-              <SellerPaymentInfo
-                title={'Connect with Stripe for Payouts'}
-                description={
-                  'Start receiving payouts seamlessly by connecting your account with Stripe. By linking your account, you can easily manage your earnings and streamline your payment process.'
-                }
-              />
-            </>
-          )} */}
         </form>
       </FormProvider>
     </>
