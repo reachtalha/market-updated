@@ -11,7 +11,7 @@ const Experts = ({ experts, dictionary }: Props) => {
       {experts?.length === 0 ? (
         <p className="text-center py-16">No Experts Found</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
           {experts?.map((expert: any, i: number) => (
             <ExpertCard
               dictionary={dictionary}

@@ -23,7 +23,7 @@ export default function SellerPaymentInfo({
         uid: auth.currentUser?.uid,
         email: auth.currentUser?.email,
         firstName: auth.currentUser?.displayName?.toLowerCase().split(' ')[0],
-        lastName: auth.currentUser?.displayName?.toLowerCase().split(' ')[1]
+        lastName: auth.currentUser?.displayName?.toLowerCase()?.split(' ')[1] || 'Seller'
       });
       if (typeof res.data === 'string') {
         router.push(res.data);

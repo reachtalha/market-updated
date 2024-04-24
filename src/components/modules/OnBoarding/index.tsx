@@ -18,7 +18,6 @@ import BasicDetails from '@/components/modules/OnBoarding/BasicDetails';
 import Categories from '@/components/modules/OnBoarding/Categories';
 import Influencer from '@/components/modules/OnBoarding/Influencer';
 import UploadImage from '@/utils/handlers/image/UploadImage';
-import SellerPaymentInfo from '@/components/modules/OnBoarding/SellerPaymentInfo';
 import useLocale from '@/hooks/useLocale';
 import useAuth from '@/hooks/useAuth';
 
@@ -47,6 +46,10 @@ const OnBoardingForm = ({ searchParams }: any) => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       setLoading(true);
+      if (!data.favourites || data.favourites.length <= 0) {
+        toast.error('Please select at least one category');
+        return;
+      }
       if (role === 'influencer' && !data.topics) {
         toast.error('Please add atleast one topic');
         return;
@@ -112,7 +115,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
           )}
           {step === 2 && role === 'buyer' && (
             <>
-              <Categories />
+              <Categories loading={loading} />
               {renderButton('Finish')}
             </>
           )}

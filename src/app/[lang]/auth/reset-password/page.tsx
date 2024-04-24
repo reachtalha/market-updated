@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 const ResetPassword = () => {
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
   const handleResetPassword = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -34,7 +34,7 @@ const ResetPassword = () => {
 
       // Send password reset email
       await sendPasswordResetEmail(auth, email.toString());
-
+      setIsEmailSent(true);
       // Display success toast
       toast.success('Password reset link sent to your email');
 
@@ -43,6 +43,7 @@ const ResetPassword = () => {
     } catch (error: any) {
       // Handle specific error cases
       if (error === 'auth/user-not-found') {
+        setIsEmailSent(false);
         toast.error("The email you entered isn't connected to an account.");
       } else {
         toast.error('Your request cannot be processed at this time.');
@@ -54,11 +55,23 @@ const ResetPassword = () => {
 
   return (
     <div className="w-full md:w-96 p-5 h-fit border-0 md:border-2 rounded-xl focus-within:border-neutral-800">
-      <h3 className="font-semibold text-xl 2xl:text-2xl">Reset Password</h3>
-      <p className="text-[13px] mt-1 text-gray-600 2xl:text-base">
-        Please enter the email associated with your account. We will send you an email with
-        instructions to reset your password.
-      </p>
+      {isEmailSent ? (
+        <>
+          <h3 className="font-semibold text-xl 2xl:text-2xl">Request Sent to your Email</h3>
+          <p className="text-[13px] mt-1 text-gray-600 2xl:text-base">
+            Please check your email for a password reset link and follow the instructions to
+            successfully reset your password
+          </p>
+        </>
+      ) : (
+        <>
+          <h3 className="font-semibold text-xl 2xl:text-2xl">Reset Password</h3>
+          <p className="text-[13px] mt-1 text-gray-600 2xl:text-base">
+            Please enter the email associated with your account. We will send you an email with
+            instructions to reset your password.
+          </p>
+        </>
+      )}
       <form onSubmit={handleResetPassword} className="space-y-4 my-3">
         <div className="space-y-1">
           <Label>Email</Label>

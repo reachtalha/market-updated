@@ -28,14 +28,14 @@ export default function ExpertCard({ id, image, name, title, bio, dictionary }: 
             src={image}
             height={550}
             width={450}
-            className={' max-w-96 h-full object-cover'}
+            className={' w-full h-full object-cover'}
             alt={name}
           />
         </div>
         <div className="bottom-0 w-full z-[1] text-white py-5 px-4 flex justify-between items-start absolute">
           <div className="w-full">
             <div className="flex items-center justify-between">
-              <h5 className="text-2xl lg:text-3xl capitalize font-medium"> {name}</h5>
+              <h5 className="text-2xl lg:text-3xl capitalize font-medium truncate"> {name}</h5>
               <Link
                 href={`experts/${id}`}
                 className="bg-transparent hover:bg-neutral-50 duration-300 transition-colors px-5 w-fit h-fit py-2.5 flex items-center hover:text-neutral-900 border rounded-full"
@@ -43,7 +43,7 @@ export default function ExpertCard({ id, image, name, title, bio, dictionary }: 
                 {dictionary.market.featuredExperts.exploreExpertBtnLabel}
               </Link>
             </div>
-            <p className="text-sm  text-neutral-100 line-clamp-3">
+            <p className="text-sm  text-neutral-100 truncate">
               {bio.length > 50 ? bio.slice(0, 50) + '...' : bio}
             </p>
           </div>

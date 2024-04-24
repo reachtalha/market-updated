@@ -58,7 +58,7 @@
       "heading": "Featured Products"
     },
     "mission": {
-      "text": "All Organics &reg; is on a mission to empower conscious shoppers by offering a curated selection of organic products that promote sustainability, authenticity, and well-being.\n        Through our thoughtfully chosen range of products, we aim to simplify and inspire the journey towards a more mindful and sustainable lifestyle."
+      "text": "All Organics is on a mission to empower conscious shoppers by offering a curated selection of organic products that promote sustainability, authenticity, and well-being.\n        Through our thoughtfully chosen range of products, we aim to simplify and inspire the journey towards a more mindful and sustainable lifestyle."
     },
     "bloggingSection": {
       "title": "#OrganicSimplified",
@@ -66,7 +66,7 @@
     }
   },
   "forYou": {
-    "shopsLabel": "Shops" ,
+    "shopsLabel": "Shops",
     "exploreShopsLabel": "Explore Shop Categories"
   },
   "productDetails": {
@@ -393,7 +393,7 @@
           "label": "Shop Tagline",
           "placeholder": "Enter your shop's tagline",
           "error": "Please enter a valid tagline"
-        },        
+        },
         "category": {
           "label": "Shop Category",
           "placeholder": "Select shop category",
@@ -463,7 +463,7 @@
       "ordersLabel": "Orders",
       "chatLabel": "Chat",
       "payoutsLabel": "Payouts",
-      "viewPayoutLabel" : "View All Payouts",
+      "viewPayoutLabel": "View All Payouts",
       "addPayoutLabel": "Create Payout"
     }
   }
