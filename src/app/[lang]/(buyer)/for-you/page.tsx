@@ -16,17 +16,17 @@ export const metadata = {
 
 const getCategories = async () => {
   const user = JSON.parse(cookies().get('user')?.value as string);
-
   const userRef = await getDoc(doc(db, 'users', user.uid));
   const categoriesRef = await getDocs(collection(db, 'categories'));
   const categories = categoriesRef.docs.map((doc) => doc.data().title);
   if (userRef.exists()) {
     if (userRef.data().favourites?.length > 0) {
-      return categories.filter((c: any) => userRef.data().favourites.includes(c.title));
+      return categories.filter((category: string) => userRef.data().favourites.includes(category));
     }
   }
   return categories;
 };
+
 const getProducts = async (categories: any) => {
   const productsRef = await getDocs(
     query(
@@ -51,7 +51,6 @@ export default async function Index({ params: { lang } }: LocaleType) {
   const categories = await getCategories();
   const products = await getProducts(categories);
   const dictionary = await getDictionary(lang);
-
   return (
     <>
       <ForYou products={JSON.stringify(products)} categories={JSON.stringify(categories)} />
