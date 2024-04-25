@@ -10,7 +10,12 @@ import {
   startAfter
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
-export const getExperts = async (category: string, sort: string, lastDoc: any) => {
+export const getExperts = async (
+  category: string,
+  sort: string,
+  lastDoc: any,
+  expertsFetchLimit: any
+) => {
   const sortOptions: any = {
     name: {
       name: 'name',
@@ -36,7 +41,7 @@ export const getExperts = async (category: string, sort: string, lastDoc: any) =
       startAfter(
         sortBy.name === 'name' ? lastDoc.name : new Date(lastDoc.createdAt.seconds * 1000)
       ),
-      limit(3)
+      limit(expertsFetchLimit)
     );
 
     if (category) {
@@ -48,7 +53,7 @@ export const getExperts = async (category: string, sort: string, lastDoc: any) =
         startAfter(
           sortBy.name === 'name' ? lastDoc.name : new Date(lastDoc.createdAt.seconds * 1000)
         ),
-        limit(3)
+        limit(expertsFetchLimit)
       );
     }
 

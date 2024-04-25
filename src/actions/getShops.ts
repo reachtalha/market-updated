@@ -12,7 +12,12 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 
-export const getShops = async (category: string, sort: string, lastDoc: any) => {
+export const getShops = async (
+  category: string,
+  sort: string,
+  lastDoc: any,
+  loadMoreMarketsLimit: any
+) => {
   const sortOptions: any = {
     name: {
       name: 'name',
@@ -42,7 +47,7 @@ export const getShops = async (category: string, sort: string, lastDoc: any) => 
         startAfter(
           sortBy.name === 'name' ? lastDoc.name : new Date(lastDoc.submittedAt.seconds * 1000)
         ),
-        limit(4)
+        limit(loadMoreMarketsLimit)
       )
     );
 

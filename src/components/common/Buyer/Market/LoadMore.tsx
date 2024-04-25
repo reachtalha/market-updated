@@ -9,6 +9,8 @@ type Props = {
   markets: any;
 };
 
+const loadMoreMarketsLimit = 10;
+
 const LoadMore = ({ markets }: Props) => {
   const { ref, inView } = useInView();
 
@@ -22,12 +24,12 @@ const LoadMore = ({ markets }: Props) => {
 
   const loadMoreShops = async () => {
     try {
-      const response: any = await getShops(category, sort, lastDoc);
+      const response: any = await getShops(category, sort, lastDoc, loadMoreMarketsLimit);
       if (response.length > 0) {
         lastDoc = response[response.length - 1];
         setShops((prev: any) => [...prev, ...response]);
       }
-      if (response.length < 4) setResponseEnded(true);
+      if (response.length <= loadMoreMarketsLimit) setResponseEnded(true);
     } catch (error) {
       throw new Error();
     }
