@@ -10,11 +10,11 @@ type Props = {
   experts: any;
   dictionary: any;
 };
-
+const expertsFetchLimit = 6;
 const ExpertsLoader = ({ experts, dictionary }: Props) => {
   const [allExperts, setAllExperts] = useState(experts);
   const { ref, inView } = useInView();
-
+  console.log(allExperts);
   const searchParams = useSearchParams();
   let lastDoc = experts[experts.length - 1];
   const [responseEnded, setResponseEnded] = useState(false);
@@ -22,12 +22,12 @@ const ExpertsLoader = ({ experts, dictionary }: Props) => {
   const sort = searchParams.get('sort') || '';
 
   const loadMoreExperts = async () => {
-    const response: any = await getExperts(category, sort, lastDoc);
+    const response: any = await getExperts(category, sort, lastDoc, expertsFetchLimit);
     if (response.length > 0) {
       lastDoc = response[response.length - 1];
       setAllExperts((prev: any) => [...prev, ...response]);
     }
-    if (response.length < 3) setResponseEnded(true);
+    if (response.length <= expertsFetchLimit) setResponseEnded(true);
   };
 
   useEffect(() => {
