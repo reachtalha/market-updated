@@ -74,9 +74,8 @@ const Header = ({ chatId, users }: HeaderProps) => {
           deletedBy: [auth.currentUser?.uid]
         });
       }
-
       mutate('user_chats');
-      window.location.replace('/chat');
+      router.replace('/chat');
     } catch (error) {
       toast.error('Oops! Something went wrong!');
     } finally {

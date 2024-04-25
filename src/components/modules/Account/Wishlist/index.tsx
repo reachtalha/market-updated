@@ -39,14 +39,14 @@ const getWishlistProduct = async () => {
   return products.filter((product) => product !== null);
 };
 
-const Wishlist = ({ dictionary } : { dictionary: any }) => {
+const Wishlist = ({ dictionary }: { dictionary: any }) => {
   const { data: products, isLoading, error } = useSwr('wishlist', getWishlistProduct);
   if (isLoading) return <Loader className="grid place-content-center h-[50vh] w-full" />;
   if (error) return <Error className="grid place-content-center h-[50vh] w-full" />;
 
   return (
     <div className="w-full">
-      {products && products.length > 0 ? (
+      {products?.length ? (
         <div className="grid grid-cols-1 mt-4 md:mt-0  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
           {products.map((_: any, i: number) => (
             <ProductCard
@@ -66,7 +66,7 @@ const Wishlist = ({ dictionary } : { dictionary: any }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 mt-4 md:mt-0 gap-5">
-          <div className="text-center  flex items-center justify-center   w-[80vw] md:!w-[80vw] h-[20vh] text-gray-500">
+          <div className="text-center w-full py-20 text-gray-500">
             {dictionary.noProductsFoundLabel}
           </div>
           <LatestProducts />

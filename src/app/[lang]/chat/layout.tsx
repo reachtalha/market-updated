@@ -1,41 +1,13 @@
 'use client';
 
-import React from 'react';
-import { redirect, useSearchParams, useRouter, usePathname } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 import { auth, db } from '@/lib/firebase/client';
 import { getDocs, query, collection, where, limit, addDoc } from 'firebase/firestore';
 
 import Chats from '@/components/modules/chat/Chat';
 import Loader from '@/components/common/Loader';
-
-const getChat = async (seller: string, router: any, returnUrl: string) => {
-  try {
-    const customer = auth.currentUser?.uid;
-    const chatId =
-      (
-        await getDocs(
-          query(
-            collection(db, 'chat'),
-            where(`users.${seller}`, '==', true),
-            where(`users.${customer}`, '==', true),
-            limit(1)
-          )
-        )
-      ).docs[0]?.id ??
-      (
-        await addDoc(collection(db, 'chat'), {
-          users: {
-            [seller as string]: true,
-            [customer as string]: true
-          }
-        })
-      ).id;
-    router.push(`/chat/${chatId}?return_url=${returnUrl}`);
-  } catch (error) {
-    throw new Error();
-  }
-};
 
 const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -45,17 +17,43 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   const returnUrl = searchParams.get('return_url') || '';
   const isOnlychat = pathname === '/chat';
 
-  let loading = false;
+  useEffect(() => {
+    (async () => {
+      if (!seller) {
+        return;
+      }
+      try {
+        const customer = auth.currentUser?.uid;
+        let id = null;
+        const docRef = await getDocs(
+          query(
+            collection(db, 'chat'),
+            where(`users.${seller}`, '==', true),
+            where(`users.${customer}`, '==', true),
+            limit(1)
+          )
+        );
+        id = docRef.docs[0]?.id;
+        if (!id) {
+          const docRef = await addDoc(collection(db, 'chat'), {
+            users: {
+              [seller as string]: true,
+              [customer as string]: true
+            }
+          });
+          id = docRef.id;
+        }
+        router.push(`/en/chat/${id}?return_url=${returnUrl}`);
+      } catch (error) {
+        throw new Error();
+      }
+    })();
+  }, []);
+
   if (!auth.currentUser) {
-    redirect('/auth/login');
+    router.replace('/auth/login');
+    return <Loader className="h-screen flex items-center justify-center w-screen" />;
   }
-
-  if (seller) {
-    loading = true;
-    getChat(seller, router, returnUrl);
-  }
-
-  if (loading) return <Loader className="h-screen flex items-center justify-center w-screen" />;
 
   return (
     <section className="relative w-screen border grid h-screen  md:overflow-hidden place-content-center bg-gray-100">

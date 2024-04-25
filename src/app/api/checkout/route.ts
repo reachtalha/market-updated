@@ -26,15 +26,14 @@ export async function POST(req: Request) {
       timeStamp: Timestamp.fromDate(new Date()),
       ...order
     });
-
     // TODO: update without using docId for guest checkouts
-    const updatePromise = cart.items.map(async (item: any) => {
-      await decreaseQuantity(item.docId, item.skuId, item.quantity);
+    cart?.forEach((item: any) => {
+      decreaseQuantity(item.docId, item.selectedVariant.skuId, item.selectedVariant.quantity);
     });
-    await Promise.all(updatePromise);
 
     return NextResponse.json({ message: 'Order Recieved' }, { status: 200 });
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json({ message: `${error.message}` }, { status: 500 });
   }
 }

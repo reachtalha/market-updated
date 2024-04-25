@@ -8,8 +8,6 @@ import LeaveReviewModal from '@/components/common/Buyer/LeaveReviewModal';
 import useSwr from 'swr';
 import Loader from '@/components/common/Loader';
 
-type Props = {};
-
 type Product = {
   id: string;
   name: string;
@@ -91,7 +89,6 @@ const getOrder = async () => {
 const Index = ({ dictionary }: { dictionary: any }) => {
   const {
     data: orders,
-    error,
     isLoading
   }: {
     data: Order[] | undefined;
@@ -101,7 +98,7 @@ const Index = ({ dictionary }: { dictionary: any }) => {
   const [selectedOrder, setSelectedOrder] = useState<string>('');
 
   useEffect(() => {
-    if (orders && orders.length > 0) {
+    if (orders?.length) {
       setSelectedOrder(orders[0].id);
     }
   }, [orders]);
@@ -133,7 +130,7 @@ const Index = ({ dictionary }: { dictionary: any }) => {
       </div>
       {selectedOrder !== '' && (
         <div className="hidden  sm:relative  sm:flex flex-col gap-3 md:w-3/5">
-          <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center justify-between h-10">
             <span className="text-primary text-sm sm:text-base font-medium uppercase">
               {dictionary.orderDetailsLabel}
             </span>

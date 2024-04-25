@@ -69,7 +69,7 @@ const ChatRoom = async ({ chatId }: Props) => {
   const cookie = cookies().get('user');
   const currentUser = cookie ? (JSON.parse(cookie.value) as any) : { uid: '' };
 
-  if (users[0].uid !== currentUser?.uid && users[1].uid !== currentUser?.uid) {
+  if (users[0]?.uid !== currentUser?.uid && users[1].uid !== currentUser?.uid) {
     return <Redirect />;
   }
   if (!users) {

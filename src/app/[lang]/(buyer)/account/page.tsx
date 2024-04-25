@@ -2,8 +2,6 @@ import Index from '@/components/common/Buyer/Account/index';
 import { LocaleType } from '@/app/[lang]/(buyer)/page';
 import { getDictionary } from '@/get-dictionary';
 
-type Props = {};
-
 const Page = async ({ params: { lang } }: LocaleType) => {
   const dictionary = await getDictionary(lang);
   const options = [

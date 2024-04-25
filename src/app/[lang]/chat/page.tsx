@@ -1,5 +1,3 @@
-import Logo from '@/assets/icons/system/Logo';
-
 const NewChat = () => {
   return (
     <>

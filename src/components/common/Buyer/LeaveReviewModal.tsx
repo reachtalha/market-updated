@@ -82,7 +82,7 @@ export default function LeaveReviewModal({ trigger, order }: LeaveReviewModalPro
   const [open, setOpen] = useState(false);
   const [reviewingProduct, setReviewingProduct] = useState('');
 
-  if (order.status !== 'complete') return null;
+  if (order?.status !== 'complete') return null;
 
   const handleClick = (id: string) => {
     setReviewingProduct(id);

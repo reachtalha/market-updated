@@ -22,15 +22,15 @@ import useTransferGroupStore from '@/state/useTransferGroup';
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:3000';
 
 const formSchema = z.object({
-  email: z.string().min(1, { message: 'required' }).email({
-    message: 'Must be a valid email'
+  email: z.string().min(1, { message: 'Please enter your email' }).email({
+    message: 'Please enter a valid email address'
   }),
-  firstName: z.string().min(1, { message: 'required' }),
-  lastName: z.string().min(1, { message: 'required' }),
-  address: z.string().min(1, { message: 'required' }),
-  city: z.string().min(1, { message: 'required' }),
-  state: z.string().min(1, { message: 'required' }),
-  phone: z.string().min(1, { message: 'required' })
+  firstName: z.string().min(1, { message: 'Please enter your first name' }),
+  lastName: z.string().min(1, { message: 'Please enter your last name' }),
+  address: z.string().min(1, { message: 'Please enter your address' }),
+  city: z.string().min(1, { message: 'Please enter your city' }),
+  state: z.string().min(1, { message: 'Please enter your state' }),
+  phone: z.string().min(1, { message: 'Please enter your phone number' })
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -118,29 +118,24 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
 
     try {
       setProcessing(true);
-      const result = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${DOMAIN}/${locale}/order/success`
-        }
-      });
-
-      if (result.error) {
-        throw new Error(`Payment failed: ${result.error.message}`);
-      }
-
       const order = getOrdeDetails(values, cartItems);
-      const checkoutPromise = axios.post('/api/checkout', {
+      const orderPromise = axios.post('/api/checkout', {
         order,
         photoURL: auth.currentUser?.photoURL || '',
         cart: cartItems
       });
-      const createTransferGroupPromise = axios.post('/api/payment/create-transfer-group', {
+      const paymentPromise = stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          receipt_email: 'bakara097@gmail.com',
+          return_url: `${DOMAIN}/${locale}/order/success`
+        }
+      });
+      const chargePromise = axios.post('/api/payment/create-transfer-group', {
         transferGroup: transferGroup,
         cartDetails: cartItems
       });
-      await Promise.all([checkoutPromise, createTransferGroupPromise]);
-
+      await Promise.all([orderPromise, chargePromise, paymentPromise]);
       toast.success('Your payment has been successfully processed!');
     } catch (error) {
       toast.error('An error occurred during payment processing. Please try again.');

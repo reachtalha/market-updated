@@ -131,7 +131,7 @@ function Index({ options, dictionary }: AccountProps) {
             : options
         }
       />
-      {renderComponent()}
+      <div className="flex-1 md:min-h-[80vh]">{renderComponent()}</div>
     </BoxedContent>
   );
 }

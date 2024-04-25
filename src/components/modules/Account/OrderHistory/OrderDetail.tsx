@@ -48,7 +48,7 @@ const OrderDetailCard = ({
           </span>
 
           <span className={` ${!isShipping && '  uppercase'}  text-xs text-gray-600 font-medium`}>
-            {unit}: {measurement}
+            {unit} {!isShipping ? <span>: {measurement}</span> : null}
           </span>
         </div>
       </Link>
@@ -78,7 +78,7 @@ const OrderDetail = ({ order, dictionary }: Props) => {
     <div className="sticky flex flex-col gap-y-5 top-24 w-full  ">
       <div className="border border-gray-400 rounded-xl flex flex-col p-5">
         <span className="font-medium uppercase">{dictionary.productsLabel}</span>
-        {order.products.map((p: any, index: number) => (
+        {order?.products.map((p: any, index: number) => (
           <OrderDetailCard
             key={index}
             id={p.id}
@@ -103,10 +103,10 @@ const OrderDetail = ({ order, dictionary }: Props) => {
           <span className="uppercase font-medium">{dictionary.shippingLabel}</span>
           <OrderDetailCard
             title={order?.shipping.name || 'Standard'}
-            unit={`Delivery within ${order?.shipping.days} days`}
+            unit={`Delivery within ${order?.shipping?.days || 7} days.`}
             price={order?.shipping.charges}
             image={product1}
-            isShipping
+            isShipping={true}
           />
         </div>
       </div>

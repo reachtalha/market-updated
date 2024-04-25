@@ -27,7 +27,7 @@ const getProduct = async (id: string) => {
   return { id: docRef.id, ...docRef.data() } as Product;
 };
 
-type props = { params: { id: string, lang: Locale } };
+type props = { params: { id: string; lang: Locale } };
 export default async function Page({ params }: props) {
   const { id } = params;
   const product = await getProduct(id);
@@ -37,7 +37,7 @@ export default async function Page({ params }: props) {
 
   return (
     <BoxedContent className="py-20 mt-8">
-      <Product dictionary={dictionary} productJSON={JSON.stringify(product)} />
+      <Product dictionary={dictionary} productJSON={JSON.stringify(product)} lang={params.lang} />
       <div className="py-5 md:py-10">
         <OrganicSimplifiedSection
           title={dictionary.productDetails.bloggingSection.title}

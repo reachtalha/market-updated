@@ -50,10 +50,12 @@ const getSelectedVariant = (product: any) =>
 
 export default function Product({
   productJSON,
-  dictionary
+  dictionary,
+  lang
 }: {
   productJSON: any;
   dictionary: any;
+  lang: string;
 }) {
   const product = JSON.parse(productJSON);
   const role = useRole();
@@ -288,7 +290,10 @@ export default function Product({
               : dictionary.productDetails.addToWishlistLabel}
           </Button>
           <Link
-            href={`/chat/?id=${product?.uid}&return_url=products/${product.id}`}
+            href={{
+              pathname: `/${lang}/chat`,
+              query: { id: product?.uid, return_url: `products/${product.id}` }
+            }}
             className="text-xs flex justify-center cursor-pointer underline mt-3"
           >
             {dictionary.productDetails.chatWithSellerLabel}

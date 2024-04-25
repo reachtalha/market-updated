@@ -46,10 +46,10 @@ export default function OrderSummaryCheckout({
             className="grid grid-cols-2 w-full pb-8 border-b last:pb-0 last:border-0"
             key={item.id}
           >
-            <div className="col-span-2 justify-between flex items-center gap-x-3">
-              <div className="flex items-center gap-3">
+            <div className="col-span-2 justify-between flex flex-col md:flex-row items-start md:items-center gap-3">
+              <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-3">
                 <Image
-                  className="border rounded"
+                  className="border w-full rounded"
                   height={150}
                   width={150}
                   src={auth.currentUser ? item.image : item.coverImage}

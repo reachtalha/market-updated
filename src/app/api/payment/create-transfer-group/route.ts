@@ -12,8 +12,7 @@ function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
 export async function POST(req: Request) {
   try {
     const { transferGroup, cartDetails } = await req.json();
-
-    if (!transferGroup || !cartDetails || !cartDetails.items || cartDetails.items.length === 0) {
+    if (!transferGroup || !cartDetails) {
       return NextResponse.json(
         {
           error: 'INVALID_REQUEST',
@@ -28,10 +27,10 @@ export async function POST(req: Request) {
     const result: { key: string; totalAmount: number }[] = [];
 
     for (const [accountId, accountItems] of Object.entries(
-      groupBy(cartDetails.items, 'stripeConnectId')
+      groupBy(cartDetails, 'stripeConnectId')
     )) {
       const totalAmount = accountItems.reduce((sum, item: any) => {
-        if (item.selectedVariant && item.quantity !== undefined) {
+        if (item.selectedVariant && item.selectedVariant.quantity !== undefined) {
           const { price } = item.selectedVariant;
           return sum + price * item.quantity;
         }
@@ -42,16 +41,12 @@ export async function POST(req: Request) {
 
     await Promise.all(
       result.map(async ({ key, totalAmount }) => {
-        try {
-          await stripe.transfers.create({
-            amount: Number((totalAmount * 100).toFixed(0)),
-            currency: 'usd',
-            destination: key,
-            transfer_group: transferGroup
-          });
-        } catch (transferError) {
-          throw transferError;
-        }
+        stripe.transfers.create({
+          amount: Number((totalAmount * 100).toFixed(0)),
+          currency: 'usd',
+          destination: key,
+          transfer_group: transferGroup
+        });
       })
     );
 
