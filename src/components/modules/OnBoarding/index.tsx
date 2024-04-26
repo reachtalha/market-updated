@@ -46,7 +46,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       setLoading(true);
-      if (!data.favourites || data.favourites.length <= 0) {
+      if (role === 'buyer' && !data.favourites?.length) {
         toast.error('Please select at least one category');
         return;
       }
@@ -104,7 +104,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
             <>
               <button
                 type="button"
-                className=" absolute top-8 right-8 gap-x-1.5 items-center rounded-md px-2 py-1.5 hover:bg-red-100"
+                className="absolute top-8 right-8 gap-x-1.5 items-center rounded-md px-2 py-1.5 hover:bg-red-100"
                 onClick={logout}
               >
                 <span className="text-base text-red-500 font-medium">Logout</span>

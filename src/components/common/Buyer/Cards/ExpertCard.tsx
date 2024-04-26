@@ -33,12 +33,12 @@ export default function ExpertCard({ id, image, name, title, bio, dictionary }: 
           />
         </div>
         <div className="bottom-0 w-full z-[1] text-white py-5 px-4 flex justify-between items-start absolute">
-          <div className="w-full">
-            <div className="flex items-center justify-between">
-              <h5 className="text-2xl lg:text-3xl capitalize font-medium truncate"> {name}</h5>
+          <div className="w-full space-y-2">
+            <div className="flex items-center justify-between gap-x-2.5">
+              <h5 className="text-2xl lg:text-3xl capitalize font-medium truncate">{name}</h5>
               <Link
                 href={`experts/${id}`}
-                className="bg-transparent hover:bg-neutral-50 duration-300 transition-colors px-5 w-fit h-fit py-2.5 flex items-center hover:text-neutral-900 border rounded-full"
+                className="bg-transparent hover:bg-neutral-50 duration-300 transition-colors px-3.5 w-fit h-fit py-2 text-sm flex items-center hover:text-neutral-900 border rounded-full"
               >
                 {dictionary.market.featuredExperts.exploreExpertBtnLabel}
               </Link>

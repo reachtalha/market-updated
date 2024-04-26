@@ -28,11 +28,10 @@ const SocialMediaList: React.FC<SocialMediaListProps> = ({
                 <span className="font-medium">{socialMedia.type}</span>:{socialMedia.link}
               </p>
               <button
+                type="button"
                 disabled={!isEdit}
                 onClick={() => onDeleteSocialLink(index)}
-                className={`${
-                  isEdit ? ' hover:bg-gray-100 ' : ' cursor-not-allowed '
-                } rounded-full p-1.5`}
+                className="hover:bg-gray-100  disabled:cursor-not-allowed rounded-full p-1.5"
               >
                 <Cross1Icon className="w-4 h-4 2xl:w-5 2xl:h-5" />
               </button>

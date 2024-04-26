@@ -4,6 +4,7 @@ import { Cross1Icon } from '@radix-ui/react-icons';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useFormContext } from 'react-hook-form';
+
 interface TopicListProps {
   maxTopics: number;
   topicsList: string[];

@@ -131,11 +131,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
           return_url: `${DOMAIN}/${locale}/order/success`
         }
       });
-      const chargePromise = axios.post('/api/payment/create-transfer-group', {
-        transferGroup: transferGroup,
-        cartDetails: cartItems
-      });
-      await Promise.all([orderPromise, chargePromise, paymentPromise]);
+      await Promise.all([orderPromise, paymentPromise]);
       toast.success('Your payment has been successfully processed!');
     } catch (error) {
       toast.error('An error occurred during payment processing. Please try again.');

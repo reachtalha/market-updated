@@ -19,7 +19,7 @@ import * as z from 'zod';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import useSWR from 'swr';
-import Loader from '@/components/common/Loader';
+import { formatCurrency } from '@/utils/formatters';
 
 type PayoutTypes = {
   amount: number;
@@ -41,7 +41,7 @@ const CreatePayout = () => {
     data: balance,
     isValidating,
     error
-  } = useSWR(user?.stripeConnectId ? 'balance' : null, async () => {
+  } = useSWR(user?.stripeConnectId ? `balance-${user.stripeConnectId}` : null, async () => {
     const res = await axios.get(`/api/payouts/manual-payouts?id=${user?.stripeConnectId}`);
     return res.data;
   });
@@ -93,7 +93,7 @@ const CreatePayout = () => {
             ) : error ? (
               <p className="text-red-500 text-xs">Failed to fetch balance</p>
             ) : (
-              <p className="text-green-500 text-xl font-semibold">{`$${balance}`}</p>
+              <p className="text-green-500 text-xl font-semibold">{formatCurrency(balance ?? 0)}</p>
             )}
           </div>
         </div>

@@ -38,17 +38,14 @@ export async function POST(req: Request) {
       }, 0);
       result.push({ key: accountId, totalAmount });
     }
-
-    await Promise.all(
-      result.map(async ({ key, totalAmount }) => {
-        stripe.transfers.create({
-          amount: Number((totalAmount * 100).toFixed(0)),
-          currency: 'usd',
-          destination: key,
-          transfer_group: transferGroup
-        });
-      })
-    );
+    for (let i = 0; i < result.length; i++) {
+      await stripe.transfers.create({
+        amount: Number((result[i].totalAmount * 100).toFixed(0)),
+        currency: 'usd',
+        destination: result[i].key,
+        transfer_group: transferGroup
+      });
+    }
 
     return NextResponse.json(
       {
@@ -58,6 +55,7 @@ export async function POST(req: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       {
         error: 'SERVER_ERROR',

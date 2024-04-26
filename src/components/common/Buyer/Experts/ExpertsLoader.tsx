@@ -10,11 +10,10 @@ type Props = {
   experts: any;
   dictionary: any;
 };
-const expertsFetchLimit = 6;
+const expertsFetchLimit = 11;
 const ExpertsLoader = ({ experts, dictionary }: Props) => {
   const [allExperts, setAllExperts] = useState(experts);
   const { ref, inView } = useInView();
-  console.log(allExperts);
   const searchParams = useSearchParams();
   let lastDoc = experts[experts.length - 1];
   const [responseEnded, setResponseEnded] = useState(false);

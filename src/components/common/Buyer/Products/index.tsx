@@ -28,7 +28,7 @@ import useProductTypeSlug from '@/hooks/useProductTypeSlug';
 import { useInView } from 'react-intersection-observer';
 import { useSearchParams } from 'next/navigation';
 
-const RECORDS_PER_PAGE = 6;
+const RECORDS_PER_PAGE = 11;
 const getProducts: any = async (
   category: string,
   type?: string,
@@ -106,7 +106,6 @@ export default function Products({ categories }: ProductsProps) {
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [productsEnded, setProductsEnded] = useState<boolean>(false);
   const sortProductsBy = useSortingStore((state: any) => state.sortProductsBy);
-  const [loading, setLoading] = useState<any>(null);
 
   let { data, error, isLoading } = useSWR(
     [`products-${category}`, `products-${type}`, selectedSubCategory],
@@ -150,7 +149,6 @@ export default function Products({ categories }: ProductsProps) {
   }, [products, sortProductsBy]);
 
   const getNewProducts = async () => {
-    setLoading(true);
     try {
       const response = await getProducts(category, type, products[products.length - 1], rating, {
         min,
@@ -160,10 +158,7 @@ export default function Products({ categories }: ProductsProps) {
 
       if (response[response.length - 1]?.id !== products[products.length - 1]?.id)
         setProducts((prev) => [...prev, ...response]);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

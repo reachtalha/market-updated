@@ -41,7 +41,7 @@ const Influencer = () => {
     } else if (bio?.length <= MAX_CHAR && bioError?.type === 'maxLength') {
       clearErrors('bio');
     }
-  }, [watchBio, getValues, setError, clearErrors, errors.bio]);
+  }, [watchBio, errors.bio]);
 
   useEffect(() => {
     setValue('socialMediaLinks', socialMediaList);
@@ -86,7 +86,7 @@ const Influencer = () => {
         <div className="text-[.8rem] text-gray-400 my-1">
           {bio ? bio.length : '0'}/{MAX_CHAR} characters
         </div>
-        {errors.bio && <span className="text-sm text-red-500">Bio cannot be empty</span>}
+        {errors.bio && <p className="text-sm text-red-500 mb-3">Bio cannot be empty</p>}
       </div>
       <TopicList maxTopics={4} topicsList={topics} onTopicsChange={handleTopicsChange} />
       <div className="w-full mt-3">

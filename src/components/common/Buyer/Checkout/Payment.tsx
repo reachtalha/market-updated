@@ -13,7 +13,7 @@ import useTransferGroupStore from '@/state/useTransferGroup';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
 
 const fetchCreatePaymentIntent = (price: number) => {
-  return axios.post('/api/payment/create-payment-intent', {
+  return axios.post('/api/payment/payment-intent', {
     price
   });
 };

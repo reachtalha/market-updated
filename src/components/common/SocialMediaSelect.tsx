@@ -15,14 +15,11 @@ interface SocialMediaSelectProps {
   isEdit?: boolean;
 }
 
-const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton, isEdit = true }) => {
-  const [selectedSocialMedia, setSelectedSocialMedia] = useState('');
-  const [link, setLink] = useState('');
-  const options = ['Facebook', 'Instagram', 'TikTok', 'Twitter', 'YouTube', 'Website'];
+const options = ['Facebook', 'Instagram', 'TikTok', 'Twitter', 'YouTube', 'Website'];
 
-  const handleSocialMediaChange = (c: string) => {
-    setSelectedSocialMedia(c);
-  };
+const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton, isEdit = true }) => {
+  const [selectedSocialMedia, setSelectedSocialMedia] = useState(options[0]);
+  const [link, setLink] = useState('');
 
   const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLink(event.target.value);
@@ -33,7 +30,6 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton, isEd
       return;
     }
     onAddButton(selectedSocialMedia, link);
-    setSelectedSocialMedia('');
     setLink('');
   };
 
@@ -42,12 +38,14 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton, isEd
       <Label htmlFor="socialMedia">Social Media</Label>
       <div className="w-full flex gap-x-1 rounded-md overflow-hidden p-1 border-[1px] border-neutral-200 placeholder:text-sm focus-within:ring-0 focus-within:ring-neutral-300 focus-within:ring-offset-0">
         <Select
-          value={selectedSocialMedia === '' ? undefined : selectedSocialMedia}
-          onValueChange={(c) => handleSocialMediaChange(c)}
+          value={selectedSocialMedia}
+          onValueChange={setSelectedSocialMedia}
           disabled={!isEdit}
         >
           <SelectTrigger className="w-28 focus:outline-none pl-1">
-            <SelectValue placeholder="Select" />
+            <SelectValue aria-label={selectedSocialMedia} placeholder="Select">
+              {selectedSocialMedia}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {options.map((option) => (
