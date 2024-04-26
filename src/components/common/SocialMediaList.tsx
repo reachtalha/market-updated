@@ -7,7 +7,7 @@ interface SocialMedia {
 interface SocialMediaListProps {
   items: SocialMedia[];
   isEdit?: boolean;
-  setSocialMediaOptions: any;
+  setSocialMediaOptions?: any;
 
   onDeleteSocialLink: (index: number, socialMediaType: string) => void;
 }

@@ -97,12 +97,14 @@ const Influencer = () => {
             onAddButton={handleAddButton}
             socialMediaOptions={socialMediaOptions}
             setSocialMediaOptions={setSocialMediaOptions}
+            isEdit={true}
           />
         )}
         <SocialMediaList
           items={socialMediaList}
           onDeleteSocialLink={deleteSocialLink}
           setSocialMediaOptions={setSocialMediaOptions}
+          isEdit={true}
         />
       </div>
     </>

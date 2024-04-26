@@ -12,8 +12,8 @@ import {
 
 interface SocialMediaSelectProps {
   onAddButton: (selectedSocialMedia: string, link: string) => void;
-  socialMediaOptions: any;
-  setSocialMediaOptions: any;
+  socialMediaOptions?: any;
+  setSocialMediaOptions?: any;
   isEdit?: boolean;
 }
 
