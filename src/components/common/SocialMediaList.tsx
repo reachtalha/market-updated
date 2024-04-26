@@ -7,7 +7,9 @@ interface SocialMedia {
 interface SocialMediaListProps {
   items: SocialMedia[];
   isEdit?: boolean;
-  onDeleteSocialLink: (index: number) => void;
+  setSocialMediaOptions: any;
+
+  onDeleteSocialLink: (index: number, socialMediaType: string) => void;
 }
 
 const SocialMediaList: React.FC<SocialMediaListProps> = ({
@@ -16,7 +18,7 @@ const SocialMediaList: React.FC<SocialMediaListProps> = ({
   isEdit = true
 }) => {
   return (
-    <div className="mt-3 ">
+    <div className="w-full min-w-[22rem] mt-3 ">
       <h6 className="text-sm text-gray-600">Social Media Links:</h6>
       {items.length === 0 ? (
         <p className="text-sm text-center py-6 text-gray-600">No social media links added yet.</p>
@@ -29,7 +31,7 @@ const SocialMediaList: React.FC<SocialMediaListProps> = ({
               </p>
               <button
                 disabled={!isEdit}
-                onClick={() => onDeleteSocialLink(index)}
+                onClick={() => onDeleteSocialLink(index, socialMedia.type)}
                 className={`${
                   isEdit ? ' hover:bg-gray-100 ' : ' cursor-not-allowed '
                 } rounded-full p-1.5`}

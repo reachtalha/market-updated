@@ -46,7 +46,7 @@ const OnBoardingForm = ({ searchParams }: any) => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       setLoading(true);
-      if (!data.favourites || data.favourites.length <= 0) {
+      if (role === 'buyer' && (!data?.favourites || data?.favourites?.length <= 0)) {
         toast.error('Please select at least one category');
         return;
       }

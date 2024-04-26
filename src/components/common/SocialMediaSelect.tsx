@@ -12,13 +12,19 @@ import {
 
 interface SocialMediaSelectProps {
   onAddButton: (selectedSocialMedia: string, link: string) => void;
+  socialMediaOptions: any;
+  setSocialMediaOptions: any;
   isEdit?: boolean;
 }
 
-const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton, isEdit = true }) => {
+const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({
+  onAddButton,
+  socialMediaOptions,
+  setSocialMediaOptions,
+  isEdit = true
+}) => {
   const [selectedSocialMedia, setSelectedSocialMedia] = useState('');
   const [link, setLink] = useState('');
-  const options = ['Facebook', 'Instagram', 'TikTok', 'Twitter', 'YouTube', 'Website'];
 
   const handleSocialMediaChange = (c: string) => {
     setSelectedSocialMedia(c);
@@ -33,6 +39,9 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton, isEd
       return;
     }
     onAddButton(selectedSocialMedia, link);
+    setSocialMediaOptions((prevOptions: any) =>
+      prevOptions.filter((option: any) => option !== selectedSocialMedia)
+    );
     setSelectedSocialMedia('');
     setLink('');
   };
@@ -43,14 +52,17 @@ const SocialMediaSelect: React.FC<SocialMediaSelectProps> = ({ onAddButton, isEd
       <div className="w-full flex gap-x-1 rounded-md overflow-hidden p-1 border-[1px] border-neutral-200 placeholder:text-sm focus-within:ring-0 focus-within:ring-neutral-300 focus-within:ring-offset-0">
         <Select
           value={selectedSocialMedia === '' ? undefined : selectedSocialMedia}
-          onValueChange={(c) => handleSocialMediaChange(c)}
+          onValueChange={(c) => {
+            console.log(c);
+            handleSocialMediaChange(c);
+          }}
           disabled={!isEdit}
         >
           <SelectTrigger className="w-28 focus:outline-none pl-1">
             <SelectValue placeholder="Select" />
           </SelectTrigger>
           <SelectContent>
-            {options.map((option) => (
+            {socialMediaOptions.map((option: any, index: any) => (
               <SelectItem value={option} key={option}>
                 {option}
               </SelectItem>
