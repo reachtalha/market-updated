@@ -24,9 +24,10 @@ const Influencer = () => {
     formState: { errors }
   } = useFormContext();
 
+  const options = ['Facebook', 'Instagram', 'TikTok', 'Twitter', 'YouTube', 'Website'];
   const [socialMediaList, setSocialMediaList] = useState<SocialMedia[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
-
+  const [socialMediaOptions, setSocialMediaOptions] = useState<string[]>(options.sort());
   const bio = getValues('bio');
   const watchBio = watch(['bio']);
 
@@ -62,8 +63,9 @@ const Influencer = () => {
     ]);
   };
 
-  const deleteSocialLink = (index: number) => {
+  const deleteSocialLink = (index: number, socialMediaType: string) => {
     setSocialMediaList((prevList) => prevList.filter((_, i) => i !== index));
+    setSocialMediaOptions((prevOptions) => [...prevOptions, socialMediaType]);
   };
 
   return (
@@ -90,8 +92,20 @@ const Influencer = () => {
       </div>
       <TopicList maxTopics={4} topicsList={topics} onTopicsChange={handleTopicsChange} />
       <div className="w-full mt-3">
-        <SocialMediaSelect onAddButton={handleAddButton} />
-        <SocialMediaList items={socialMediaList} onDeleteSocialLink={deleteSocialLink} />
+        {socialMediaOptions.length > 0 && (
+          <SocialMediaSelect
+            onAddButton={handleAddButton}
+            socialMediaOptions={socialMediaOptions}
+            setSocialMediaOptions={setSocialMediaOptions}
+            isEdit={true}
+          />
+        )}
+        <SocialMediaList
+          items={socialMediaList}
+          onDeleteSocialLink={deleteSocialLink}
+          setSocialMediaOptions={setSocialMediaOptions}
+          isEdit={true}
+        />
       </div>
     </>
   );

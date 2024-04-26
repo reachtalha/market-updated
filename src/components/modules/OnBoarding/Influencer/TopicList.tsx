@@ -24,6 +24,7 @@ const TopicList: React.FC<TopicListProps> = ({
   const {
     formState: { errors }
   } = useFormContext();
+
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -31,16 +32,21 @@ const TopicList: React.FC<TopicListProps> = ({
     }
   };
 
+  const handleInputBlur = () => {
+    addTopic();
+  };
+
   const addTopic = () => {
-    const currentTopic = inputRef.current!.value;
-    if (currentTopic.trim() === '') {
-      toast.error('Please enter a topic!');
+    const currentTopic = inputRef.current!.value.trim();
+    if (currentTopic === '') {
       return;
     }
+
     if (!topics.includes(currentTopic)) {
       toast.error('Please select from available topics!');
       return;
     }
+
     if (topicsList.includes(currentTopic)) {
       toast.error('Topic is already added!');
       return;
@@ -53,6 +59,7 @@ const TopicList: React.FC<TopicListProps> = ({
 
     const updatedTopics = [...topicsList, currentTopic];
     onTopicsChange(updatedTopics);
+
     if (inputRef.current) {
       inputRef.current.value = '';
     }
@@ -88,11 +95,11 @@ const TopicList: React.FC<TopicListProps> = ({
           <Input
             id="topicInput"
             type="text"
-            list="topicsList"
             ref={inputRef}
             disabled={!isEdit}
             placeholder="Add Topics"
             onKeyDown={handleInputKeyDown}
+            onBlur={handleInputBlur}
             className="w-full bg-none px-2 py-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <datalist id="topicsList" className="appearance-none">
