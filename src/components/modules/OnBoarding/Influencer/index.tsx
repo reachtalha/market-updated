@@ -24,10 +24,9 @@ const Influencer = () => {
     formState: { errors }
   } = useFormContext();
 
-  const options = ['Facebook', 'Instagram', 'TikTok', 'Twitter', 'YouTube', 'Website'];
   const [socialMediaList, setSocialMediaList] = useState<SocialMedia[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
-  const [socialMediaOptions, setSocialMediaOptions] = useState<string[]>(options.sort());
+
   const bio = getValues('bio');
   const watchBio = watch(['bio']);
 
@@ -42,7 +41,7 @@ const Influencer = () => {
     } else if (bio?.length <= MAX_CHAR && bioError?.type === 'maxLength') {
       clearErrors('bio');
     }
-  }, [watchBio, errors.bio]);
+  }, [watchBio, getValues, setError, clearErrors, errors.bio]);
 
   useEffect(() => {
     setValue('socialMediaLinks', socialMediaList);
@@ -63,9 +62,8 @@ const Influencer = () => {
     ]);
   };
 
-  const deleteSocialLink = (index: number, socialMediaType: string) => {
+  const deleteSocialLink = (index: number) => {
     setSocialMediaList((prevList) => prevList.filter((_, i) => i !== index));
-    setSocialMediaOptions((prevOptions) => [...prevOptions, socialMediaType]);
   };
 
   return (
@@ -88,24 +86,12 @@ const Influencer = () => {
         <div className="text-[.8rem] text-gray-400 my-1">
           {bio ? bio.length : '0'}/{MAX_CHAR} characters
         </div>
-        {errors.bio && <p className="text-sm text-red-500 mb-3">Bio cannot be empty</p>}
+        {errors.bio && <span className="text-sm text-red-500">Bio cannot be empty</span>}
       </div>
       <TopicList maxTopics={4} topicsList={topics} onTopicsChange={handleTopicsChange} />
       <div className="w-full mt-3">
-        {socialMediaOptions.length > 0 && (
-          <SocialMediaSelect
-            onAddButton={handleAddButton}
-            socialMediaOptions={socialMediaOptions}
-            setSocialMediaOptions={setSocialMediaOptions}
-            isEdit={true}
-          />
-        )}
-        <SocialMediaList
-          items={socialMediaList}
-          onDeleteSocialLink={deleteSocialLink}
-          setSocialMediaOptions={setSocialMediaOptions}
-          isEdit={true}
-        />
+        <SocialMediaSelect onAddButton={handleAddButton} />
+        <SocialMediaList items={socialMediaList} onDeleteSocialLink={deleteSocialLink} />
       </div>
     </>
   );
