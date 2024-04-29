@@ -198,18 +198,18 @@
           "error": "required"
         },
         "firstName": {
-          "label": "Email",
-          "placeholder": "Email",
-          "error": "required"
-        },
-        "lastName": {
           "label": "First name",
           "placeholder": "First name",
           "error": "required"
         },
-        "address": {
+        "lastName": {
           "label": "Last name",
           "placeholder": "Last name",
+          "error": "required"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Your address",
           "error": "required"
         },
         "city": {

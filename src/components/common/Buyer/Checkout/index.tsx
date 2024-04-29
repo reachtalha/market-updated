@@ -103,10 +103,10 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
         address: user?.address || '',
         city: user?.city || '',
         state: '',
-        phone: user?.phone || ''
+        phone: `+${user?.countryCode}${user?.phone}` || ''
       });
     }
-  }, [user]);
+  }, [form, user]);
 
   async function onSubmit(values: FormValues) {
     if (!stripe || !elements) return;
