@@ -49,13 +49,13 @@ export default function OrderSummaryCheckout({
             <div className="col-span-2 justify-between flex flex-col md:flex-row items-start md:items-center gap-3">
               <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-3">
                 <Image
-                  className="border w-full rounded"
+                  className="border w-full md:w-1/2 rounded"
                   height={150}
                   width={150}
                   src={auth.currentUser ? item.image : item.coverImage}
                   alt={item.name}
                 />
-                <div className="">
+                <div className="flex-1">
                   <h6 className="uppercase font-medium">{item.name}</h6>
                   <p>
                     {item?.selectedVariant?.color} / {item?.selectedVariant?.measurement}

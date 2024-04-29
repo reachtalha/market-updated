@@ -33,7 +33,7 @@ const initialSKUState = {
 const CreateSKU = ({
   setStep,
   isEdit = false,
-  dictionary,
+  dictionary
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isEdit?: boolean;
@@ -174,7 +174,12 @@ const CreateSKU = ({
         <div className="space-y-1 w-full ">
           <Label>{dictionary.seller.newProduct.createSku.price.label}</Label>
           <Input
-            onChange={(e: any) => setSKU((prev) => ({ ...prev, price: parseInt(e.target.value) }))}
+            onChange={(e: any) => {
+              const input = e.target.value;
+              if (/^\d*\.?\d{0,2}$/.test(input)) {
+                setSKU((prev) => ({ ...prev, price: Number(input) }));
+              }
+            }}
             className="w-full placeholder:text-sm"
             type="number"
             inputMode="numeric"
@@ -228,9 +233,16 @@ const CreateSKU = ({
               </AccordionTrigger>
               <AccordionContent>
                 <ul>
-                  <li>{dictionary.seller.newProduct.createSku.skuPriceLabel}: {formatCurrency(l.price)}</li>
-                  <li>{dictionary.seller.newProduct.createSku.skuQuantityLabel}: {l.quantity}</li>
-                  <li>{dictionary.seller.newProduct.createSku.skuMeasurementLabel}: {l.measurement}</li>
+                  <li>
+                    {dictionary.seller.newProduct.createSku.skuPriceLabel}:{' '}
+                    {formatCurrency(l.price)}
+                  </li>
+                  <li>
+                    {dictionary.seller.newProduct.createSku.skuQuantityLabel}: {l.quantity}
+                  </li>
+                  <li>
+                    {dictionary.seller.newProduct.createSku.skuMeasurementLabel}: {l.measurement}
+                  </li>
                   <li className={l.color ? 'inline-block capitalize' : 'hidden'}>
                     {dictionary.seller.newProduct.createSku.skuColorLabel}: {l.color}
                   </li>

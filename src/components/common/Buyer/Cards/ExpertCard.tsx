@@ -15,20 +15,22 @@ interface IProfileCard {
 export default function ExpertCard({ id, image, name, title, bio, dictionary }: IProfileCard) {
   return (
     <>
-      <div className="group h-fit w-full relative hover:scale-105 transition-all duration-300 ease-in-out ">
+      <div className="group h-fit w-full relative overflow-hidden">
         <Link
           href={`/experts/?category=${title?.length > 0 ? title[0] : 'all'}`}
           className="capitalize z-10 text-sm absolute cursor-pointer top-5 left-5 bg-white p-1 px-3 rounded-lg"
         >
           {title && title[0]} {dictionary.market.featuredExperts.expertLabel}
         </Link>
-        <span className="  absolute  inset-0 z-[1] bg-gradient-to-t from-black/40 to-transparent transition-opacity ease-in duration-300" />
-        <div className="relative h-96 w-full   drop-shadow-sm">
+        <span className="  absolute  inset-0 z-[1] bg-gradient-to-t from-black/40 to-transparent group-hover:scale-105 duration-300 transition-all ease-in-out group-active:scale-100" />
+        <div className="relative h-96 w-full drop-shadow-sm">
           <Image
             src={image}
             height={550}
             width={450}
-            className={' w-full h-full object-cover'}
+            className={
+              'h-full object-cover group-hover:scale-105 duration-300 transition-all ease-in-out group-active:scale-100'
+            }
             alt={name}
           />
         </div>

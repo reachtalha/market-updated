@@ -6,10 +6,13 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { auth, db } from '@/lib/firebase/client';
 import { getDocs, query, collection, where, limit, addDoc } from 'firebase/firestore';
 
+import useLocale from '@/hooks/useLocale';
+
 import Chats from '@/components/modules/chat/Chat';
 import Loader from '@/components/common/Loader';
 
 const ChatLayout = ({ children }: { children: React.ReactNode }) => {
+  const lang = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -43,7 +46,7 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
           });
           id = docRef.id;
         }
-        router.push(`/en/chat/${id}?return_url=${returnUrl}`);
+        router.push(`/${lang}/chat/${id}?return_url=${returnUrl}`);
       } catch (error) {
         throw new Error();
       }

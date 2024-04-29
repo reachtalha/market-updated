@@ -2,8 +2,11 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 export default function ShippingInfo({ form, dictionary }: { form: any; dictionary: any }) {
+  const { user, isLoading } = useCurrentUser();
+
   return (
     <section>
       <h2 className="mb-6 text-xl font-medium">{dictionary.contact.heading}</h2>
@@ -32,7 +35,7 @@ export default function ShippingInfo({ form, dictionary }: { form: any; dictiona
               <FormLabel>{dictionary.shipping.firstName.label}</FormLabel>
               <FormControl>
                 <Input
-                  className="capitalize"
+                  className=""
                   placeholder={dictionary.shipping.firstName.placeholder}
                   {...field}
                 />
@@ -49,7 +52,7 @@ export default function ShippingInfo({ form, dictionary }: { form: any; dictiona
               <FormLabel>{dictionary.shipping.lastName.label}</FormLabel>
               <FormControl>
                 <Input
-                  className="capitalize"
+                  className=""
                   placeholder={dictionary.shipping.lastName.placeholder}
                   {...field}
                 />
@@ -68,7 +71,7 @@ export default function ShippingInfo({ form, dictionary }: { form: any; dictiona
             <FormLabel>{dictionary.shipping.address.label}</FormLabel>
             <FormControl>
               <Input
-                className="capitalize"
+                className=""
                 placeholder={dictionary.shipping.address.placeholder}
                 {...field}
               />
@@ -85,11 +88,7 @@ export default function ShippingInfo({ form, dictionary }: { form: any; dictiona
           <FormItem className="mt-5 w-full">
             <FormLabel>{dictionary.shipping.city.label}</FormLabel>
             <FormControl>
-              <Input
-                className="capitalize"
-                placeholder={dictionary.shipping.city.placeholder}
-                {...field}
-              />
+              <Input className="" placeholder={dictionary.shipping.city.placeholder} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -105,7 +104,7 @@ export default function ShippingInfo({ form, dictionary }: { form: any; dictiona
               <FormLabel>{dictionary.shipping.stateOrProvince.label}</FormLabel>
               <FormControl>
                 <Input
-                  className="capitalize"
+                  className=""
                   placeholder={dictionary.shipping.stateOrProvince.placeholder}
                   {...field}
                 />
@@ -123,11 +122,7 @@ export default function ShippingInfo({ form, dictionary }: { form: any; dictiona
           <FormItem className="mt-5 w-full">
             <FormLabel>{dictionary.shipping.phone.label}</FormLabel>
             <FormControl>
-              <Input
-                className="capitalize"
-                placeholder={dictionary.shipping.phone.placeholder}
-                {...field}
-              />
+              <Input className="" placeholder={dictionary.shipping.phone.placeholder} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
