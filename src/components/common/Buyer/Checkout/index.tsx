@@ -1,23 +1,27 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useElements, useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form } from '@/components/ui/form';
+import { auth } from '@/lib/firebase/client';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+
 import BoxedContent from '@/components/common/BoxedContent';
 import ShippingInfo from '@/components/common/Buyer/Checkout/ShippingInfo';
 import OrderSummaryCheckout from '@/components/common/Buyer/Checkout/OrderSummaryCheckout';
 import CheckoutForm from '@/components/common/Buyer/Checkout/CheckoutForm';
-import { Form } from '@/components/ui/form';
-import { auth } from '@/lib/firebase/client';
-import useCartStore from '@/state/useCartStore';
-import toast from 'react-hot-toast';
-import useGuestCartStore from '@/state/useGuestCartStore';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Loader from '@/components/common/Loader';
-import useLocale from '@/hooks/useLocale';
+
+import useCartStore from '@/state/useCartStore';
+import useGuestCartStore from '@/state/useGuestCartStore';
 import useTransferGroupStore from '@/state/useTransferGroup';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import useLocale from '@/hooks/useLocale';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:3000';
 
@@ -77,15 +81,17 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
   const { user, isLoading } = useCurrentUser();
   const stripe = useStripe();
   const elements = useElements();
+  const router = useRouter();
 
-  const { cart } = useCartStore((state: any) => state);
-  const { guestCart } = useGuestCartStore((state: any) => state);
+  const { cart, clearCart: authenticatedUserCart } = useCartStore((state: any) => state);
+  const { guestCart, clearGuestCart } = useGuestCartStore((state: any) => state);
   const { transferGroup } = useTransferGroupStore();
 
   const [processing, setProcessing] = useState(false);
   const [isPaymentInfoCompleted, setIsPaymentInfoCompleted] = useState(false);
 
   const cartItems = auth.currentUser ? cart?.items : guestCart.items;
+  const clearCart = auth.currentUser ? authenticatedUserCart : clearGuestCart;
   const locale = useLocale();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -109,31 +115,55 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
   }, [form, user]);
 
   async function onSubmit(values: FormValues) {
-    if (!stripe || !elements) return;
-
-    if (!isPaymentInfoCompleted) {
-      toast.error('Please fill in your payment information.');
-      return;
-    }
-
     try {
+      if (!stripe || !elements) {
+        throw new Error('Stripe or Elements is not initialized.');
+      }
+
+      if (!isPaymentInfoCompleted) {
+        throw new Error('Please fill in your payment information.');
+      }
+
       setProcessing(true);
+
+      const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${DOMAIN}/${locale}/order/success`
+        },
+        redirect: 'if_required'
+      });
+
+      if (stripeError) {
+        console.log(stripeError);
+        throw new Error('Stripe payment confirmation failed.');
+      }
+
+      if (!paymentIntent || paymentIntent.status !== 'succeeded') {
+        throw new Error('Payment not succeeded.');
+      }
+
       const order = getOrdeDetails(values, cartItems);
+
       const orderPromise = axios.post('/api/checkout', {
         order,
         photoURL: auth.currentUser?.photoURL || '',
         cart: cartItems
       });
-      const paymentPromise = stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          receipt_email: 'bakara097@gmail.com',
-          return_url: `${DOMAIN}/${locale}/order/success`
-        }
+
+      const chargeTransferPromise = axios.post('/api/payment/create-transfer-group', {
+        transferGroup: transferGroup,
+        cartDetails: cartItems
       });
-      await Promise.all([orderPromise, paymentPromise]);
+
+      await Promise.all([orderPromise, chargeTransferPromise]);
+
+      clearCart();
       toast.success('Your payment has been successfully processed!');
+      router.replace(`${DOMAIN}/${locale}/order/success?payment_intent=${paymentIntent?.id}`);
+      return <Loader className="grid place-content-center w-screen h-screen overflow-hidden" />;
     } catch (error) {
+      console.log(error);
       toast.error('An error occurred during payment processing. Please try again.');
     } finally {
       setProcessing(false);

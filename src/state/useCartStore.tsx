@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+
 import { db, auth } from '@/lib/firebase/client';
 import {
   addDoc,
@@ -118,83 +120,91 @@ const decrementQuantity = async (docId: string) => {
   }
 };
 
-const useCartStore = create((set, get) => ({
-  cart: {
-    id: '',
-    items: [],
-    summary: null
-  },
-  isCartLoading: false,
-  showCartPopover: false,
-  isQuantityChangeLoading: false,
-  updatingDocId: '',
-  isAddToCartLoading: false,
-  setShowCartPopover: (value: boolean) => set({ showCartPopover: value }),
-  setIsAddToCartLoading: (val: boolean) => {
-    set({ isAddToCartLoading: val });
-  },
-  clearCart: async () => {
-    set(async (state: any) => {
-      await fetchClearCart(state.cart.items);
-      await state.getCart();
-    });
-  },
-  addToCart: async (productId: string, skuId: string) => {
-    set(async (state: any) => {
-      state.setIsAddToCartLoading(true);
-      await fetchAddToCart(productId, skuId);
-      state.setIsAddToCartLoading(false);
-      await state.getCart();
-      state.setShowCartPopover(true);
-    });
-  },
-  deleteFromCart: async (docId: string) => {
-    set(async (state: any) => {
-      await fetchDeleteFromCart(docId, state.cart.id);
-      await state.getCart(false);
-    });
-  },
-  getCart: async (isCartLoading: boolean = true) => {
-    set({ isCartLoading });
-    const data = await fetchGetCart();
-    set({
+const useCartStore = create(
+  persist(
+    (set, get) => ({
+      cart: {
+        id: '',
+        items: [],
+        summary: null
+      },
       isCartLoading: false,
-      cart:
-        {
-          summary: calculateCartSummary(data?.cart?.items),
-          items: data?.cart?.items,
-          id: data?.id
-        } || {}
-    });
-  },
-  increment: async (docId: string) => {
-    set({ isQuantityChangeLoading: true, updatingDocId: docId });
-    await incrementQuantity(docId);
-    const data = await fetchGetCart();
-    set({
+      showCartPopover: false,
       isQuantityChangeLoading: false,
-      cart:
-        {
-          summary: calculateCartSummary(data?.cart?.items),
-          items: data?.cart?.items,
-          id: data?.id
-        } || {}
-    });
-  },
-  decrement: async (docId: string) => {
-    set({ isQuantityChangeLoading: true, updatingDocId: docId });
-    await decrementQuantity(docId);
-    const data = await fetchGetCart();
-    set({
-      isQuantityChangeLoading: false,
-      cart:
-        {
-          summary: calculateCartSummary(data?.cart?.items),
-          items: data?.cart?.items,
-          id: data?.id
-        } || {}
-    });
-  }
-}));
+      updatingDocId: '',
+      isAddToCartLoading: false,
+      setShowCartPopover: (value: boolean) => set({ showCartPopover: value }),
+      setIsAddToCartLoading: (val: boolean) => {
+        set({ isAddToCartLoading: val });
+      },
+      clearCart: async () => {
+        set(async (state: any) => {
+          await fetchClearCart(state.cart.items);
+          await state.getCart();
+        });
+      },
+      addToCart: async (productId: string, skuId: string) => {
+        set(async (state: any) => {
+          state.setIsAddToCartLoading(true);
+          await fetchAddToCart(productId, skuId);
+          state.setIsAddToCartLoading(false);
+          await state.getCart();
+          state.setShowCartPopover(true);
+        });
+      },
+      deleteFromCart: async (docId: string) => {
+        set(async (state: any) => {
+          await fetchDeleteFromCart(docId, state.cart.id);
+          await state.getCart(false);
+        });
+      },
+      getCart: async (isCartLoading: boolean = true) => {
+        set({ isCartLoading });
+        const data = await fetchGetCart();
+        set({
+          isCartLoading: false,
+          cart:
+            {
+              summary: calculateCartSummary(data?.cart?.items),
+              items: data?.cart?.items,
+              id: data?.id
+            } || {}
+        });
+      },
+      increment: async (docId: string) => {
+        set({ isQuantityChangeLoading: true, updatingDocId: docId });
+        await incrementQuantity(docId);
+        const data = await fetchGetCart();
+        set({
+          isQuantityChangeLoading: false,
+          cart:
+            {
+              summary: calculateCartSummary(data?.cart?.items),
+              items: data?.cart?.items,
+              id: data?.id
+            } || {}
+        });
+      },
+      decrement: async (docId: string) => {
+        set({ isQuantityChangeLoading: true, updatingDocId: docId });
+        await decrementQuantity(docId);
+        const data = await fetchGetCart();
+        set({
+          isQuantityChangeLoading: false,
+          cart:
+            {
+              summary: calculateCartSummary(data?.cart?.items),
+              items: data?.cart?.items,
+              id: data?.id
+            } || {}
+        });
+      }
+    }),
+    {
+      name: 'user-cart',
+      storage: createJSONStorage(() => localStorage)
+    }
+  )
+);
 
 export default useCartStore;
