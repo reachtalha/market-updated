@@ -15,7 +15,7 @@ interface IProfileCard {
 export default function ExpertCard({ id, image, name, title, bio, dictionary }: IProfileCard) {
   return (
     <>
-      <div className="group h-fit w-full relative">
+      <div className="group h-fit w-full relative overflow-hidden">
         <Link
           href={`/experts/?category=${title?.length > 0 ? title[0] : 'all'}`}
           className="capitalize z-10 text-sm absolute cursor-pointer top-5 left-5 bg-white p-1 px-3 rounded-lg"
