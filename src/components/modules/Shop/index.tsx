@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import Loader from '@/components/common/Loader';
 
 type Props = {
-  dictionary: any
+  dictionary: any;
 };
 
 const getShopData: any = async (): Promise<any> => {
@@ -17,7 +17,7 @@ const getShopData: any = async (): Promise<any> => {
   return { id: docRef?.docs[0]?.id, ...docRef?.docs[0]?.data() };
 };
 
-const Shop = ({ dictionary } : Props) => {
+const Shop = ({ dictionary }: Props) => {
   const { data: shop, error: shopError, isLoading: shopIsLoading } = useSWR('shop', getShopData);
 
   if (shopIsLoading)

@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,6 +21,7 @@ import { ImageIcon } from '@radix-ui/react-icons';
 import Image from '@/components/common/FallbackImage';
 import ImageReader from '@/utils/handlers/image/ImageReader';
 import { InfiniteScrollSelect } from './InfiniteScrollSelect';
+import { useVirtualizer } from '@tanstack/react-virtual';
 
 interface IBasicDetails {
   setStep: Dispatch<SetStateAction<number>>;
@@ -28,6 +29,14 @@ interface IBasicDetails {
 }
 const BasicDetails = ({ setStep, role }: IBasicDetails) => {
   const [image, setImage] = useState<string>();
+  const parentRef = React.useRef(null);
+
+  const rowVirtualizer = useVirtualizer({
+    count: 10000,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 35
+  });
+  console.log(rowVirtualizer.getVirtualItems());
   const {
     register,
     formState: { errors },
@@ -99,7 +108,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
               <SelectValue placeholder="Select country" />
             </SelectTrigger>
             <SelectContent className="max-h-56">
-              <SelectGroup>
+              <SelectGroup ref={parentRef}>
                 <SelectLabel>Countries</SelectLabel>
                 {Country.getAllCountries().map((c) => (
                   <SelectItem key={c.flag + c.name} value={c.isoCode}>

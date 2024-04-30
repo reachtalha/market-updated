@@ -137,7 +137,7 @@ export function DataTable<TValue>({ columns, data, totalRecords }: DataTableProp
     <>
       <div className="rounded-md border mt-5">
         <div className="p-5 flex justify-between items-center">
-          <Input type="search" onKeyDown={handleSearch} placeholder="search" className="w-[20%]" />
+          <Input type="search" onKeyDown={handleSearch} placeholder="Search" className="w-[20%]" />
           <DropDown sortBy={sort} />
         </div>
         <Table>
@@ -203,8 +203,8 @@ export function DataTable<TValue>({ columns, data, totalRecords }: DataTableProp
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableRow className="w-full">
+                <TableCell colSpan={columns.length + 2} className="h-24 w-full text-center">
                   No Products Found.
                 </TableCell>
               </TableRow>

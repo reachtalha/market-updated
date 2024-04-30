@@ -22,7 +22,7 @@ const ConnectStripe = () => {
     );
   }
   if (!isLoading && user.stripeConnectId) {
-    router.push(`/${locale}/seller/dashboard`);
+    router.push(`/seller/dashboard`);
     return (
       <div className="w-screen bg-white h-screen overflow-hidden grid place-content-center">
         <Loader />

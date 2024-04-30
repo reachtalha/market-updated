@@ -55,7 +55,7 @@ export function DataTable<TValue>({
         <div className="p-5">
           <Input
             type="search"
-            placeholder="search"
+            placeholder="Search"
             className="w-[20%]"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -102,7 +102,7 @@ export function DataTable<TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell colSpan={columns.length + 2} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
