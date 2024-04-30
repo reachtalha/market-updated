@@ -15,13 +15,12 @@ import {
   SelectLabel
 } from '@/components/ui/select';
 
-import { Country, City } from 'country-state-city';
+import { Country } from 'country-state-city';
 
 import { ImageIcon } from '@radix-ui/react-icons';
 import Image from '@/components/common/FallbackImage';
 import ImageReader from '@/utils/handlers/image/ImageReader';
 import { InfiniteScrollSelect } from './InfiniteScrollSelect';
-import { useVirtualizer } from '@tanstack/react-virtual';
 
 interface IBasicDetails {
   setStep: Dispatch<SetStateAction<number>>;
@@ -58,7 +57,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
     handleOnChange('city', selectedOption);
   };
   const handleCountryCode = (selectedOption: string) => {
-    handleOnChange('countryCode', selectedOption);
+    handleOnChange('countryCode', selectedOption.split('&')[1]);
   };
 
   const nextStep = async () => {
@@ -133,7 +132,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
                 <SelectGroup>
                   <SelectLabel className="capitalize">Country Code</SelectLabel>
                   {Country.getAllCountries().map((c, idx) => (
-                    <SelectItem key={idx} value={c.phonecode}>
+                    <SelectItem key={idx} value={`${c.isoCode}&${c.phonecode}`}>
                       {c.phonecode}
                     </SelectItem>
                   ))}
