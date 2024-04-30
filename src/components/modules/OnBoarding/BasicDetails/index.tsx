@@ -30,12 +30,14 @@ interface IBasicDetails {
 const BasicDetails = ({ setStep, role }: IBasicDetails) => {
   const [image, setImage] = useState<string>();
   const parentRef = React.useRef(null);
-
+  // const [countries, setCountries] = useState<any[]>(Country.getAllCountries());
+  const countries = Country.getAllCountries();
   const rowVirtualizer = useVirtualizer({
-    count: 10000,
+    count: Country.getAllCountries().length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 35
   });
+
   console.log(rowVirtualizer.getVirtualItems());
   const {
     register,
@@ -74,6 +76,9 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
     }
   };
 
+  const virtualItems = rowVirtualizer.getVirtualItems();
+  const totalSize = rowVirtualizer.getTotalSize();
+
   return (
     <>
       <div className="mb-3">
@@ -107,14 +112,28 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
             <SelectTrigger>
               <SelectValue placeholder="Select country" />
             </SelectTrigger>
-            <SelectContent className="max-h-56">
-              <SelectGroup ref={parentRef}>
+            {/* <SelectContent ref={parentRef} className="max-h-56">
+              <SelectGroup style={{ height: `${totalSize}px` }}>
                 <SelectLabel>Countries</SelectLabel>
                 {Country.getAllCountries().map((c) => (
                   <SelectItem key={c.flag + c.name} value={c.isoCode}>
                     {c.flag}-{c.name}
                   </SelectItem>
                 ))}
+              </SelectGroup>
+            </SelectContent> */}
+            <SelectContent ref={parentRef} className="max-h-56">
+              <SelectGroup style={{ height: `${totalSize}px` }}>
+                <SelectLabel>Countries</SelectLabel>
+                {virtualItems.map((virtualItem: any) => {
+                  const listItem = countries[virtualItem.index];
+
+                  return (
+                    <SelectItem key={listItem.flag + listItem.name} value={listItem.isoCode}>
+                      {listItem.flag}-{listItem.name}
+                    </SelectItem>
+                  );
+                })}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -129,7 +148,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
       <div className="flex mt-3 flex-col md:flex-row w-full gap-3">
         <div className="w-full md:w-2/3 space-y-1">
           <Label>Contact</Label>
-          <div className="flex gap-x-1.5">
+          <div className="flex gap-x-1.5" ref={parentRef}>
             <Select onValueChange={handleCountryCode}>
               <SelectTrigger className="w-24 truncate">
                 <SelectValue placeholder="CC" />
