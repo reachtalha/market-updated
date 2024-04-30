@@ -117,7 +117,7 @@
       "email": {
         "label": "Email",
         "placeholder": "Your email",
-        "error": "Hmm… that email doesn&apos;t look valid"
+        "error": "Hmm… that email doesn't look valid"
       },
       "password": {
         "label": "Password",

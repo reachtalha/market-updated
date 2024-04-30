@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,7 +15,7 @@ import {
   SelectLabel
 } from '@/components/ui/select';
 
-import { Country, City } from 'country-state-city';
+import { Country } from 'country-state-city';
 
 import { ImageIcon } from '@radix-ui/react-icons';
 import Image from '@/components/common/FallbackImage';
@@ -28,6 +28,9 @@ interface IBasicDetails {
 }
 const BasicDetails = ({ setStep, role }: IBasicDetails) => {
   const [image, setImage] = useState<string>();
+  const parentRef = React.useRef(null);
+  const countries = Country.getAllCountries();
+
   const {
     register,
     formState: { errors },
@@ -54,7 +57,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
     handleOnChange('city', selectedOption);
   };
   const handleCountryCode = (selectedOption: string) => {
-    handleOnChange('countryCode', selectedOption);
+    handleOnChange('countryCode', selectedOption.split('&')[1]);
   };
 
   const nextStep = async () => {
@@ -129,7 +132,7 @@ const BasicDetails = ({ setStep, role }: IBasicDetails) => {
                 <SelectGroup>
                   <SelectLabel className="capitalize">Country Code</SelectLabel>
                   {Country.getAllCountries().map((c, idx) => (
-                    <SelectItem key={idx} value={c.phonecode}>
+                    <SelectItem key={idx} value={`${c.isoCode}&${c.phonecode}`}>
                       {c.phonecode}
                     </SelectItem>
                   ))}

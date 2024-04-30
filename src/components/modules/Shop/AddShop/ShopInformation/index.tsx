@@ -59,13 +59,17 @@ const Index = ({ dictionary, setStep, types, isEdit = false }: Props) => {
       <div className="space-y-1 w-full mt-3 xl:mt-5">
         <Label>{dictionary.seller.shop.shopInfoForm.name.label}</Label>
         <Input
-          className="w-full placeholder:text-sm capitalize"
+          className="w-full placeholder:text-sm "
           type="text"
           placeholder={dictionary.seller.shop.shopInfoForm.name.placeholder}
           {...register('name', { required: true })}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.name.error}</span>}
+        {errors.name && (
+          <span className="text-sm text-red-500">
+            {dictionary.seller.shop.shopInfoForm.name.error}
+          </span>
+        )}
       </div>
       <div className="space-y-1 w-full mt-3 xl:mt-5">
         <Label>{dictionary.seller.shop.shopInfoForm.tagline.label}</Label>
@@ -76,7 +80,11 @@ const Index = ({ dictionary, setStep, types, isEdit = false }: Props) => {
           {...register('tagline', { required: true })}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.tagline.error}</span>}
+        {errors.name && (
+          <span className="text-sm text-red-500">
+            {dictionary.seller.shop.shopInfoForm.tagline.error}
+          </span>
+        )}
       </div>
       <div className="space-y-1 mt-3 xl:mt-5 w-full">
         <Label>{dictionary.seller.shop.shopInfoForm.tagline.category}</Label>
@@ -85,19 +93,23 @@ const Index = ({ dictionary, setStep, types, isEdit = false }: Props) => {
           onValueChange={handleChangeValue}
           disabled={isEdit && !editMode}
         >
-          <SelectTrigger className="w-full bg-white capitalize">
+          <SelectTrigger className="w-full bg-white ">
             <SelectValue placeholder={dictionary.seller.shop.shopInfoForm.category.placeholder} />
           </SelectTrigger>
           <SelectContent>
             {types?.map((c: any, index: number) => (
-              <SelectItem className="capitalize" key={index} value={c}>
+              <SelectItem className="" key={index} value={c}>
                 {c}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
-        {errors.type && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.category.error}</span>}
+        {errors.type && (
+          <span className="text-sm text-red-500">
+            {dictionary.seller.shop.shopInfoForm.category.error}
+          </span>
+        )}
       </div>
 
       <div className="flex space-x-2 flex-row">
@@ -110,7 +122,11 @@ const Index = ({ dictionary, setStep, types, isEdit = false }: Props) => {
             {...register('email', { required: true })}
             disabled={isEdit && !editMode}
           />
-          {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.email.error}</span>}
+          {errors.name && (
+            <span className="text-sm text-red-500">
+              {dictionary.seller.shop.shopInfoForm.email.error}
+            </span>
+          )}
         </div>
         <div className="space-y-1 w-full mt-3 xl:mt-5">
           <Label>{dictionary.seller.shop.shopInfoForm.phone.label}</Label>
@@ -122,7 +138,9 @@ const Index = ({ dictionary, setStep, types, isEdit = false }: Props) => {
             disabled={isEdit && !editMode}
           />
           {errors.name && (
-            <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.phone.error}</span>
+            <span className="text-sm text-red-500">
+              {dictionary.seller.shop.shopInfoForm.phone.error}
+            </span>
           )}
         </div>
       </div>
@@ -135,7 +153,11 @@ const Index = ({ dictionary, setStep, types, isEdit = false }: Props) => {
           {...register('address', { required: true })}
           disabled={isEdit && !editMode}
         />
-        {errors.name && <span className="text-sm text-red-500">{dictionary.seller.shop.shopInfoForm.address.error}</span>}
+        {errors.name && (
+          <span className="text-sm text-red-500">
+            {dictionary.seller.shop.shopInfoForm.address.error}
+          </span>
+        )}
       </div>
 
       {(!isEdit || editMode) && (

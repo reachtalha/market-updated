@@ -81,7 +81,7 @@ function AddImages({
             <span className="font-medium">
               {dictionary.seller.shop.imagesForm.fileSupportedLabel}
             </span>
-            : JPG,JPEG, PNG, Webp
+            {` JPG,JPEG, PNG, Webp`}
             <br />
             <span className="font-medium">
               {dictionary.seller.shop.imagesForm.maximumSizeLabel}

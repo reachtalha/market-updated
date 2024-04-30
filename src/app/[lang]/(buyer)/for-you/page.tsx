@@ -8,7 +8,7 @@ import { doc, getDoc, getDocs, collection, query, where, limit, orderBy } from '
 import { db } from '@/lib/firebase/client';
 import { cookies } from 'next/headers';
 import ForYou from '@/components/common/Buyer/For-you';
-
+import Link from 'next/link';
 export const metadata = {
   title: 'For you - All Organics',
   description: 'Products curated for you on Organic living, simplied'
@@ -51,6 +51,7 @@ export default async function Index({ params: { lang } }: LocaleType) {
   const categories = await getCategories();
   const products = await getProducts(categories);
   const dictionary = await getDictionary(lang);
+  console.log(lang);
   return (
     <>
       <ForYou products={JSON.stringify(products)} categories={JSON.stringify(categories)} />
@@ -64,7 +65,7 @@ export default async function Index({ params: { lang } }: LocaleType) {
               size="resp"
               className="border-2 uppercase w-fit bg-transparent text-white rounded-3xl"
             >
-              {dictionary.forYou.exploreShopsLabel}
+              <Link href={`/${lang}/products`}>{dictionary.forYou.exploreShopsLabel}</Link>
             </Button>
           </header>
           <FeaturesShops />

@@ -79,7 +79,7 @@ const CreatePayout = () => {
       <CardHeader>
         <CardTitle className="space-y-2">
           <h2>Create Payouts</h2>
-          <p className="text-lg font-medium text-gray-500 font-normal">
+          <p className="text-lg text-gray-500 font-normal">
             Transfer funds from your Stripe account to your bank account instantly.
           </p>
         </CardTitle>

@@ -43,7 +43,7 @@ export default async function Home({ params: { lang } }: LocaleType) {
             {dictionary.home.hero.title}
           </h1>
         </div>
-        <p className="animate-opacity place-self-center text-base w-full md:w-[60%] text-center">
+        <p className="animate-opacity place-self-center text-base w-full md:w-[60%] text-center px-3">
           {dictionary.home.hero.subtitle}
         </p>
       </Hero>
