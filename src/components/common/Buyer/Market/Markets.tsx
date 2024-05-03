@@ -19,7 +19,7 @@ const Markets = ({ markets }: Props) => {
           />
         ))
       ) : (
-        <div className="flex items-center justify-center w-[80vw] h-96">
+        <div className="col-span-full flex items-center justify-center h-96">
           <h3 className="text-xl text-gray-500">No Shops Found</h3>
         </div>
       )}

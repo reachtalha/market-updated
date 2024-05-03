@@ -25,7 +25,7 @@ const getExperts: any = async (): Promise<any> => {
   return experts;
 };
 
-export default function FeaturedExperts({ dictionary } : { dictionary: any }) {
+export default function FeaturedExperts({ dictionary }: { dictionary: any }) {
   const { data: experts, isLoading } = useSwr('featuresExperts', getExperts);
   if (isLoading) return <Loader className="w-full flex items-center justify-center" />;
 

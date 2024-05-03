@@ -34,9 +34,9 @@ export default function ExpertCard({ id, image, name, title, bio, dictionary }: 
             alt={name}
           />
         </div>
-        <div className="bottom-0 w-full z-[1] text-white py-5 px-4 flex justify-between items-start absolute">
+        <div className="bottom-0 w-full z-[1] text-white py-5 px-2.5 flex justify-between items-start absolute">
           <div className="w-full space-y-2">
-            <div className="flex items-center justify-between gap-x-2.5">
+            <div className="flex justify-between gap-x-2.5">
               <h5 className="text-2xl lg:text-3xl capitalize font-medium truncate">{name}</h5>
               <Link
                 href={`experts/${id}`}

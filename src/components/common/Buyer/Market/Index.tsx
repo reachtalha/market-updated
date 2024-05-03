@@ -33,7 +33,12 @@ export default function Market({
       <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <MarketCategories locale={lang} selectedCategory={category} categories={categories} />
         <div className="flex-1 space-y-4">
-          <MarketHeader selectedCategory={category} categories={categories} sortBy={sortBy} />
+          <MarketHeader
+            lang={lang}
+            selectedCategory={category}
+            categories={categories}
+            sortBy={sortBy}
+          />
 
           <LoadMore markets={markets} />
         </div>
@@ -49,7 +54,7 @@ export default function Market({
               {dictionary.market.featuredExperts.exploreExpertCategoriesBtnLabel}
             </Link>
           </header>
-          <FeaturedExperts dictionary={dictionary}  />
+          <FeaturedExperts dictionary={dictionary} />
         </BoxedContent>
       </section>
       <TakeQuizSection />

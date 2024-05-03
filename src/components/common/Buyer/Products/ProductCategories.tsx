@@ -6,12 +6,10 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 import ReactStar from 'react-stars';
-import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
-import useLocale from '@/hooks/useLocale';
-
-
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
 const ReactStars = ReactStar as any;
 
@@ -24,79 +22,99 @@ export type Category = {
 };
 
 type ProductCategoriesProps = {
-  selectedCategory: string | null;
   categories: Category[];
-  setSelectedSubCategory?: (subCategory: string) => void;
 };
 
 const PriceFilter = () => {
   const router = useRouter();
-  const path = usePathname();
-  const [price, setPrice] = useState({ min: 0, max: 100 });
+  const pathname = usePathname();
   const params = useSearchParams();
-  const rating = params.get('rating') || '';
-  const category = params.get('category') || '';
-  const subCategory = params.get('subCategory') || '';
 
-  const handleClick = () => {
-    router.replace(
-      `${path}?${'min=' + price.min}${'&max=' + price.max}${'&category=' + category}${
-        '&subCategory=' + subCategory
-      }&rating=${rating}`
-    );
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const formDataObj: Record<string, string> = {};
+    formData.forEach((value, key) => {
+      formDataObj[key] = value.toString();
+    });
+
+    const updatedParams = new URLSearchParams(params.toString());
+    Object.entries(formDataObj).forEach(([key, value]) => {
+      updatedParams.set(key, value);
+    });
+    router.replace(`${pathname}?${updatedParams.toString()}`);
   };
+
+  const clearFilter = () => {
+    const updatedParams = new URLSearchParams(params.toString());
+    updatedParams.delete('min');
+    updatedParams.delete('max');
+    router.replace(`${pathname}?${updatedParams.toString()}`);
+  };
+
   return (
-    <div className="flex flex-col mb-2">
-      <span className="font-medium text-lg">Price</span>
-      <div className="flex items-center space-x-2 px-3">
-        <Input
-          onChange={(e) => {
-            if (e.target.value === '' || parseInt(e.target.value) < 0) return;
-
-            setPrice({ ...price, min: parseInt(e.target.value) });
-          }}
-          value={price.min}
-          min={0}
-          type="number"
-          placeholder="min"
-        />
-
-        <span>-</span>
-        <Input
-          type="number"
-          onChange={(e) => {
-            if (e.target.value === '') return;
-            setPrice({ ...price, max: parseInt(e.target.value) });
-          }}
-          value={price.max}
-          placeholder="max"
-        />
-      </div>
-      <button
-        onClick={handleClick}
-        className="bg-primary text-white w-3/4 m-auto  mt-2 px-2 py-1 rounded"
+    <>
+      <form onSubmit={handleSubmit} className="mb-2">
+        <span className="font-medium text-lg">Price</span>
+        <div className="px-2.5 space-y-3">
+          <div className="flex items-end gap-x-2.5">
+            <div className="space-y-1.5">
+              <Label htmlFor="min">Min</Label>
+              <Input
+                name="min"
+                defaultValue={params.get('min') || '0'}
+                min="0"
+                type="number"
+                id="min"
+                placeholder="0"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="max">Max</Label>
+              <Input
+                name="max"
+                defaultValue={params.get('max') || '1000'}
+                min="0"
+                type="number"
+                id="max"
+                placeholder="1000"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+              />
+            </div>
+          </div>
+          <Button type="submit" className="w-full">
+            Apply Filter
+          </Button>
+        </div>
+      </form>
+      <Button
+        variant="link"
+        className={params.get('max') || params.get('min') ? 'block text-sm mt-1.5' : 'hidden'}
+        onClick={clearFilter}
       >
-        Go
-      </button>
-    </div>
+        Clear Price Filter
+      </Button>
+    </>
   );
 };
 
-const ReviewFilter = ({ value }: { value: number }) => {
+const ReviewFilter = () => {
   const router = useRouter();
-  const path = usePathname();
+  const pathname = usePathname();
   const params = useSearchParams();
-  const min = params.get('min') || '';
-  const max = params.get('max') || '';
-  const category = params.get('category') || '';
-  const subCategory = params.get('subCategory') || '';
+  const rating = params.get('rating');
 
-  const handleChange = (rating: number) => {
-    router.replace(
-      `${path}?${'min=' + min}${'&max=' + max}${'&category=' + category}${
-        '&subCategory=' + subCategory
-      }&rating=${rating}`
-    );
+  const handleSubmit = (rating: string) => {
+    const updatedParams = new URLSearchParams(params.toString());
+    updatedParams.set('rating', rating);
+    router.replace(`${pathname}?${updatedParams.toString()}`);
+  };
+
+  const clearFilter = () => {
+    const updatedParams = new URLSearchParams(params.toString());
+    updatedParams.delete('rating');
+    router.replace(`${pathname}?${updatedParams.toString()}`);
   };
 
   return (
@@ -104,30 +122,46 @@ const ReviewFilter = ({ value }: { value: number }) => {
       <span className="font-medium text-lg">Reviews</span>
       <div className="flex space-x-2 flex-row items-end">
         <ReactStars
-          onChange={(rating: any) => handleChange(rating)}
-          value={value}
-          size={15}
+          onChange={(rating: string) => handleSubmit(rating)}
+          value={rating || 0}
+          size={24}
           color2={'#000000'}
         />
         <span className="text-xs">Or Above</span>
       </div>
+      <Button variant="link" className={rating ? 'block text-sm' : 'hidden'} onClick={clearFilter}>
+        Clear Ratings Filter
+      </Button>
     </div>
   );
 };
 
-export default function ProductCategories({
-  categories,
-  selectedCategory,
-  setSelectedSubCategory
-}: ProductCategoriesProps) {
-  const locale = useLocale();
+export default function ProductCategories({ categories }: ProductCategoriesProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const selectedCategory = params.get('category');
+
   const subCategory = categories.find(
     (category) => category.name.split('&')[0] === selectedCategory
   );
 
+  const handleSubmit = (type: string, value: string) => {
+    const updatedParams = new URLSearchParams(params.toString());
+    updatedParams.set(type, value);
+    router.replace(`${pathname}?${updatedParams.toString()}`);
+  };
+
+  const clearFilter = () => {
+    const updatedParams = new URLSearchParams(params.toString());
+    updatedParams.delete('category');
+    updatedParams.delete('type');
+    router.replace(`${pathname}?${updatedParams.toString()}`);
+  };
+
   return (
     <div className="hidden md:block w-48 space-y-4">
-      <Accordion type="single" collapsible className="border-0">
+      <Accordion type="single" collapsible defaultValue="item-1" className="border-0">
         <AccordionItem value="item-1" className="border-0">
           <AccordionTrigger className="hover:no-underline uppercase tracking-wide text-sm pt-0">
             Filter By:
@@ -135,20 +169,16 @@ export default function ProductCategories({
           <AccordionContent>
             <div className="flex flex-col">
               <PriceFilter />
-              <ReviewFilter value={5} />
+              <ReviewFilter />
               <span className="font-medium text-lg mb-2">Categories</span>
               <ul className="space-y-1 uppercase text-sm hover:text-neutral-400">
                 {categories.map((category, idx) => (
                   <li
                     key={idx}
+                    onClick={() => handleSubmit('category', category.slug)}
                     className="tracking-wide text-sm cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
                   >
-                    <Link
-                      className={category.slug === selectedCategory ? 'font-medium' : ''}
-                      href={`/${locale}/${category.href}=${category.slug}`}
-                    >
-                      {category.name}
-                    </Link>
+                    {category.name}
                   </li>
                 ))}
               </ul>
@@ -159,14 +189,21 @@ export default function ProductCategories({
       <ul className="space-y-1 uppercase text-sm hover:text-neutral-400">
         {subCategory?.subCategories.map((category, idx) => (
           <li
-            onClick={() => setSelectedSubCategory && setSelectedSubCategory(category)}
             key={idx}
+            onClick={() => handleSubmit('type', category)}
             className="tracking-wide cursor-pointer hover:text-neutral-900 hover:underline underline-offset-4"
           >
             {category}
           </li>
         ))}
       </ul>
+      <Button
+        variant="link"
+        className={selectedCategory ? 'block text-sm' : 'hidden'}
+        onClick={clearFilter}
+      >
+        Clear Filter
+      </Button>
     </div>
   );
 }

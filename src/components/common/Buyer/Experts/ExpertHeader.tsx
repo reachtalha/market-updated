@@ -19,15 +19,16 @@ type Props = {
   selectedCategory: string | null;
   categories: Category[];
   sortBy: string;
+  lang: string;
 };
-export default function ExpertHeader({ selectedCategory = '', categories, sortBy }: Props) {
+export default function ExpertHeader({ selectedCategory = '', categories, sortBy, lang }: Props) {
   const getURL = (sortBy: string) => {
     const queryParams = [];
     if (selectedCategory) {
       queryParams.push(`category=${encodeURIComponent(selectedCategory)}`);
     }
     queryParams.push(`sort=${encodeURIComponent(sortBy)}`);
-    return `/experts?${queryParams.join('&')}`;
+    return `/${lang}/experts?${queryParams.join('&')}`;
   };
 
   return (

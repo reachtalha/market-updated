@@ -2,6 +2,20 @@ import BoxedContent from '@/components/common/BoxedContent';
 import ProductCardSkeleton from '@/components/common/Skeleton/ProductCardSkeleton';
 import MarketCardSkeleton from '@/components/common/Skeleton/MarketCardSkeletion';
 
+export const ForYouLoader = () => {
+  return (
+    <BoxedContent className="flex gap-x-5 py-20 mt-8">
+      <div className="flex-1 space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
+            <ProductCardSkeleton key={Math.random() + index} />
+          ))}
+        </div>
+      </div>
+    </BoxedContent>
+  );
+};
+
 export const ProductsLoader = () => {
   return (
     <BoxedContent className="flex gap-x-5 py-20 mt-8">

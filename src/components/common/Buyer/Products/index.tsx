@@ -32,11 +32,9 @@ const RECORDS_PER_PAGE = 11;
 const getProducts: any = async (
   category: string,
   type?: string,
-  lastDoc?: any,
   rating?: string,
   price?: any
 ): Promise<any> => {
-  let products: any = [];
   let queries: any = [];
   let orderby: any = [];
   let queryBase: CollectionReference | Query = collection(db, 'products');
@@ -44,49 +42,33 @@ const getProducts: any = async (
     category = 'organic clothing & apparel';
   }
 
-  // if (price?.min) {
-  //   queries.push(where('price', '>=', parseInt(price.min)));
-  //   queries.push(where('price', '<=', parseInt(price.max)));
-  //   orderby.push(orderBy('pricing'));
-  // }
+  if (price?.min) {
+    queries.push(where('price', '>=', Number(price.min)));
+    queries.push(where('price', '<=', Number(price.max)));
+    orderby.push(orderBy('pricing'));
+  }
 
   if (rating) {
-    queries.push(where('rating', '>=', parseInt(rating)));
+    queries.push(where('rating', '>=', Number(rating)));
     orderby.push(orderBy('rating'));
   }
   if (category && category?.toLowerCase() !== 'all') {
     queries.push(where('category', '==', `${category.toLowerCase()}`));
   }
-  if (type != null) {
+  if (type != null && type.toLowerCase() !== 'all') {
     queries.push(where('type', '==', `${type.toLowerCase()}`));
   }
-  orderby.push(orderBy('__name__'));
+  if (orderBy.length === 0) orderby.push(orderBy('submittedAt'));
 
-  if (!lastDoc) {
-    const docs = await getDocs(query(queryBase, ...orderby, limit(1)));
+  const docRef = await getDocs(query(queryBase, ...queries, ...orderby, limit(RECORDS_PER_PAGE)));
 
-    lastDoc = docs.docs[0]?.data();
-    products.push({ id: docs.docs[0]?.id, ...lastDoc });
-  }
-
-  const docRef = await getDocs(
-    query(
-      queryBase,
-      ...queries,
-      ...orderby,
-      startAfter(rating ? lastDoc.rating : lastDoc.id),
-      limit(RECORDS_PER_PAGE)
-    )
-  );
-
-  products = [...products, ...docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }))];
-
-  return [...products];
+  return [...docRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }))];
 };
 
 type ProductsProps = {
   categories: Category[];
 };
+
 export default function Products({ categories }: ProductsProps) {
   const category = useCategorySlug();
   const type = useProductTypeSlug();
@@ -95,12 +77,8 @@ export default function Products({ categories }: ProductsProps) {
   const rating = params.get('rating');
   const min = params.get('min');
   const max = params.get('max');
-
-  const [selectedSubCategory, setSelectedSubCategory] = useState(
-    category === 'all'
-      ? 'All'
-      : categories?.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
-  );
+  const [loading, setLoading] = useState(false);
+  const selectedSubCategory = params.get('type') || '';
 
   const [products, setProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
@@ -108,8 +86,8 @@ export default function Products({ categories }: ProductsProps) {
   const sortProductsBy = useSortingStore((state: any) => state.sortProductsBy);
 
   let { data, error, isLoading } = useSWR(
-    [`products-${category}`, `products-${type}`, selectedSubCategory],
-    () => getProducts(category, type, false, rating, { min, max })
+    [`products-${category}`, `products-${type}`, selectedSubCategory, min, max, rating],
+    () => getProducts(category, type, rating, { min, max })
   );
 
   useEffect(() => {
@@ -117,18 +95,10 @@ export default function Products({ categories }: ProductsProps) {
   }, [data]);
 
   useEffect(() => {
-    setSelectedSubCategory(
-      category === 'All'
-        ? 'All'
-        : categories?.find((cat) => cat.name.split('&')[0] === category)?.subCategories[0]
-    );
-  }, [category, categories]);
-
-  useEffect(() => {
     if (selectedSubCategory) {
       mutate([`products-${category}`, `products-${type}`, selectedSubCategory]);
     }
-  }, [selectedSubCategory, category]);
+  }, [selectedSubCategory]);
 
   useEffect(() => {
     if (!products) return;
@@ -150,15 +120,19 @@ export default function Products({ categories }: ProductsProps) {
 
   const getNewProducts = async () => {
     try {
+      setLoading(true);
       const response = await getProducts(category, type, products[products.length - 1], rating, {
         min,
         max
       });
-      if (response.length < 6) setProductsEnded(true);
+      if (response.length < RECORDS_PER_PAGE) setProductsEnded(true);
 
       if (response[response.length - 1]?.id !== products[products.length - 1]?.id)
         setProducts((prev) => [...prev, ...response]);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -173,63 +147,54 @@ export default function Products({ categories }: ProductsProps) {
   }
 
   return (
-    <div>
+    <div className="min-h-screen">
       <BoxedContent className="flex gap-x-5 py-20 mt-8">
         <ProductCategories
-          setSelectedSubCategory={setSelectedSubCategory}
-          selectedCategory={category}
           categories={[
             {
               name: 'All',
               subCategories: [],
               image: '',
-              slug: 'All',
+              slug: 'all',
               href: '/products?category'
             },
             ...categories
           ]}
         />
         <div className="flex-1 space-y-4">
-          <ProductHeader
-            setSelectedSubCategory={setSelectedSubCategory}
-            selectedSubCategory={selectedSubCategory}
-            selectedCategory={category}
-            categories={categories}
-          />
-          <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
+          <ProductHeader categories={categories} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
             {filteredProducts.length > 0 ? (
-              filteredProducts
-                .filter((_) => {
-                  if (selectedSubCategory === 'All' || !selectedSubCategory) return true;
-                  return _.type.toLowerCase() === selectedSubCategory?.toLowerCase();
-                })
-                .map((_: any, i: number) => (
-                  <ProductCard
-                    key={i + Math.random()}
-                    id={_.id}
-                    image={_.coverImage}
-                    name={_.name}
-                    price={_.price}
-                    shop={_.shopName || 'some shop'}
-                    type={_.type}
-                  />
-                ))
+              filteredProducts.map((product, index) => (
+                <ProductCard
+                  key={product.id + index}
+                  id={product.id}
+                  image={product.coverImage}
+                  name={product.name}
+                  price={product.price}
+                  shop={product.shopName || 'some shop'}
+                  type={product.type}
+                />
+              ))
             ) : (
-              <div className="text-center flex items-center justify-center  w-[80vw] md:!w-[80vw] h-[40vh] text-gray-500">
+              <div className="col-span-full flex items-center justify-center h-96 text-gray-500">
                 No products found
               </div>
             )}
           </div>
+
           {filteredProducts.length > 0 && (
-            <div className="w-full  flex items-center justify-center mt-5">
+            <>
               {productsEnded ? (
-                <span>Sorry! No more products to show</span>
+                <p className="col-span-full mt-20 text-center">Sorry! No more products to show</p>
               ) : (
-                <div ref={ref}>
-                  <Loader />
-                </div>
+                loading && (
+                  <div ref={ref} className="col-span-full flex items-center justify-center h-20">
+                    <Loader />
+                  </div>
+                )
               )}
-            </div>
+            </>
           )}
         </div>
       </BoxedContent>

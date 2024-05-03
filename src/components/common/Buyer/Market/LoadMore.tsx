@@ -13,36 +13,35 @@ const loadMoreMarketsLimit = 10;
 
 const LoadMore = ({ markets }: Props) => {
   const { ref, inView } = useInView();
-
   const searchParams = useSearchParams();
   const [shops, setShops] = useState(markets);
-  const [responseEnded, setResponseEnded] = useState(false);
-
-  let lastDoc = markets[markets.length - 1];
+  const [loading, setLoading] = useState(false);
   const category = searchParams.get('category') || '';
   const sort = searchParams.get('sort') || '';
 
-  const loadMoreShops = async () => {
-    try {
-      const response: any = await getShops(category, sort, lastDoc, loadMoreMarketsLimit);
-      if (response.length > 0) {
-        lastDoc = response[response.length - 1];
-        setShops((prev: any) => [...prev, ...response]);
-      }
-      if (response.length <= loadMoreMarketsLimit) setResponseEnded(true);
-    } catch (error) {
-      throw new Error();
-    }
-  };
-
   useEffect(() => {
     setShops(markets);
-    lastDoc = markets[markets.length - 1];
-    setResponseEnded(false);
   }, [markets]);
 
   useEffect(() => {
-    if (inView) {
+    let lastDoc = shops[shops.length - 1];
+
+    const loadMoreShops = async () => {
+      try {
+        setLoading(true);
+        const response: any = await getShops(category, sort, lastDoc, loadMoreMarketsLimit);
+        if (response.length > 0) {
+          lastDoc = response[response.length - 1];
+          setShops((prevShops: any) => [...prevShops, ...response]);
+        }
+      } catch (error) {
+        throw new Error();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (inView && shops.length < markets.length) {
       loadMoreShops();
     }
   }, [inView]);
@@ -51,11 +50,7 @@ const LoadMore = ({ markets }: Props) => {
     <div>
       <Markets markets={shops} />
 
-      {responseEnded ? (
-        <div className="w-full flex items-cente justify-center text-gray-500 mt-10 text-lg">
-          <span>No more shops to display</span>
-        </div>
-      ) : (
+      {loading && (
         <div ref={ref}>
           <Loader className="w-full flex items-center justify-center mt-5" />
         </div>

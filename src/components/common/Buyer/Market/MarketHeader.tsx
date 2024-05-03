@@ -18,8 +18,10 @@ type MarketHeaderProps = {
   selectedCategory: string;
   categories: Category[];
   sortBy: string;
+  lang: string;
 };
 export default function MarketHeader({
+  lang,
   selectedCategory = '',
   categories,
   sortBy
@@ -33,7 +35,7 @@ export default function MarketHeader({
 
     queryParams.push(`sort=${encodeURIComponent(sortBy)}`);
 
-    return `/market?${queryParams.join('&')}`;
+    return `/${lang}/market?${queryParams.join('&')}`;
   };
 
   return (

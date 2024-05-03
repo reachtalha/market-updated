@@ -32,7 +32,12 @@ export default function Experts({
     <BoxedContent className="flex gap-x-5 py-20 mt-8">
       <ExpertCategories locale={lang} selectedCategory={category} categories={categories} />
       <div className="flex-1 space-y-4 min-h-screen">
-        <ExpertHeader selectedCategory={category} categories={categories} sortBy={sortBy} />
+        <ExpertHeader
+          lang={lang}
+          selectedCategory={category}
+          categories={categories}
+          sortBy={sortBy}
+        />
         <ExpertsLoader dictionary={dictionary} experts={experts} />
       </div>
     </BoxedContent>
