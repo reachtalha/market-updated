@@ -11,6 +11,8 @@ import { db } from '@/lib/firebase/client';
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 
+export const dynamic = 'force-dynamic';
+
 const getExperts: any = async (): Promise<any> => {
   let experts: any = [];
 
@@ -59,8 +61,9 @@ export default async function Home({ params: { lang } }: LocaleType) {
             </h3>
             <p className="uppercase text-xs tracking-tight">{dictionary.home.experts.subtitle}</p>
           </div>
+          {!experts?.length ? <p className="text-center">No experts found</p> : null}
           <ul className="flex gap-x-4 items-start md:pl-10 overflow-auto overflow-y-hidden no-scrollbar snap-x snap-start">
-            {experts.map((expert: any, i: number) => (
+            {experts?.map((expert: any, i: number) => (
               <li key={Math.random() + i + Date.now()} className="flex-shrink-0 max-w-[300px]">
                 <ExpertCard
                   dictionary={dictionary}

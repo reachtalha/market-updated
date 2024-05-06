@@ -10,7 +10,7 @@ const getCategories = async () => {
     categories.push({
       name: doc.data().title,
       subCategories: ['All', ...doc.data().list],
-      lifeSpan: doc.data().lifeSpaan,
+      lifeSpan: doc.data().lifeSpan,
       image: doc.data().image,
       slug: doc.data().title,
       href: '/products?category'

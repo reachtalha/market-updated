@@ -17,7 +17,7 @@ const getCategories = async () => {
     categories.push({
       name: doc.data().title,
       subCategories: doc.data().list,
-      lifeSpan: doc.data().lifeSpaan,
+      lifeSpan: doc.data().lifeSpan,
       image: doc.data().image,
       slug: doc.data().title,
       href: '/products?category'
@@ -26,7 +26,7 @@ const getCategories = async () => {
   return categories;
 };
 
-export default async function SearchProducts({ params: { lang } } : LocaleType) {
+export default async function SearchProducts({ params: { lang } }: LocaleType) {
   const categories = await getCategories();
   const dictionary = await getDictionary(lang);
 

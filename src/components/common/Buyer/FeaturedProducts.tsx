@@ -62,6 +62,14 @@ export default function FeaturedProducts({ title }: { title: string }) {
     return <Error className="w-full h-96 flex items-center justify-center " />;
   }
 
+  if (products?.length === 0) {
+    return (
+      <div className="py-10">
+        <p className="text-center">No producst found</p>
+      </div>
+    );
+  }
+
   return (
     <Carousel title={title} breakpoints={featuredProductsBreakpoints}>
       {products?.map((_: any, i: number) => (

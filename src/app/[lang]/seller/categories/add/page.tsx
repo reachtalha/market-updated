@@ -32,7 +32,7 @@ const PerishableItemForm: React.FC = () => {
       image:
         'https://firebasestorage.googleapis.com/v0/b/market-25d08.appspot.com/o/category%2FUntitled.png?alt=media&token=25aea40f-b241-40d5-adaf-9d93f833a0ba',
       title,
-      lifeSpaan: isPerishable ? 'perishable' : 'non-perishable',
+      lifeSpan: isPerishable ? 'perishable' : 'non-perishable',
       list: items
     };
     const addDocument = async () => {
