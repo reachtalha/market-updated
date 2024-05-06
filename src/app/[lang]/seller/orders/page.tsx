@@ -23,6 +23,9 @@ const getOrders = async () => {
   docSnapshot = await getDocs(collection(db, 'orders'));
   docSnapshot.docs.forEach((doc) => {
     const products = doc.data().items.filter((item: any) => item.shopId === shopId);
+    const totalPrice = products.reduce((acc: number, product: any) => {
+      return acc + product.selectedVariant.price * product.quantity;
+    }, 0);
 
     if (products.length > 0) {
       orders.push({
@@ -30,9 +33,10 @@ const getOrders = async () => {
         name: doc.data().shippingAddress.firstName,
         email: doc.data().shippingAddress.email,
         status: doc.data().status ?? 'processing',
-        price: formatCurrency(doc.data().total),
+        price: formatCurrency(totalPrice),
         address: doc.data().shippingAddress.address,
-        placedAt: doc.data().timeStamp.toDate()
+        placedAt: doc.data().timeStamp.toDate(),
+        shopId
       });
     }
   });
@@ -41,7 +45,10 @@ const getOrders = async () => {
 };
 
 export default function DemoPage() {
-  const { data, isLoading } = useSwr('sellerOrders', getOrders);
+  const { data, isLoading } = useSwr(
+    auth.currentUser ? ['seller-order', auth.currentUser?.uid] : null,
+    getOrders
+  );
   const [search, setSearch] = useState('');
   const [filteredOrders, setFilteredOrders] = useState<any>([]);
   const [page, setPage] = useState(0);

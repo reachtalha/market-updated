@@ -4,6 +4,7 @@ import { db } from '@/lib/firebase/client';
 import { doc, getDoc } from 'firebase/firestore';
 import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
+import { notFound } from 'next/navigation';
 
 type Props = {
   params: {
@@ -12,27 +13,18 @@ type Props = {
   };
 };
 
-const getOrder = async (id: string) => {
-  const docRef = await getDoc(doc(db, 'orders', id));
+const getOrder = async (orderId: string, shopId: string) => {
+  const docRef = await getDoc(doc(db, 'orders', orderId));
   let data = null;
   let order;
   if (docRef.exists()) {
     data = docRef.data();
+    const products = data.items.filter((item: any) => item.shopId === shopId);
     order = {
       id: docRef.id,
       placedAt: data.timeStamp.toDate(),
       status: data.status || 'processing',
-      products: data.items.map((item: any) => {
-        return {
-          id: item.id,
-          name: item.name,
-          price: item.selectedVariant.price,
-          selectedVariant: item.selectedVariant,
-          unit: item.unit,
-          quantity: item.quantity,
-          image: item.image
-        };
-      }),
+      products: products,
       shipping: {
         name: data.shippingMethod || 'Express Courier',
         time: data.shippingTime || 1,
@@ -76,7 +68,11 @@ type Order = {
 };
 
 const page = async ({ params }: Props) => {
-  const order: Order = (await getOrder(params.id)) as Order;
+  const [orderId, shopId] = params.id?.split('-');
+  if (!orderId || !shopId) {
+    notFound();
+  }
+  const order: Order = (await getOrder(orderId, shopId)) as Order;
   const dictionary = await getDictionary(params.lang);
 
   return (

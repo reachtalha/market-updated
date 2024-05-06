@@ -5,6 +5,7 @@ import Loader from '@/components/common/Loader';
 import { useInView } from 'react-intersection-observer';
 import { useSearchParams } from 'next/navigation';
 import { getProducts } from '@/actions/getForYouProducts';
+import BoxedContent from '../../BoxedContent';
 
 type Props = {
   products: any;
@@ -38,19 +39,19 @@ const Index = ({ products, categories }: Props) => {
   }, [inView]);
 
   return (
-    <div className="w-full">
+    <BoxedContent className="mt-32">
       <Products products={allProducts} />
 
       {responseEnded ? (
         <div className="w-full flex items-cente justify-center text-gray-500 my-10 text-lg">
-          <span>No more experts to display</span>
+          <span>No more products to display</span>
         </div>
       ) : (
         <div ref={ref}>
           <Loader className="w-full flex items-center justify-center my-5" />
         </div>
       )}
-    </div>
+    </BoxedContent>
   );
 };
 

@@ -9,6 +9,7 @@ export type Order = {
   address: string;
   price: string;
   placedAt: string;
+  shopId: string;
 };
 
 export const columns: ColumnDef<Order>[] = [
@@ -39,7 +40,7 @@ export const columns: ColumnDef<Order>[] = [
       const status: string = String(row.getValue('status'));
       return (
         <div
-          className={` rounded-xl p-1 px-2 capitalize flex items-center font-medium justify-center ${
+          className={` rounded-xl p-1.5 px-3 w-fit h-fit capitalize flex items-center font-medium justify-center ${
             status.toLowerCase() === 'complete'
               ? 'bg-green-100 text-green-500'
               : status.toLowerCase() === 'processing'

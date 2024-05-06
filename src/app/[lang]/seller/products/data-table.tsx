@@ -112,9 +112,10 @@ export function DataTable<TValue>({ columns, data, totalRecords }: DataTableProp
       });
 
       await Promise.all([moreImages]);
-
       toast.success('Product Successfully Deleted');
-      router.refresh();
+      setTimeout(() => {
+        router.refresh();
+      }, 1000);
     } catch (e) {
       throw new Error();
     } finally {
@@ -183,21 +184,22 @@ export function DataTable<TValue>({ columns, data, totalRecords }: DataTableProp
                   })}
                   <TableCell key={index}>
                     <div className="flex flex-row gap-x-4">
-                      <Pencil
-                        size={15}
-                        className={` hover:-translate-y-[.15rem] transition-transform duration-200 ${
-                          loading ? ' pointer-events-none' : 'cursor-pointer'
-                        }`}
+                      <Button
+                        disabled={loading}
+                        variant="ghost"
                         onClick={() => handleEdit(row?.original?.id)}
-                      />
-                      <Trash2
-                        size={15}
-                        color="#C51605"
-                        className={` hover:-translate-y-[.15rem] transition-transform duration-200 ${
-                          loading ? ' pointer-events-none' : 'cursor-pointer'
-                        }`}
+                        className="rounded-full p-1 hover:-translate-y-[.15rem] transition-transform duration-200"
+                      >
+                        <Pencil size={15} />
+                      </Button>
+                      <Button
+                        disabled={loading}
+                        variant="ghost"
                         onClick={() => deleteProduct(row?.original?.id)}
-                      />
+                        className="rounded-full p-1 hover:-translate-y-[.15rem] transition-transform duration-200"
+                      >
+                        <Trash2 size={15} />
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>

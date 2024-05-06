@@ -93,7 +93,7 @@ export function DataTable<TValue>({
                     <MoveRight
                       size={15}
                       onClick={() => {
-                        router.push(`/seller/orders/${row?.original?.id}`);
+                        router.push(`/seller/orders/${row?.original?.id}-${row?.original?.shopId}`);
                       }}
                       className="cursor-pointer hover:translate-x-[.15rem] transition-transform duration-200"
                     />

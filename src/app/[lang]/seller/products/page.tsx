@@ -122,12 +122,11 @@ const getTotalRecords = async () => {
     const querySnapshot = await getCountFromServer(
       query(collection(db, 'products'), where('uid', '==', user.uid))
     );
-    const totalRecords = querySnapshot.data().count; // This gives you the count of documents
+    const totalRecords = querySnapshot.data().count;
 
     return totalRecords;
   } catch (error) {
-    console.error('Error getting documents: ', error);
-    return 0; // Handle the error gracefully
+    return 0;
   }
 };
 
