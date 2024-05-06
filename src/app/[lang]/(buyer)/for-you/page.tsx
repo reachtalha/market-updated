@@ -51,11 +51,9 @@ export default async function Index({ params: { lang } }: LocaleType) {
   const categories = await getCategories();
   const products = await getProducts(categories);
   const dictionary = await getDictionary(lang);
-  console.log(lang);
   return (
     <>
       <ForYou products={JSON.stringify(products)} categories={JSON.stringify(categories)} />
-
       <section className="bg-black py-10 md:py-16">
         <BoxedContent>
           <header className="text-sm flex-wrap gap-y-4 md:text-lg text-white flex justify-between items-center mb-10">
@@ -71,12 +69,12 @@ export default async function Index({ params: { lang } }: LocaleType) {
           <FeaturesShops />
         </BoxedContent>
       </section>
-      <div className="py-16 px-10">
+      <BoxedContent className="py-16">
         <OrganicSimplifiedSection
           title={dictionary.home.bloggingSection.title}
           tag={dictionary.home.bloggingSection.tag}
         />
-      </div>
+      </BoxedContent>
     </>
   );
 }

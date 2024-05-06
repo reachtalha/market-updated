@@ -68,7 +68,10 @@ const SummaryItem = ({ title, amount }: { title: string; amount: number }) => {
 
 const OrderDetail = ({ order, dictionary }: Props) => {
   const getSubtotal = () => {
-    return order.products.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
+    return order.products.reduce(
+      (acc: any, curr: any) => acc + curr.selectedVariant.price * curr.quantity,
+      0
+    );
   };
   const getTotal = () => {
     return getSubtotal() + order?.shipping.charges;
@@ -85,7 +88,7 @@ const OrderDetail = ({ order, dictionary }: Props) => {
             title={p.name}
             unit={p.unit}
             measurement={p?.selectedVariant?.measurement}
-            price={p.price}
+            price={p.selectedVariant.price}
             image={p.image}
           />
         ))}

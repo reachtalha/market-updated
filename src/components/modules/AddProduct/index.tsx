@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import {
   getDocs,
   collection,
@@ -232,11 +232,9 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
         await updateProduct(data, coverImageURL, otherImagesURL);
         toast.success('Product Updated!');
         window.location.reload();
-      } else {
-        await addNewProduct(data, coverImageURL, otherImagesURL);
-        toast.success('Product Added!');
-        setStep(1);
-      }
+      } else await addNewProduct(data, coverImageURL, otherImagesURL);
+      toast.success('Product Added!');
+      setStep(1);
 
       // Reset form and state
       emptySKUList();

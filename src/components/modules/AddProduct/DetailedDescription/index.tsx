@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import Title from '@/components/common/Seller/Shared/Title';
-import { Pencil } from 'lucide-react';
 
 type Props = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -23,7 +22,6 @@ const Index = ({ setStep, isEdit = false }: Props) => {
     const EditorJS = (await import('@editorjs/editorjs')).default;
     const Header = await require('@editorjs/header');
     const Embed = await require('@editorjs/embed');
-    const Table = await require('@editorjs/table');
     const List = await require('@editorjs/list');
     const Code = await require('@editorjs/code');
     const LinkTool = await require('@editorjs/link');
@@ -53,7 +51,6 @@ const Index = ({ setStep, isEdit = false }: Props) => {
           list: List,
           code: Code,
           inlineCode: InlineCode,
-          table: Table,
           embed: {
             class: Embed,
             config: {
