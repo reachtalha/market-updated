@@ -1,7 +1,7 @@
 import React from 'react';
-import Error from '@/components/common/Error';
 
 import Index from '@/components/modules/chat/index';
+import { notFound } from 'next/navigation';
 
 type Props = {
   params: {
@@ -13,7 +13,7 @@ const ChatRoom = ({ params }: Props) => {
   const { chatId } = params;
 
   if (!chatId) {
-    return <Error />;
+    return notFound();
   }
 
   return <Index chatId={chatId} />;

@@ -18,7 +18,7 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   const searchParams = useSearchParams();
   const seller = searchParams.get('id');
   const returnUrl = searchParams.get('return_url') || '';
-  const isOnlychat = pathname === '/chat';
+  const isOnlychat = pathname === `/${lang}/chat`;
 
   useEffect(() => {
     (async () => {

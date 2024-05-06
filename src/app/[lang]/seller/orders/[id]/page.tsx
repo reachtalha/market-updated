@@ -70,7 +70,7 @@ type Order = {
 const page = async ({ params }: Props) => {
   const [orderId, shopId] = params.id?.split('-');
   if (!orderId || !shopId) {
-    notFound();
+    return notFound();
   }
   const order: Order = (await getOrder(orderId, shopId)) as Order;
   const dictionary = await getDictionary(params.lang);

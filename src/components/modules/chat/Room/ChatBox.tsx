@@ -38,7 +38,7 @@ const ChatBox = ({ chatId, users }: ChatBoxProps) => {
         <div className="grid place-content-center my-[10%]">
           <NoChat className="w-40 h-40 place-self-center" />
           <h4 className="place-self-center text-gray-800 font-semibold">No Messages Found</h4>
-          <p className="w-1/2 place-self-center text-center text-gray-500">
+          <p className="w-fit place-self-center text-center text-gray-500">
             No messages in your inbox, yet!
           </p>
         </div>
