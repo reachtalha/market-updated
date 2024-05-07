@@ -107,13 +107,16 @@ export default function Products({ categories }: ProductsProps) {
   }, [products, sortProductsBy]);
 
   useEffect(() => {
-    setFilteredProducts(
-      products
-        ? products.filter(
-            (p) => (min === '' || p.price >= Number(min)) && (max === '' || p.price <= Number(max))
-          )
-        : []
-    );
+    if (min || max) {
+      setFilteredProducts(
+        products
+          ? products.filter(
+              (p) =>
+                (min === '' || p.price >= Number(min)) && (max === '' || p.price <= Number(max))
+            )
+          : []
+      );
+    }
   }, [products, min, max]);
 
   const getNewProducts = async () => {
