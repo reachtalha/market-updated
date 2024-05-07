@@ -40,8 +40,8 @@ export default async function Home({ params: { lang } }: LocaleType) {
         className="w-full overflow-hidden grid place-content-center gap-3 text-white relative bg-gradient-to-b from-neutral-800/50 via-neutral-700-40 to-transparent"
         img={heroImg}
       >
-        <div className="block h-fit overflow-y-hidden py-1">
-          <h1 className="animate-text text-5xl font-alpina italic font-medium text-center">
+        <div className="block h-fit overflow-y-hidden py-1 px-1.5">
+          <h1 className="animate-text text-4xl md:text-5xl font-alpina italic font-medium text-center">
             {dictionary.home.hero.title}
           </h1>
         </div>

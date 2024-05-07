@@ -29,23 +29,12 @@ import { useInView } from 'react-intersection-observer';
 import { useSearchParams } from 'next/navigation';
 
 const RECORDS_PER_PAGE = 11;
-const getProducts: any = async (
-  category: string,
-  type?: string,
-  rating?: string,
-  price?: any
-): Promise<any> => {
+const getProducts: any = async (category: string, type?: string, rating?: string): Promise<any> => {
   let queries: any = [];
   let orderby: any = [];
   let queryBase: CollectionReference | Query = collection(db, 'products');
   if (category?.trim() === 'organic clothing') {
     category = 'organic clothing & apparel';
-  }
-
-  if (price?.min) {
-    queries.push(where('price', '>=', Number(price.min)));
-    queries.push(where('price', '<=', Number(price.max)));
-    orderby.push(orderBy('pricing'));
   }
 
   if (rating) {
@@ -86,8 +75,8 @@ export default function Products({ categories }: ProductsProps) {
   const sortProductsBy = useSortingStore((state: any) => state.sortProductsBy);
 
   let { data, error, isLoading } = useSWR(
-    [`products-${category}`, `products-${type}`, selectedSubCategory, min, max, rating],
-    () => getProducts(category, type, rating, { min, max })
+    [`products-${category}`, `products-${type}`, selectedSubCategory, rating],
+    () => getProducts(category, type, rating)
   );
 
   useEffect(() => {
@@ -121,10 +110,7 @@ export default function Products({ categories }: ProductsProps) {
   const getNewProducts = async () => {
     try {
       setLoading(true);
-      const response = await getProducts(category, type, products[products.length - 1], rating, {
-        min,
-        max
-      });
+      const response = await getProducts(category, type, products[products.length - 1], rating);
       if (response.length < RECORDS_PER_PAGE) setProductsEnded(true);
 
       if (response[response.length - 1]?.id !== products[products.length - 1]?.id)

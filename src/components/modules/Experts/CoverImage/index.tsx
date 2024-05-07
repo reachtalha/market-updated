@@ -55,7 +55,13 @@ const ExpertCoverImage = ({ uid, coverImage }: { uid: string; coverImage: string
   return (
     <div className="w-full group relative h-[500px] before:content-[''] before:absolute before:inset-0  before:bg-gradient-to-b before:from-black/30 before:via-black/20 before:z-10">
       {coverImage ? (
-        <Image src={coverImage} className="h-full w-full object-cover" fill alt="expert-cover" />
+        <Image
+          src={coverImage}
+          className="h-full w-full object-cover"
+          fill
+          alt="expert-cover"
+          priority
+        />
       ) : (
         <div className="h-full w-full bg-neutral-700 grid place-content-center">
           <ImageIcon className="h-20 w-20 text-neutral-50 place-self-center" />

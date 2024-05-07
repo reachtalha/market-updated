@@ -39,7 +39,7 @@ const CreatePayout = () => {
 
   const {
     data: balance,
-    isValidating,
+    isLoading,
     error
   } = useSWR(user?.stripeConnectId ? `balance-${user.stripeConnectId}` : null, async () => {
     const res = await axios.get(`/api/payouts/manual-payouts?id=${user?.stripeConnectId}`);
@@ -79,16 +79,16 @@ const CreatePayout = () => {
       <CardHeader>
         <CardTitle className="space-y-2">
           <h2>Create Payouts</h2>
-          <p className="text-lg text-gray-500 font-normal">
+          <p className="text-sm md:text-base lg:text-lg text-gray-500 font-normal">
             Transfer funds from your Stripe account to your bank account instantly.
           </p>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-7">
         <div className="inline-flex gap-x-2.5 items-center">
-          <p> Your current balance:</p>
+          <p className=""> Your current balance:</p>
           <div>
-            {isValidating ? (
+            {isLoading ? (
               <span className="block w-12 bg-gray-300 h-8 rounded-md animate-pulse" />
             ) : error ? (
               <p className="text-red-500 text-xs">Failed to fetch balance</p>

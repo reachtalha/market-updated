@@ -112,7 +112,7 @@ const Expert = async ({ params }: ExpertProps) => {
                 <p className="uppercase">{dictionary.expertDetails.topicsLabel}</p>
                 <div className="flex flex-wrap gap-x-6 gap-y-3 mt-3">
                   {expert?.topics?.map((item: any, idx: number) => (
-                    <Link href={`/experts?category=${item}`} key={idx}>
+                    <Link href={`/${params.lang}/experts?category=${item}`} key={idx}>
                       <Button
                         key={idx}
                         variant="outline"
