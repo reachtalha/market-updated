@@ -43,7 +43,7 @@ const Index = ({ products, categories }: Props) => {
 
       {!allProducts.length ? (
         <div className="w-full flex items-center justify-center text-gray-500 h-96 text-lg">
-          <span>No products found for you. Let's keep searching!</span>
+          <span>No products found for you. Let&apos;s keep searching!</span>
         </div>
       ) : null}
 
