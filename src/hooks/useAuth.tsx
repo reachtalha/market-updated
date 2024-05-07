@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }: any) => {
     try {
       setLoading(true);
       const userCredentials: any = await signInWithEmailAndPassword(auth, email, password);
-      if (userCredentials?.role === 'superadmin') router.push(`/${locale}/superadmin`);
+      if (userCredentials?.role === 'admin') router.push(`/${locale}/super-admin`);
       else router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
       toast.success("You're logged in!");
     } catch (e: any) {

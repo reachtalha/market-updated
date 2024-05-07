@@ -1,5 +1,6 @@
 import { getDocs, collection, query, where, limit, orderBy, startAfter } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
+
 export const getProducts = async (categories: any, lastDoc: any) => {
   const productsRef = await getDocs(
     query(

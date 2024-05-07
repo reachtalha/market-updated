@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import Products from '@/components/common/Buyer/For-you/Products';
 import Loader from '@/components/common/Loader';
 import { useInView } from 'react-intersection-observer';
-import { useSearchParams } from 'next/navigation';
 import { getProducts } from '@/actions/getForYouProducts';
 import BoxedContent from '../../BoxedContent';
 
@@ -42,11 +41,18 @@ const Index = ({ products, categories }: Props) => {
     <BoxedContent className="mt-32">
       <Products products={allProducts} />
 
-      {responseEnded ? (
-        <div className="w-full flex items-cente justify-center text-gray-500 my-10 text-lg">
+      {!allProducts.length ? (
+        <div className="w-full flex items-center justify-center text-gray-500 h-96 text-lg">
+          <span>No products found for you. Let's keep searching!</span>
+        </div>
+      ) : null}
+
+      {responseEnded && (
+        <div className="w-full flex items-center justify-center text-gray-500 h-28 text-lg">
           <span>No more products to display</span>
         </div>
-      ) : (
+      )}
+      {allProducts.length > 0 && (
         <div ref={ref}>
           <Loader className="w-full flex items-center justify-center my-5" />
         </div>

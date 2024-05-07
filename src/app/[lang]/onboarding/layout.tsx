@@ -8,7 +8,7 @@ import { useRole } from '@/hooks/useUserRole';
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const role = useRole();
   const router = useRouter();
-  if (role === 'superadmin') {
+  if (role === 'admin') {
     router.push('/super-admin');
   }
   if (!auth.currentUser) {

@@ -72,7 +72,7 @@ const TopicList: React.FC<TopicListProps> = ({
 
   return (
     <div className="flex space-y-1 flex-col">
-      <Label htmlFor="topicInput">Add Topics</Label>
+      <Label htmlFor="topics">Add Topics</Label>
       <div className="w-full flex rounded-md overflow-hidden p-1 border-[1px] border-neutral-200 placeholder:text-sm focus-within:ring-0 focus-within:ring-neutral-400 focus-within:ring-offset-0">
         {topicsList.map((topic, index) => (
           <span
@@ -101,8 +101,9 @@ const TopicList: React.FC<TopicListProps> = ({
             onKeyDown={handleInputKeyDown}
             onBlur={handleInputBlur}
             className="w-full bg-none px-2 py-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+            list="topicSuggestions"
           />
-          <datalist id="topicsList" className="appearance-none">
+          <datalist id="topicSuggestions">
             {topics.map((t: string) => (
               <option value={t} key={t} />
             ))}

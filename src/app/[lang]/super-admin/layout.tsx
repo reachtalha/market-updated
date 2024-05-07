@@ -15,7 +15,7 @@ export default function NewRegisteredUsers({ children }: { children: React.React
     return <Loader className="w-screen h-screen flex items-center justify-center" />;
   }
 
-  if (role !== 'superadmin') {
+  if (role !== 'admin') {
     router.back();
   }
 

@@ -29,22 +29,16 @@ const getCategories = async () => {
 
 const getProducts = async (categories: any) => {
   const productsRef = await getDocs(
-    query(
-      collection(db, 'products'),
-      where('category', 'in', categories),
-      orderBy('__name__'),
-      limit(6)
-    )
+    query(collection(db, 'products'), where('category', 'in', categories), limit(11))
   );
-
-  if (productsRef.empty) return [];
-
-  return productsRef.docs.map((doc) => {
-    return {
-      id: doc.id,
-      ...doc.data()
-    };
+  const list: any = [];
+  productsRef.forEach((p) => {
+    list.push({
+      id: p.id,
+      ...p.data()
+    });
   });
+  return list;
 };
 
 export default async function Index({ params: { lang } }: LocaleType) {
