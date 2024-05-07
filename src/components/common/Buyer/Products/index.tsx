@@ -15,7 +15,6 @@ import {
   query,
   where,
   limit,
-  startAfter,
   orderBy,
   CollectionReference,
   Query
@@ -106,6 +105,16 @@ export default function Products({ categories }: ProductsProps) {
         setFilteredProducts(products);
     }
   }, [products, sortProductsBy]);
+
+  useEffect(() => {
+    setFilteredProducts(
+      products
+        ? products.filter(
+            (p) => (min === '' || p.price >= Number(min)) && (max === '' || p.price <= Number(max))
+          )
+        : []
+    );
+  }, [products, min, max]);
 
   const getNewProducts = async () => {
     try {

@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import toast from 'react-hot-toast';
 
 const ReactStars = ReactStar as any;
 
@@ -37,6 +38,13 @@ const PriceFilter = () => {
     formData.forEach((value, key) => {
       formDataObj[key] = value.toString();
     });
+
+    const min = Number(formDataObj['min']);
+    const max = Number(formDataObj['max']);
+    if (min >= max) {
+      toast.error('Please ensure that the minimum value is less than the maximum value.');
+      return;
+    }
 
     const updatedParams = new URLSearchParams(params.toString());
     Object.entries(formDataObj).forEach(([key, value]) => {
