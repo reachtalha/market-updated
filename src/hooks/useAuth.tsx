@@ -1,14 +1,8 @@
-"use client";
+'use client';
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-} from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createUser, deleteUser } from '@/actions/userCookies';
 
 import {
   signInWithEmailAndPassword,
@@ -19,9 +13,16 @@ import {
   FacebookAuthProvider,
   browserSessionPersistence,
   setPersistence,
-} from "firebase/auth";
+  reauthenticateWithCredential,
+  updatePassword as firebaseUpdatePassword,
+  EmailAuthProvider,
+  updateEmail,
+  updateProfile
+} from 'firebase/auth';
 
-import { auth } from "@/lib/firebase/client";
+import { auth } from '@/lib/firebase/client';
+import toast from 'react-hot-toast';
+import useLocale from '@/hooks/useLocale';
 
 const provider = new GoogleAuthProvider();
 const fbprovider = new FacebookAuthProvider();
@@ -33,7 +34,8 @@ interface IAuthContext {
   sessionBasedSignin: (email: string, password: string) => Promise<void>;
   signInWithGoogleAccount: () => Promise<void>;
   signInWithFacebookAccount: () => Promise<void>;
-  error: any;
+  updatePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  updateCurrentUser: (displayName: string, email: string) => Promise<void>;
   loading: boolean;
 }
 
@@ -44,21 +46,24 @@ const AuthContext = createContext<IAuthContext>({
   sessionBasedSignin: async (email: string, password: string) => {},
   signInWithGoogleAccount: async () => {},
   signInWithFacebookAccount: async () => {},
-  error: null,
-  loading: false,
+  updatePassword: async () => {},
+  updateCurrentUser: async () => {},
+  loading: false
 });
 
 export const AuthProvider = ({ children }: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
   const [initialLoading, setInitialLoading] = useState<boolean>(true);
   const router = useRouter();
+  const locale = useLocale();
 
   useEffect(
     () =>
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user: any) => {
         if (user) {
+          const idTokenResult = await auth.currentUser?.getIdTokenResult();
+          createUser({ uid: user.uid, role: idTokenResult?.claims?.role });
           setUser(user);
         } else {
           setUser(null);
@@ -70,12 +75,19 @@ export const AuthProvider = ({ children }: any) => {
 
   const signInWithGoogleAccount = async () => {
     try {
-      setError("");
       setLoading(true);
       await signInWithPopup(auth, provider);
-      router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
-    } catch (error: any) {
-      setError(error.message);
+      router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
+    } catch (e: any) {
+      if (e.code === 'auth/user-not-found') {
+        toast.error('Sorry, your account is not registered. Please check your email');
+      } else if (e.code === 'auth/wrong-password') {
+        toast.error('Oops! The password you entered is incorrect. Please try again.');
+      } else {
+        toast.error(
+          "Oops! Something went wrong, and we couldn't sign you in. Please try again later."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -83,13 +95,20 @@ export const AuthProvider = ({ children }: any) => {
 
   const signInWithFacebookAccount = async () => {
     try {
-      setError("");
       setLoading(true);
       await signInWithPopup(auth, fbprovider);
       setUser(user);
-      router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
-    } catch (error: any) {
-      setError(error.message);
+      router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
+    } catch (e: any) {
+      if (e.code === 'auth/user-not-found') {
+        toast.error('Sorry, your account is not registered. Please check your email');
+      } else if (e.code === 'auth/wrong-password') {
+        toast.error('Oops! The password you entered is incorrect. Please try again.');
+      } else {
+        toast.error(
+          "Oops! Something went wrong, and we couldn't sign you in. Please try again later."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -97,17 +116,21 @@ export const AuthProvider = ({ children }: any) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      setError("");
       setLoading(true);
-      const userCredentials = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      setUser(userCredentials.user);
-      router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
-    } catch (error: any) {
-      setError(error.message);
+      const userCredentials: any = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredentials?.role === 'admin') router.push(`/${locale}/super-admin`);
+      else router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
+      toast.success("You're logged in!");
+    } catch (e: any) {
+      if (e.code === 'auth/user-not-found') {
+        toast.error('Sorry, your account is not registered. Please check your email');
+      } else if (e.code === 'auth/wrong-password') {
+        toast.error('Oops! The password you entered is incorrect. Please try again.');
+      } else {
+        toast.error(
+          "Oops! Something went wrong, and we couldn't sign you in. Please try again later."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -115,13 +138,21 @@ export const AuthProvider = ({ children }: any) => {
 
   const sessionBasedSignin = async (email: string, password: string) => {
     try {
-      setError("");
       setLoading(true);
       await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
-      router.push(`/onboarding/?id=${auth.currentUser?.uid}`);
-    } catch (error: any) {
-      setError(error.message);
+      router.push(`/${locale}/onboarding/?id=${auth.currentUser?.uid}`);
+      toast.success("You're logged in!");
+    } catch (e: any) {
+      if (e.code === 'auth/user-not-found') {
+        toast.error('Sorry, your account is not registered. Please check your email');
+      } else if (e.code === 'auth/wrong-password') {
+        toast.error('Oops! The password you entered is incorrect. Please try again.');
+      } else {
+        toast.error(
+          "Oops! Something went wrong, and we couldn't sign you in. Please try again later."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -130,10 +161,44 @@ export const AuthProvider = ({ children }: any) => {
   const logout = async () => {
     try {
       await signOut(auth);
+      deleteUser();
       setUser(null);
-      router.push("/auth/login");
-    } catch (error: any) {
-      setError(error.message);
+      router.push(`/${locale}/auth/login`);
+    } catch (e: any) {
+      toast.error(`Oops! We encountered an issue while logout.`);
+    }
+  };
+
+  const updatePassword = async (currentPassword: string, newPassword: string) => {
+    const user = auth.currentUser;
+    if (user) {
+      const credentials = EmailAuthProvider.credential(user.email as string, currentPassword);
+      try {
+        setLoading(true);
+        await reauthenticateWithCredential(user, credentials);
+        firebaseUpdatePassword(user, newPassword);
+      } catch (err: any) {
+        throw new Error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const updateCurrentUser = async (displayName: string, email: string) => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        setLoading(true);
+        await updateEmail(user, email);
+        await updateProfile(user, {
+          displayName: displayName
+        });
+      } catch (err: any) {
+        throw new Error(err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -145,8 +210,9 @@ export const AuthProvider = ({ children }: any) => {
       signInWithGoogleAccount,
       signInWithFacebookAccount,
       logout,
-      loading,
-      error,
+      updatePassword,
+      updateCurrentUser,
+      loading
     }),
     [
       user,
@@ -155,15 +221,14 @@ export const AuthProvider = ({ children }: any) => {
       signInWithGoogleAccount,
       signInWithFacebookAccount,
       logout,
-      loading,
-      error,
+      updatePassword,
+      updateCurrentUser,
+      loading
     ]
   );
 
   return (
-    <AuthContext.Provider value={memoedValue}>
-      {!initialLoading && children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={memoedValue}>{!initialLoading && children}</AuthContext.Provider>
   );
 };
 
