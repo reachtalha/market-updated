@@ -18,16 +18,24 @@ const Index = ({ products, categories }: Props) => {
   const { ref, inView } = useInView();
   let lastDoc = allProducts[allProducts.length - 1];
   const [responseEnded, setResponseEnded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const loadMoreExperts = async () => {
-    const response: any = await getProducts(categories, lastDoc);
+    try {
+      setLoading(true);
+      const response: any = await getProducts(categories, lastDoc);
 
-    if (response.length > 0) {
-      setAllProducts((prev: any) => [...prev, ...response]);
-    }
+      if (response.length > 0) {
+        setAllProducts((prev: any) => [...prev, ...response]);
+      }
 
-    if (response.length < 6 || !response) {
-      setResponseEnded(true);
+      if (response.length < 6 || !response) {
+        setResponseEnded(true);
+      }
+    } catch (e) {
+      throw new Error();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,16 +55,14 @@ const Index = ({ products, categories }: Props) => {
         </div>
       ) : null}
 
+      {loading && <Loader className="w-full flex items-center justify-center my-5" />}
+
       {responseEnded && (
         <div className="w-full flex items-center justify-center text-gray-500 h-28 text-lg">
           <span>No more products to display</span>
         </div>
       )}
-      {allProducts.length > 0 && (
-        <div ref={ref}>
-          <Loader className="w-full flex items-center justify-center my-5" />
-        </div>
-      )}
+      <div ref={ref} />
     </BoxedContent>
   );
 };

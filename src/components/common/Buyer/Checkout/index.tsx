@@ -112,7 +112,7 @@ export default function Checkout({ dictionary }: { dictionary: any }) {
         phone: `+${user?.countryCode}${user?.phone}` || ''
       });
     }
-  }, [form, user]);
+  }, [user]);
 
   async function onSubmit(values: FormValues) {
     try {
