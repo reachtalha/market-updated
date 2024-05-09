@@ -14,7 +14,6 @@ import useLocale from '@/hooks/useLocale';
 
 const localeMapper = {
   en: 'English'
-  // 'nl': 'Dutch'
 };
 
 export default function LocaleSwitcher() {
