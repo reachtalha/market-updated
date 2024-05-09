@@ -162,7 +162,7 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
               {dictionary.auth.common.socialAuthGoogleLabel}
             </span>
           </Button>
-          <Button
+          {/* <Button
             type="button"
             disabled={loading}
             onClick={signInWithFacebookAccount}
@@ -174,7 +174,7 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
             <span className="mr-auto text-primary group-hover:text-white">
               {dictionary.auth.common.socialAuthFacebookLabel}
             </span>
-          </Button>
+          </Button> */}
         </div>
         <p className="text-center mt-3">
           {dictionary.auth.register.yesMember}{' '}
