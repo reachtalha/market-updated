@@ -1,27 +1,68 @@
+'use client';
+
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import BoxedContent from '@/components/common/BoxedContent';
 import Link from 'next/link';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-const DISCOUNT = 10;
+const schema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address' })
+});
 
-const Footer = ({ dictionary, locale }: { dictionary: any, locale: string }) => {
+type FormSchema = z.infer<typeof schema>;
+
+const Footer = ({ dictionary, locale }: { dictionary: any; locale: string }) => {
+  const {
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors, isSubmitting }
+  } = useForm<FormSchema>({
+    resolver: zodResolver(schema),
+    mode: 'onSubmit',
+    reValidateMode: 'onChange'
+  });
+
+  const handleSubscription = async (data: FormSchema) => {
+    try {
+      const res = await axios.post('/api/email-subscription', {
+        email: data.email
+      });
+
+      if (res.status === 200) {
+        toast.success("Thank you! You've successfully subscribed.");
+        reset();
+      } else {
+        toast.error('Subscription failed. Please try again later.');
+      }
+    } catch (error) {
+      toast.error('Subscription failed. Please try again later.');
+    }
+  };
+
   return (
-    <footer className="">
+    <footer>
       <BoxedContent className="flex flex-col lg:flex-row  w-full mx-auto my-12">
         <div className="w-full space-y-6">
-          <p className="uppercase text-sm">
-            {dictionary.footer.subscription.heading} {DISCOUNT}%
-          </p>
-          <form className="flex items-center p-2 w-full md:w-2/3 gap-x-1 border placeholder:text-sm border-neutral-500 placeholder:text-neutral-500 focus-within:border-neutral-900 rounded-md">
-            <input
-              type="email"
-              placeholder={dictionary.footer.subscription.emailPlaceholder}
-              className="bg-none focus:outline-none flex-1"
-            />
-            <button type="submit">
-              <ChevronRightIcon width={22} height={22} />
-            </button>
+          <p className="uppercase text-sm">Subscribe to our newsletter</p>
+          <form onSubmit={handleSubmit(handleSubscription)}>
+            <div className="flex items-center p-2 w-full md:w-2/3 gap-x-1 border placeholder:text-sm border-neutral-500 placeholder:text-neutral-500 focus-within:border-neutral-900 rounded-md">
+              <input
+                type="email"
+                placeholder={dictionary.footer.subscription.emailPlaceholder}
+                className="bg-none focus:outline-none flex-1"
+                {...register('email')}
+              />
+              <button type="submit" disabled={isSubmitting} className="disabled:cursor-not-allowed">
+                <ChevronRightIcon width={22} height={22} />
+              </button>
+            </div>
+            {errors.email && <p className="text-sm text-red-500 mt-1.5">{errors.email.message}</p>}
           </form>
           <ul className="hidden lg:flex flex-col md:flex-row gap-x-5 text-sm">
             <li className="cursor-pointer hover:underline underline-offset-2">
@@ -46,7 +87,9 @@ const Footer = ({ dictionary, locale }: { dictionary: any, locale: string }) => 
                 {dictionary.footer.links.about.expertsProgram}
               </li>
               <li className="hover:underline cursor-pointer">
-                <Link href={`${locale}/market`}>{dictionary.footer.links.about.brandsAndShops}</Link>
+                <Link href={`${locale}/market`}>
+                  {dictionary.footer.links.about.brandsAndShops}
+                </Link>
               </li>
               <li className="hover:underline cursor-pointer">
                 {dictionary.footer.links.about.contact}
