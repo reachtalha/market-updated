@@ -54,7 +54,8 @@ const Register = ({ dictionary }: { dictionary?: any }) => {
           name,
           email,
           password,
-          role: 'buyer'
+          // role: 'buyer'
+          role: 'admin'
         },
         {
           cancelToken: cancelTokenSource.token

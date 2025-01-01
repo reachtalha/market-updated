@@ -23,6 +23,10 @@ const Index = ({ products, categories }: Props) => {
   const loadMoreExperts = async () => {
     try {
       setLoading(true);
+
+      console.log('categories - ', categories);
+      console.log('lastDoc - ', lastDoc);
+
       const response: any = await getProducts(categories, lastDoc);
 
       if (response.length > 0) {
@@ -33,7 +37,7 @@ const Index = ({ products, categories }: Props) => {
         setResponseEnded(true);
       }
     } catch (e) {
-      throw new Error();
+      throw e;
     } finally {
       setLoading(false);
     }

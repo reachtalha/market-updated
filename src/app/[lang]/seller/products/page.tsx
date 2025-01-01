@@ -111,7 +111,8 @@ async function getData(sort: string, lastDoc?: any, isNext?: string): Promise<Pr
 
     return products;
   } catch (error) {
-    throw new Error();
+    console.log('error while getting seller products - ', error);
+    throw error;
   }
 }
 

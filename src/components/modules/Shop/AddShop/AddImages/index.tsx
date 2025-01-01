@@ -9,7 +9,16 @@ type Props = {
 };
 
 const Index = ({ dictionary, setStep, images, isEdit, loading }: Props) => {
-  return <AddImages dictionary={dictionary} setStep={setStep} isShop images={images} isEdit={isEdit} loading={loading} />;
+  return (
+    <AddImages
+      dictionary={dictionary}
+      setStep={setStep}
+      isShop
+      images={images}
+      isEdit={isEdit}
+      loading={loading}
+    />
+  );
 };
 
 export default Index;

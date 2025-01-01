@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase/client';
+import toast from 'react-hot-toast';
 const PerishableItemForm: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [isPerishable, setIsPerishable] = useState<boolean>(false);
@@ -37,6 +38,7 @@ const PerishableItemForm: React.FC = () => {
     };
     const addDocument = async () => {
       const ref = await addDoc(collection(db, 'categories'), object);
+      toast.success('Category added');
     };
     addDocument();
   };

@@ -240,6 +240,8 @@ const AddProduct = ({ dictionary, defaultValues, isEdit }: props) => {
       emptySKUList();
       reset();
     } catch (error) {
+      console.log('add product - on submit - error - ', error);
+
       handleSubmissionError(error, coverImageURL, otherImagesURL);
     } finally {
       setLoading(false);

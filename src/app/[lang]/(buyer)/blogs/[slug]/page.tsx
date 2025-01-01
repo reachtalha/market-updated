@@ -5,7 +5,16 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/client';
 import edjsHTML from 'editorjs-html';
 
-const edjsParser = edjsHTML();
+function linkToolParser(block: any) {
+  return `<a href="${block.data.link}" target="_blank" rel="noopener noreferrer">${block.data.link}</a>`;
+}
+
+const plugins = {
+  linkTool: linkToolParser // Add custom parser for linkTool
+};
+
+const edjsParser = edjsHTML(plugins);
+
 const fetchGetBlogPost = async (blogPostId: string) => {
   const docRef = await getDoc(doc(db, 'blog-posts', blogPostId));
   return docRef.data();
@@ -20,6 +29,8 @@ export async function generateMetadata({ params }: { params: any }) {
 }
 export default async function Post({ params }: { params: { slug: string } }) {
   const data = (await fetchGetBlogPost(params.slug)) as any;
+
+  console.log('data - blog - ', data);
 
   return (
     <>
@@ -40,6 +51,9 @@ export default async function Post({ params }: { params: { slug: string } }) {
           <h1>{data?.title}</h1>
           {data?.content?.blocks.map((block: any, idx: number) => {
             const parsedBlock = edjsParser?.parseBlock(block);
+
+            console.log('parsedBlock - ', parsedBlock);
+
             return <div key={idx} dangerouslySetInnerHTML={{ __html: parsedBlock }} />;
           })}
         </div>

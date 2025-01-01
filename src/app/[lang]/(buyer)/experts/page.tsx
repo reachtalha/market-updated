@@ -78,11 +78,15 @@ const getExperts = async (category: string, sort: string) => {
     limit(6)
   );
 
+  console.log('got category - ', category);
+  console.log('users collection - ', usersCollection);
+
   if (category) {
     expertQuery = query(
       usersCollection,
       where('role', '==', 'influencer'),
-      where('topics', 'array-contains', category),
+      // where('topics', 'array-contains', category),
+      where('topics', 'array-contains', category.charAt(0).toUpperCase() + category.slice(1)),
       orderBy(sortBy.name, sortBy.by),
       limit(6)
     );

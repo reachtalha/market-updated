@@ -23,7 +23,7 @@ type FormValues = {
   confirmPassword: string;
 };
 
-const Index = ({ defaultValues, dictionary }: { defaultValues: FormValues, dictionary: any }) => {
+const Index = ({ defaultValues, dictionary }: { defaultValues: FormValues; dictionary: any }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPasswordUpdate, setIsPasswordUpdate] = useState<boolean>(false);
   const { updatePassword, updateCurrentUser } = useAuth();
@@ -39,7 +39,7 @@ const Index = ({ defaultValues, dictionary }: { defaultValues: FormValues, dicti
     try {
       if (!isPasswordUpdate) {
         let photoURL;
-        if (!data.photoURL.includes('firebasestorage.googleapis.com')) {
+        if (!data?.photoURL?.includes('firebasestorage.googleapis.com')) {
           photoURL = await UploadImage({
             collection: 'products',
             image: data.photoURL,
@@ -61,6 +61,7 @@ const Index = ({ defaultValues, dictionary }: { defaultValues: FormValues, dicti
           reset();
           window.location.reload();
         } catch (error) {
+          console.log('update user error - ', error);
           toast.error('Error while updating account');
         }
       } else {
@@ -78,6 +79,7 @@ const Index = ({ defaultValues, dictionary }: { defaultValues: FormValues, dicti
         }
       }
     } catch (e) {
+      console.log('update user error - ', e);
       toast.error('Error while updating account');
     } finally {
       setLoading(false);
